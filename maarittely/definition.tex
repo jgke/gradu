@@ -1,0 +1,65 @@
+\documentclass{article}
+
+\usepackage{definition}
+
+\title{Why is C still being used? \\ {\large Topic definition}}
+\author{
+    Jaakko Hannikainen
+}
+\date{\today}
+
+\begin{document}
+
+\maketitle
+
+C has been the dominant programming language for system programming since C was
+created. Several programming languages have been created over time planned as C
+replacements. However, C is still the language of choice especially in embedded
+systems and in UNIX-based operating systems. I shall reseach that why, despite
+the alternatives, C is still the most used language even in new projects. I
+want to also research what kind of language could actually supersede C.
+
+Let a language better than C be defined so that compared to C:
+
+\begin{itemize}
+    \item it is either as fast or faster
+    \item it uses the same amount of memory or less 
+    \item it's easier to use 
+    \item it works in systems, where C works
+\end{itemize}
+
+This language clearly exists, since an language that is easier to use can be
+created by removing trigraphs from C. This doesn't affect the rest of the
+properties, so such a language is better than C.
+
+The following languages will be analyzed as C alternatives: C++, Go, Ada, D,
+Rust. These languages' properties will be analyzed for reasons why they have
+not replaced C. Other popular languages will also be researched for features
+which can be implemented in a language defined as before. The following popular
+programming languages shall be analyzed: Python, Java, Haskell. Especially the
+following features shall be researched for possible inclusion:
+
+\begin{itemize}
+    \item type safety (Haskell)
+    \item compiler optimization (vectorization)
+    \item compile-time code analyzation (uninitialized variables)
+    \item functional programming
+    \item side-channel attack mitigation (timing attacks, cache attacks)
+\end{itemize}
+
+Various optimizations might exist which are not possible in C, and these will
+be researched. Some of these are compile-time macro-optimizations, such as
+constant-folding away functions with no side effects, optimization hints for
+the compiler (assertions for variable values), and compile time pattern
+matching for function calls.
+
+\nocite{ADA12}
+\nocite{C11}
+\nocite{CPP14}
+\nocite{D}
+\nocite{golang}
+
+\bibliographystyle{abbrv}
+\bibliography{references}
+
+\end{document}

@@ -1,8 +1,8 @@
 \documentclass{article}
 
-\usepackage{gradu}
+\usepackage{maarittely}
 
-\title{Miksi C on vieläkin käytössä?}
+\title{Miksi C on vieläkin käytössä? \\ {\large Aihemäärittely}}
 \author{
     Jaakko Hannikainen
 }
@@ -12,8 +12,61 @@
 
 \maketitle
 
-\input{johdanto.tex}
+C on ollut vallitseva ohjelmointikieli järjestelmäohjelmoinnissa C:n
+alkuajoista lähtien. Useita ohjelmointikieliä on luotu historian saatossa,
+joiden oli tarkoitus syrjäyttää C. C on vieläkin johtavana kielenä varsinkin
+sulautetuissa järjestelmissä ja UNIX-pohjaisten käyttöjärjestelmien
+vallitsevana järjestelmäohjelmointikielenä. Tarkoitus on tutkia, miksi
+vaihtoehdoista huolimatta C on vieläkin laajalti käytössä myös uusissa
+projekteissa, ja minkälainen ohjelmointikieli voisi syrjäyttää C:n.
 
+Määritetään C:tä paremmaksi kieleksi jokin kieli, mikä C:hen verrattuna:
+
+\begin{itemize}
+    \item on yhtä nopea tai nopeampi
+    \item käyttää saman verran muistia tai vähemmän
+    \item on helpompi käyttää
+    \item toimii järjestelmissä, joissa C toimii
+\end{itemize}
+
+Tällainen kieli on selkeästi olemassa, sillä C:stä voi tehdä helpomman käyttää
+poistamalla C:n ominaisuuksista trigraphit, joiden poistaminen ei vaikuta
+kielen ominaisuuksiin.
+
+C:n vaihtoehdoiksi tutkitaan seuraavia kieliä: C++, Go, Ada, D, Rust. Näistä
+kielistä tutkitaan, mikä tai mitkä ominaisuudet ovat estäneet C:n korvaamisen,
+ja mitkä ominaisuudet ovat olleet parannuksia C:hen verrattuna. Lisäksi
+tutkitaan muista suosituista ohjelmointikielistä ominaisuuksia, jotka ovat
+hyödyllisiä matalan tason ohjelmoinnissa ja jotka voi toteuttaa korvaavan
+kielen rajoitteissa. Suosituista ohjelmointikielistä tutkitaan seuraavia
+kieliä: Python, Java, Haskell. Erityisesti tutkitaan kielen mahdollisuuksia
+
+\begin{itemize}
+    \item tyyppiturvallisuuteen
+        (Haskell)
+    \item kääntäjän suorittamaan optimointiin
+        (esim. vektorisointi)
+    \item kääntöaikaiseen koodin varmistamiseen
+        (alustamattomat muuttujat)
+    \item funktionaaliseen ohjelmointiin
+    \item sivukanavahyökkäysten torjumiseen
+        (ajoitushyökkäykset, välimuistihyökkäykset)
+\end{itemize}
+
+Tutkittavana on myös, mitä optimointeja C:ssä ei voi tehdä helposti johtuen
+kielen rajoitteista, ja miten tämän voisi korjata. Näitä ominaisuuksia ovat
+esimerkiksi sivuvaikutuksettoman ohjelmakoodin merkitseminen,
+optimointivinkkien alustariippumaton ilmaiseminen (assertiot funktion
+parametreihin) ja useat eri funktiot riippuen parametrien arvoista, mikäli ne
+voidaan kääntöaikaisesti päätellä.
+
+\nocite{ADA12}
+\nocite{C11}
+\nocite{CPP14}
+\nocite{D}
+\nocite{golang}
+
+\bibliographystyle{abbrv}
 \bibliography{references}
 
 \end{document}
