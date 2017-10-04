@@ -97,7 +97,7 @@
 \ProcessOptions\relax
 \LoadClass{article}[2000/05/19]
 \RequirePackage{latexsym}[1998/08/17 v2.2e Standard LaTeX package (lasy symbols)]
-\RequirePackage[latin9]{inputenc}[2000/07/01 v0.996 Input encoding file ]
+\RequirePackage[utf8]{inputenc}[2000/07/01 v0.996 Input encoding file ]
 \RequirePackage[T1]{fontenc}[2000/08/30 v1.91 Standard LaTeX package]
 \if@finnish
   \RequirePackage[finnish]{babel}[2001/03/01 v3.7h The Babel package]
@@ -162,82 +162,15 @@
     \thispagestyle{empty}
   \fi
 }
-\newcounter{appendix}
-\newcommand{\appendices}{%
-  \setcounter{appendix}{1}%
-  \newpage
-  %\pagestyle{empty}
-  \pagestyle{myheadings}
-  \markright{}
-  \appendix
-  \addtocontents{toc}{\protect \contentsline {section}{\enclname}{}}
-  \setcounter{page}{0}
-}
-\newcommand{\internalappendix}[2]{%
-  \addtocounter{appendixpage}{\value{page}}%
-  \newpage
-  \setcounter{page}{1}%
-  \section*{\appendixname\ #1. #2}
-  \addtocontents{toc}{
-    \protect \contentsline {section}{\hspace{0.5cm}#1 #2}{}}
-  \addtocounter{appendix}{+1}%
-}
-\newcommand{\externalappendix}[2]{%
-  \addtocontents{toc}{
-    \protect \contentsline {section}{\hspace{0.5cm}#1 #2}{}}
-  \addtocounter{appendix}{+1}%
-}
-\newcounter{appendixpage}
-\newcommand{\numberofappendixpages}[1][0]{%
-  \addtocounter{appendixpage}{#1}%
-  \ref{@lastappendixpage}%
-}
-
-\AtEndDocument{%
-  \addtocounter{appendixpage}{\value{page}}%
-  \immediate\write\@auxout{\string
-    \newlabel{@lastappendixpage}{{\theappendixpage}{\thepage}}}%
-}
-\newcommand{\lastpage}{%
-  \label{lastpage}%
-}
-
-\newcommand{\numberofpages}{%
-  \@ifundefined{r@lastpage}{0}{\pageref{lastpage}}%
-}
 \renewcommand{\and}{%
   \\ % Rivinvaihto.
   \hspace{1em}%
 }
-\RequirePackage{openbib}
-\addto\captionsfinnish{\def\refname{L‰hteet}}
-\addto\captionsenglish{\def\enclname{Appendices}}
-\addto\captionsswedish{\def\enclname{Bilagor}}
-\renewenvironment{thebibliography}[1]
-     {\section*{\refname
-        \@mkboth{\uppercase{\refname}}{\uppercase{\refname}}
-        \addcontentsline{toc}{section}{\refname}}%
-      \list{\@biblabel{\arabic{enumiv}}}%
-           {\settowidth\labelwidth{\makebox[1em]{}}%
-            \leftmargin\labelwidth
-            \advance\leftmargin\labelsep
-            \usecounter{enumiv}%
-            \let\p@enumiv\@empty
-            \renewcommand\theenumiv{\arabic{enumiv}}}%
-        \renewcommand\newblock{\hskip .11em \@plus.33em \@minus.07em}%
-      \sloppy\clubpenalty4000\widowpenalty4000%
-      \sfcode`\.=\@m}
-     {\def\@noitemerr
-       {\@latex@warning{Empty `thebibliography' environment}}%
-      \endlist}
-\def\@biblabel#1{#1}
-\def\datefinnish{%
-  \def\today{\number\day.\number\month.\number\year}}
 \newcommand{\level}[1]{\gdef\@level{#1}}
 \level{}
 
 \addto\captionsfinnish{%
-  \def\dateofacceptance{hyv‰ksymisp‰iv‰}%
+  \def\dateofacceptance{hyv√§ksymisp√§iv√§}%
   \def\grade{arvosana}%
   \def\instructor{arvostelija}%
   \def\uh{HELSINGIN YLIOPISTO}%
@@ -255,7 +188,7 @@
 \addto\captionsswedish{%
   \def\dateofacceptance{godk.datum}%
   \def\grade{vitsord}%
-  \def\instructor{bedˆmare}%
+  \def\instructor{bed√∂mare}%
   \def\uh{HELSINGFORS UNIVERSITET}%
   \def\helsinki{Helsingfors}%
   \def\ccs{ACM Computing Classification System (CCS):}%
@@ -317,8 +250,8 @@
 
 \addto\captionsfinnish{%
   \faculty{Matemaattis-luonnontieteellinen tiedekunta}
-  \department{Tietojenk‰sittelytieteen laitos}%
-  \subject{Tietojenk‰sittelytiede}
+  \department{Tietojenk√§sittelytieteen laitos}%
+  \subject{Tietojenk√§sittelytiede}
 }
 \addto\captionsenglish{%
   \faculty{Faculty of Science}
@@ -327,7 +260,7 @@
 }
 \addto\captionsswedish{%
   \faculty{Matematisk-naturvetenskapliga fakulteten}
-  \department{Institutionen fˆr datavetenskap}%
+  \department{Institutionen f√∂r datavetenskap}%
   \subject{Datavetenskap}
 }
 \newsavebox{\@abstract}

@@ -1,17 +1,17 @@
-\documentclass{tktltiki}
+\documentclass[gradu]{tktltiki}
 
-\usepackage{maarittely}
+\usepackage{gradu}
+
+\begin{document}
 
 \title{C-ohjelmointikielen korvaajiksi tehdyt ohjelmointikielet ja miksi C on
 niistä huolimatta käytössä}
 \author{Jaakko Hannikainen}
 \date{\today}
 
-\begin{document}
-
 \maketitle
 
-\numberofpagesinformation{\numberofpages\ sivua + \numberofappendixpages\ liitesivua}
+\numberofpagesinformation{\pageref{LastPage}\ sivua} %+ \numberofappendixpages\ liitesivua}
 
 \classification{\protect{\ \\
 \  \textbf{Software and its engineering
@@ -40,21 +40,35 @@ $\rightarrow$ Operating systems
     
     Tähän tulee parempi kuvaus tutkielmaprosessin loppupuolella, kun on
     tiedossa, mitä tämä gradu oikeasti sisältää.
-
 \end{abstract}
 
 \mytableofcontents
 
-
-\maketitle
-
-\section{Johdanto} 
-Johdanto.
-
 \input{johdanto.tex}
+\newpage
 \input{yhteenveto.tex}
+\newpage
 
+\addsec{Lähteet}
+\begingroup
+\renewcommand{\section}[2]{}%
 \bibliographystyle{apacite}
 \bibliography{references}
+\endgroup
+
+%\newpage
+%
+%\addsec{Liitteet}
+%\appendix
+%\setcounter{secnumdepth}{-1}
+%\section{Malli ABC}
+%
+%Liitteet ovat tässä vain sisällysluettelon ja esitystavan mallina.
+%Jokainen liite aloitetaan yleensä uudelta sivulta, jonka alkuun tulee
+%liitteen numero ja nimi. Kunkin liitteen sivut numeroidaan erikseen.
+%
+%Liite on paitsi dokumenttia täydentävä osuus myös itsenäinen
+%kokonaisuus. Liite ei siten voi olla pelkästään kuva tai ohjelmanpätkä,
+%vaan liitteessä on ilmaistava sen sisällön laatu ja tarkoitus.
 
 \end{document}
