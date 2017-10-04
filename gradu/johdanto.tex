@@ -1,0 +1,69 @@
+\section{Johdanto} 
+
+Tämä on gradumääritelmän kopio.
+
+C~\citep{C11} on ollut vallitseva ohjelmointikieli järjestelmäohjelmoinnissa C:n
+alkuajoista lähtien. Useita ohjelmointikieliä on luotu historian saatossa,
+joiden oli tarkoitus syrjäyttää C, mutta C on vieläkin johtavana kielenä
+varsinkin sulautetuissa järjestelmissä ja UNIX-pohjaisten käyttöjärjestelmien
+vallitsevana ohjelmointikielenä. C on myös käytössä
+Windows-käyttöjärjestelmäperheen ydinkomponenttien toteutuksessa. Tarkoitus on
+tutkia, miksi vaihtoehdoista huolimatta C on vieläkin laajalti käytössä myös
+uusissa projekteissa ja minkälainen ohjelmointikieli voisi syrjäyttää C:n.
+
+Määritetään C:tä paremmaksi kieleksi jokin kieli, mikä C:hen verrattuna:
+
+\begin{itemize}
+    \item on yhtä nopea tai nopeampi
+    \item käyttää saman verran muistia tai vähemmän
+    \item on helpompi käyttää
+    \item toimii järjestelmissä, joissa C toimii
+\end{itemize}
+
+On huomioitava, että lukuisten olemassaolevien C:n kirjastojen, rajapintojen ja
+projektien vuoksi yhteensopivuus C:n kanssa tulee olla saumatonta mahdollisten
+vaihtoehtoisten ohjelmointikielten osalta, jotta kielen vaihtaminen olisi
+mahdollista.
+
+C:n vaihtoehdoiksi tutkitaan seuraavia kieliä: C++~\citep{CPP14},
+Go~\citep{golang}, Ada~\citep{ADA12}, D~\citep{D} sekä Rust~\citep{rust}.
+Näistä kielistä tutkitaan, mikä tai mitkä ominaisuudet ovat estäneet C:n
+korvaamisen ja mitkä ominaisuudet ovat olleet parannuksia C:hen verrattuna.
+Lisäksi tutkitaan muista suosituista ohjelmointikielistä ominaisuuksia, jotka
+ovat hyödyllisiä matalan tason ohjelmoinnissa ja jotka voi toteuttaa korvaavan
+kielen rajoitteissa. Suosituista ohjelmointikielistä tutkitaan seuraavia
+kieliä: Python, Java, Haskell ja TypeScript. Erityisesti tutkitaan korvaavan
+kielen mahdollisuuksia
+
+\begin{itemize}
+    \item tyyppiturvallisuuteen
+    \item kääntäjän suorittamaan optimointiin
+        (esim. vektorisointi)
+    \item käännösaikaiseen koodin varmistamiseen
+        (esim. alustamattomat muuttujat)
+    \item funktionaaliseen ohjelmointiin
+    \item sivukanavahyökkäysten torjumiseen (side-channel attack mitigation)
+        (ajoitushyökkäykset, välimuistihyökkäykset)
+    \item Alkuperäisestä kielestä uuteen vaihtamiseen (TypeScript)
+\end{itemize}
+
+Tutkittavana on myös, mitä optimointeja C:ssä ei voi tehdä helposti johtuen
+kielen rajoitteista ja miten tämän voisi korjata. Näitä ominaisuuksia ovat
+esimerkiksi sivuvaikutuksettoman ohjelmakoodin merkitseminen,
+optimointivinkkien alustariippumaton ilmaiseminen (annotaatiot funktion
+parametreihin) ja useat eri funktiot riippuen parametrien arvoista, mikäli ne
+voidaan kääntöaikaisesti päätellä.
+
+Tutkielman aloittavassa johdantokappaleessa perustellaan tutkielman tärkeys
+sekä kuvaillaan lopun tutkielman sisältö ja tutkimuskysymys.
+Toisessa kappaleessa esitetään tutkielman kannalta oleellinen teoria, eli
+C-kielen historiaa ja nykypäivää, esitellään C:n hyviä ja huonoja puolia sekä
+kerrotaan lyhyesti muista tutkittavista kielistä.
+Kolmannessa kappaleessa tutkitaan, minkälaiset ominaisuudet tarvittaisiin
+kieleltä, joka voisi korvata C:n kokonaan.
+Neljännessä kappaleessa kerrotaan, miksi muut tutkitut kielet eivät täytä näitä
+ominaisuuksia.
+Viidennessä kappaleessa kuvaillaan kappaleen kolme käsittelemien ominaisuuksien
+täyttävä ohjelmointikieli.
+Lopettavassa kappaleessa kerrataan tutkielman tavoitteet, vaiheet ja tulokset
+sekä pohditaan tutkielman puutteita ja mahdollisia jatkotutkimuskohteita.
