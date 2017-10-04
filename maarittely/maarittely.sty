@@ -1,4 +1,4 @@
-\ProvidesPackage{gradu}
+\ProvidesPackage{maarittely}
 
 \usepackage[utf8]{inputenc}
 \usepackage[T1]{fontenc}
@@ -6,17 +6,48 @@
 \usepackage{microtype}
 \usepackage{amsfonts,amsmath,amssymb,amsthm,booktabs,color,enumitem,graphicx}
 \usepackage[pdftex,hidelinks]{hyperref}
+\usepackage[natbibapa]{apacite}
 %\usepackage[english]{babel}
 \usepackage[finnish]{babel}
-\usepackage[fixlanguage]{babelbib}
-\selectbiblanguage{finnish}
+%\usepackage[style=apa]{biblatex}
+%\DeclareLanguageMapping{finnish}{finnish-apa}
 \usepackage{hyperref}
 \usepackage{multirow}
 \usepackage{tikz}
 \usepackage{placeins}
 \usepackage{bookmark}
 \usepackage{import}
-\usepackage{lipsum}
+%\usepackage[top=2em]{geometry}
 %\usepackage{showframe}
+\usepackage{etoolbox}
+
+\makeatletter
+\newcommand{\ohjaajat}[1]{\gdef\@ohjaajat{#1}}
+
+\renewcommand{\maketitle}{
+    {
+    \bgroup\setlength{\parindent}{0pt}
+  \null
+  \vskip 2em%
+  %\begin{center}%
+  \let \footnote \thanks
+    {\LARGE \@title \par}
+    {\large Pro gradu -aihemäärittely \par}%
+    \vskip 1em%
+    {\large \@author\par}%
+    \vskip 1em%
+    {\large Ohjaajat: \@ohjaajat\par}%
+    \vskip 1em%
+    {\large \@date\par}%
+    {\large Helsingin yliopisto\par}
+    {\large Tietojenkäsittelytieteen laitos\par}
+  %\end{center}%
+  \par
+  \vskip 1.5em}}
+  \makeatother
+
+\addto\captionsfinnish{\renewcommand{\refname}{Lähteet}}
+
+
 
 \newcommand{\citationneeded}{[citation\_needed] }

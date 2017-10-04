@@ -2,23 +2,24 @@
 
 \usepackage{maarittely}
 
-\title{Miksi C on vieläkin käytössä? \\ {\large Aihemäärittely}}
-\author{
-    Jaakko Hannikainen
-}
+\title{C-ohjelmointikielen korvaajiksi tehdyt ohjelmointikielet ja miksi C on
+niistä huolimatta käytössä}
+\author{Jaakko Hannikainen}
+\ohjaajat{Juha Vihavainen ja Antti-Pekka Tuovinen}
 \date{\today}
 
 \begin{document}
 
 \maketitle
 
-C on ollut vallitseva ohjelmointikieli järjestelmäohjelmoinnissa C:n
+C~\citep{C11} on ollut vallitseva ohjelmointikieli järjestelmäohjelmoinnissa C:n
 alkuajoista lähtien. Useita ohjelmointikieliä on luotu historian saatossa,
-joiden oli tarkoitus syrjäyttää C. C on vieläkin johtavana kielenä varsinkin
-sulautetuissa järjestelmissä ja UNIX-pohjaisten käyttöjärjestelmien
-vallitsevana järjestelmäohjelmointikielenä. Tarkoitus on tutkia, miksi
-vaihtoehdoista huolimatta C on vieläkin laajalti käytössä myös uusissa
-projekteissa, ja minkälainen ohjelmointikieli voisi syrjäyttää C:n.
+joiden oli tarkoitus syrjäyttää C, mutta C on vieläkin johtavana kielenä
+varsinkin sulautetuissa järjestelmissä ja UNIX-pohjaisten käyttöjärjestelmien
+vallitsevana ohjelmointikielenä. C on myös käytössä
+Windows-käyttöjärjestelmäperheen ydinkomponenttien toteutuksessa. Tarkoitus on
+tutkia, miksi vaihtoehdoista huolimatta C on vieläkin laajalti käytössä myös
+uusissa projekteissa ja minkälainen ohjelmointikieli voisi syrjäyttää C:n.
 
 Määritetään C:tä paremmaksi kieleksi jokin kieli, mikä C:hen verrattuna:
 
@@ -29,44 +30,55 @@ Määritetään C:tä paremmaksi kieleksi jokin kieli, mikä C:hen verrattuna:
     \item toimii järjestelmissä, joissa C toimii
 \end{itemize}
 
-Tällainen kieli on selkeästi olemassa, sillä C:stä voi tehdä helpomman käyttää
-poistamalla C:n ominaisuuksista trigraphit, joiden poistaminen ei vaikuta
-kielen ominaisuuksiin.
+On huomioitava, että lukuisten olemassaolevien C:n kirjastojen, rajapintojen ja
+projektien vuoksi yhteensopivuus C:n kanssa tulee olla saumatonta mahdollisten
+vaihtoehtoisten ohjelmointikielten osalta, jotta kielen vaihtaminen olisi
+mahdollista.
 
-C:n vaihtoehdoiksi tutkitaan seuraavia kieliä: C++, Go, Ada, D, Rust. Näistä
-kielistä tutkitaan, mikä tai mitkä ominaisuudet ovat estäneet C:n korvaamisen,
-ja mitkä ominaisuudet ovat olleet parannuksia C:hen verrattuna. Lisäksi
-tutkitaan muista suosituista ohjelmointikielistä ominaisuuksia, jotka ovat
-hyödyllisiä matalan tason ohjelmoinnissa ja jotka voi toteuttaa korvaavan
+C:n vaihtoehdoiksi tutkitaan seuraavia kieliä: C++~\citep{CPP14},
+Go~\citep{golang}, Ada~\citep{ADA12}, D~\citep{D} sekä Rust~\citep{rust}.
+Näistä kielistä tutkitaan, mikä tai mitkä ominaisuudet ovat estäneet C:n
+korvaamisen ja mitkä ominaisuudet ovat olleet parannuksia C:hen verrattuna.
+Lisäksi tutkitaan muista suosituista ohjelmointikielistä ominaisuuksia, jotka
+ovat hyödyllisiä matalan tason ohjelmoinnissa ja jotka voi toteuttaa korvaavan
 kielen rajoitteissa. Suosituista ohjelmointikielistä tutkitaan seuraavia
-kieliä: Python, Java, Haskell. Erityisesti tutkitaan kielen mahdollisuuksia
+kieliä: Python, Java, Haskell ja TypeScript. Erityisesti tutkitaan korvaavan
+kielen mahdollisuuksia
 
 \begin{itemize}
     \item tyyppiturvallisuuteen
-        (Haskell)
     \item kääntäjän suorittamaan optimointiin
         (esim. vektorisointi)
-    \item kääntöaikaiseen koodin varmistamiseen
-        (alustamattomat muuttujat)
+    \item käännösaikaiseen koodin varmistamiseen
+        (esim. alustamattomat muuttujat)
     \item funktionaaliseen ohjelmointiin
-    \item sivukanavahyökkäysten torjumiseen
+    \item sivukanavahyökkäysten torjumiseen (side-channel attack mitigation)
         (ajoitushyökkäykset, välimuistihyökkäykset)
+    \item Alkuperäisestä kielestä uuteen vaihtamiseen (TypeScript)
 \end{itemize}
 
 Tutkittavana on myös, mitä optimointeja C:ssä ei voi tehdä helposti johtuen
-kielen rajoitteista, ja miten tämän voisi korjata. Näitä ominaisuuksia ovat
+kielen rajoitteista ja miten tämän voisi korjata. Näitä ominaisuuksia ovat
 esimerkiksi sivuvaikutuksettoman ohjelmakoodin merkitseminen,
-optimointivinkkien alustariippumaton ilmaiseminen (assertiot funktion
+optimointivinkkien alustariippumaton ilmaiseminen (annotaatiot funktion
 parametreihin) ja useat eri funktiot riippuen parametrien arvoista, mikäli ne
 voidaan kääntöaikaisesti päätellä.
 
-\nocite{ADA12}
-\nocite{C11}
-\nocite{CPP14}
-\nocite{D}
-\nocite{golang}
+Tutkielman aloittavassa johdantokappaleessa perustellaan tutkielman tärkeys
+sekä kuvaillaan lopun tutkielman sisältö ja tutkimuskysymys.
+Toisessa kappaleessa esitetään tutkielman kannalta oleellinen teoria, eli
+C-kielen historiaa ja nykypäivää, esitellään C:n hyviä ja huonoja puolia sekä
+kerrotaan lyhyesti muista tutkittavista kielistä.
+Kolmannessa kappaleessa tutkitaan, minkälaiset ominaisuudet tarvittaisiin
+kieleltä, joka voisi korvata C:n kokonaan.
+Neljännessä kappaleessa kerrotaan, miksi muut tutkitut kielet eivät täytä näitä
+ominaisuuksia.
+Viidennessä kappaleessa kuvaillaan kappaleen kolme käsittelemien ominaisuuksien
+täyttävä ohjelmointikieli.
+Lopettavassa kappaleessa kerrataan tutkielman tavoitteet, vaiheet ja tulokset
+sekä pohditaan tutkielman puutteita ja mahdollisia jatkotutkimuskohteita.
 
-\bibliographystyle{abbrv}
+\bibliographystyle{apacite}
 \bibliography{references}
 
 \end{document}
