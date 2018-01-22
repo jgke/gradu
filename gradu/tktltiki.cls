@@ -96,7 +96,6 @@
 \fi
 \ProcessOptions\relax
 \LoadClass{article}[2000/05/19]
-\RequirePackage{latexsym}[1998/08/17 v2.2e Standard LaTeX package (lasy symbols)]
 \RequirePackage[utf8]{inputenc}[2000/07/01 v0.996 Input encoding file ]
 \RequirePackage[T1]{fontenc}[2000/08/30 v1.91 Standard LaTeX package]
 \if@finnish
@@ -162,10 +161,35 @@
     \thispagestyle{empty}
   \fi
 }
+
 \renewcommand{\and}{%
   \\ % Rivinvaihto.
   \hspace{1em}%
 }
+%\RequirePackage{openbib}
+%\addto\captionsfinnish{\def\refname{Lähteet}}
+%\addto\captionsenglish{\def\enclname{Appendices}}
+%\addto\captionsswedish{\def\enclname{Bilagor}}
+%\renewenvironment{thebibliography}[1]
+%     {\section*{\refname
+%        \@mkboth{\uppercase{\refname}}{\uppercase{\refname}}
+%        \addcontentsline{toc}{section}{\refname}}%
+%      \list{\@biblabel{\arabic{enumiv}}}%
+%           {\settowidth\labelwidth{\makebox[1em]{}}%
+%            \leftmargin\labelwidth
+%            \advance\leftmargin\labelsep
+%            \usecounter{enumiv}%
+%            \let\p@enumiv\@empty
+%            \renewcommand\theenumiv{\arabic{enumiv}}}%
+%        \renewcommand\newblock{\hskip .11em \@plus.33em \@minus.07em}%
+%      \sloppy\clubpenalty4000\widowpenalty4000%
+%      \sfcode`\.=\@m}
+%     {\def\@noitemerr
+%       {\@latex@warning{Empty `thebibliography' environment}}%
+%      \endlist}
+%\def\@biblabel#1{#1}
+\def\datefinnish{%
+  \def\today{\number\day.\number\month.\number\year}}
 \newcommand{\level}[1]{\gdef\@level{#1}}
 \level{}
 
@@ -316,21 +340,17 @@
 \put(58,809){\makebox(150,6)[l]{
 \tiny Tiedekunta --- Fakultet --- Faculty}}
 \put(289,809){\makebox(100,6)[l]{\abst@tiny Laitos --- Institution --- Department}}
-\put(58,773){\makebox(100,5)[l]{\abst@tiny Tekij\"a --- F\"orfattare --- Author}}
-\put(58,750){\makebox(100,5)[l]{\abst@tiny Ty\"on nimi --- Arbetets titel --- Title}}
-\put(58,716){\makebox(100,5)[l]{\abst@tiny Oppiaine --- L\"aro\"amne --- Subject}}
-\put(58,693){\makebox(100,5)[l]{\abst@tiny Ty\"on laji --- Arbetets art --- Level}}
+\put(58,773){\makebox(100,5)[l]{\abst@tiny Tekijä --- Författare --- Author}}
+\put(58,750){\makebox(100,5)[l]{\abst@tiny Työn nimi --- Arbetets titel --- Title}}
+\put(58,716){\makebox(100,5)[l]{\abst@tiny Oppiaine --- Läroämne --- Subject}}
+\put(58,693){\makebox(100,5)[l]{\abst@tiny Työn laji --- Arbetets art --- Level}}
 \put(212,693){\makebox(100,5)[l]{\abst@tiny Aika --- Datum --- Month and year }}
-\put(366,693){\makebox(100,5)[l]{\abst@tiny Sivum\"a\"ar\"a --- Sidoantal ---
-    Number of pages}}
-\put(58,670){\makebox(100,5)[l]{\abst@tiny Tiivistelm\"a --- Referat --- Abstract}}
+\put(366,693){\makebox(100,5)[l]{\abst@tiny Sivumäärä --- Sidoantal --- Number of pages}}
+\put(58,670){\makebox(100,5)[l]{\abst@tiny Tiivistelmä --- Referat --- Abstract}}
 \put(58,106){\makebox(100,5)[l]{\abst@tiny Avainsanat --- Nyckelord --- Keywords}}
-\put(58,83){\makebox(100,5)[l]{\abst@tiny S\"ailytyspaikka --- F\"orvaringsst\"alle
---- Where deposited}}
-\put(58,61){\makebox(100,5)[l]{\abst@tiny Muita tietoja --- \"ovriga uppgifter
---- Additional information}}
-\put(53,821){\makebox(100,8)[l]{\abst@small HELSINGIN YLIOPISTO --- HELSINGFORS
-UNIVERSITET --- UNIVERSITY OF HELSINKI}}
+\put(58,83){\makebox(100,5)[l]{\abst@tiny Säilytyspaikka --- Förvaringsställe --- Where deposited}}
+\put(58,61){\makebox(100,5)[l]{\abst@tiny Muita tietoja --- övriga uppgifter --- Additional information}}
+\put(53,821){\makebox(100,8)[l]{\abst@small HELSINGIN YLIOPISTO --- HELSINGFORS UNIVERSITET --- UNIVERSITY OF HELSINKI}}
 \end{picture}
 
 \pagestyle{empty}

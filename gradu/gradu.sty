@@ -6,23 +6,88 @@
 \usepackage{microtype}
 \usepackage{amsfonts,amsmath,amssymb,amsthm,booktabs,color,enumitem,graphicx}
 \usepackage[pdftex,hidelinks]{hyperref}
-\usepackage[natbibapa]{apacite}
-%\usepackage[english]{babel}
+\usepackage{bookmark}
+\usepackage{appendix}
+\usepackage[natbibapa,sectionbib]{apacite}
 \usepackage[finnish]{babel}
-%\usepackage[style=apa]{biblatex}
-%\DeclareLanguageMapping{finnish}{finnish-apa}
 \usepackage{hyperref}
 \usepackage{multirow}
 \usepackage{tikz}
 \usepackage{placeins}
-\usepackage{bookmark}
 \usepackage{import}
+\usepackage{etoolbox}
+\usepackage{refcount}
+\usepackage{tocloft}
+\usepackage[nottoc]{tocbibind}
+\usepackage{xassoccnt}
+
 %\usepackage[top=2em]{geometry}
 %\usepackage{showframe}
-\usepackage{etoolbox}
-\usepackage{lastpage}
-\usepackage{unnumberedtotoc}
 
-\addto\captionsfinnish{\renewcommand{\refname}{Lähteet}}
+%\usepackage[style=apa]{biblatex}
+%\DeclareLanguageMapping{finnish}{finnish-apa}
+
+\bibliographystyle{apacite}
+
+%\addto\captionsfinnish{\renewcommand{\refname}{Lähteet}}
+
+\addto{\captionsfinnish}{%
+        \renewcommand{\bibname}{Bibliography}%
+            \renewcommand{\contentsname}{Table of Contents}}
 
 \newcommand{\citationneeded}{[citation\_needed] }
+
+\makeatletter
+\newcommand{\totalpagecount}{\pageref{mylastpage}}
+\newcommand{\totalappendixcount}{%
+    \@ifundefined{r@appendixbegin}{0}{%
+        \the\numexpr\TotalValue{totalrealpage}-\getpagerefnumber{mylastpage}-2\relax%
+    }%
+}
+\makeatother
+
+
+\newcounter{appendixCount}
+\newcounter{appendixPageCount}
+
+\NewTotalDocumentCounter{totalrealpage}
+\NewDocumentCounter{realpage}
+
+\DeclareAssociatedCounters{page}{realpage,totalrealpage}
+\makeatletter
+\AtBeginDocument{%
+      \setcounter{realpage}{1}
+      }
+
+      \makeatother
+
+\newcommand{\appendixsection}[1]{
+    \newpage
+    \pagenumbering{arabic}
+    \phantomsection
+    \stepcounter{appendixCount}
+    \section*{Liite \arabic{appendixCount}. #1}
+    \cftaddtitleline{toc}{section}{\arabic{appendixCount} #1}{}
+}
+
+
+\DeclareAssociatedCounters{page}{appendixPageCount}
+\makeatletter
+\AtBeginDocument{%
+\stepcounter{appendixPageCount}
+}
+
+\newcommand{\appendixbeginhere}{
+    \label{mylastpage}
+    \newpage
+    \label{appendixbegin}
+    \cftaddtitleline{toc}{section}{Liitteet}{}
+    \pagenumbering{gobble}
+    \appendix
+    \renewcommand{\thesection}{{\arabic{section}}}
+}
+
+\newcommand{\tocbeginshere}{\label{tocbegin}}
+\newcommand{\appendixendhere}{\label{appendixend}}
+
+\newcommand{\hilight}[1]{\colorbox{yellow}{#1}}

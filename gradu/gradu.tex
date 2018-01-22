@@ -8,10 +8,11 @@
 niistä huolimatta käytössä}
 \author{Jaakko Hannikainen}
 \date{\today}
+\level{Pro Gradu}
 
 \maketitle
 
-\numberofpagesinformation{\pageref{LastPage}\ sivua} %+ \numberofappendixpages\ liitesivua}
+\numberofpagesinformation{\totalpagecount\ sivua + \totalappendixcount\ liitesivua}
 
 \classification{\protect{\ \\
 \  \textbf{Software and its engineering
@@ -21,7 +22,11 @@ $\rightarrow$ Language types
 $\rightarrow$ Imperative languages} \\
 \  Software and its engineering
 $\rightarrow$ Software organization and properties
-$\rightarrow$ Operating systems
+$\rightarrow$ Operating systems \\
+\  Computer systems organization
+$\rightarrow$ Embedded and cyber-physical systems
+$\rightarrow$ Embedded systems
+$\rightarrow$ Embedded software \\
 }}
 
 \keywords{C, ohjelmointikielet}
@@ -34,41 +39,39 @@ $\rightarrow$ Operating systems
     käyttöjärjestelmien vallitsevana ohjelmointikielenä. C on myös käytössä
     Windows-käyttöjärjestelmäperheen ydinkomponenttien toteutuksessa.
     
-    Tämä tutkielma selittää, miksi vaihtoehdoista huolimatta C on vieläkin
+    Tässä opinnäytetyössä selvitetään, miksi vaihtoehdoista huolimatta C on vieläkin
     laajalti käytössä myös uusissa projekteissa ja minkälainen ohjelmointikieli
     voisi syrjäyttää C:n.
     
-    Tähän tulee parempi kuvaus tutkielmaprosessin loppupuolella, kun on
+    Johtopäätöksinä saatiin, että muut kielet eivät ole parempia.
+
+    Tähän tulee parempi kuvaus graduprosessin loppupuolella, kun on
     tiedossa, mitä tämä gradu oikeasti sisältää.
 \end{abstract}
+
+\newpage
+\tocbeginshere
 
 \mytableofcontents
 
 \input{johdanto.tex}
 \newpage
+\input{maaritelmat.tex}
+\newpage
+\input{muut.tex}
+\newpage
+\input{oma.tex}
+\newpage
 \input{yhteenveto.tex}
 \newpage
 
-\addsec{Lähteet}
-\begingroup
-\renewcommand{\section}[2]{}%
-\bibliographystyle{apacite}
+%\bibliographystyle{apacite}
 \bibliography{references}
-\endgroup
 
-%\newpage
-%
-%\addsec{Liitteet}
-%\appendix
-%\setcounter{secnumdepth}{-1}
-%\section{Malli ABC}
-%
-%Liitteet ovat tässä vain sisällysluettelon ja esitystavan mallina.
-%Jokainen liite aloitetaan yleensä uudelta sivulta, jonka alkuun tulee
-%liitteen numero ja nimi. Kunkin liitteen sivut numeroidaan erikseen.
-%
-%Liite on paitsi dokumenttia täydentävä osuus myös itsenäinen
-%kokonaisuus. Liite ei siten voi olla pelkästään kuva tai ohjelmanpätkä,
-%vaan liitteessä on ilmaistava sen sisällön laatu ja tarkoitus.
+\appendixbeginhere
+
+\input{liite.tex}
+
+\appendixendhere
 
 \end{document}
