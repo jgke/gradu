@@ -1,25 +1,80 @@
 \section{Määritelmät} 
-\hilight{Tyylittely: Alkaako kappaleet omalta sivultaan?}
 
-\hilight{Tähän enemmän humanismia ennen seuraavaa palautusta}
+Verrattavissa ohjelmointikielissä on yritetty parantaa C:n huonoja puolia
+hyvien puolien kustannuksella, usein lisäämällä kieleen turvallisuutta
+parantavia ominaisuuksia. Tämä kuitenkin heikentää kielen tehokkuutta tai
+alustayhteensopivuutta, tehden kielten suorasta vertailusta mahdotonta. Jos
+määritellään absoluuttiset reunaehdot, voidaan näiden puitteissa vertailla
+kieliä.
 
-Määritetään C:tä paremmaksi kieleksi jokin kieli, mikä C:hen verrattuna:
+Määritellään C:tä paremmaksi kieleksi jokin kieli, mikä C:hen verrattuna aina:
 
 \begin{itemize}
     \item on yhtä nopea tai nopeampi
     \item käyttää saman verran muistia tai vähemmän
-    \item on helpompi käyttää
-    \item toimii järjestelmissä, joissa C toimii
+    \item toimii kaikissa järjestelmissä, joissa C toimii
+    \item on helpompi käyttää \hilight{paitsi että tämä on subjektiivista}
+    \item \hilight{Onko jotain, mistä voisi sanoa suoraan, että se on parannus?}
 \end{itemize}
+
+Jos yksikin näistä kriteereistä ei pidä, verrattava kieli ei ole absoluuttisesti
+C:tä parempi.
 
 On huomioitava, että lukuisten olemassaolevien C:n kirjastojen, rajapintojen ja
 projektien vuoksi yhteensopivuus C:n kanssa tulee olla saumatonta mahdollisten
 vaihtoehtoisten ohjelmointikielten osalta, jotta kielen vaihtaminen olisi
-mahdollista. Tämä sisältää myös kirkastorutiinien kutsumisen.
+mahdollista. Tämä sisältää myös kirkastorutiinien kutsumisen muista
+ohjelmointikielistä, sillä C on lukuisissa järjestelmissä \emph{lingua franca},
+jolla voidaan sillata ohjelmointikieliä toisiinsa.
 
-Tutkittavana on myös, mitä optimointeja C:ssä ei voi tehdä helposti johtuen
-kielen rajoitteista ja miten tämän voisi korjata. Näitä ominaisuuksia ovat
-esimerkiksi sivuvaikutuksettoman ohjelmakoodin merkitseminen,
-optimointivinkkien alustariippumaton ilmaiseminen (annotaatiot funktion
-parametreihin) ja useat eri funktiot riippuen parametrien arvoista, mikäli ne
-voidaan kääntöaikaisesti päätellä.
+Ohjelmointikielten ekosysteemit koostuvat eri tahojen luomista kirjastoista. On
+tärkeää, että näihin kirjastoihin pääsee käsiksi mahdollisimman helposti. Tämä
+vaatii toimiakseen hyvät työkalut, kuten paketinhallinnat, käännöstyökalu sekä
+kehitysympäristöt.
+
+Kirjastojen lisenssen tulee myös olla yhteensopivia, jotta kirjastoja voi
+käyttää yhdessä toistensa kanssa. Eri ekosysteemeissä on erilaisia lisenssejä
+-- JavaScript-kirjastot ovat usein MIT-yhteensopivia~\citationneeded, kun taas
+Java-kirjastot ovat usein Apache 2 -yhteensopivia~\citationneeded. (Mitä C:ssä
+nyt onkaan eniten, GPL, LGPL, BSD, Apache2... taitaa olla aika sekasikiö.
+Tekstiä lisää tästä kunhan saan tutkittua)
+Kirjastot voi myös julkaista useammalla kuin yhdellä lisenssillä, jolloin
+käyttäjät voivat päättää, mitä lisenssiä haluaa seurata. On kuitenkin
+filosofinen kysymys, onko esimerkiksi Apache2+GPL parempi kuin pelkkä GPL,
+sillä Apache2 ei vaadi tiettyjä oikeuksia loppukäyttäjille.\hilight{Teksti
+vähän tökkii}
+
+\subsection{Verrattavien ohjelmointikielten valinta}
+
+C:hen verrattavien ohjelmointikielten valintaan käytettiin
+
+TIOBEn indeksi~\citep{tiobe} ja Octoverse~\citep{octoverse} suosion
+mukaan järjestämiseksi, ei valita aivan tuntematonta kieltä
+
+Benchmarks gamen~\citep{benchmarks} tuloksia, nähdään tehokkaat kielet
+
+Valittiin Ada, C++, D, Go, Rust
+
+Muita liittyviä kieliä: Fortran, Objective-C \\
+\hilight{Pitäisikö nämä vain ottaa joukon jatkoksi? Menisi helposti samaan syssyyn} \\
+\hilight{Fortran toisaalta vähän hassu tähän koska se on tehty ennen C:tä}
+
+%Muita tehokkaita kieliä:
+
+%Halide; innovatiivinen DSL, jossa on erikseen
+%algoritmi ja sen rinnakkaistaminen. Ei yleiskäyttöinen, mutta hieno ideatasolla
+
+Muita huomattavia kieliä:
+
+LISP-perhe: makrot jotka käsittelee S-exprejä eikä
+vain läimi tekstiä ympäriinsä,
+
+ML-perhe: erinomainen syntaksi tyyppi- ja funktiomäärittelyihin sekä pattern
+matchaukseen, sääli että kaikki kovemman tason tyypitys käytännössä vaatii
+interfacejen toteutuksen mikä taas on hankalaa absolutismissa (tradeoff
+vtable/function pointereita kaikkialle/C++:n ja Rustin inlinetys jolloin
+binääri kasvaa).  Esim. enumeihin voisi silti saada hyvän matchauksen
+
+C-subsetit jotka voi formaalisti verifioida esim. 
+\url{https://github.com/PrincetonUniversity/VST}
+\url{http://vst.cs.princeton.edu/}

@@ -10,7 +10,7 @@ opinnäytetyössä tutkitaan, miksi vaihtoehdoista huolimatta C on vieläkin
 laajalti käytössä myös uusissa projekteissa ja minkälainen ohjelmointikieli
 voisi syrjäyttää C:n.
 
-C:n vaihtoehdoiksi tutkitaan seuraavia kieliä: Ada~\citep{ADA12},
+C:n vaihtoehdoiksi tutkitaan seuraavia tehokkaaseen ohjelmointiin tarkoitettuja kieliä: Ada~\citep{ADA12},
 C++~\citep{CPP14}, D~\citep{D}, Go~\citep{golang} sekä Rust~\citep{rust}.
 Näistä kielistä tutkitaan, mikä tai mitkä ominaisuudet ovat estäneet C:n
 korvaamisen ja mitkä ominaisuudet ovat olleet parannuksia C:hen verrattuna.
@@ -19,103 +19,21 @@ ovat hyödyllisiä matalan tason ohjelmoinnissa ja jotka voi toteuttaa korvaavan
 kielen rajoitteissa.
 
 Tutkittavana on myös, mitä optimointeja C:ssä ei voi tehdä helposti johtuen
-kielen rajoitteista ja miten tämän voisi korjata.
-\hilight{Tämä lähtenee pois jos tulee aika/tilapulaa.}
-Näitä ominaisuuksia ovat
+kielen rajoitteista ja miten tämän voisi korjata. Näitä ominaisuuksia ovat
 esimerkiksi sivuvaikutuksettoman ohjelmakoodin merkitseminen,
 optimointivinkkien alustariippumaton ilmaiseminen (esimerkiksi Rustin tavalla
 funktioiden annotointi) ja useat eri funktiot riippuen parametrien arvoista,
 mikäli ne voidaan kääntöaikaisesti päätellä.
 
-Lopuksi esitellään toisen kappaleen määritelmästä johdettu ohjelmointikieli,
-joka on määritelmän mukaisesti parempi ohjelmointikieli kuin C.
 
-\subsection{Alaosio}
-
-\hilight{Onko tässä tarvetta/halua kappalekohtaiseen erittelyyn?}
-
-Toisessa kappaleessa esitetään tutkielman kannalta oleellinen teoria, eli
+Toisessa luvussa esitetään tutkielman kannalta oleellinen teoria, eli
 C-kielen historiaa ja nykypäivää, esitellään C:n hyviä ja huonoja puolia sekä
 kerrotaan lyhyesti muista tutkittavista kielistä.
-Kolmannessa kappaleessa tutkitaan, minkälaiset ominaisuudet tarvittaisiin
+Toisessa luvussa myös määritellään, minkälaiset ominaisuudet tarvitaan
 kieleltä, joka voisi korvata C:n kokonaan.
-Neljännessä kappaleessa kerrotaan, miksi muut tutkitut kielet eivät täytä näitä
+Kolmannessa luvussa kerrotaan, miksi muut tutkitut kielet eivät täytä näitä
 ominaisuuksia.
-Viidennessä kappaleessa kuvaillaan kappaleen kolme käsittelemien ominaisuuksien
+Neljännessä luvussa kuvaillaan toisen luvun määrittämien  ominaisuuksien
 täyttävä ohjelmointikieli.
-Lopettavassa kappaleessa kerrataan tutkielman tavoitteet, vaiheet ja tulokset
-sekä pohditaan tutkielman puutteita ja mahdollisia jatkotutkimuskohteita.
-
-\begin{itemize}
-    \item Johdanto 
-        \begin{itemize}
-            \item Mitä, miksi, miten gradussa käsitellään
-        \end{itemize}
-    \item Määritelmät 
-        \begin{itemize}
-            \item Miten vertaillaan kieliä: Syklit, muistinkäyttö,
-                alustariippumattomuus, asm-yhteensopivuus, c-interop, migraatio C:stä
-            \item Miksi näin??
-            \item Mitä muita huomioita kielestä: Toolaus, tyypitys,
-                ytimekkyyys, sivukanavat vs. optimointi, miksi nämä?
-        \end{itemize}
-    \item Kielet 
-        \begin{itemize}
-            \item Muut ohjelmointikielet:
-                \begin{itemize}
-                    \item Muistinkäyttö
-                    \item prosessorin syklit
-                    \item tyypitys
-                    \item interop
-                    \item hardware
-                \end{itemize}
-            \item Millä perusteella valitaan tietyt kielet?
-            \item Kielet: Ada, C++, D, Go, Rust \hilight{Onko aakkosjärjestys hyvä?}
-            \item Ada
-                \begin{itemize}
-                    \item C-interop meh, toimii
-                    \item hyvä rauta-abstraktio
-                \end{itemize}
-            \item C++
-                \begin{itemize}
-                    \item Syklit: poikkeukset pakottaa vähän overheadia aina, smart pointerit=gc
-                    \item Vtablet vie hitusen muistia
-                    \item lähes saumaton c-compat, vaatii \texttt{extern "C"} name manglingin takia
-                \end{itemize}
-            \item D
-                \begin{itemize}
-                    \item Syklit: poikkeukset pakottaa vähän overheadia aina, gc
-                    \item Vtablet vie hitusen muistia
-                    \item ihan okei c-compat https://dlang.org/spec/interfaceToC.html
-                    \item 'better c' -tila
-                \end{itemize}
-            \item Go
-                \begin{itemize}
-                    \item Syklit: poikkeukset pakottaa vähän overheadia aina, gc
-                    \item Vtablet vie hitusen muistia
-                    \item C-compatissa parannettavaa, ei fp kutsuja https://golang.org/cmd/cgo/
-                \end{itemize}
-            \item Rust
-                \begin{itemize}
-                    \item Syklit: zero overhead abstractions, hyvin lähellä C:tä
-                    \item Borrow checker monimutkainen, hankaloittaa adaptaatiota
-                \end{itemize}
-        \end{itemize}
-    \item Oma kieli
-        \begin{itemize}
-            \item Muistinhallinta = manuaalinen
-            \item Varmistaminen, että yhtä nopea kuin C -> kääntö C:hen?
-            \item Tyypitys lähellä C:tä
-            \item makrot: joku järkevä nykyisiä voimakkaampi järjestelmä
-            \item std-lib=bloat, minimoidaan
-            \item abstraktio, tyyppiluokat vai ei? luultavasti ei, koska yksinkertaisuus
-            \item calling convention sama kuin paikallisen C-kääntäjän? Millä notaatiolla esim. windows, jossa käytetään kahta?
-            \item namespacet
-        \end{itemize}
-    \item Yhteenveto
-        \begin{itemize}
-            \item Miten meni noin niinku omasta mielestä
-            \item Kieli validisti parempi, jos määritelmät pitää
-            \item Pohdintaa psykologisista tekijöistä?
-        \end{itemize}
-\end{itemize}
+Lopettavassa luvussa kerrataan tutkielman tavoitteet, vaiheet ja tulokset
+sekä pohditaan tutkielman puutteita ja jatkotutkimuskohteita.

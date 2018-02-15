@@ -1,1 +1,47 @@
-\section{Olemassaolevat ohjelmointikielet} 
+\section{Olemassaolevat ohjelmointikielet}
+
+\subsection{C}
+
+Hyvää: Toimii kaikkialla
+
+Huonoa: Kääntäjäoptimointi voi aiheuttaa ongelmia, yleinen esimerkki
+overflowien tarkistus (speksi sanoo että signed intien overflow = undefined
+behaviour = tarkistukset voi optimoida pois)
+
+Makrot rajoittuneita
+
+\subsection{Ada}
+
+Hyvää: Rautatason speksaus datan muodosta, built-in hard realtime
+
+Neutraali: GPL
+
+Huonoa: C-interop verboosia, poikkeukset, gc, toolaus
+
+\subsection{C++}
+
+Hyvää: C-tuki (sans name mangling)
+
+Neutraali: Genericsit 0-cost, mutta hitaat kääntää
+
+Huonoa: monimutkainen speksi, poikkeukset, vtablet
+
+\subsection{D}
+
+Hyvää: FFI toimii, mutta pitää speksata funktiot erikseena, better c -tila, jolla hidastavat jutut saa pois
+
+Huonoa: ...mutta sitten 90\% kielestä jää pois, parantaa kuitenkin syntaksia
+
+\subsection{Go}
+
+Hyvää: yksinkertainen, nopea, toolaus
+
+Neutraali: FFI melko hyvä, mutta FP-kutsuja ei voi tehdä
+
+Huonoa: poikkeukset, gc
+
+\subsection{Rust} 
+
+Hyvää: nopea, 0-cost abstraktiot, traitit, makrot, toolaus
+
+Huonoa: panicit, borrow checker on hankala

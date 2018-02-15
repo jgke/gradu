@@ -20,6 +20,7 @@
 \usepackage{tocloft}
 \usepackage[nottoc]{tocbibind}
 \usepackage{xassoccnt}
+%\usepackage{showframe}
 
 %\usepackage[top=2em]{geometry}
 %\usepackage{showframe}
@@ -32,10 +33,10 @@
 %\addto\captionsfinnish{\renewcommand{\refname}{Lähteet}}
 
 \addto{\captionsfinnish}{%
-        \renewcommand{\bibname}{Bibliography}%
+        \renewcommand{\refname}{Bibliography}%
             \renewcommand{\contentsname}{Table of Contents}}
 
-\newcommand{\citationneeded}{[citation\_needed] }
+\newcommand{\citationneeded}{\textbf{[citation\_needed]}}
 
 \makeatletter
 \newcommand{\totalpagecount}{\pageref{mylastpage}}
@@ -44,6 +45,14 @@
         \the\numexpr\TotalValue{totalrealpage}-\getpagerefnumber{mylastpage}-2\relax%
     }%
 }
+\numberofpagesinformation{%
+    \@ifundefined{r@appendixbegin}{%
+    \totalpagecount\ sivua%
+    }{%
+    \totalpagecount\ sivua + \totalappendixcount\ liitesivua%
+    }%
+}
+
 \makeatother
 
 

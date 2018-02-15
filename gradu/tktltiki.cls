@@ -79,6 +79,9 @@
   \@defaultpaperfalse
   \PassOptionsToClass{executivepaper}{article}}
 
+\DeclareOption{draft}{
+  \PassOptionsToClass{draft}{article}}
+
 \DeclareOption{notitlepage}{
   \@defaulttitlepagefalse
   \PassOptionsToClass{notitlepage}{article}}
@@ -315,7 +318,11 @@
 \put(58,  784){\makebox(100, 8)[l]{\abst@small\@faculty}}
 \put(289, 784){\makebox(100, 8)[l]{\abst@small\@department}}
 \put(58,  761){\makebox(100, 8)[l]{\abst@small\@author}}
+\ifdefined\formtitle
+\put(58,  732){\parbox[l]{450pt}{\renewcommand{\baselinestretch}{.9}\abst@small\formtitle}}
+\else
 \put(58,  732){\parbox[l]{450pt}{\renewcommand{\baselinestretch}{.9}\abst@small\@title}}
+\fi
 \put(58,  704){\makebox(100, 8)[l]{\abst@small\@subject}}
 \put(58,  681){\makebox(100, 8)[l]{\abst@small\@level}}
 \put(212, 681){\makebox(100, 8)[l]{\abst@small\@date}}
