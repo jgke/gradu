@@ -1,0 +1,90 @@
+\section{Määritelmät} 
+
+Verrattavissa ohjelmointikielissä on yritetty parantaa C:n huonoja puolia
+hyvien puolien kustannuksella, usein lisäämällä kieleen turvallisuutta
+parantavia ominaisuuksia. Tämä kuitenkin heikentää kielen tehokkuutta tai
+alustayhteensopivuutta tehden kielten suorasta vertailusta mahdotonta. Jos
+määritellään absoluuttiset reunaehdot, voidaan näiden puitteissa vertailla
+kieliä.
+
+Määritellään C:tä paremmaksi kieleksi kieli, joka C:hen verrattuna aina:
+
+\begin{itemize}
+    \item on yhtä nopea tai nopeampi
+    \item käyttää saman verran muistia tai vähemmän
+    \item toimii kaikissa järjestelmissä, joissa C toimii
+    \item on helpompi käyttää
+\end{itemize}
+
+Jos yksikin näistä kriteereistä ei pidä, verrattava kieli ei ole absoluuttisesti
+C:tä parempi.
+
+On huomioitava, että lukuisten olemassa olevien C:n kirjastojen, rajapintojen
+ja projektien vuoksi yhteensopivuus C:n kanssa tulee olla saumatonta
+mahdollisten vaihtoehtoisten ohjelmointikielten osalta, jotta kielen
+vaihtaminen olisi mahdollista. Tämä sisältää myös kirkastorutiinien kutsumisen
+muista ohjelmointikielistä, sillä C on lukuisissa järjestelmissä \emph{lingua
+franca}, jonka avulla ohjelmointikielet pystyvät kommunikoimaan keskenään.
+Esimerkiksi Python-ohjelmointikieli~\citep{python} sisältää tuen C-funktioiden
+kutsumiseen~\citep{pythonffi}, jota voi käyttää muiden ohjelmointikielten
+funktioiden kutsumiseen, mikäli käyttäjä kirjoittaa 'sillan' C-ohjelmana.
+
+Ohjelmointikielten ekosysteemit koostuvat eri tahojen luomista kirjastoista. On
+tärkeää, että näihin kirjastoihin pääsee käsiksi mahdollisimman helposti. Tämä
+vaatii toimiakseen hyvät työkalut, kuten
+paketinhallintajärjestelmän\footnote{eng. package manager}, hyvän
+käännöstyökalun sekä kehitysympäristöt. \hl{paketinhallinta -> pakkaushallinta:
+'paketinhallinta' on yleisesti käytössä oleva termi, ks. esim} \\
+\url{https://www.debian.org/index.fi.html} \\
+\url{https://fi.wikipedia.org/wiki/Paketinhallintaj\%C3\%A4rjestelm\%C3\%A4} \\
+\hl{Onhan se tietenkin hassu käännöksenä, kun pakkaus olisi 'oikeampi' käännös
+englannin package-sanasta, mutta luonnolliset kielet eivät toimi loogisesti.}
+
+Kirjastojen lisenssien tulee myös olla yhteensopivia, jotta kirjastoja voi
+käyttää yhdessä toistensa kanssa. Eri ohjelmointikieliekosysteemeissä on
+käytössä erilaisia lisenssejä -- JavaScript-kirjastot ovat usein
+MIT-yhteensopivia, kun taas Java-kirjastot ovat usein Apache 2 -yhteensopivia.
+Liitteessä~\ref{app:github} on taulukko GitHub-verkkopalvelun sisältämien
+julkisten projektien määrä ryhmiteltynä lisenssin ja kielen mukaan.
+
+Kirjastot voi myös julkaista useammalla kuin yhdellä lisenssillä, jolloin
+käyttäjät voivat päättää, mitä lisenssiä haluaa seurata. On kuitenkin
+filosofinen kysymys, onko esimerkiksi Apache2+GPL parempi lisenssi kuin pelkkä
+GPL, sillä Apache2 ei vaadi tiettyjä oikeuksia loppukäyttäjille, kuten pääsyä
+ohjelmiston lähdekoodiin~\citep{apachetldr, gpl3tldr}.
+
+\subsection{C:hen verrattavissa olevat ohjelmointikielet}
+
+C:n suosiosta johtuen historian saatossa on tehty useita C:n kilpailijoita,
+jotka ovat yrittäneet parantaa C:tä joidenkin C:n hyvien puolien
+kustannuksella. Muutamat näistä ovat päätyneet hyvin suosituiksi
+ohjelmointikieliksi, kuten esimerkiksi C++ ja Go. Kielten suosion mittaamiseen
+on tehty useita projekteja, jotka vertailevat kieliä esimerkiksi hakutulosten
+tai projektien mukaan. Näitä ovat esimerkiksi TIOBEn ohjelmointikielten suosion
+indeksi~\citep{tiobe} ja GitHubin julkaisema Octoverse~\citep{octoverse}.
+Valitsemalla vertailuun suosittuja kieliä voidaan tutkia, miksi muuten selkeästi
+täysin käyttökelpoinen kieli ei ole syrjäyttänyt C:tä.
+
+Koska C on yksi suorituskyvyltään nopeimmista ohjelmointikielistä, on myös
+tärkeää rajata vertailuun vain muita nopeita kieliä -- korkeamman tason
+ohjelmointikielet on tarkoitettu ohjelmointinopeuden parantamiseen. Tällöin
+suorituskyky on jäänyt vähemmälle, koska on usein halvempaa optimoida
+kirjoittamiseen käytettyä aikaa kuin nopeuttaa suorituskykyä muutamalla
+prosentilla~\citationneeded. Yksi kattava suorituskykyä mittaava vertailu on
+Benchmarks game~\citep{benchmarks}, jossa pyritään kirjoittamaan mahdollisimman
+nopea ohjelma pysyen silti kielelle idiomaattisessa ohjelmakoodissa.
+
+Ada, C++, D, Go ja Rust nousevat esiin näistä kolmesta vertailusta. Kaikki
+viisi kieltä ovat sekä suosittuja että tehokkaita.
+
+Lähivuosina on tehty myös useita C:hen käännettäviä ohjelmointikieliä, jotka
+ovat jääneet pitkälti ilman mitään näkyvyyttä, kuten LISP/c~\citep{clisp1},
+C-Mera~\citep{clisp2} ja Nymph~\citep{nymph}. LISP/c ja C-Mera ovat
+LISP-perheeseen kuuluvia C:ksi kääntyviä ohjelmointikieliä, jotka on
+suunniteltu etupäässä parantamaan C:n syntaksia rikkaammalla
+makrojärjestelmällä. Nymph taas on olio-ohjelmointikieli.
+
+\hl{Tässä voisi olla jotain pohdintaa, miksi nuo ovat jääneet huomiotta ja
+miten tämän voisi välttää... Tai sitten poistaa tuon viimeisen kappaleen
+kokonaan.}
+

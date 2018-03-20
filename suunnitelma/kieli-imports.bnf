@@ -1,0 +1,21 @@
+; Import syntax
+program = {import | definition | declaration} ;
+
+import = "import", import-library
+; examples:
+;   import Kieli.Library
+;   import <stdio.h>
+;   import "locallibrary.h"
+
+import-library = kieli library
+               | '<', C-h library, '>'
+               | dquote, C-q library, dquote
+
+kieli library = identifier [{'.', identifier}]
+
+C-h library = C-h library character, {C-h library character}
+C-q library = C-q library character, {C-q library character}
+C-h library character = any member of the source character set
+                        except the new-line character and >
+C-q library character = any member of the source character set
+                        except the new-line character and "

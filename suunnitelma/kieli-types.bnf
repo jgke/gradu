@@ -1,0 +1,16 @@
+; Type syntax
+; example: func :: (Imported.TypeClass t) => (a -> b) -> t a -> t b
+declaration = identifier, "::", optcontext, type, newline
+
+optcontext = [context, "=>"]
+context = "(", context-one {",", context-one}, ")"
+context-one = class, identifier
+class = identifier, {".", identifier}
+
+type = btype, ["->", type]                    ; function type
+btype = atype [btype]                         ; applied type
+atype = identifier                            ; base type name
+      | "(", type, ",", type, {",", type} ")" ; inline n-tuple
+      | "[", type, "]"                        ; array type
+      | "(", type, ")"                        ; parenthesized type
+      | "..."       ; varargs, if present, must be last parameter type

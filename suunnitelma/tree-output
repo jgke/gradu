@@ -1,0 +1,16 @@
+[Branch 1
+  Leaf
+  [Branch 2
+    [Branch 5
+      Leaf
+      Leaf
+    ]
+    [Branch 7
+      [Branch 3
+        Leaf
+        Leaf
+      ]
+      Leaf
+    ]
+  ]
+]

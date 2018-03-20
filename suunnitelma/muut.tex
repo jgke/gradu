@@ -1,0 +1,190 @@
+\section{Olemassa olevat ohjelmointikielet}
+
+\subsection{Yleisiä vertailtavien ohjelmointikielten ominaisuuksia}
+
+\hl{Miten tarkasti näitä pitää perustella/kaivaa lähteitä?}
+
+Vertailtavissa ohjelmointikielissä on yleisesti useita ominaisuuksia, jotka
+vaikuttavat ohjelmien ajoaikaiseen nopeuteen hidastavasti. Yleisin näistä on
+automaattinen muistinhallinta, joka lisää ``roskien keräämisen''\footnote{eng.
+garbage collection, gc}, jonka ajaksi ohjelman suoritus
+pysäytetään\footnote{eng. gc pause}. Lisäksi automaattinen muistinhallinta
+lisää muistinkäyttöä, sillä ohjelmointikieli joutuu ajoaikaisesti määrittämään
+käytössä olevat muistiosoitteet.
+
+Moderneissa ohjelmointikielissä virheiden käsittely on lähes poikkeuksetta
+toteutettu poikkeuksilla. Poikkeusten käsittely vaatii pienen määrän muistia
+jokaiselta funktiokutsulta, sillä poikkeuksen tapahtuessa ohjelman pitää löytää
+lähin poikkeuskäsittelijä -- tämä tapahtuu kävelemällä pinoa takaisin ylöspäin,
+kunnes poikkeuskäsittelijä löytyy. Jos virheiden käsittely on taas toteutettu
+esimerkiksi signaaleilla, pinoa ei tarvitse kävellä, sillä vain yksi
+signaalinkäsittelijä voi kerrallaan olla käytössä jokaista signaalia kohden.
+
+Ohjelmointikieli voi toteuttaa olio-ohjelmoinnin rajapinnat käytännössä kahdella
+tavalla: Joko korvaamalla jokaisen rajapintaviittauksen numerolla jaettuun
+tauluun funktioita (vtable-rajapinnat), tai korvaamalla rajapintaviittaukset
+tietueella, joka sisältää rajapinnan toteutuksen funktioiden osoitteet
+(tietue-rajapinnat).  Ensimmäistä käytetään eritoten C++:n rajapintojen
+toteuttamiseen, kun taas jälkimmäistä käytetään esimerkiksi Gossa.
+Jälkimmäistä käytetään myös C:n kanssa; Linux-ytimen laiteajurit on toteutettu
+tietue-rajapintoina, joita ajurit voivat tarvittaessa periä. Molemmissa
+toteutustavoissa on omat hyvät jä huonot puolensa -- vtable-rajapinnat vievät
+vähemmän muistia, kun taas tietue-rajapinnat ovat yksinkertaisempia
+toteuttaa~\citationneeded.
+
+\hl{Kumpi on suositumpi käännös nykyään, rajapinta vai liittymä?}
+
+\subsection{C}
+
+C on lähes kaikkien järjestelmien ymmärtämä ohjelmointikieli, jota käytetään
+nopeutta tai pientä muistijalanjälkeä vaativien sovelluksien toteuttamiseen.
+
+C on suunniteltu olemaan mahdollisimman alustariippumaton, mutta jos tämä
+aiheuttaa ristiriidan mahdollisimman nopean toteutuksen kanssa, suositaan
+nopeutta. Tästä yleisin esimerkki on kokonaislukujen ylivuoto, jonka tulos
+riippuu kääntäjäoptimoinnista:
+
+\begin{figure}[ht!]
+    \inputminted{C}{c-overflow.c}
+    \inputminted{text}{c-overflow-output}
+
+    \caption{Kokonaisluvun ylivuoto C-kielessä. Ylivuodon käyttäytyminen
+    riippuu kääntäjäoptimoinnin määrästä -- kääntäjän optimointitasolla -O0
+    lauseketta $x~+~1~<=~x$ ei optimoida pois, mutta optimointitasolla -O3
+    kääntäjä 'tietää' että operaation $+1$ jälkeen kokonaisluvut eivät
+    ylivuoda, sillä C-kielen spesifikaatiossa kokonaislukujen ylivuoto on
+    ``määrittelemätöntä toimintaa'' (eng. undefined behavior). Luonnollisten
+    lukujen yli- ja alivuoto taas on määritelty - luonnolliset luvut on
+    määritelty renkaaksi.}
+\end{figure}
+
+\FloatBarrier
+
+\hl{Miten koodiesimerkit tulisi merkitä? LaTeXin \textbackslash caption antaa
+oletuksella käännökseksi 'Kuva', mikä ei nyt pidä paikkaansa kun tuo on
+kuitenkin tekstiä :) \\
+'Lähdekoodi 1'?
+
+Jossain oli sivulauseessa että koodiesimerkit pitäisi käydä rivi riviltä läpi,
+miten rivi riviltä tämä oikeasti on? Selitänkö että 'void
+print\_if\_overflow(int x)' määrittelee funktion yms., vai riittääkö tuo
+nykyisen tasoinen selitys tällaisissa kohtalaisen yksinkertaisissa asioissa?}
+
+\begin{figure}[ht!]
+    \inputminted{C}{c-hygiene.c}
+    \inputminted{text}{c-hygiene-output}
+    \caption{C:n makrot eivät ole hygieenisiä. DOUBLE-makro muuttuu
+    käännösvaiheessa muotoon 1+1*2, mikä on laskujärjestyksen takia 3 eikä
+    odotettu 4. Koko printf-kutsuksi muodostuu siis
+    '\texttt{printf("one plus one doubled is \%d", 1+1*2)}'
+}
+\end{figure}
+
+\FloatBarrier
+
+C:n makrot ovat muutenkin rajoittuneita -- esimerkiksi rekursiivisten makrojen
+rakentaminen on liki mahdotonta.
+
+\subsection{Ada}
+
+\hl{Aliluvut eivät ole erityisen tasapainoisia keskenään -- c-luku on
+huomattavasti pidempi johtuen koodiesimerkeistä
+
+Onko yleislöpinäkappaleet turhia, eli esim. alla oleva kuka teki, miksi,
+milloin?}
+
+Ada on Yhdysvaltain puolustusministeriön kehittämä ohjelmointikieli, joka
+suunniteltiin korvaamaan kaikki muut puolustusministeriön käyttämät
+ohjelmointikielet~\citationneeded.Ada on hyvin moneen taipuva kieli, sillä se
+pystyy hallitsemaan monia eri käyttötarkoituksia matalan tason bittitason
+ohjelmoinnista korkean tason arkkitehtuureihin~\citationneeded.
+
+Ohjelmoinnin tehostamiseksi Adassa on sekä poikkeukset että automaattinen
+muistinhallinta. Nämä kuitenkin hidastavat kieltä hieman. Lisäksi C-kielen
+kanssa yhteensopivuus on kielen taipuvuudesta johtuen hankalaa - jokainen
+kutsuttava C-funktio on yksitellen määritettävä kutsukonvention\footnote{eng.
+calling convention} kanssa, sillä kutsukonventiot eivät ole
+alustariippumattomia~\citationneeded.
+
+\subsection{C++}
+
+C++ on Bjarne Stroustrupin 1980-luvusta eteenpäin kehittämä kieli, jonka
+tarkoituksena on yhdistää C:n nopeus luokkapohjaisen olio-ohjelmoinnin
+helppokäyttöisyyteen~\citationneeded. C++ on nykypäivänä suosittu tehokkuutensa
+ja monipuolisuutensa takia monimutkaisissa ohjelmistoissa, kuten
+palvelinohjelmistoissa ja peleissä~\citationneeded.
+
+C++ on kehitetty C:n pohjalta, ja siinä onkin erittäin hyvä C-tuki.  Johtuen
+nimiruntelusta\footnote{eng. name mangling -- ei kai tämä ole oikeasti se
+suositeltu käännös? esim. mankelointi kuulostaa myös hassulta}, joka on C++:ssa
+oletuksella päällä, C-koodin otsikkotiedostoissa\footnote{eng. header file --
+ei kai tämäkään ole oikein suomennettu? Eihän?} on usein alussa C++-koodia,
+joka laittaa nimiruntelun pois päältä. Näin C++-ohjelmat voivat helposti kutsua
+C-ohjelmien kirjastokutsuja -- C++-ohjelmat ymmärtävät suoraan C-kielen
+otsikkotiedostoja.
+
+Virheidenkääsittely on toteutettu poikkeuksilla, jotka aiheuttavat pienen
+hidastuksen. C++:ssa on myös käytettävissä viitemäärälaskettu\footnote{eng.
+reference counting} automaattinen muistinhallinta, jolla voidaan käyttää
+ajoaikaisesti varattua muistia ilman muistivuotoja. C++:ssa tosin ei ole
+roskien keräystä, vaan kun viimeinen viite olioon poistetaan, myös varattu
+muisti vapautetaan -- tällöin ohjelman suorituksen aikana ei tule
+roskienkeräystaukoja.
+
+\subsection{D}
+
+D on 2000-luvun alussa Digital Mars -yrityksen julkaisema ohjelmointikieli,
+jonka tarkoituksena on yksinkertaistaa C++-koodia~\citationneeded. Vaikka
+D-kielessä on automaattinen muistinhallinta, D:n 'BetterC' -tila poistaa
+käytöstä alustariippuvaiset ominaisuudet~\citep{dbetterc}. Tällöin kielestä
+poistuu useita ominaisuuksia, mutta esimerkiksi D:n makrojärjestelmää voi
+käyttää.
+
+C-koodin kutsuminen on melko helppoa, mutta ei aivan saumatonta, sillä jokainen
+kutsuttava funktio tulee määritellä erikseen -- D ei ymmärrä C:n
+otsikkotiedostoja. Tämä kuitenkin onnistuu yhdellä rivillä per funktio, sillä
+D:n tyyppijärjestelmä on hyvin lähellä C:tä.
+
+\subsection{Go}
+
+\hl{Taivutus; Go:ssa, Gossa, Go-kielessä, Golangissa...? Ainakin se lautapeli
+taivutetaan toisen mukaan -- käytin nyt toista ja kolmatta muotoa sekaisin}
+
+Go on Googlen 2000-luvun loppupuolella kehittämä ohjelmointikieli, jonka
+tarkoituksena on D:n tavoin korvata C++-koodia~\citationneeded. Go on
+suunniteltu mahdollisimman yksinkertaiseksi käyttää. Toisin kuin monissa
+moderneissa C-perheen kielissä, Gossa ei ole luokkia, vaan pelkkiä tietueita ja
+rajapintoja.
+
+Gossa ei ole mahdollista kirjoittaa käännösaikaisesti tyyppitarkistettua
+geneeristä koodia, mutta ohjelmat voivat ajoaikaisesti peilauksen\footnote{eng.
+reflection} kautta tutkia tietueiden rakennetta. Tämän mahdollistaminen
+kasvattaa ohjelmakoodin kokoa, sillä tietueiden mukana on säilytettävä tietueen
+oikeaa tyyppiä.
+
+Gon virheidenkäsittely on toteutettu useissa kohdissa C:n tavoin; funktioista
+palautetaan virheellisissä tilanteissa virheellinen arvo. Tämä tosin tehdään
+usein palauttamalla erillinen \texttt{Error}-tyyppiä oleva arvo -- Go
+mahdollistaa helposti useamman kuin yhden paluuarvon. Gossa on myös
+poikkeukset, joita suositellaan käyttävän vain poikkeuksellisissa
+tilanteissa~\citationneeded.
+
+C:n kutsuminen Gosta ei ole aukotonta: koska Go on muistinkäytöltä turvallinen
+kieli, erityisesti muistin jakaminen C:n ja Gon välillä on
+hankalaa~\citationneeded. C:n funktio-osoittimia ei voi kutsua Gon puolelta.
+
+\subsection{Rust}
+
+Rust on Mozilla Foundationin kehittämä ohjelmointikieli, joka on D:n ja Gon
+tavoin suunniteltu korvaamaan C++. Rust on suunniteltu kolmen ydinperiaatten
+ympärille; turvallisuuden, nopeuden ja rinnakkaisuuden~\citationneeded.
+Rustissa on monimutkainen tyyppijärjestelmä, jolla ohjelmat voivat todistaa
+esimerkiksi turvallisen rinnakkaisajon, ilman että ohjelmaan tulee ajoaikaisia
+rajoitteita tai hidastuksia.
+
+Rustin virheidenhallinta on lähellä Gon virhehallintaa -- Rustin ohjekirja
+opastaa käyttämään mieluummin paluuarvoja kuin poikkeuksia~\citationneeded.
+Kuten Gossa, Rustissa voi myös käyttää poikkeuksia.
+
+\hl{Pitäisikö tässä olla vielä pohdintaa kielissä olevista yhteisistä
+piirteistä?}

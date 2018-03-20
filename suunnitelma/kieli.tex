@@ -1,0 +1,41 @@
+\appendixsection{Hahmotelma kielen syntaksista: ML}
+\appendixlabel{app:grammar}
+
+Tämä on hahmotelma kielen syntaksista ISO/IEC 14977
+-standardin~\citep{iso14977} kuvaamassa Backus-Naur -muodossa. Syntaksi on
+perustettu Python 3-kielen~\citep{pythonsyntax} ja Haskell
+2010-standardin~\citep{haskellsyntax} pohjalta sisennyspohjaiseksi kieleksi.
+C-kielen kirjastojen nimisyntaksi on C-standardin~\citep{C11} mukainen.
+
+
+\inputminted{abnf}{kieli-base.bnf}
+\inputminted{abnf}{kieli-imports.bnf}
+\newpage
+\inputminted{abnf}{kieli-types.bnf}
+%\newpage
+\inputminted{abnf}{kieli-data.bnf}
+\newpage
+\inputminted{abnf}{kieli-body.bnf}
+\newpage
+%\inputminted{abnf}{kieli-macros.bnf}
+
+Esimerkki kielen mukaisesta Hello World -ohjelmasta:
+
+\def\mylexer{kieli_lexer.py:KieliLexer -x}
+\inputminted{\mylexer}{example.kieli}
+
+Esimerkki Monad-tyyppiluokan määrittelystä ja käytöstä:
+
+\inputminted{\mylexer}{monad.kieli}
+
+\newpage
+
+Esimerkki Tree-datatyypin määrittelystä ja käytöstä:
+
+\inputminted{\mylexer}{tree.kieli}
+\inputminted{text}{tree-output}
+\newpage
+
+Tree-esimerkki C-kielellä:
+
+\inputminted{C}{tree.c}

@@ -1,0 +1,4 @@
+import <stdio.h>
+
+main :: Int -> [Const char] -> ()
+main argc argv = printf "Hello world!\n"

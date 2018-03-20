@@ -1,0 +1,68 @@
+\documentclass[gradu]{tktltiki}
+
+\usepackage{suunnitelma}
+
+\begin{document}
+
+\title{C-ohjelmointikielen korvaajiksi tehdyt ohjelmointikielet \\
+ja miksi C on niistä huolimatta käytössä}
+\gdef\formtitle{C-ohjelmointikielen korvaajiksi tehdyt ohjelmointikielet
+ja miksi C on niistä huolimatta käytössä}
+\author{Jaakko Hannikainen}
+\date{\today}
+\level{Pro gradu -tutkielmasuunnitelma}
+
+\hypersetup{pageanchor=false}                                                                                                                                                                       
+\maketitle
+\hypersetup{pageanchor=false}                                                                                                                                                                       
+
+\classification{\protect{\ \\
+\  \textbf{Software and its engineering
+$\rightarrow$ Software notations and tools
+$\rightarrow$ General programming languages
+$\rightarrow$ Language types
+$\rightarrow$ Imperative languages} \\
+\  Software and its engineering
+$\rightarrow$ Software organization and properties
+$\rightarrow$ Operating systems \\
+\  Computer systems organization
+$\rightarrow$ Embedded and cyber-physical systems
+$\rightarrow$ Embedded systems
+$\rightarrow$ Embedded software \\
+}}
+
+\keywords{C, ohjelmointikielet}
+
+\begin{abstract}
+    Tutkielman tiivistelmä.
+\end{abstract}
+
+\newpage
+\tocbeginshere
+
+\mytableofcontents
+
+\input{johdanto.tex}
+\newpage
+\input{maaritelmat.tex}
+\newpage
+\input{muut.tex}
+\newpage
+\input{oma.tex}
+\newpage
+\input{rakenne.tex}
+\newpage
+
+\renewcommand{\bibname}{Lähteet}
+\renewcommand{\BRetrievedFrom}{Saatavilla\ }
+\renewcommand*{\bibfont}{\interlinepenalty 10000\relax}
+\bibliography{references}
+
+\appendixbeginhere
+\inputappendix{kieli.tex}
+\inputappendix{lisp.tex}
+\inputappendix{github.tex}
+\restoregeometry
+\appendixendhere
+
+\end{document}

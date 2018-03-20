@@ -1,0 +1,20 @@
+import <stdio.h>
+
+data Tree a = Leaf = NULL
+            | Branch a (Tree a) (Tree a)
+
+printTree :: Int -> Tree Int -> ()
+printTree n Leaf = printf "%*cLeaf\n" n ' '
+printTree n (Branch a left right) =
+    printf "%*c[Branch %d\n" n ' ' a
+    printTree n+2 left
+    printTree n+2 right
+    printf "%*c]\n" n ' '
+
+main _ _ =
+    a = Leaf
+    b = Branch 5 Leaf Leaf
+    c = Branch 7 (Branch 3 Leaf Leaf) Leaf
+    d = Branch 2 b c
+    e = Branch 1 a d
+    printTree 0 e

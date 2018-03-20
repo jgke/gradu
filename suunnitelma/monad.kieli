@@ -1,0 +1,27 @@
+import <stdio.h>
+
+data Maybe a = Nothing = NULL
+             | Just a = a
+
+class Monad m where
+    wrap :: a -> m a 
+    bind :: m a -> (a -> m b) -> m b
+
+instance Monad Maybe where
+    wrap x = Just x
+    bind (Just x) f = f x
+    bind Nothing f = Nothing
+
+isJust :: Maybe a -> Boolean
+isJust Nothing = False
+isJust Just _ = True
+
+main _ _ =
+    a = Nothing
+    b = Just "foo"
+    c = bind a (\x -> wrap "bar")
+    d = bind b (\x -> wrap "bar")
+    printf "isJust: %d\n" (isJust a) -- prints 0
+    printf "isJust: %d\n" (isJust b) -- prints 1
+    printf "isJust: %d\n" (isJust c) -- prints 0
+    printf "isJust: %d\n" (isJust d) -- prints 1

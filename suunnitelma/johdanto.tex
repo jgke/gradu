@@ -1,0 +1,44 @@
+\section{Johdanto} 
+
+C~\citep{C11} on ollut vallitseva ohjelmointikieli järjestelmäohjelmoinnissa
+C:n alkuajoista lähtien. Useita ohjelmointikieliä on luotu historian saatossa,
+joiden oli tarkoitus syrjäyttää C, mutta C on vieläkin johtavana kielenä
+varsinkin sulautetuissa järjestelmissä ja UNIX-pohjaisten käyttöjärjestelmien
+vallitsevana ohjelmointikielenä. C on myös käytössä
+Windows-käyttöjärjestelmäperheen ydinkomponenttien toteutuksessa. Tässä
+opinnäytetyössä tutkitaan, miksi vaihtoehdoista huolimatta C on vieläkin
+laajalti käytössä myös uusissa projekteissa ja minkälainen ohjelmointikieli
+voisi syrjäyttää C:n.
+
+C:n vaihtoehdoiksi tutkitaan seuraavia tehokkaaseen ohjelmointiin tarkoitettuja
+kieliä: Ada~\citep{ADA12}, C++~\citep{CPP14}, D~\citep{D}, Go~\citep{golang}
+sekä Rust~\citep{rust}. Näistä kielistä tutkitaan, mikä tai mitkä ominaisuudet
+ovat estäneet C:n korvaamisen ja mitkä ominaisuudet ovat olleet parannuksia
+C:hen verrattuna. Lisäksi tutkitaan muista suosituista ohjelmointikielistä
+korkean tason ominaisuuksia, jotka ovat hyödyllisiä matalan tason
+ohjelmoinnissa ja jotka voi toteuttaa korvaavan kielen määrittelyssä luotujen
+rajoitusten puitteissa. \hl{rajoitteissa -> yhteydessä: minusta 'rajoitteissa'
+on parempi, sillä kieli speksataan tietyillä rajoitteilla (muistinkäyttö yms.)
+- tuo lause voisi tietysti reflektoida tätä ('...toteuttaa korvaavan kielen
+määrittelyssä luotujen rajoitusten puitteissa' tjsp.) Muutin tämän nyt tuohon
+muotoon (ennen: '...toteuttaa korvaavan kielen rajoitteissa.')}
+
+Tutkittavana on myös, mitä optimointeja C:ssä ei voi tehdä helposti johtuen
+kielen rajoitteista ja miten tämän voisi korjata. Näitä ominaisuuksia ovat
+esimerkiksi sivuvaikutuksettoman ohjelmakoodin merkitseminen,
+optimointivinkkien alustariippumaton ilmaiseminen (esimerkiksi Rustin tavalla
+funktioiden annotointi) ja funktioiden yliajaminen\footnote{eng. \emph{function
+overloading}} riippuen parametrien tyypistä tai arvoista, mikäli ne voidaan
+kääntöaikaisesti päätellä. Koska C:n spesifikaatio ei salli useita samannimisiä
+funktioita, kääntäjä ei voi helposti optimoida tällaisia tapauksia.
+
+Tämän tutkielmasuunnitelman toisessa luvussa määritellään, minkälaiset
+ominaisuudet tarvitaan kieleltä, joka voisi korvata C:n kokonaan. Toisessa
+luvussa esitetään myös tutkielman kannalta oleellinen teoria, eli
+ohjelmointikielten nykypäivää sekä kerrotaan lyhyesti muista tutkittavista
+kielistä. Kolmannessa luvussa kerrotaan, miksi muut tutkitut kielet eivät täytä
+näitä ominaisuuksia, ja miten C:tä voisi parantaa. Neljännessä luvussa
+kuvaillaan toisen luvun määrittämien ominaisuuksien täyttävä ohjelmointikieli.
+Viidennessä luvussa kerrotaan tutkielman rakenne. Lopettavassa luvussa
+kerrataan tutkielman tavoitteet, vaiheet ja tulokset sekä pohditaan tutkielman
+puutteita ja jatkotutkimuskohteita.

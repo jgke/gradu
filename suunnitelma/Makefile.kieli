@@ -1,0 +1,2 @@
+%.c : %.kieli
+	kielic $< -o $@

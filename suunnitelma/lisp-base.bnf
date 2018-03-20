@@ -1,0 +1,7 @@
+s_expr = symbol
+       | "(", s_expr, {s_expr}, ")"
+       | "'", "(", s_expr, {s_expr}, ")"
+
+symbol = identifier | number
+identifier = letter { atom }
+atom = (letter | digit)

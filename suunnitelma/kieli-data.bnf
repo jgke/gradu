@@ -1,0 +1,26 @@
+; Data types
+; algebraic data types, generally enum inside a struct
+; data Foo = Bar | Baz
+; data Powersoftwo = Zero = 1
+;                  | One = 2,
+;                  | Two = 4,
+;                  | Three = 8
+; data Tree a = Nil = NULL
+;             | Node a (Tree a) (Tree a)
+
+datatype = data | typeclass | instance
+    
+data = "data", optcontext, identifier, {identifier},
+       "=", INDENT, datacontent, {"|", datacontent}, DEDENT
+datacontent = identifier, {identifier}, ["=", expression]
+
+; type classes
+; generally interface (either struct of pointers or vtable)
+typeclass = "class", optcontext, identifier, {identifier},
+          ["where", INDENT, declaration, {declaration}, DEDENT]
+instance = "instance", optcontext, identifier, {identifier},
+           ["where", INDENT, definition, {definition}, DEDENT]
+    
+; Built-in, reserved type class names
+builtin-typeclass = "Const" | "Register" | "Union" | "Volatile"
+                  | "NotNull"
