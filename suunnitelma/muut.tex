@@ -32,8 +32,6 @@ toteutustavoissa on omat hyvät jä huonot puolensa -- vtable-rajapinnat vievät
 vähemmän muistia, kun taas tietue-rajapinnat ovat yksinkertaisempia
 toteuttaa~\citationneeded.
 
-\hl{Kumpi on suositumpi käännös nykyään, rajapinta vai liittymä?}
-
 \subsection{C}
 
 C on lähes kaikkien järjestelmien ymmärtämä ohjelmointikieli, jota käytetään
@@ -41,8 +39,12 @@ nopeutta tai pientä muistijalanjälkeä vaativien sovelluksien toteuttamiseen.
 
 C on suunniteltu olemaan mahdollisimman alustariippumaton, mutta jos tämä
 aiheuttaa ristiriidan mahdollisimman nopean toteutuksen kanssa, suositaan
-nopeutta. Tästä yleisin esimerkki on kokonaislukujen ylivuoto, jonka tulos
-riippuu kääntäjäoptimoinnista:
+nopeutta -- useista C:n operaatioista tulee eri tuloksia riippuen
+alustasta~\citationneeded\footnote{Tämä löytyy C:n standardista -- C90:n
+spesifikaatiossa tämä on liitteessä A, luvussa 6. Minulla ei ole pääsyä
+uusimpaan spesifikaatioon, eli en pääse (vielä) tarkistamaan, mistä kohtaa tämä
+löytyy C11:n standardista.}. Tästä yleisin esimerkki on kokonaislukujen
+ylivuoto, jonka tulos riippuu kääntäjäoptimoinnista:
 
 \begin{figure}[ht!]
     \inputminted{C}{c-overflow.c}
@@ -62,8 +64,10 @@ riippuu kääntäjäoptimoinnista:
 
 \hl{Miten koodiesimerkit tulisi merkitä? LaTeXin \textbackslash caption antaa
 oletuksella käännökseksi 'Kuva', mikä ei nyt pidä paikkaansa kun tuo on
-kuitenkin tekstiä :) \\
-'Lähdekoodi 1'?
+kuitenkin tekstiä. \\
+'Lähdekoodi 1'? \\
+Pitäisikö kaikki koodiesimerkit laittaa liitteiksi, jolloin viittaukset tyyliin
+``...jonka tulos riippuu kääntäjäoptimoinnista, kuten liitteessä x todetaan.''?
 
 Jossain oli sivulauseessa että koodiesimerkit pitäisi käydä rivi riviltä läpi,
 miten rivi riviltä tämä oikeasti on? Selitänkö että 'void
@@ -83,7 +87,9 @@ nykyisen tasoinen selitys tällaisissa kohtalaisen yksinkertaisissa asioissa?}
 \FloatBarrier
 
 C:n makrot ovat muutenkin rajoittuneita -- esimerkiksi rekursiivisten makrojen
-rakentaminen on liki mahdotonta.
+rakentaminen on liki mahdotonta, sillä itsensä sisältävät makrot eivät korvaa
+itseään kuin kerran\citationneeded\footnote{C90: 3.8.3.4 Rescanning and further
+replacement. Ks. sivun 5 footnote 5}.
 
 \subsection{Ada}
 
@@ -95,33 +101,32 @@ milloin?}
 
 Ada on Yhdysvaltain puolustusministeriön kehittämä ohjelmointikieli, joka
 suunniteltiin korvaamaan kaikki muut puolustusministeriön käyttämät
-ohjelmointikielet~\citationneeded.Ada on hyvin moneen taipuva kieli, sillä se
+ohjelmointikielet~\citep{adahistory}.Ada on hyvin moneen taipuva kieli, sillä se
 pystyy hallitsemaan monia eri käyttötarkoituksia matalan tason bittitason
 ohjelmoinnista korkean tason arkkitehtuureihin~\citationneeded.
 
 Ohjelmoinnin tehostamiseksi Adassa on sekä poikkeukset että automaattinen
-muistinhallinta. Nämä kuitenkin hidastavat kieltä hieman. Lisäksi C-kielen
-kanssa yhteensopivuus on kielen taipuvuudesta johtuen hankalaa - jokainen
-kutsuttava C-funktio on yksitellen määritettävä kutsukonvention\footnote{eng.
-calling convention} kanssa, sillä kutsukonventiot eivät ole
-alustariippumattomia~\citationneeded.
+muistinhallinta. Nämä kuitenkin hidastavat kieltä hieman aikaisemmin todetuistä
+syistä. Lisäksi C-kielen kanssa yhteensopivuus on kielen taipuvuudesta johtuen
+hankalaa - jokainen kutsuttava C-funktio on yksitellen määritettävä
+kutsukonvention\footnote{eng. calling convention} kanssa~\citep[s.~471]{ADA12}.
 
 \subsection{C++}
 
 C++ on Bjarne Stroustrupin 1980-luvusta eteenpäin kehittämä kieli, jonka
-tarkoituksena on yhdistää C:n nopeus luokkapohjaisen olio-ohjelmoinnin
-helppokäyttöisyyteen~\citationneeded. C++ on nykypäivänä suosittu tehokkuutensa
-ja monipuolisuutensa takia monimutkaisissa ohjelmistoissa, kuten
-palvelinohjelmistoissa ja peleissä~\citationneeded.
+yhtenä tarkoituksena on yhdistää Simula-kielen~\citationneeded ominaisuudet
+ohjelman organisointiin yhteen C:n tehokkuuden ja joustavuuden
+kanssa~\citep{cpphistory}. C++ on nykypäivänä suosittu tehokkuutensa ja
+monipuolisuutensa takia monimutkaisissa ohjelmistoissa, kuten
+palvelinohjelmistoissa, kuvankäsittelyohjelmistoissa sekä
+peleissä~\citep{cppapps}.
 
-C++ on kehitetty C:n pohjalta, ja siinä onkin erittäin hyvä C-tuki.  Johtuen
-nimiruntelusta\footnote{eng. name mangling -- ei kai tämä ole oikeasti se
-suositeltu käännös? esim. mankelointi kuulostaa myös hassulta}, joka on C++:ssa
-oletuksella päällä, C-koodin otsikkotiedostoissa\footnote{eng. header file --
-ei kai tämäkään ole oikein suomennettu? Eihän?} on usein alussa C++-koodia,
-joka laittaa nimiruntelun pois päältä. Näin C++-ohjelmat voivat helposti kutsua
-C-ohjelmien kirjastokutsuja -- C++-ohjelmat ymmärtävät suoraan C-kielen
-otsikkotiedostoja.
+C++ on kehitetty C:n pohjalta, ja siinä onkin erittäin hyvä C-tuki. Koska C++
+nimeää funktioita uudelleen käännösaikaisesti\footnote{eng. name mangling},
+C-koodin otsikkotiedostoissa\footnote{eng. header file} on usein alussa
+C++-koodia, joka laittaa uudelleennimeämisen pois päältä. Näin C++-ohjelmat
+voivat helposti kutsua C-ohjelmien kirjastokutsuja -- C++-ohjelmat ymmärtävät
+suoraan C-kielen otsikkotiedostoja.
 
 Virheidenkääsittely on toteutettu poikkeuksilla, jotka aiheuttavat pienen
 hidastuksen. C++:ssa on myös käytettävissä viitemäärälaskettu\footnote{eng.
@@ -134,11 +139,11 @@ roskienkeräystaukoja.
 \subsection{D}
 
 D on 2000-luvun alussa Digital Mars -yrityksen julkaisema ohjelmointikieli,
-jonka tarkoituksena on yksinkertaistaa C++-koodia~\citationneeded. Vaikka
-D-kielessä on automaattinen muistinhallinta, D:n 'BetterC' -tila poistaa
-käytöstä alustariippuvaiset ominaisuudet~\citep{dbetterc}. Tällöin kielestä
-poistuu useita ominaisuuksia, mutta esimerkiksi D:n makrojärjestelmää voi
-käyttää.
+jonka tarkoituksena on mahdollistaa helposti tehokkaan ohjelmakoodin
+kirjoittaminen helposti ja turvallisesti\citep{dhistory}. Vaikka D-kielessä on
+automaattinen muistinhallinta, D:n 'BetterC' -tila poistaa käytöstä
+alustariippuvaiset ominaisuudet~\citep{dbetterc}. Tällöin kielestä poistuu
+useita ominaisuuksia, mutta esimerkiksi D:n makrojärjestelmää voi käyttää.
 
 C-koodin kutsuminen on melko helppoa, mutta ei aivan saumatonta, sillä jokainen
 kutsuttava funktio tulee määritellä erikseen -- D ei ymmärrä C:n
@@ -151,40 +156,41 @@ D:n tyyppijärjestelmä on hyvin lähellä C:tä.
 taivutetaan toisen mukaan -- käytin nyt toista ja kolmatta muotoa sekaisin}
 
 Go on Googlen 2000-luvun loppupuolella kehittämä ohjelmointikieli, jonka
-tarkoituksena on D:n tavoin korvata C++-koodia~\citationneeded. Go on
-suunniteltu mahdollisimman yksinkertaiseksi käyttää. Toisin kuin monissa
-moderneissa C-perheen kielissä, Gossa ei ole luokkia, vaan pelkkiä tietueita ja
+tarkoituksena on yhdistää kääntöaikaisesti tyypitetyn ohjelmointikielen
+turvallisuus ja tehokkuus ajoaikaisesti tyypitettyjen ohjelmointikielten
+helppokäyttöisyyteen~\citep{gohistory}. Toisin kuin monissa moderneissa
+C-perheen kielissä, Gossa ei ole luokkia, vaan pelkkiä tietueita ja
 rajapintoja.
 
 Gossa ei ole mahdollista kirjoittaa käännösaikaisesti tyyppitarkistettua
 geneeristä koodia, mutta ohjelmat voivat ajoaikaisesti peilauksen\footnote{eng.
 reflection} kautta tutkia tietueiden rakennetta. Tämän mahdollistaminen
 kasvattaa ohjelmakoodin kokoa, sillä tietueiden mukana on säilytettävä tietueen
-oikeaa tyyppiä.
+oikeaa tyyppiä. Tämä kuitenkin yksinkertaistaa ohjelmien kirjoittamista, sillä
+ohjelmoijan ei tarvitse miettiä kirjoittamishetkellä monimutkaisia
+tyyppejä~\citep[esim.][kalvo 8]{gohistory}.
 
 Gon virheidenkäsittely on toteutettu useissa kohdissa C:n tavoin; funktioista
 palautetaan virheellisissä tilanteissa virheellinen arvo. Tämä tosin tehdään
 usein palauttamalla erillinen \texttt{Error}-tyyppiä oleva arvo -- Go
 mahdollistaa helposti useamman kuin yhden paluuarvon. Gossa on myös
 poikkeukset, joita suositellaan käyttävän vain poikkeuksellisissa
-tilanteissa~\citationneeded.
+tilanteissa~\citep{effectivego}.
 
 C:n kutsuminen Gosta ei ole aukotonta: koska Go on muistinkäytöltä turvallinen
-kieli, erityisesti muistin jakaminen C:n ja Gon välillä on
-hankalaa~\citationneeded. C:n funktio-osoittimia ei voi kutsua Gon puolelta.
+kieli, erityisesti muistin jakaminen C:n ja Gon välillä on hankalaa. C:n
+funktio-osoittimia ei voi kutsua Gon puolelta~\citep{cgo}.
 
 \subsection{Rust}
 
-Rust on Mozilla Foundationin kehittämä ohjelmointikieli, joka on D:n ja Gon
-tavoin suunniteltu korvaamaan C++. Rust on suunniteltu kolmen ydinperiaatten
-ympärille; turvallisuuden, nopeuden ja rinnakkaisuuden~\citationneeded.
-Rustissa on monimutkainen tyyppijärjestelmä, jolla ohjelmat voivat todistaa
-esimerkiksi turvallisen rinnakkaisajon, ilman että ohjelmaan tulee ajoaikaisia
-rajoitteita tai hidastuksia.
+Rust on Mozilla Foundationin kehittämä ohjelmointikieli, joka on suunniteltu
+turvalliseksi, rinnakkaiseksi ja käytännölliseksi
+järjestelmäohjelmointikieleksi~\citep{rustfaq}. Rustissa on monimutkainen
+tyyppijärjestelmä, jolla ohjelmat voivat todistaa esimerkiksi turvallisen
+rinnakkaisajon, ilman että ohjelmaan tulee ajoaikaisia rajoitteita tai
+hidastuksia.
 
 Rustin virheidenhallinta on lähellä Gon virhehallintaa -- Rustin ohjekirja
-opastaa käyttämään mieluummin paluuarvoja kuin poikkeuksia~\citationneeded.
-Kuten Gossa, Rustissa voi myös käyttää poikkeuksia.
-
-\hl{Pitäisikö tässä olla vielä pohdintaa kielissä olevista yhteisistä
-piirteistä?}
+opastaa käyttämään mieluummin paluuarvoja kuin
+poikkeuksia~\citep{rusterrorhandling}. Kuten Gossa, Rustissa voi myös käyttää
+poikkeuksia.

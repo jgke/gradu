@@ -1,0 +1,28 @@
+import <stdio.h>
+
+struct Tree {
+    value: int;
+    left: *?Tree;
+    right: *?Tree;
+}
+
+printTree = (n: int, tree: *?Tree): void {
+    if(!tree) {
+        printf("%*cLeaf\n", n, ' ');
+    }
+    else { /* tree is inferred as *Tree here */
+        printf("%*c[Branch %d\n", n, ' ', tree->value);
+        printTree(n+2, tree->left);
+        printTree(n+2, tree->right);
+        printf("%*c]\n", n, ' ');
+    }
+}
+
+main = (): void {
+    a: *Tree := NULL;
+    b := Tree { 5, NULL, NULL };
+    c := Tree { 7, &{ 3, NULL, NULL}, NULL};
+    d := Tree { 2, &b, &c };
+    e := Tree { 1, a, &d };
+    printTree(0, &e);
+}

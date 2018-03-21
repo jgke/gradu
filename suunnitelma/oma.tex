@@ -12,8 +12,8 @@ spesifikaatio voi ehdottaa yhteistä rajapintaa moniajototeutuksille.
 Jotta kieltä voi käyttää nykyisissä ympäristöissä, sen tulee kääntyä C:ksi.
 Tällöin ohjelmointikieli toimii kaikissa ympäristöissä, joihin on olemassa
 C-standardin mukainen C-kääntäjä. Tämä mahdollistaa integroinnin nykyisten
-työkalujen kanssa -- esimerkiksi \texttt{Make}-työkalulla~\citationneeded uuden
-kielen tiedostot voi kääntää kahdella rivillä rivillä:
+työkalujen kanssa -- esimerkiksi \texttt{Gnu Make}-työkalulla~\citep{gnumake}
+uuden kielen tiedostot voi kääntää kahdella rivillä rivillä:
 
 \inputminted{make}{Makefile.kieli}
 
@@ -28,12 +28,13 @@ helposti uudelleenkirjoittaa C-kirjastoja.
 \hl{Ohjelmointikielen nimi yms. työn alla}
 
 Ajoaikaisen tyyppijärjestelmän tulee olla täysin yhteensopiva C:n kanssa.
-Esimerkki tällaisesta kielestä on TypeScript~\citationneeded, joka lisää vahvan
-tyypityksen JavaScriptiin kuitenkin vaikuttamatta mitenkään ajoaikaisiin
+Esimerkki tällaisesta kielestä on TypeScript~\citep{typescript}, joka lisää
+vahvan tyypityksen JavaScriptiin kuitenkin vaikuttamatta mitenkään ajoaikaisiin
 ominaisuuksiin. Myös Rustin ajoaikainen tyypitys on lähellä C:tä; Rustin
-\texttt{Box<T>} vaatii, että tyyppiparametrin arvo ei ole tyhjä~\footnote{NULL
--- onko tähän parempia käännöksiä?}, jolloin laatikossa voi säilyttää C:n
-tavoin esimerkiksi merkkijonoja -- tyhjä arvo vastaa C:n NULLia.
+\texttt{Box<T>} vaatii, että tyyppiparametrin arvo ei ole tyhjä
+osoitin~\footnote{eng. NULL -- onko tähän parempia käännöksiä?}, jolloin
+laatikossa voi säilyttää C:n tavoin esimerkiksi merkkijonoja -- tyhjä arvo
+vastaa C:n NULLia.
 
 Tyhjiä arvoja on kuvailtu ``Miljoonan dollarin virheeksi'' niiden keksijän
 toimesta~\citep{billiondollars}. Useat ohjelmointikielet ovatkin poistaneet
@@ -54,7 +55,7 @@ makrosyntaksi on kuitenkin ensisilmäyksellä vaikeaselkoista, kun taas C:n
 makrot ovat pitkälti helppolukuisia.
 
 C-kääntäjissä on aina alustariippuvaisia ominaisuuksia, ja yksi tärkeimmistä on
-funktioiden kutsuminen. GCC:n~\citationneeded kanssa yhteensopivat kääntäjät
+funktioiden kutsuminen. GCC:n~\citep{gcc} kanssa yhteensopivat kääntäjät
 tukevat funktiomäärittelyn kohdalla \texttt{\_\_attribute\_\_()} -määrettä,
 joka kertoo, miten funktiolle tulisi antaa ajoaikaisesti parametrit.
 
@@ -136,7 +137,13 @@ funktionaalisen ohjelmoinnin yhteydessä. GCC-kääntäjä on toteuttanut sulkeu
 C-kielelle käyttämällä Thomas Breuelin esittelemää
 trampoliinimenetelmää~\citep{gccnested, cppclosure}.
 
-\subsection{Toolaus}
+Liitteissä~\ref{app:grammar-ml},~\ref{app:grammar-lisp}~ja~\ref{app:grammar-c}
+on konsepteja mahdollisista kielen syntakseista.
+Liitteessä~\ref{app:grammar-ml} on ML-perheen kaltainen syntaksi,
+liitteessä~\ref{app:grammar-lisp} LISP-perheen kaltainen syntaksi ja
+liitteessä~\ref{app:grammar-c} on C-perheen kaltainen syntaksi.
+
+\subsection{Työkalut}
 
 Modernissa ohjelmointikielessä on tärkeänä osana kehittäjän hyvinvointi, jota
 voidaan ylläpitää hyvillä työkaluilla. Go-kieli kehitettiin yhdessä kattavan

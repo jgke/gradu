@@ -1,9 +1,22 @@
-\appendixsection{Hahmotelma kielen syntaksista: LISP}
+\appendixsection{Hahmotelma kielen syntaksista: LISP-perhe}
 \appendixlabel{app:grammar-lisp}
 
 Tämä on hahmotelma kielen syntaksista ISO/IEC 14977
 -standardin~\citep{iso14977} kuvaamassa Backus-Naur -muodossa. Syntaksi on
-perustettu Common LISP -kielen pohjalta puukieleksi. C-kielen kirjastojen
-nimisyntaksi on C-standardin~\citep{C11} mukainen.
+perustettu LISP-perheen pohjalta puukieleksi.
+
+Syntaksin hyvät puolet ovat LISPin yleisesti tunnettu yksinkertainen, tiivis
+syntaksi sekä valmiudet voimakkaaseen makroprosessointiin. LISP-tyylisiä C:hen
+kääntyviä kieliä on kuitenkin tehty jo useita, esim.~\citet{clisp3}.
 
 \inputminted{abnf}{lisp-base.bnf}
+
+Hello World -ohjelma:
+
+\inputminted{lisp}{hello.lisp}
+
+\newpage
+
+Tree-ohjelma:
+
+\inputminted{lisp}{tree.lisp}

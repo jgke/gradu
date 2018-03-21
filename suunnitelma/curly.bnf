@@ -1,0 +1,23 @@
+program = {import | declaration | definition}
+import = library
+       | '<', C-h library, '>'
+       | '"', C-q library, '"'
+
+library = identifier [{'.', identifier}]
+
+C-h library = <header file syntax according to C standard>
+C-q library = <header file syntax according to C standard>
+
+declaration = identifier, "::", type-declaration
+type-declaration = [modifier], identifier     ; primitive
+                 | "*", type-declaration      ; pointer type
+                 | "[", type-declaration, "]" ; array type
+                 | function-type
+                 | "(", type-declaration, ")" ; parenthesized type
+function-type = "(", type-declaration, ")", ":", return-type
+
+definition = identifier, [":", type-declaration], ":=",
+
+function-definition = "(", [parameter, {",", parameter}], ")",
+                      [":", type-declaration], body
+parameter = identifier, ":", type-declaration

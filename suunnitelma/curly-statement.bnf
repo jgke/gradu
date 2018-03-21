@@ -1,0 +1,16 @@
+body = statement | "{", {statement}, "}"
+
+statement = ( declaration | definition | assignment | expression ),
+            ";"
+
+assignment = identifier, "=", expression
+
+expression = base-expression, [operator, base-expression]
+base-expression = unary_operator, expression
+                | constant
+                | identifier, ["(", {expression}, ")"]
+                | "(", expression, ")"
+
+; ignore operator precedence for now
+operator = "+" | "-" | "*" | "/" | "=" | "&" | "^" | "|"
+unary_operator = "+" | "-" | "&" | "*" | "!" | "~"
