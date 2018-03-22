@@ -10,11 +10,11 @@
       (printf "%*cLeaf\n" indent ' ')
       (do
         (printf "%*c[Branch %d\n" indent ' ' tree)
-        (print-tree (+ indent 2) (Tree:left tree))
-        (print-tree (+ indent 2) (Tree:right tree))
+        (print-tree (plus indent 2) (Tree:left tree))
+        (print-tree (plus indent 2) (Tree:right tree))
         (printf "%*c]\n" n ' '))))
 
-(defun main (argc.int argv.[const char])
+(defun main (argc.int argv.[char])
   print-tree (quote
                (1
                 nil

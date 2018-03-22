@@ -4,5 +4,5 @@
 
 ; explicitly typed version
 (sysimport "stdio.h")
-(defun main (argc.int argv.[const char])
+(defun main (argc.int argv.[char])
     (printf "Hello world!"))

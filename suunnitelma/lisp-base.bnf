@@ -1,15 +1,16 @@
-program = {s-expr}
+program = wso, s-expr, {wsm, s-expr}, wso
 s-expr = s-expr-value, [ ".", s-expr-type ]
-s-expr-value = symbol
-             | "(", s-expr, {s-expr}, ")"
-s-expr-type = identifier            ; base type / defined type
-            | "[", s-expr-type, "]" ; array type
-            | "*", s-expr-type      ; pointer type
-            | "(", s-expr-type, ")" ; parenthesized type
+s-expr-value = atom
+             | "(", wso, s-expr, {wsm, s-expr}, wso, ")"
+s-expr-type = identifier            (* base type / defined type *)
+            | "[", s-expr-type, "]" (* array type *)
+            | "*", s-expr-type      (* pointer type *)
+            | "(", s-expr-type, ")" (* parenthesized type *)
 
-symbol = identifier | number | string
-identifier = letter, { atom }
-string = '"', {atom}, '"'
-number = digit, {digit}, [".", {digit}]
-atom = (letter | digit)
-
+atom = identifier | number | string | character
+identifier = #"[a-zA-Z][a-zA-Z0-9?:-]*"
+string = #'"[^"]*"'                 (* ignore escape characters *)
+character = #"'.'"
+number = #"[0-9]+(\.[0-9]*)?"
+wso = #"\s*"                        (* optional whitespace *)
+wsm = #"\s+"                        (* mandatory whitespace *)

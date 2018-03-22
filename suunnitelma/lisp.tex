@@ -2,14 +2,16 @@
 \appendixlabel{app:grammar-lisp}
 
 Tämä on hahmotelma kielen syntaksista ISO/IEC 14977
--standardin~\citep{iso14977} kuvaamassa Backus-Naur -muodossa. Syntaksi on
-perustettu LISP-perheen pohjalta puukieleksi.
+-standardin~\citep{iso14977} kuvaamassa Backus-Naur -muodossa, jossa
+merkkijonot \texttt{\#"} ja \texttt{\#'} aloittavat säännöllisen lausekkeen ja
+vastaavasti \texttt{"} ja \texttt{'} päättävät säännöllisen lausekkeen.
+Syntaksi on perustettu LISP-perheen pohjalta puukieleksi.
 
 Syntaksin hyvät puolet ovat LISPin yleisesti tunnettu yksinkertainen, tiivis
 syntaksi sekä valmiudet voimakkaaseen makroprosessointiin. LISP-tyylisiä C:hen
 kääntyviä kieliä on kuitenkin tehty jo useita, esim.~\citet{clisp3}.
 
-\inputminted{abnf}{lisp-base.bnf}
+\inputminted{\bnflexer}{lisp-base.bnf}
 
 Hello World -ohjelma:
 
