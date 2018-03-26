@@ -1,4 +1,0 @@
-; language macros
-
-macrodeclaration = "macro", identifier, "::" ;todo
-macrodefinition = "macro", identifier, {parameter}, 

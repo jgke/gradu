@@ -12,7 +12,7 @@ spesifikaatio voi ehdottaa yhteistä rajapintaa moniajototeutuksille.
 Jotta kieltä voi käyttää nykyisissä ympäristöissä, sen tulee kääntyä C:ksi.
 Tällöin ohjelmointikieli toimii kaikissa ympäristöissä, joihin on olemassa
 C-standardin mukainen C-kääntäjä. Tämä mahdollistaa integroinnin nykyisten
-työkalujen kanssa -- esimerkiksi \texttt{Gnu Make}-työkalulla~\citep{gnumake}
+työkalujen kanssa -- esimerkiksi \texttt{GNU Make}-työkalulla~\citep{gnumake}
 uuden kielen tiedostot voi kääntää kahdella rivillä rivillä:
 
 \inputminted{make}{Makefile.kieli}
@@ -28,24 +28,24 @@ helposti uudelleenkirjoittaa C-kirjastoja.
 \hl{Ohjelmointikielen nimi yms. työn alla}
 
 Ajoaikaisen tyyppijärjestelmän tulee olla täysin yhteensopiva C:n kanssa.
-Esimerkki tällaisesta kielestä on TypeScript~\citep{typescript}, joka lisää
-vahvan tyypityksen JavaScriptiin kuitenkin vaikuttamatta mitenkään ajoaikaisiin
-ominaisuuksiin. Myös Rustin ajoaikainen tyypitys on lähellä C:tä; Rustin
-\texttt{Box<T>} vaatii, että tyyppiparametrin arvo ei ole tyhjä
-osoitin~\footnote{eng. NULL -- onko tähän parempia käännöksiä?}, jolloin
-laatikossa voi säilyttää C:n tavoin esimerkiksi merkkijonoja -- tyhjä arvo
-vastaa C:n NULLia.
+Esimerkki JavaScriptin kanssa vastaavasta tilanteesta on
+TypeScript~\citep{typescript}, joka lisää käännösaikaisen vahvan tyypityksen
+JavaScriptiin kuitenkin vaikuttamatta mitenkään ajoaikaisiin ominaisuuksiin.
+Rustin ajoaikainen tyypitys on lähellä C:tä; Rustin \texttt{Box<T>} vaatii,
+että tyyppiparametrin arvo ei ole tyhjä osoitin\defword[~-- onko tähän parempia
+käännöksiä?]{NULL pointer}, jolloin laatikossa voi säilyttää C:n tavoin
+esimerkiksi merkkijonoja -- tyhjä arvo vastaa C:n NULLia.
 
-Tyhjiä arvoja on kuvailtu ``Miljoonan dollarin virheeksi'' niiden keksijän
-toimesta~\citep{billiondollars}. Useat ohjelmointikielet ovatkin poistaneet
-muuttujilta mahdollisuuden olla tyhjiä arvoja, kuitenkin mahdollistaen tyhjät
-arvot esimerkiksi yhdellä merkillä lisää tyyppimäärittelyssä. Jos uuteen
-kieleen otetaan tällainen oletus, C-funktiomäärittelyiden tulee saumattoman
-yhteistyön takia olla ``limbossa'' näiden kahden tilan välillä, sillä C:n
-syntaksi ei sisällä lupauksia mahdollisista tyhjistä arvoista -- tai niiden
-puutteesta. Ohjelmoijaa siis ei voi pakottaa tarkistamaan tyhjiä arvoja, jos
-hän kutsuu jotain C-funktiota, mutta toisaalta ei myöskään varoittaa 'turhista'
-tarkistuksista.
+Tyhjiä arvoja on kuvailtu ''Miljardin dollarin virheeksi'' niiden keksijän
+toimesta~\citep{billiondollars}. Useat modernit ohjelmointikielet ovatkin
+poistaneet muuttujilta mahdollisuuden olla tyhjiä arvoja, kuitenkin
+mahdollistaen tyhjät arvot esimerkiksi yhdellä merkillä lisää
+tyyppimäärittelyssä. Jos uuteen kieleen otetaan tällainen oletus,
+C-funktiomäärittelyiden tyhjien arvojen tulee saumattoman yhteistyön takia olla
+''limbossa'' näiden kahden tilan välillä, sillä C:n syntaksi ei sisällä
+lupauksia mahdollisista tyhjistä arvoista -- tai niiden puutteesta. Ohjelmoijaa
+siis ei tule pakottaa tarkistamaan tyhjiä arvoja jos hän kutsuu jotain
+C-funktiota, mutta toisaalta ei myöskään varoittaa ''turhista'' tarkistuksista.
 
 Koska kieli voi vaikuttaa lähinnä käännösaikaisesti, tulee kielen
 makrojärjestelmän olla sekä turvallinen että voimakas. Rustin makrojärjestelmä
@@ -57,31 +57,34 @@ makrot ovat pitkälti helppolukuisia.
 C-kääntäjissä on aina alustariippuvaisia ominaisuuksia, ja yksi tärkeimmistä on
 funktioiden kutsuminen. GCC:n~\citep{gcc} kanssa yhteensopivat kääntäjät
 tukevat funktiomäärittelyn kohdalla \texttt{\_\_attribute\_\_()} -määrettä,
-joka kertoo, miten funktiolle tulisi antaa ajoaikaisesti parametrit.
+jolla voi määrätä, mikä funktion kutsukonventio on.
 
 C++:n yksi tärkeistä ominaisuuksista on nimiavaruudet, joita C:ssä ei ole. Jos
 samassa ohjelmassa on kaksi samannimistä funktiota, ei ole määritelty, kumpaa
 niistä kutsutaan. C++:ssa ongelma on ratkaistu nimiruntelulla. Tämä on
 kuitenkin aiheuttanut ristiriitoja sekä C-yhteensopivuuden kanssa että eri
-C++-kääntäjien yhteensopivuuden kanssa.
+C++-kääntäjien yhteensopivuuden kanssa. Nimiruntelu voi myös aiheuttaa pidempiä
+nimiä funktioille, jolloin kirjastot voivat viedä useita tavuja enemmän
+levytilaa jokaista kirjaston funktiota kohden.
 
 \subsection{Syntaksi}
 
 Jotta kielestä toiseen vaihtaminen olisi kannattavaa, uuden kielen on oltava
 tarpeeksi erilainen: samanlainen kieli ei tarjoa tarpeeksi parannusta
 olemassaolevaan, että siirtyminen olisi kannattavaa. C:n syntaksia on usein
-kritisoitu\citationneeded vuolaudesta, joten syntaksia typistämällä voisi saada
+kritisoitu\citationneeded~vuolaudesta, joten syntaksia typistämällä voisi saada
 huomattavia parannuksia.
 
 \begin{figure}[ht!]
-    \inputminted{C}{strcmp.c}
-    \inputminted{Haskell}{strcmp.hs}
-    \caption{C:n \texttt{strcmp}-funktio toteutettuna C:llä ja Haskellilla,
-    jota voi käyttää merkkijonojen vertailuun. Ylempi on C-kieltä, kun taas
-    alempi esimerkki on kirjoitettu Haskellilla.
-    \hl{Käyn näitä tarkemmin läpi myöhemmin}
+    \inputminted{C}{squaresum.c}
+    \inputminted{Haskell}{squaresum.hs}
+    \caption{Project Eulerin ongelma nro.\ 6~\citep{euler}. Ylempi on
+    C-kieltä, kun taas alempi esimerkki on kirjoitettu Haskellilla.
+    Haskell-esimerkin koodi vie vain kaksi riviä, kun taas C-koodi vie
+    kahdeksan. Molemmat ohjelmat laskevat kaavan
+    $(\sum\limits_1^n n)^2 - \sum\limits_1^n n^2)$ tuloksen.
+    }
     \label{fig:strcmp}
-}
 \end{figure}
 
 \FloatBarrier
@@ -91,34 +94,36 @@ standardikirjaston tulee olla mahdollisimman kevyt. Kielen makrojärjestelmän
 tulee olla tarpeeksi voimakas, että alustariippuvaiset ominaisuudet voidaan
 toteuttaa puhtaasti kirjastotasolla.
 
-C:n tyyppisyntaksia on usein~\citationneeded kritisoitu. vaikka kielessä onkin
+C:n tyyppisyntaksia on usein\citationneeded~kritisoitu, vaikka kielessä onkin
 sinänsnä järkevä logiikka tyyppimäärittelyyn: jos tyyppimäärittely on esimerkiksi
-\texttt{int (*fp)(int arg, char arg2)}, kirjoittamalla koodiin
+\texttt{int (*fp)(int arg, char arg2)}, kirjoittamalla ohjelmakoodiin
 \texttt{(*fp)(int, char)} saa arvon tyyppiä \texttt{int}. Monimutkaisissa
 tapauksissa on vaikeaa seurata tyypin oikeaa arvoa, ja monet ohjelmointikielet
-ovatkin kehittäneet vaihtoehtoisia tapoja merkitä tyyppejä. Modernimpi tapa
-ilmaista yllä oleva tyyppi on \texttt{fp: (int, char) -> int}.
+ovatkin kehittäneet vaihtoehtoisia tapoja merkitä tyyppejä. Esimerkiksi
+TypeScriptissä yllä oleva tyyppin voi ilmaista kirjoittamalla \texttt{fp: (int,
+char) => int}.
 
 Yksi hyvin suosituista ominaisuuksista moderneissa ohjelmointikielissä on
 tyyppi-inferenssi. Oikein käytettynä sillä voidaan poistaa lähdekoodista
 pääteltävissä olevat tyypit, jolloin ohjelmoija voi keskittyä ohjelmalogiikkaan.
-Tyyppi-inferenssi onkin erityisen kätevä lambdojen kirjoittamisessa, sillä
-ohjelmoijan ei tarvitse kirjoittaa täysin pääteltäviä tyyppejä.
+Tyyppi-inferenssi onkin erityisen kätevä lambdafunktioiden kirjoittamisessa,
+sillä ohjelmoijan ei tarvitse kirjoittaa täysin pääteltäviä tyyppejä.
 
-Toinen suosittu ominaisuus on hahmontunnistus\footnote{eng. pattern matching},
-jolla voidaan kasvattaa kielen ilmaisuvoimaa. Kuvassa~\ref{fig:strcmp}
-Haskell-esimerkki käyttää hahmontunnistusta oikean funktion valitsemiseen.
+Toinen suosittu ominaisuus on hahmontunnistus\defword{pattern matching}, jolla
+voidaan kasvattaa kielen ilmaisuvoimaa. Esimerkiksi
+liitteen~\ref{app:grammar-ml} Monad-esimerkissä käytetään hahmontunnistusta
+Maybe-tyyppiluokan toteutuksessa.
 
-Gon yksi innovatiivisimmista ominaisuuksista on \texttt{defer}, jolla voidaan
-viivästyttää laskentaa funktiosta poistumiseen asti. Esimerkiksi \emph{A Tour
-of Go} -sivuston esimerkissä~\citep{gotourdefer} käytetään \texttt{defer}iä
-Hello World -ohjelman toteuttamiseen:
+Go-kielen yksi innovatiivisimmista ominaisuuksista on \texttt{defer}-avainsana,
+jolla voidaan viivästyttää laskentaa funktiosta poistumiseen asti. Esimerkiksi
+\emph{A Tour of Go} -sivuston esimerkissä~\citep{gotourdefer} käytetään
+\texttt{defer}iä Hello World -ohjelman toteuttamiseen:
 
 \begin{figure}[ht!]
     \inputminted{Go}{defer.go}
     \inputminted{text}{defer-output}
     \caption{\texttt{defer}-avainsana siirtää world-sanan tulostamisen funktion
-    loppuun, jolloin ohjelma tulostaa sanat ``hello'' ja ``world''.}
+    loppuun, jolloin ohjelma tulostaa sanat ''hello'' ja ''world''.}
 \end{figure}
 
 \FloatBarrier
@@ -126,11 +131,11 @@ Hello World -ohjelman toteuttamiseen:
 Ilman automaattista muistinhallintaa kaikissa tilanteissa toimivaa
 \texttt{defer}iä ei voi toteuttaa, mutta yksinkertaisissa tilanteissa myös
 hyvin matalan tason kieli voisi toteuttaa \texttt{defer}-avainsanan.
-Avainsanalle tulisi käyttöä -- esimerkiksi Linux-kernelissä on yleinen kuvio
-vapauttaa kaikki funktion varaama muisti käänteisessä järjestyksessä
-virhetilanteissa. Vain virhetilanteissa ajettu \texttt{defer} mahdollistaisi
-huomattavaa siivoamista -- ohjelmoijan ei tarvitse ajatella muistin
-vapauttamista, sillä ohjelmointikieli tekee sen ohjelmoijan puolesta.
+Avainsanalle tulisi käyttöä -- esimerkiksi Linux-ytimessä on yleinen
+suunnittelumalli vapauttaa kaikki funktion varaama muisti käänteisessä
+järjestyksessä virhetilanteissa. Vain virhetilanteissa ajettu \texttt{defer}
+mahdollistaisi huomattavaa siivoamista -- ohjelmoijan ei tarvitse ajatella
+muistin vapauttamista, sillä ohjelmointikieli tekee sen ohjelmoijan puolesta.
 
 Vielä monimutkaisempi tapaus on sulkeumat, joita suositaan erityisesti
 funktionaalisen ohjelmoinnin yhteydessä. GCC-kääntäjä on toteuttanut sulkeumat
@@ -148,9 +153,12 @@ liitteessä~\ref{app:grammar-c} on C-perheen kaltainen syntaksi.
 Modernissa ohjelmointikielessä on tärkeänä osana kehittäjän hyvinvointi, jota
 voidaan ylläpitää hyvillä työkaluilla. Go-kieli kehitettiin yhdessä kattavan
 työkalupaketin kanssa, jolloin työkalut pysyivät mukana kielen kehityksessä.
-Gon mukana tuleekin nykyään kääntäjän (\texttt{go build}) yhteydessä mm.
+Go-kielen mukana tuleekin nykyään kääntäjän (\texttt{go build}) yhteydessä mm.
 paketinhallinta \texttt{go get}, koodin automaattinen muotoilija \texttt{go
 fmt} sekä ohjelmointivirheiden tarkastaja \texttt{go vet}. 
 
-Kirjoittamalla kääntäjän ensin C:llä ja vasta myöhemmin hiljalleen siirtymällä
-uuteen kieleen voidaan esitellä kielen mahdollisuutta toimia C:n korvaajana.
+Kirjoittamalla kääntäjän ensin C:llä ja vasta myöhemmin funktio kerrallaan
+siirtymällä uuteen kieleen voidaan esitellä kielen mahdollisuutta toimia C:n
+korvaajana. Vaihtoehtoisesti kääntäjän voi kirjoittaa jollain toisella
+kielellä, jolloin voi kokeilla myös uuden kielen C-yhteensopivuutta
+alkuperäisen kielen siltausominaisuuksilla.

@@ -1,12 +1,12 @@
 import <stdio.h>
 
-struct Tree {
+type Tree: {
     value: int;
     left: *?Tree;
     right: *?Tree;
 }
 
-printTree = (n: int, tree: *?Tree): void {
+printTree := (n: int, tree: *?Tree): void {
     if(!tree) {
         printf("%*cLeaf\n", n, ' ');
     }
@@ -18,10 +18,11 @@ printTree = (n: int, tree: *?Tree): void {
     }
 }
 
-main = (): void {
+main := (): void {
     a: *Tree := NULL;
     b := Tree { 5, NULL, NULL };
-    c := Tree { 7, &{ 3, NULL, NULL}, NULL};
+    // the &Tree is compiled as Tree tmp = ..., &tmp
+    c := Tree { 7, &Tree{ 3, NULL, NULL}, NULL};
     d := Tree { 2, &b, &c };
     e := Tree { 1, a, &d };
     printTree(0, &e);

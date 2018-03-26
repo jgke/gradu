@@ -5,8 +5,8 @@ C:n alkuajoista lähtien. Useita ohjelmointikieliä on luotu historian saatossa,
 joiden oli tarkoitus syrjäyttää C, mutta C on vieläkin johtavana kielenä
 varsinkin sulautetuissa järjestelmissä ja UNIX-pohjaisten käyttöjärjestelmien
 vallitsevana ohjelmointikielenä. C on myös käytössä
-Windows-käyttöjärjestelmäperheen ydinkomponenttien toteutuksessa. Tässä
-opinnäytetyössä tutkitaan, miksi vaihtoehdoista huolimatta C on vieläkin
+Windows-käyttöjärjestelmäperheen ydinkomponenttien toteutuksessa.
+Opinnäytetyössä tutkitaan, miksi vaihtoehdoista huolimatta C on vieläkin
 laajalti käytössä myös uusissa projekteissa ja minkälainen ohjelmointikieli
 voisi syrjäyttää C:n.
 
@@ -17,18 +17,19 @@ ovat estäneet C:n korvaamisen ja mitkä ominaisuudet ovat olleet parannuksia
 C:hen verrattuna. Lisäksi tutkitaan muista suosituista ohjelmointikielistä
 korkean tason ominaisuuksia, jotka ovat hyödyllisiä matalan tason
 ohjelmoinnissa ja jotka voi toteuttaa korvaavan kielen määrittelyssä luotujen
-rajoitusten puitteissa. \hl{rajoitteissa -> yhteydessä: minusta 'rajoitteissa'
-on parempi, sillä kieli speksataan tietyillä rajoitteilla (muistinkäyttö yms.)
-- tuo lause voisi tietysti reflektoida tätä ('...toteuttaa korvaavan kielen
-määrittelyssä luotujen rajoitusten puitteissa' tjsp.) Muutin tämän nyt tuohon
-muotoon (ennen: '...toteuttaa korvaavan kielen rajoitteissa.')}
+rajoitusten puitteissa. \hl{rajoitteissa -> yhteydessä: minusta
+''rajoitteissa'' on parempi, sillä kieli speksataan tietyillä rajoitteilla
+(muistinkäyttö yms.) - tuo lause voisi tietysti reflektoida tätä
+(''...toteuttaa korvaavan kielen määrittelyssä luotujen rajoitusten
+puitteissa'' tjsp.) Muutin tämän nyt tuohon muotoon (ennen: ''...toteuttaa
+korvaavan kielen rajoitteissa.'')}
 
 Tutkittavana on myös, mitä optimointeja C:ssä ei voi tehdä helposti johtuen
 kielen rajoitteista ja miten tämän voisi korjata. Näitä ominaisuuksia ovat
 esimerkiksi sivuvaikutuksettoman ohjelmakoodin merkitseminen,
-optimointivinkkien alustariippumaton ilmaiseminen (esimerkiksi Rustin tavalla
-funktioiden annotointi) ja funktioiden yliajaminen\footnote{eng. \emph{function
-overloading}} riippuen parametrien tyypistä tai arvoista, mikäli ne voidaan
+optimointivinkkien alustariippumaton ilmaiseminen (esimerkiksi Rustin
+funktioiden annotaation) ja funktioiden yliajaminen\defword{function
+overloading} riippuen parametrien tyypistä tai arvoista, mikäli ne voidaan
 kääntöaikaisesti päätellä. Koska C:n spesifikaatio ei salli useita samannimisiä
 funktioita, kääntäjä ei voi helposti optimoida tällaisia tapauksia.
 
@@ -39,6 +40,7 @@ ohjelmointikielten nykypäivää sekä kerrotaan lyhyesti muista tutkittavista
 kielistä. Kolmannessa luvussa kerrotaan, miksi muut tutkitut kielet eivät täytä
 näitä ominaisuuksia, ja miten C:tä voisi parantaa. Neljännessä luvussa
 kuvaillaan toisen luvun määrittämien ominaisuuksien täyttävä ohjelmointikieli.
-Viidennessä luvussa kerrotaan tutkielman rakenne. Lopettavassa luvussa
-kerrataan tutkielman tavoitteet, vaiheet ja tulokset sekä pohditaan tutkielman
-puutteita ja jatkotutkimuskohteita.
+\hl{Ja sitten myöhemmin: Viidennessä luvussa kuvaillaan tutkielman rakenne}
+
+\hl{Miten käännökset tulisi ilmaista? Alaviitteeseen\defword{footnote} vai
+sulkuihin (eng. \emph{parens})?}

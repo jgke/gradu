@@ -2,10 +2,13 @@
 
 \usepackage[utf8]{inputenc}
 \usepackage[T1]{fontenc}
+%\usepackage{fontspec}
+%\setmainfont{Comic Sans MS}
 \usepackage{lmodern}
 \usepackage{microtype}
 \usepackage{amsfonts,amsmath,amssymb,amsthm,booktabs,color,enumitem,graphicx}
-\usepackage[pdftex,hidelinks]{hyperref}
+%\usepackage[pdftex,hidelinks]{hyperref}
+\usepackage[hidelinks]{hyperref}
 \usepackage{bookmark}
 \usepackage{appendix}
 \usepackage[natbibapa,sectionbib]{apacite}
@@ -23,9 +26,13 @@
 \usepackage[nottoc]{tocbibind}
 \usepackage{totcount}
 \usepackage{inconsolata}
+\usepackage[normalem]{ulem}
+
+\renewcommand{\underline}[1]{\uline{#1}}
 
 \usepackage{soulutf8}
 \sethlcolor{yellow}
+%\renewcommand{\hl}[1]{}
 %\usepackage{showframe}
 
 %\usepackage[top=2em]{geometry}
@@ -86,10 +93,26 @@
 \newcommand{\appendixendhere}{\label{appendixend}}
 
 \setminted{frame=single}
+% emacs
+% xcode
+% paradiso-dark
+% rainbow_dash
 \usemintedstyle{emacs}
 
 \def\kielilexer{kieli_lexer.py:KieliLexer -x}
 \def\bnflexer{grammar_notation.py:AbnfLexer -x}
+
+\newcommand{\bnf}[3]{%
+    \inputminted[firstline=#1,lastline=#2]{\bnflexer}{#3}}
+
+\newcommand{\defword}[2][]{\footnote{eng. \emph{#2}#1}}
+\newcommand{\defwordin}[2][]{~(eng. \emph{#2}#1)}
+
+\newcommand{\bnfdescription}{%
+    Tämä on hahmotelma kielen syntaksista ISO/IEC 14977
+    -standardin~\citep{iso14977} kuvaamassa Backus-Naur -muodossa, jossa ''\#''
+    aloittaa säännöllisen lausekkeen ja ''!'' aloittaa kielteisen
+    etukurkistuksen\defword{negative lookahead}}
 
 %\linespread{1.25}
 

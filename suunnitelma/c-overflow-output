@@ -1,7 +1,7 @@
-$ cc -O0 c-overflow.c
+$ gcc -O0 c-overflow.c
 $ ./a.out
 Overflow
 
-$ cc -O3 c-overflow.c
+$ gcc -O3 c-overflow.c
 $ ./a.out
 Variable did not overflow

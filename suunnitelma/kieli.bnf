@@ -1,0 +1,109 @@
+(* Base rules *)
+program = {(import | datatype | identifier-block), wso, newline*}
+identifier-block = identifier, wsm, (definition | declaration)
+identifier = !keyword #"[a-zA-Z]+" | "_"
+infixop = "+"
+INDENT = [newline] (* increase indentation *)
+DEDENT = (* decrease indentation *)
+newline = "\n"
+keyword = "data" | "class"
+
+wsm = #" +"
+wso = #" *"
+
+constant = number | string | character
+number = #"[0-9]+(\.[0-9]+)?"
+string = #'"[^"]*"'
+character = #"'.'"
+
+(* Import syntax, example:
+import <stdio.h>
+*)
+import = "import", wsm, import-library
+
+import-library = library
+               | '<', C-h-library, '>'
+               | '"', C-q-library, '"'
+
+library = identifier [{'.', identifier}]
+
+C-h-library = #"[a-zA-Z.]+"
+C-q-library = #"[a-zA-Z.]+"
+
+(* Data types, for example:
+data Foo = Bar | Baz
+data Powersoftwo = Zero = 1
+                 | One = 2,
+                 | Two = 4,
+                 | Three = 8
+data Tree a = Nil = NULL
+            | Node a (Tree a) (Tree a)
+*)
+
+datatype = data | typeclass | instance
+    
+data = "data", wsm, optcontext, identifier, wsm, {identifier, wsm}
+       "=", wso, INDENT,
+            wsm, datacontent, {[newline], wsm, "|", wsm, datacontent},
+       DEDENT
+datacontent = identifier, {wsm, identifier},
+              [wsm, "=", wsm, constexpr]
+
+identdec = wsm, identifier, wsm, declaration
+identdef = wsm, identifier, wsm, definition, newline
+
+(* type classes *)
+typeclass = "class", wsm, optcontext, identifier, wsm,
+            {identifier, wsm},
+            "where", INDENT, identdec, {identdec}, DEDENT
+instance = "instance", wsm, optcontext, identifier, wsm,
+           {identifier, wsm},
+           "where", INDENT, identdef, {identdef}, DEDENT
+    
+(* Built-in, reserved type class names *)
+builtin-typeclass = "Const" | "Register" | "Union" | "Volatile"
+                  | "NotNull"
+
+(* declaration syntax, example:
+func :: (Imported.TypeClass t) => (a -> b) -> t a -> t b
+*)
+declaration = "::", wsm, optcontext, type, newline
+
+optcontext = [context, wsm, "=>", wsm]
+context = "(", context-one {",", context-one}, ")"
+context-one = class, identifier
+class = identifier, {".", identifier}
+
+type = btype, [wsm, "->", wsm, type]           (* function type *)
+btype = atype, [wsm, btype]                    (* applied type *)
+atype = identifier                             (* base type name *)
+      | "(", type, ",", type, {",", type}, ")" (* inline n-tuple *)
+      | "()"                                   (* unit type *)
+      | "[", type, "]"                         (* array type *)
+      | "(", type, ")"                         (* type with parens *)
+      | "..."                                  (* varargs *)
+
+(* definition related syntax
+example: (calls printf, then f, and returns a + 1)
+func f a =
+    printf "foo"
+    f 5
+    a + 1
+*)
+
+definition = {pattern, wsm}, '=', wsm, rvalue
+pattern = identifier
+        | "(", wso, identifier, wso, {identifier, wso}, ")"
+rvalue = expression | block | lambda
+expression = (callexpr | constexpr), [wso, infixop, wso, rvalue]
+callexpr = identifier, wso, argexpr, {wso, argexpr}
+argexpr = constexpr | "(", wso, rvalue, wso ")"
+constexpr = constant | identifier
+
+(* evaluate eagerly top to bottom and return last value or void *)
+block = INDENT, {wsm, (expression
+                       | identifier, wsm, definition), newline+},
+        DEDENT
+
+(* eg. \x -> x *)
+lambda = "\\", identifier, wsm, {identifier, wsm}, "->", wsm, rvalue

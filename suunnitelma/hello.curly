@@ -1,6 +1,6 @@
 import <stdio.h>
 
-main = (argc: int, argv: [const char]): int {
+main := (argc: int, argv: [const char]): int {
     printf("Hello world!\n");
     return 0;
 }

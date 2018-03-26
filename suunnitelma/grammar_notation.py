@@ -90,6 +90,7 @@ class AbnfLexer(RegexLexer):
         'root': [
             # comment
             (r';.*$', Comment.Single),
+            (r'\((\\\n)?[*](.|\n)*?[*](\\\n)?\)', Comment.Multiline),
 
             # quoted
             #   double quote itself in this state, it is as '%x22'.

@@ -1,6 +1,0 @@
-; Base rules
-program = {import | definition | declaration | datatype} ;
-identifier = (letter | '_'), {letter | digit | '_'}
-letter = any Unicode letter
-INDENT = [newline], <increase indentation>
-DEDENT = [newline], <decrease indentation>

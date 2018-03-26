@@ -1,23 +1,75 @@
-program = {import | declaration | definition}
-import = library
-       | '<', C-h library, '>'
-       | '"', C-q library, '"'
+program = {(import | type-definition | declaration | definition),
+           wso}
+import = "import", wsm, (library
+       | '<', C-h-library, '>'
+       | '"', C-q-library, '"'), newline
 
 library = identifier [{'.', identifier}]
 
-C-h library = <header file syntax according to C standard>
-C-q library = <header file syntax according to C standard>
+C-h-library = #"[a-zA-Z.]+"
+C-q-library = #"[a-zA-Z.]+"
 
-declaration = identifier, "::", type-declaration
-type-declaration = [modifier], identifier     ; primitive
-                 | "*", type-declaration      ; pointer type
-                 | "[", type-declaration, "]" ; array type
-                 | function-type
-                 | "(", type-declaration, ")" ; parenthesized type
-function-type = "(", type-declaration, ")", ":", return-type
+constant = number | string | character
+number = #"[0-9]+"
+string = #'"[^"]*"'
+character = #"'.'"
+wsm = #"\s+", [comment, wsm]
+wso = #"\s*", [comment, wso]
+newline = "\n"
+comment = "/*", (!"*/", #'.')*, "*/"
+        | "//", [!"\n", #'.'], "\n"
 
-definition = identifier, [":", type-declaration], ":=",
+declaration = identifier, wso, ":", wso, type-declaration
+type-declaration = [modifier, wsm], identifier     (* primitive *)
+                 | "*", ["?"], type-declaration    (* pointer type *)
+                 | "[", type-declaration, "]"      (* array type *)
+                 (* function type *)
+                 | "(", type-declaration, ")", ":", type-declaration
+                 (* parenthesized type *)
+                 | "(", type-declaration, ")"
+                 (* struct type *)
+                 | "{", wso, {declaration, wso, ";", wso}, "}"
+function-type = "(", [type-declaration], ")", ":", type-declaration
+type-definition: "type", wsm, declaration
 
-function-definition = "(", [parameter, {",", parameter}], ")",
-                      [":", type-declaration], body
-parameter = identifier, ":", type-declaration
+definition = identifier, wso, [":", wso, type-declaration, wso],
+             ":=" wso, (function-definition | expression)
+
+identifier = !keyword #"[a-zA-Z][a-zA-Z0-9]*"
+keyword = "type" | return | modifier | conditional
+modifier = "const"
+return = "return"
+conditional = "if" | "while" | "else"
+
+parameter-list = parameter, wso, {",", wso, parameter, wso}
+function-definition = "(", wso, [parameter-list], ")",
+                      [":", wso, type-declaration, wso], body
+parameter = identifier, wso, ":", wso, type-declaration
+
+body = statement | "{", wso, {statement, wso}, "}"
+
+semicolon-statement = declaration | definition
+                    | assignment | expression
+                    | return, wsm, expression
+statement = semicolon-statement, wso, ";"
+          | block, wso
+
+condition = wso, "(", wso, expression, wso, ")", wso
+block = "if", condition, body, wso, ["else", wso, body]
+      | "while", condition, body
+
+assignment = identifier, "=", expression
+
+expression = base-expression, [operator, base-expression]
+expression-list = expression, {wso, ",", wso, expression}
+identifier-access = "->", wso, identifier
+                  | "(", wso, [expression-list] , ")"
+                  | "{", wso, [expression-list], "}"
+base-expression = unary_operator, expression
+                | constant
+                | identifier, wso, {identifier-access, wso}
+                | "(", expression, ")"
+
+(* ignore operator precedence for now *)
+operator = "+" | "-" | "*" | "/" | "=" | "&" | "^" | "|"
+unary_operator = "+" | "-" | "&" | "*" | "!" | "~"

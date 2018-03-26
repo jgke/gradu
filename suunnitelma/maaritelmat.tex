@@ -27,18 +27,16 @@ muista ohjelmointikielistä, sillä C on lukuisissa järjestelmissä \emph{lingu
 franca}, jonka avulla ohjelmointikielet pystyvät kommunikoimaan keskenään.
 Esimerkiksi Python-ohjelmointikieli~\citep{python} sisältää tuen C-funktioiden
 kutsumiseen~\citep{pythonffi}, jota voi käyttää muiden ohjelmointikielten
-funktioiden kutsumiseen, mikäli käyttäjä kirjoittaa 'sillan' C-ohjelmana.
+funktioiden kutsumiseen, mikäli käyttäjä kirjoittaa ''sillan'' C-ohjelmana.
 
 Ohjelmointikielten ekosysteemit koostuvat eri tahojen luomista kirjastoista. On
 tärkeää, että näihin kirjastoihin pääsee käsiksi mahdollisimman helposti. Tämä
 vaatii toimiakseen hyvät työkalut, kuten
-paketinhallintajärjestelmän\footnote{eng. package manager}, hyvän
-käännöstyökalun sekä kehitysympäristöt. \hl{paketinhallinta -> pakkaushallinta:
-'paketinhallinta' on yleisesti käytössä oleva termi, ks. esim} \\
+paketinhallintajärjestelmän\defword{package manager}, käännöstyökalun
+sekä kehitysympäristöt. \hl{paketinhallinta -> pakkaushallinta:
+''paketinhallinta'' on yleisesti käytössä oleva termi, ks. esim} \\
 \url{https://www.debian.org/index.fi.html} \\
-\url{https://fi.wikipedia.org/wiki/Paketinhallintaj\%C3\%A4rjestelm\%C3\%A4} \\
-\hl{Onhan se tietenkin hassu käännöksenä, kun pakkaus olisi 'oikeampi' käännös
-englannin package-sanasta, mutta luonnolliset kielet eivät toimi loogisesti.}
+\url{https://fi.wikipedia.org/wiki/Paketinhallintaj\%C3\%A4rjestelm\%C3\%A4}
 
 Kirjastojen lisenssien tulee myös olla yhteensopivia, jotta kirjastoja voi
 käyttää yhdessä toistensa kanssa. Eri ohjelmointikieliekosysteemeissä on
@@ -51,7 +49,9 @@ Kirjastot voi myös julkaista useammalla kuin yhdellä lisenssillä, jolloin
 käyttäjät voivat päättää, mitä lisenssiä haluaa seurata. On kuitenkin
 filosofinen kysymys, onko esimerkiksi Apache2+GPL parempi lisenssi kuin pelkkä
 GPL, sillä Apache2 ei vaadi tiettyjä oikeuksia loppukäyttäjille, kuten pääsyä
-ohjelmiston lähdekoodiin~\citep{apachetldr, gpl3tldr}.
+ohjelmiston lähdekoodiin~\citep{apachetldr, gpl3tldr}. Apache2 siis antaa
+ohjelmoijille enemmän vapauksia GPL3:een verrattuna, mutta käyttäjien vapaus
+esimerkiksi muokata ohjelmistoa kärsii tästä.
 
 \subsection{C:hen verrattavissa olevat ohjelmointikielet}
 
@@ -81,14 +81,12 @@ Lähivuosina on tehty myös useita C:hen käännettäviä ohjelmointikieliä, jo
 ovat jääneet pitkälti ilman mitään näkyvyyttä, kuten LISP/c~\citep{clisp1},
 C-Mera~\citep{clisp2}, Carp~\citep{clisp3} ja Nymph~\citep{nymph}. LISP/c,
 C-Mera ja Carp ovat LISP-perheeseen kuuluvia C:ksi kääntyviä ohjelmointikieliä,
-jotka on suunniteltu etupäässä parantamaan C:n syntaksia rikkaammalla
-makrojärjestelmällä. Nymph taas on olio-ohjelmointikieli. Erityisesti Carp
-on tämän tutkielman kannalta kiintoisa ohjelmointikieli, sillä se on C:ksi
-kääntyvä ohjelmointikieli, joka on suunniteltu mahdollisimman
-suorituskykyiseksi.
+jotka parantavat C:n syntaksia korvaamalla sen LISP-perheen syntaksilla. Nymph
+taas on olio-ohjelmointikieli. Erityisesti Carp on tämän tutkielman kannalta
+kiintoisa ohjelmointikieli, sillä se on C:ksi kääntyvä ohjelmointikieli, joka
+on suunniteltu mahdollisimman suorituskykyiseksi.
 
 \hl{Tässä voisi olla jotain pohdintaa, miksi nuo ovat jääneet huomiotta ja
-miten tämän voisi välttää... Tai sitten poistaa tuon viimeisen kappaleen
-kokonaan. Erityisesti Carp tuntuu tätä tutkielmaa vastaavalta kieleltä,
-olisi ikävää jättää se täysin huomiotta.}
+miten tämän voisi välttää. Erityisesti Carp tuntuu tätä tutkielmaa vastaavalta
+kieleltä, olisi ikävää jättää se täysin huomiotta.}
 

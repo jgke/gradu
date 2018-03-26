@@ -11,6 +11,6 @@ base-expression = unary_operator, expression
                 | identifier, ["(", {expression}, ")"]
                 | "(", expression, ")"
 
-; ignore operator precedence for now
+(* ignore operator precedence for now *)
 operator = "+" | "-" | "*" | "/" | "=" | "&" | "^" | "|"
 unary_operator = "+" | "-" | "&" | "*" | "!" | "~"

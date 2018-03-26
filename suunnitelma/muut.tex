@@ -6,26 +6,29 @@
 
 Vertailtavissa ohjelmointikielissä on yleisesti useita ominaisuuksia, jotka
 vaikuttavat ohjelmien ajoaikaiseen nopeuteen hidastavasti. Yleisin näistä on
-automaattinen muistinhallinta, joka lisää ``roskien keräämisen''\footnote{eng.
-garbage collection, gc}, jonka ajaksi ohjelman suoritus
-pysäytetään\footnote{eng. gc pause}. Lisäksi automaattinen muistinhallinta
-lisää muistinkäyttöä, sillä ohjelmointikieli joutuu ajoaikaisesti määrittämään
-käytössä olevat muistiosoitteet.
+automaattinen muistinhallinta, joka lisää ''roskien
+keräämisen''\defword{garbage collection, GC}, jonka ajaksi ohjelman suoritus
+pysäytetään. Lisäksi roskien keräämiseen perustuva automaattinen
+muistinhallinta lisää muistinkäyttöä, sillä ohjelmointikieli joutuu
+ajoaikaisesti määrittämään käytössä olevat muistiosoitteet.
 
 Moderneissa ohjelmointikielissä virheiden käsittely on lähes poikkeuksetta
 toteutettu poikkeuksilla. Poikkeusten käsittely vaatii pienen määrän muistia
 jokaiselta funktiokutsulta, sillä poikkeuksen tapahtuessa ohjelman pitää löytää
 lähin poikkeuskäsittelijä -- tämä tapahtuu kävelemällä pinoa takaisin ylöspäin,
 kunnes poikkeuskäsittelijä löytyy. Jos virheiden käsittely on taas toteutettu
-esimerkiksi signaaleilla, pinoa ei tarvitse kävellä, sillä vain yksi
-signaalinkäsittelijä voi kerrallaan olla käytössä jokaista signaalia kohden.
+esimerkiksi signaaleilla ja \texttt{setjmp/longjmp}-funktioilla\footnote{Tämä
+tarvitsee viittauksen C-speksin oikeaan sivuun, ks. sivun~\pageref{cspecnote}
+alaviite~\ref{cspecnote}}, pinoa ei tarvitse kävellä, sillä vain yksi
+signaalinkäsittelijä voi kerrallaan olla käytössä jokaista signaalia kohden ja
+pino-osoittimen asettaminen on vakioaikainen operaatio.
 
 Ohjelmointikieli voi toteuttaa olio-ohjelmoinnin rajapinnat käytännössä kahdella
 tavalla: Joko korvaamalla jokaisen rajapintaviittauksen numerolla jaettuun
 tauluun funktioita (vtable-rajapinnat), tai korvaamalla rajapintaviittaukset
 tietueella, joka sisältää rajapinnan toteutuksen funktioiden osoitteet
 (tietue-rajapinnat).  Ensimmäistä käytetään eritoten C++:n rajapintojen
-toteuttamiseen, kun taas jälkimmäistä käytetään esimerkiksi Gossa.
+toteuttamiseen, kun taas jälkimmäistä käytetään esimerkiksi Go-kielessä.
 Jälkimmäistä käytetään myös C:n kanssa; Linux-ytimen laiteajurit on toteutettu
 tietue-rajapintoina, joita ajurit voivat tarvittaessa periä. Molemmissa
 toteutustavoissa on omat hyvät jä huonot puolensa -- vtable-rajapinnat vievät
@@ -40,39 +43,47 @@ nopeutta tai pientä muistijalanjälkeä vaativien sovelluksien toteuttamiseen.
 C on suunniteltu olemaan mahdollisimman alustariippumaton, mutta jos tämä
 aiheuttaa ristiriidan mahdollisimman nopean toteutuksen kanssa, suositaan
 nopeutta -- useista C:n operaatioista tulee eri tuloksia riippuen
-alustasta~\citationneeded\footnote{Tämä löytyy C:n standardista -- C90:n
-spesifikaatiossa tämä on liitteessä A, luvussa 6. Minulla ei ole pääsyä
-uusimpaan spesifikaatioon, eli en pääse (vielä) tarkistamaan, mistä kohtaa tämä
-löytyy C11:n standardista.}. Tästä yleisin esimerkki on kokonaislukujen
-ylivuoto, jonka tulos riippuu kääntäjäoptimoinnista:
+alustasta~\citationneeded\footnote{\label{cspecnote}Tämä löytyy C:n standardista
+-- C90:n spesifikaatiossa tämä on liitteessä A, luvussa 6. Minulla ei ole
+pääsyä uusimpaan spesifikaatioon, eli en pääse (vielä) tarkistamaan, mistä
+kohtaa tämä löytyy C11:n standardista.}. Tästä yleisin esimerkki on
+kokonaislukujen ylivuoto, jonka tulos riippuu kääntäjäoptimoinnista:
 
 \begin{figure}[ht!]
     \inputminted{C}{c-overflow.c}
     \inputminted{text}{c-overflow-output}
 
     \caption{Kokonaisluvun ylivuoto C-kielessä. Ylivuodon käyttäytyminen
-    riippuu kääntäjäoptimoinnin määrästä -- kääntäjän optimointitasolla -O0
+    riippuu kääntäjäoptimoinnin määrästä -- GCC-kääntäjän optimointitasolla -O0
     lauseketta $x~+~1~<=~x$ ei optimoida pois, mutta optimointitasolla -O3
-    kääntäjä 'tietää' että operaation $+1$ jälkeen kokonaisluvut eivät
+    kääntäjä ''tietää'' että operaation $+1$ jälkeen kokonaisluvut eivät
     ylivuoda, sillä C-kielen spesifikaatiossa kokonaislukujen ylivuoto on
-    ``määrittelemätöntä toimintaa'' (eng. undefined behavior). Luonnollisten
-    lukujen yli- ja alivuoto taas on määritelty - luonnolliset luvut on
-    määritelty renkaaksi.}
+    ''määrittelemätöntä toimintaa'' \defwordin{undefined behavior}.
+    Luonnollisten lukujen yli- ja alivuoto taas on määritelty -- luonnolliset
+    luvut on määritelty sykliseksi ryhmäksi.}
 \end{figure}
 
 \FloatBarrier
 
-\hl{Miten koodiesimerkit tulisi merkitä? LaTeXin \textbackslash caption antaa
-oletuksella käännökseksi 'Kuva', mikä ei nyt pidä paikkaansa kun tuo on
-kuitenkin tekstiä. \\
-'Lähdekoodi 1'? \\
-Pitäisikö kaikki koodiesimerkit laittaa liitteiksi, jolloin viittaukset tyyliin
-``...jonka tulos riippuu kääntäjäoptimoinnista, kuten liitteessä x todetaan.''?
+\hl{Miten koodiesimerkit tulisi merkitä? LaTeXin \texttt{\textbackslash
+caption} antaa oletuksella käännökseksi ''Kuva'' (eng. figure), mikä ei minusta
+kuulosta oikealta, koska tuo on tekstiä. ''Lähdekoodi 1''? \\
 
 Jossain oli sivulauseessa että koodiesimerkit pitäisi käydä rivi riviltä läpi,
-miten rivi riviltä tämä oikeasti on? Selitänkö että 'void
-print\_if\_overflow(int x)' määrittelee funktion yms., vai riittääkö tuo
-nykyisen tasoinen selitys tällaisissa kohtalaisen yksinkertaisissa asioissa?}
+miten rivi riviltä tämä oikeasti on? Selitänkö että ''\texttt{void
+print\_if\_overflow(int x)}'' määrittelee funktion yms., vai riittääkö tuo
+nykyisen tasoinen selitys tällaisissa kohtalaisen yksinkertaisissa asioissa?
+C:n syntaksi kun ei ole erityisen esoteerinen.}
+
+\FloatBarrier
+
+C:n makrojärjestelmä on hyvin yksinkertainen. Kun esikääntäjä lukee
+lähdekoodissa makron, se korvaa sen makron määritelmällä. Tästä kuitenkin
+seuraa se, että makrojärjestelmä on rajoittunut -- makrot eivät . Lisäksi C:n
+makrot ovat muutenkin rajoittuneita -- esimerkiksi rekursiivisten makrojen
+rakentaminen on liki mahdotonta, sillä itsensä sisältävät makrot eivät korvaa
+itseään kuin kerran\citationneeded\footnote{C90: 3.8.3.4 Rescanning and further
+replacement. Ks. sivun~\pageref{cspecnote} alaviite~\ref{cspecnote}}.
 
 \begin{figure}[ht!]
     \inputminted{C}{c-hygiene.c}
@@ -80,41 +91,38 @@ nykyisen tasoinen selitys tällaisissa kohtalaisen yksinkertaisissa asioissa?}
     \caption{C:n makrot eivät ole hygieenisiä. DOUBLE-makro muuttuu
     käännösvaiheessa muotoon 1+1*2, mikä on laskujärjestyksen takia 3 eikä
     odotettu 4. Koko printf-kutsuksi muodostuu siis
-    '\texttt{printf("one plus one doubled is \%d", 1+1*2)}'
+    ''\texttt{printf("one plus one doubled is \%d", 1+1*2)}''
+    \label{fig:cmacro}
 }
 \end{figure}
 
 \FloatBarrier
 
-C:n makrot ovat muutenkin rajoittuneita -- esimerkiksi rekursiivisten makrojen
-rakentaminen on liki mahdotonta, sillä itsensä sisältävät makrot eivät korvaa
-itseään kuin kerran\citationneeded\footnote{C90: 3.8.3.4 Rescanning and further
-replacement. Ks. sivun 5 footnote 5}.
-
 \subsection{Ada}
 
 \hl{Aliluvut eivät ole erityisen tasapainoisia keskenään -- c-luku on
-huomattavasti pidempi johtuen koodiesimerkeistä
+huomattavasti pidempi johtuen koodiesimerkeistä. Pitäisikö näissä muissakin
+olla jokin syntaksia esittelevä Hello World tai jotain muuta?
 
 Onko yleislöpinäkappaleet turhia, eli esim. alla oleva kuka teki, miksi,
-milloin?}
+milloin? Jos ne jättäisi pois, nämä loppujen kielten aliluvut voisi yhdistää}
 
 Ada on Yhdysvaltain puolustusministeriön kehittämä ohjelmointikieli, joka
 suunniteltiin korvaamaan kaikki muut puolustusministeriön käyttämät
-ohjelmointikielet~\citep{adahistory}.Ada on hyvin moneen taipuva kieli, sillä se
-pystyy hallitsemaan monia eri käyttötarkoituksia matalan tason bittitason
-ohjelmoinnista korkean tason arkkitehtuureihin~\citationneeded.
+ohjelmointikielet~\citep{adahistory}. Ada on hyvin moneen taipuva kieli, sillä
+se pystyy hallitsemaan monia eri käyttötarkoituksia matalan tason bittitason
+ohjelmoinnista korkean tason arkkitehtuureihin\citationneeded.
 
 Ohjelmoinnin tehostamiseksi Adassa on sekä poikkeukset että automaattinen
 muistinhallinta. Nämä kuitenkin hidastavat kieltä hieman aikaisemmin todetuistä
 syistä. Lisäksi C-kielen kanssa yhteensopivuus on kielen taipuvuudesta johtuen
 hankalaa - jokainen kutsuttava C-funktio on yksitellen määritettävä
-kutsukonvention\footnote{eng. calling convention} kanssa~\citep[s.~471]{ADA12}.
+kutsukonvention\defword{calling convention} kanssa~\citep[s.~471]{ADA12}.
 
 \subsection{C++}
 
 C++ on Bjarne Stroustrupin 1980-luvusta eteenpäin kehittämä kieli, jonka
-yhtenä tarkoituksena on yhdistää Simula-kielen~\citationneeded ominaisuudet
+yhtenä tarkoituksena on yhdistää Simula-kielen\citationneeded~ominaisuudet
 ohjelman organisointiin yhteen C:n tehokkuuden ja joustavuuden
 kanssa~\citep{cpphistory}. C++ on nykypäivänä suosittu tehokkuutensa ja
 monipuolisuutensa takia monimutkaisissa ohjelmistoissa, kuten
@@ -122,64 +130,66 @@ palvelinohjelmistoissa, kuvankäsittelyohjelmistoissa sekä
 peleissä~\citep{cppapps}.
 
 C++ on kehitetty C:n pohjalta, ja siinä onkin erittäin hyvä C-tuki. Koska C++
-nimeää funktioita uudelleen käännösaikaisesti\footnote{eng. name mangling},
-C-koodin otsikkotiedostoissa\footnote{eng. header file} on usein alussa
-C++-koodia, joka laittaa uudelleennimeämisen pois päältä. Näin C++-ohjelmat
-voivat helposti kutsua C-ohjelmien kirjastokutsuja -- C++-ohjelmat ymmärtävät
-suoraan C-kielen otsikkotiedostoja.
+nimeää funktioita uudelleen käännösaikaisesti\defword{name mangling}, C-koodin
+otsikkotiedostoissa\defword{header file} on usein alussa C++-koodia, joka
+laittaa uudelleennimeämisen pois päältä. Näin C++-ohjelmat voivat helposti
+kutsua C-ohjelmien kirjastokutsuja -- C++-ohjelmat ymmärtävät suoraan C-kielen
+otsikkotiedostoja.
 
 Virheidenkääsittely on toteutettu poikkeuksilla, jotka aiheuttavat pienen
-hidastuksen. C++:ssa on myös käytettävissä viitemäärälaskettu\footnote{eng.
-reference counting} automaattinen muistinhallinta, jolla voidaan käyttää
-ajoaikaisesti varattua muistia ilman muistivuotoja. C++:ssa tosin ei ole
-roskien keräystä, vaan kun viimeinen viite olioon poistetaan, myös varattu
-muisti vapautetaan -- tällöin ohjelman suorituksen aikana ei tule
-roskienkeräystaukoja.
+hidastuksen. C++:ssa on myös käytettävissä viitemäärälaskettu\defword{reference
+counting} automaattinen muistinhallinta, jolla voidaan käyttää ajoaikaisesti
+varattua muistia ilman muistivuotoja. C++:ssa ei ole roskien keräystä, vaan kun
+viimeinen viite olioon poistetaan, myös varattu muisti vapautetaan -- tällöin
+ohjelman suorituksen aikana ei tule roskienkeräystaukoja.
 
 \subsection{D}
 
 D on 2000-luvun alussa Digital Mars -yrityksen julkaisema ohjelmointikieli,
 jonka tarkoituksena on mahdollistaa helposti tehokkaan ohjelmakoodin
-kirjoittaminen helposti ja turvallisesti\citep{dhistory}. Vaikka D-kielessä on
-automaattinen muistinhallinta, D:n 'BetterC' -tila poistaa käytöstä
-alustariippuvaiset ominaisuudet~\citep{dbetterc}. Tällöin kielestä poistuu
-useita ominaisuuksia, mutta esimerkiksi D:n makrojärjestelmää voi käyttää.
+kirjoittaminen helposti ja turvallisesti~\citep{dhistory}. Vaikka D-kielessä on
+olemassa automaattinen muistinhallinta, D:n \emph{BetterC}-tila poistaa
+käytöstä alustariippuvaiset ominaisuudet~\citep{dbetterc}, mukaan lukien
+automaattisen muistinhallinnan. Tällöin kielestä poistuu useita ominaisuuksia,
+mutta esimerkiksi D:n makrojärjestelmää voi käyttää.
 
 C-koodin kutsuminen on melko helppoa, mutta ei aivan saumatonta, sillä jokainen
 kutsuttava funktio tulee määritellä erikseen -- D ei ymmärrä C:n
-otsikkotiedostoja. Tämä kuitenkin onnistuu yhdellä rivillä per funktio, sillä
-D:n tyyppijärjestelmä on hyvin lähellä C:tä.
+otsikkotiedostoja. Tämä kuitenkin onnistuu yhdellä rivillä jokaista C:n
+funktiota kohden, sillä D:n tyyppijärjestelmä on hyvin lähellä C:tä.
 
 \subsection{Go}
 
 \hl{Taivutus; Go:ssa, Gossa, Go-kielessä, Golangissa...? Ainakin se lautapeli
-taivutetaan toisen mukaan -- käytin nyt toista ja kolmatta muotoa sekaisin}
+taivutetaan toisen mukaan -- käytin nyt kolmatta muotoa, Wikipedia näyttäisi
+suosivan sitä}
 
 Go on Googlen 2000-luvun loppupuolella kehittämä ohjelmointikieli, jonka
 tarkoituksena on yhdistää kääntöaikaisesti tyypitetyn ohjelmointikielen
 turvallisuus ja tehokkuus ajoaikaisesti tyypitettyjen ohjelmointikielten
 helppokäyttöisyyteen~\citep{gohistory}. Toisin kuin monissa moderneissa
-C-perheen kielissä, Gossa ei ole luokkia, vaan pelkkiä tietueita ja
+C-perheen kielissä, Go-kielessä ei ole luokkia, vaan pelkkiä tietueita ja
 rajapintoja.
 
-Gossa ei ole mahdollista kirjoittaa käännösaikaisesti tyyppitarkistettua
-geneeristä koodia, mutta ohjelmat voivat ajoaikaisesti peilauksen\footnote{eng.
-reflection} kautta tutkia tietueiden rakennetta. Tämän mahdollistaminen
-kasvattaa ohjelmakoodin kokoa, sillä tietueiden mukana on säilytettävä tietueen
-oikeaa tyyppiä. Tämä kuitenkin yksinkertaistaa ohjelmien kirjoittamista, sillä
-ohjelmoijan ei tarvitse miettiä kirjoittamishetkellä monimutkaisia
-tyyppejä~\citep[esim.][kalvo 8]{gohistory}.
+Go-kielessä ei ole mahdollista kirjoittaa käännösaikaisesti tyyppitarkistettua
+tyyppiparametreja käyttävää koodia, mutta ohjelmat voivat ajoaikaisesti
+peilauksen\defword{reflection} kautta tutkia tietueiden rakennetta.
+Tämän mahdollistaminen kasvattaa ohjelmakoodin kokoa, sillä rajapinnan mukana
+on säilytettävä rajapinnan oikeaa tyyppiä. Tämä kuitenkin yksinkertaistaa
+ohjelmien kirjoittamista, sillä ohjelmoijan ei tarvitse miettiä
+kirjoittamishetkellä monimutkaisia tyyppejä~\citep[esim.][kalvo 8]{gohistory}.
 
-Gon virheidenkäsittely on toteutettu useissa kohdissa C:n tavoin; funktioista
-palautetaan virheellisissä tilanteissa virheellinen arvo. Tämä tosin tehdään
-usein palauttamalla erillinen \texttt{Error}-tyyppiä oleva arvo -- Go
-mahdollistaa helposti useamman kuin yhden paluuarvon. Gossa on myös
+Go-kielen virheidenkäsittely on toteutettu useissa kohdissa C:n tavoin;
+funktioista palautetaan virheellisissä tilanteissa virheellinen arvo. Tämä
+tosin tehdään usein palauttamalla erillinen \texttt{Error}-tyyppiä oleva arvo
+-- Go mahdollistaa useamman kuin yhden paluuarvon. Go-kielessä on myös
 poikkeukset, joita suositellaan käyttävän vain poikkeuksellisissa
 tilanteissa~\citep{effectivego}.
 
-C:n kutsuminen Gosta ei ole aukotonta: koska Go on muistinkäytöltä turvallinen
-kieli, erityisesti muistin jakaminen C:n ja Gon välillä on hankalaa. C:n
-funktio-osoittimia ei voi kutsua Gon puolelta~\citep{cgo}.
+C:n kutsuminen Go-kielestä ei ole aukotonta: koska Go on muistinkäytöltä
+turvallinen kieli, erityisesti muistin jakaminen C:n ja Go-kielen välillä on
+hankalaa. Lisäksi C:n funktio-osoittimia ei voi kutsua Go-kielen
+puolelta~\citep{cgo}.
 
 \subsection{Rust}
 
@@ -190,7 +200,7 @@ tyyppijärjestelmä, jolla ohjelmat voivat todistaa esimerkiksi turvallisen
 rinnakkaisajon, ilman että ohjelmaan tulee ajoaikaisia rajoitteita tai
 hidastuksia.
 
-Rustin virheidenhallinta on lähellä Gon virhehallintaa -- Rustin ohjekirja
-opastaa käyttämään mieluummin paluuarvoja kuin
-poikkeuksia~\citep{rusterrorhandling}. Kuten Gossa, Rustissa voi myös käyttää
-poikkeuksia.
+Rustin virheidenhallinta on lähellä Go-kielen virhehallintaa -- Rustin
+ohjekirja opastaa käyttämään mieluummin paluuarvoja kuin
+poikkeuksia~\citep{rusterrorhandling}. Kuten Go-kielessä, Rustissa voi myös
+käyttää poikkeuksia.
