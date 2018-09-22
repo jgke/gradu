@@ -8,8 +8,8 @@ DEDENT = (* decrease indentation *)
 newline = "\n"
 keyword = "data" | "class"
 
-wsm = #" +"
-wso = #" *"
+wsm = #" +" (* mandatory whitespace *)
+wso = #" *" (* optional whitespace *)
 
 constant = number | string | character
 number = #"[0-9]+(\.[0-9]+)?"
@@ -27,8 +27,8 @@ import-library = library
 
 library = identifier [{'.', identifier}]
 
-C-h-library = #"[a-zA-Z.]+"
-C-q-library = #"[a-zA-Z.]+"
+C-h-library = #'[^>]+'
+C-q-library = #'[^"]+'
 
 (* Data types, for example:
 data Foo = Bar | Baz

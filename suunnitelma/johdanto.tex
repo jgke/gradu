@@ -8,7 +8,10 @@ vallitsevana ohjelmointikielenä. C on myös käytössä
 Windows-käyttöjärjestelmäperheen ydinkomponenttien toteutuksessa.
 Opinnäytetyössä tutkitaan, miksi vaihtoehdoista huolimatta C on vieläkin
 laajalti käytössä myös uusissa projekteissa ja minkälainen ohjelmointikieli
-voisi syrjäyttää C:n.
+voisi syrjäyttää C:n. Syrjäyttämisessä tutkitaan erityisesti mahdollisuuksia
+olemassaolevien C-kielellä kirjoitettujen ohjelmien jatkokehittämistä uudella
+ohjelmointikielellä ja uusien projektien toteuttamista C:n sijaan uudella
+ohjelmointikielellä.
 
 C:n vaihtoehdoiksi tutkitaan seuraavia tehokkaaseen ohjelmointiin tarkoitettuja
 kieliä: Ada~\citep{ADA12}, C++~\citep{CPP14}, D~\citep{D}, Go~\citep{golang}
@@ -17,30 +20,43 @@ ovat estäneet C:n korvaamisen ja mitkä ominaisuudet ovat olleet parannuksia
 C:hen verrattuna. Lisäksi tutkitaan muista suosituista ohjelmointikielistä
 korkean tason ominaisuuksia, jotka ovat hyödyllisiä matalan tason
 ohjelmoinnissa ja jotka voi toteuttaa korvaavan kielen määrittelyssä luotujen
-rajoitusten puitteissa. \hl{rajoitteissa -> yhteydessä: minusta
-''rajoitteissa'' on parempi, sillä kieli speksataan tietyillä rajoitteilla
-(muistinkäyttö yms.) - tuo lause voisi tietysti reflektoida tätä
-(''...toteuttaa korvaavan kielen määrittelyssä luotujen rajoitusten
-puitteissa'' tjsp.) Muutin tämän nyt tuohon muotoon (ennen: ''...toteuttaa
-korvaavan kielen rajoitteissa.'')}
+rajoitusten puitteissa.
 
 Tutkittavana on myös, mitä optimointeja C:ssä ei voi tehdä helposti johtuen
 kielen rajoitteista ja miten tämän voisi korjata. Näitä ominaisuuksia ovat
 esimerkiksi sivuvaikutuksettoman ohjelmakoodin merkitseminen,
-optimointivinkkien alustariippumaton ilmaiseminen (esimerkiksi Rustin
-funktioiden annotaation) ja funktioiden yliajaminen\defword{function
-overloading} riippuen parametrien tyypistä tai arvoista, mikäli ne voidaan
-kääntöaikaisesti päätellä. Koska C:n spesifikaatio ei salli useita samannimisiä
-funktioita, kääntäjä ei voi helposti optimoida tällaisia tapauksia.
+optimointivinkkien kääntäjäriippumaton ilmaiseminen (esimerkiksi funktioiden
+koristelulla\defword{function annotation}) ja funktioiden
+yliajaminen\defword{function overloading} riippuen parametrien tyypistä tai
+arvoista, mikäli ne voidaan kääntöaikaisesti päätellä. Koska C:n spesifikaatio
+ei salli useaa samannimistä funktiota, funktioiden yliajaminen on haastavaa
+toteuttaa alustariippumattomasti.
 
-Tämän tutkielmasuunnitelman toisessa luvussa määritellään, minkälaiset
-ominaisuudet tarvitaan kieleltä, joka voisi korvata C:n kokonaan. Toisessa
-luvussa esitetään myös tutkielman kannalta oleellinen teoria, eli
-ohjelmointikielten nykypäivää sekä kerrotaan lyhyesti muista tutkittavista
-kielistä. Kolmannessa luvussa kerrotaan, miksi muut tutkitut kielet eivät täytä
-näitä ominaisuuksia, ja miten C:tä voisi parantaa. Neljännessä luvussa
-kuvaillaan toisen luvun määrittämien ominaisuuksien täyttävä ohjelmointikieli.
-\hl{Ja sitten myöhemmin: Viidennessä luvussa kuvaillaan tutkielman rakenne}
+Tämän tutkielmasuunnitelman toisessa luvussa määritellään seuraavat
+ominaisuudet kielelle, joka voisi korvata C:n kokonaan:
 
-\hl{Miten käännökset tulisi ilmaista? Alaviitteeseen\defword{footnote} vai
+Vaihtoehtoinen kieli aina
+\begin{itemize}[topsep=0pt]
+    \item on yhtä nopea tai nopeampi kuin C,
+    \item käyttää saman verran muistia tai vähemmän kuin C,
+    \item toimii kaikissa järjestelmissä, joissa C toimii,
+    \item toimii saumattomasti C:n kanssa ja
+    \item toimii saumattomasti muiden kielien C-rajapintojen kanssa.
+\end{itemize}
+Jotta jokin kieli olisi absoluuttisesti parempi, vähintään yhden näistä
+kriteereistä tulee olla aidosti parempi.
+
+Lisäksi kielistä tutkitaan muita suosioon vaikuttavia syitä, kuten
+helppokäyttöisyyttä sekä kielen luojan aiheuttamaa suosiota (esimerkiksi
+Googlen tarjoama tuki Go-kielelle).
+
+Toisessa luvussa esitetään tutkielman kannalta oleellinen teoria, eli
+määritetään tutkielman kontekstissa paremman kielen rajoitteet, pohditaan
+kielen suosioon vaikuttavia tekijöitä sekä kerrotaan lyhyesti muista
+tutkittavista kielistä. Kolmannessa luvussa kerrotaan, miksi muut tutkitut
+kielet eivät täytä näitä ominaisuuksia. Neljännessä luvussa kerrotaan, miten
+C:tä voisi parantaa.
+%kuvaillaan toisen luvun määrittämien ominaisuuksien täyttävä ohjelmointikieli.
+
+\hl{Miten käännökset tulisi ilmaista? Alaviitteeseen\footnote{eng. \emph{footnote}} vai
 sulkuihin (eng. \emph{parens})?}

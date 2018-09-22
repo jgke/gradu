@@ -5,7 +5,7 @@
 %\usepackage{fontspec}
 %\setmainfont{Comic Sans MS}
 \usepackage{lmodern}
-\usepackage{microtype}
+\usepackage[final]{microtype}
 \usepackage{amsfonts,amsmath,amssymb,amsthm,booktabs,color,enumitem,graphicx}
 %\usepackage[pdftex,hidelinks]{hyperref}
 \usepackage[hidelinks]{hyperref}
@@ -27,6 +27,12 @@
 \usepackage{totcount}
 \usepackage{inconsolata}
 \usepackage[normalem]{ulem}
+\usepackage{footnote}
+\usepackage{adjustbox}
+\usepackage{hyphenat}
+\usepackage{relsize}
+\makesavenoteenv{tabular}
+\makesavenoteenv{table}
 
 \renewcommand{\underline}[1]{\uline{#1}}
 
@@ -116,4 +122,6 @@
 
 %\linespread{1.25}
 
+\renewcommand\listingscaption{Ohjelma}
+\renewcommand{\_}{\relax\ifmmode_\else \textscale{0.5}{\textunderscore}\fi}
 \makeatother

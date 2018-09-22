@@ -2,12 +2,16 @@
 
 \usepackage{suunnitelma}
 
+\makeatletter
+\AtBeginDocument{%
+    \renewcommand{\BOthers}[1]{ja muut\hbox{}}%
+    \renewcommand{\BOthersPeriod}[1]{ja muut\hbox{}}%
+}
+\makeatother
+
 \begin{document}
 
-\title{C-ohjelmointikielen korvaajiksi tehdyt ohjelmointikielet \\
-ja miksi C on niistä huolimatta käytössä}
-\gdef\formtitle{C-ohjelmointikielen korvaajiksi tehdyt ohjelmointikielet
-ja miksi C on niistä huolimatta käytössä}
+\title{C-ohjelmointikielen korvaaminen muilla ohjelmointikielillä}
 \author{Jaakko Hannikainen}
 \date{\today}
 \level{Pro gradu -tutkielmasuunnitelma}
@@ -55,15 +59,18 @@ $\rightarrow$ Embedded software \\
 
 \renewcommand{\bibname}{Lähteet}
 \renewcommand{\BRetrievedFrom}{Saatavilla\ }
+\renewcommand{\BOthers}[1]{ja muut\hbox{}}
+\renewcommand{\BOthersPeriod}[1]{ja muut\hbox{}}
 \renewcommand*{\bibfont}{\interlinepenalty 10000\relax}
 \bibliography{references}
 
 \appendixbeginhere
-\inputappendix{github.tex}
-\restoregeometry
-\inputappendix{kieli.tex}
-\inputappendix{lisp.tex}
-\inputappendix{curly.tex}
+%\inputappendix{github.tex}
+%\restoregeometry
+%\inputappendix{kieli.tex}
+%\inputappendix{lisp.tex}
+%\inputappendix{curly.tex}
 \appendixendhere
+
 
 \end{document}
