@@ -10,11 +10,8 @@ mihin konekielen rakenteisiin se kääntyy. C on suosittu erityisesti
 käyttöjärjestelmien ytimien toteutukseen sekä sulautettujen järjestelmien
 toteuttamiseen. C:n toteutuksessa on on otettu huomioon mahdollisimman helppo
 kääntäjän toteuttaminen\citationneeded, sillä tuolloin jokaiselle alustalle
-piti toteuttaa oma kääntäjänsä.
-
-C on kuitenkin hyvin vanha kieli, siellä täällä parannettavaa; makrot, nullit,
-syntaksi, UB, bitwise, makroilla/joillain string format, statementit /=
-expressiot, turha tavara ulos standardikirjastosta, utf-8
+piti toteuttaa oma kääntäjänsä. \hl{Tässä kappaleessa on aika paljon väitteitä
+ilman lähteitä...}
 
 C:n syntaksia on usein kritisoitu\citationneeded~vuolaudesta. Koska C on
 kielenä hyvin yksinkertainen, siinä on hyvin vähän rakenteita ohjelman
@@ -22,23 +19,31 @@ rakenteen hallitsemiseen. Erityisesti virheidenhallinta vie paljon
 ohjelmakoodia, sillä ohjelmoijan pitää erikseen tunnistaa virhetilanne,
 jonka jälkeen ohjelmoijan tulee tilanteesta riippuen joko palauttaa jokin
 tietty arvo, vapauttaa muistia tai tehdä jotain muuta.
+Ohjelma~\ref{fig:cerrorhandling} on esimerkki tästä.
+
+\FloatBarrier
 
 \begin{listing}[ht!]
     \inputminted{C}{c-error-handling.c}
     \caption{Linux-kernelin i915-näytönohjainajrin lähdekoodia
-    typistettynä~\citep[i915\_perf.c, funktio i915\_oa\_stream\_init]{i915debugfs}. Ajurin lähdekoodissa tark}
+    typistettynä~\citep[\texttt{drivers/gpu/drm/i915/i915\_perf.c}, funktio
+    \texttt{i915\_oa\_stream\_init}]{i915debugfs}. Ajurin lähdekoodissa
+    tarkistetaan useita arvoja, jotka vaikuttavat funktion kontrollivuohon.}
     \label{fig:cerrorhandling}
 \end{listing}
 
-\begin{listing}[ht!]
-    \inputminted{Kotlin}{c-error-handling-maybe.kt}
-    \caption{Vastaava lähdekoodi kuin ohjelmassa~\ref{fig:cerrorhandling},
-    mutta typistetyllä syntaksilla. Syntaksissa on otettu vaikutteita
-    erityisesti Kotlinista, jossa muuttuja \texttt{it} viittaa nimettömiin
-    lambda-parametreihin. Tämän version lähdekoodissa on kolme riviä vähemmän
-    ja noin 10\% vähemmän merkkejä.}
-\end{listing}
-
+%\begin{listing}[ht!]
+%    \inputminted{Kotlin}{c-error-handling-maybe.kt}
+%    \caption{Vastaava lähdekoodi kuin ohjelmassa~\ref{fig:cerrorhandling},
+%    mutta Kotlinin~\citep{kotlin} kaltaisella syntaksilla. Muuttuja \texttt{it}
+%    viittaa nimettömiin lambda-parametreihin. Tämän version lähdekoodissa on
+%    kolme riviä vähemmän ja noin 10\% vähemmän merkkejä. Lambdapohjainen
+%    lähestymistapa ei toimi hyvin matalalla tasolla, sillä sulkeumien
+%    alustariippumaton toteutus on haastavaa ilman dynaamista muistinhallintaa.
+%    Esimerkin voisi kuitenkin kääntää vastaamaan
+%    ohjelman~\ref{fig:cerrorhandling} lähdekoodia.}
+%    \vspace*{1cm}
+%\end{listing}
 
 C:n makrojärjestelmä on hyvin yksinkertainen. Kun esikääntäjä lukee
 lähdekoodissa makron, se korvaa sen makron määritelmällä. C:n makrojärjestelmä
@@ -46,7 +51,7 @@ on kuitenkin rajoittunut -- rekursiivisten makrojen rakentaminen on mahdotonta,
 sillä itsensä sisältävät makrot eivät korvaa itseään kuin kerran\footnote{C90:
 3.8.3.4 Rescanning and further replacement. Ks. sivun~\pageref{cspecnote}
 alaviite~\ref{cspecnote}}. C:n makrot eivät myöskään ole hygieenisiä, kuten
-kuva~\ref{fig:cmacro} näyttää.
+ohjelma~\ref{fig:cmacro} näyttää.
 
 \begin{listing}[ht!]
     \inputminted{C}{c-hygiene.c}
@@ -54,35 +59,38 @@ kuva~\ref{fig:cmacro} näyttää.
     \caption{C:n makrot eivät ole hygieenisiä. DOUBLE-makro muuttuu
     käännösvaiheessa muotoon 1+1*2, joka on laskujärjestyksen takia 3 eikä
     odotettu 4. Koko printf-kutsuksi muodostuu siis
-    ''\texttt{printf("one plus one doubled is \%d", 1+1*2)}''
+    ''\texttt{printf("one plus one doubled is \%d", 1+1*2)}''}
     \label{fig:cmacro}
-}
 \end{listing}
 
-C:n makrot eivät myöskään pysty muokkaamaan ohjelmakoodin rakennetta tai
-sisältöä, kun taas esimerkiksi LISP-kieliperheessä lukuisat ominaisuudet voi
-toteutettaa käännösaikaisilla makroilla. Myös Rustissa oleva makrojärjestelmä
-antaa suoran pääsyn kielen syntaksipuun muokkaamiseen. Hyvällä
-makrojärjestelmällä mahdollistetaan yksinkertainen kielen ydin, jota voi
-muokata kirjastoilla.
+C:n makrot eivät myöskään pysty muokkaamaan ohjelmakoodin rakennetta, kun taas
+esimerkiksi LISP-kieliperheessä lukuisat ominaisuudet voi toteutettaa
+käännösaikaisilla makroilla. Myös Rustissa oleva makrojärjestelmä antaa suoran
+pääsyn kielen syntaksipuun muokkaamiseen. Vahva makrojärjestelmä mahdollistaa
+yksinkertaisen kielen, jota voi muokata kirjastoilla.
 
-C:n tyyppisyntaksia on usein\citationneeded~kritisoitu, vaikka kielessä onkin
-sinänsä järkevä logiikka tyyppimäärittelyyn: jos tyyppimäärittely on
-esimerkiksi \texttt{int~(*fp)(int~arg,~char~arg2)}, kirjoittamalla
-ohjelmakoodiin \texttt{(*fp)(int,~char)} saa arvon tyyppiä \texttt{int}.
-Monimutkaisissa tapauksissa on vaikeaa seurata tyypin oikeaa arvoa, ja monet
-ohjelmointikielet ovatkin kehittäneet muita tapoja merkitä tyyppejä.
-Esimerkiksi TypeScriptin syntaksilla yllä oleva tyyppin voisi ilmaista
-kirjoittamalla \texttt{fp:~(int,~char)~=>~int}.
+C:n tyyppisyntaksi on moderneihin tyyppysyntakseihin verrattuna hyvin epäselkeä.
+Erityisesti osoitintyypit ja funktio-osoitintyypit ovat hyvin epäselkeitä
+%,
+%vaikka kielessä onkin sinänsä järkevä logiikka tyyppimäärittelyyn: jos
+%tyyppimäärittely on esimerkiksi \texttt{int~(*fp)(int~arg,~char~arg2)},
+%kirjoittamalla ohjelmakoodiin \texttt{(*fp)(int,~char)} saa arvon tyyppiä
+%\texttt{int}
+. Monimutkaisissa tapauksissa on vaikeaa seurata tyypin oikeaa
+arvoa, ja muissa ohjelmointikielissä onkin muita tapoja merkitä tyyppejä.
+Esimerkiksi C:n funktio-osoitintyypin \texttt{int~(*fp)(int~arg,~char~arg2)}
+voisi ilmaista TypeScriptin syntaksilla \texttt{fp:~(int,~char)~=>~int}, jossa
+tyypin voi lukea suoraviivaisesti vasemmalta oikealle.
+
+\newpage
 
 C on suunniteltu olemaan mahdollisimman alustariippumaton, mutta jos tämä
 aiheuttaa ristiriidan mahdollisimman nopean toteutuksen kanssa, suositaan
 nopeutta -- useista C:n operaatioista tulee eri tuloksia riippuen
 alustasta\footnote{C90: liite A, luku 6. ks. sivun~\pageref{cspecnote}
 alaviite~\ref{cspecnote}}. Tästä yleisin esimerkki on kokonaislukujen ylivuoto,
-jonka tulos riippuu kääntäjäoptimoinnista:
-
-\FloatBarrier
+jonka tulos riippuu kääntäjäoptimoinnista, kuten ohjelma~\ref{fig:coverflow}
+näyttää.
 
 \begin{listing}[ht!]
     \inputminted{C}{c-overflow.c}
@@ -96,17 +104,25 @@ jonka tulos riippuu kääntäjäoptimoinnista:
     ''määrittelemätöntä toimintaa'' \defwordin{undefined behavior}.
     Luonnollisten lukujen yli- ja alivuoto taas on määritelty -- operaation
     $+1$ ylivuotaessa tulos on aina $0$.}
+    \label{fig:coverflow}
 \end{listing}
 
-\FloatBarrier
+C:stä puuttuu useita matalan tason operaatioita, joista yksi on erityisesti
+kryptografiassa käytetty kiertobittisiirto\defword{circular bit shift}. C ei
+mahdollista uusien operaattoreiden määrittämistä, vaan ohjelmoijat joutuvat 
+luomaan funktioita ja luottamaan siihen, että kääntäjä ymmärtää mistä
+operaatiosta on kyse. Liki kaikista moderneista prosessoreista
+kiertobittisiirto löytyy suoraan assembly-komentona.
 
-\hl{ Jossain oli sivulauseessa että koodiesimerkit pitäisi käydä rivi riviltä
-läpi, miten rivi riviltä tämä oikeasti on? Selitänkö että ''\texttt{void
-print\_if\_overflow(int x)}'' määrittelee funktion yms., vai riittääkö tuo
-nykyisen tasoinen selitys tällaisissa kohtalaisen yksinkertaisissa asioissa?
-C:n syntaksi kun ei ole erityisen esoteerinen.}
-
-\FloatBarrier
+C:n standardikirjastossa on suuri määrä merkkijonojen hallintaan tarkoitettuja
+funktioita. Nämä eivät kuitenkaan tue monitavuisia enkoodauksia, kuten
+UTF-8:aa, vaan toimivat pelkästään yksittäisistä merkeistä koostuvista
+merkkijonoista. Standardikirjastosta löytyy myös sekä monitavuisia merkkijonoja
+että monitavuisia merkkejä varten tukea, mutta niiden osalta C-standardi on
+tarkoituksenmukaisesti jätetty avoimeksi. Parempi ratkaisu olisi irroittaa
+merkkijonojen käsittely kielestä erilliseksi kirjastoksi, ja mahdollistaa
+merkkijonojen muodon määrittäminen kirjastotasolla. Kieli voisi tarjota
+järkevän oletusenkoodauksen, kuten vaikka UTF-8:n.
 
 \subsection{Ominaisuuksia}
 
