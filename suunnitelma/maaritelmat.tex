@@ -7,14 +7,17 @@ Verrattavissa ohjelmointikielissä on yritetty parantaa C:n huonoja puolia
 hyvien puolien kustannuksella, usein lisäämällä kieleen turvallisuutta
 parantavia ominaisuuksia tai tehden kielestä helppokäyttöisemmän esimerkiksi
 automaattisella muistinhallinnalla. Tämä kuitenkin heikentää kielen tehokkuutta
-tai alustayhteensopivuutta tehden kielten suorasta vertailusta hankalaa. 
+tai alustariippumattomuutta tehden kielten suorasta vertailusta hankalaa.
 Määrittelemällä absoluuttiset reunaehdot voidaan vertailla kieliä
-objektiivisesti. Jos yksikin näistä kriteereistä ei pidä, verrattava kieli ei
-ole aidosti C:tä parempi, vaan se häviää C:lle joissain osa-alueissa ja
-vastaavasti on parempi joissakin toisissa.
+ehtojen puitteissa objektiivisesti. Jos yksikin näistä kriteereistä ei pidä,
+verrattava kieli ei ole aidosti C:tä parempi, vaan se häviää C:lle joissain
+osa-alueissa ja vastaavasti voi olla parempi joissakin toisissa.
 
-Tässä tutkielmassa vertaillaan kolmea osa-aluetta ohjelmointikielistä:
-suorituskykyä, muistinkäyttöä sekä yhteensopivuutta C:n kanssa.
+Tutkielmassa vertaillaan kolmea osa-aluetta ohjelmointikielistä: suorituskykyä,
+muistinkäyttöä sekä yhteensopivuutta C:n ja muiden ohjelmointikielten kanssa.
+Tutkielmassa käsitellään myös subjektiivisia kielten ominaisuuksia, kuten
+kielen tiiviyttä\defword{terseness, expressiveness}, mutta näitä
+ominaisuuksia ei huomioida kielten paremmuusvertailussa.
 
 Ohjelmointikielellä kirjoitetun tulee olla ajoaikaisesti vähintään yhtä nopea
 kuin vastaava C:llä kirjoitettu ohjelma. Kieli siis ei saa vaatia ohjelmoijaa
@@ -24,53 +27,55 @@ ominaisuudet, kuten muistialueiden tarkistukset, hidastavat kielen ajoaikaista
 nopeutta.
 
 Ohjelmointikielellä toteutettu ohjelma ei myöskään saa käyttää enempää muistia
-kuin vastaava C-ohjelma. Tämä koskee myös vakiokirjastoa\defword{standard
-library} -- yksikin konkreettinen vakiokirjaston funktio linkitettynä ohjelmaan
-kasvattaa ohjelman kokoa. Mikäli jokin vakiokirjasto toteutetaan, sen
-käyttäminen tulee olla ohjelmoijalle täysin vapaaehtoista. Yksi tapa toteuttaa
-tämä on liittää vain käytetyt funktiot osaksi ohjelmaa, jolloin käyttämättömät
-funktiot eivät kasvata ohjelman kokoa\footnote{Jos kieltä käytetään tarpeeksi
-monessa ohjelmassa, tilankäytön kannalta on edullisempaa säilöä vakiokirjasto
-jaetussa tiedostossa. Tällöin tosin käännösaikainen optimointi on vaikeampaa,
-ja ohjelman käynnistäminen on hieman hitaampaa vakiokirjaston funktioiden
-dynaamisesta lataamisesta johtuen.}.
+niin ajoaikaisesti kuin talletusvälineelläkään kuin vastaava C-ohjelma. Tämä
+koskee myös vakiokirjastoa\defword{standard library} -- yksikin konkreettinen
+vakiokirjaston funktio linkitettynä ohjelmaan kasvattaa ohjelman kokoa. Mikäli
+jokin vakiokirjasto toteutetaan, sen käyttäminen tulee olla ohjelmoijalle
+täysin vapaaehtoista. Yksi tapa toteuttaa tämä on liittää vain käytetyt
+funktiot osaksi ohjelmaa, jolloin käyttämättömät funktiot eivät kasvata
+ohjelman kokoa\footnote{Jos kieltä käytetään useassa ohjelmassa, tilankäytön
+kannalta on edullisempaa säilöä vakiokirjasto jaettuna kirjastona. Tämä voi
+myös nopeuttaa ohjelmien käynnistysnopeuksia, tosin tällöin ohjelmien
+käännösaikainen optimointi on vaikeampaa. Jos vakiokirjastoa ei ole ladattu
+muistiin ohjelman käynnistyessä, ohjelman käynnistys voi kestää hieman
+kauemmin.}.
 
 Ohjelmointikielen tulee olla täysin yhteensopiva C:n kanssa. Tämä koskee
 C-koodin kutsumista (C\hyp{}vierasfunktiorajapinta, C-VFR\defword{Foreign
-function interface, FFI}) sekä muiden ohjelmointikielten C-rajapinnan läpi
-kutsumista (VFR). Kielen tulee näiden lisäksi toimia kaikissa ympäristöissä,
-joissa C toimii.
+function interface, FFI}) sekä kielen funktioiden kutsumista muiden
+ohjelmointikielten C-rajapinnan läpi kutsumista (VFR). Kielen tulee näiden
+lisäksi toimia kaikissa ympäristöissä, joissa C toimii.
 
 \subsection{Kielen suosioon vaikuttavat tekijät}
 
 Eräässä tutkimuksessa~\citep{empiricalpopularity} tutkittiin syitä
 ohjelmointkielten valintaan. Yhden tutkimuksen järjestämän kyselyn (s. 8,
 Slashdotissa julkaistu kysely, n=1679) perusteella kielen valintaan vaikuttaa
-avoimen lähdekoodin kirjastojen saatavuus, olemassaolevien ohjelmien
+avoimen lähdekoodin kirjastojen saatavuus, olemassa olevien ohjelmien
 jatkokehitys sekä kielen tunnettavuus ohjelmoijien keskuudessa -- ohjelmoijat
 siis suosivat jo käytettyjä ohjelmointikieliä uusien kielten sijaan. Saman
 kyselyn vastaajat arvioivat suorituskyvyn turvallisuutta tärkeämmäksi.
 
-Slashdot-kyselyssä noin 40\% vastaajista arvioi tärkeäksi kriteeriksi työkalut.
-Kielen tulisi siis tarjota toimivat työkalut, kuten
-paketinhallintajärjestelmän\defword{package manager}, käännöstyökalun sekä
-valmiudet olemassaoleviin kehitysympäristöihin integroitumiselle.
-Olemassaolevien C-ohjelmistojen tukeminen on välttämätöntä, mutta haastavaa
-johtuen C:n ekosysteemin monimuotoisuudesta, erityisesti kääntämisen
-helpottamiseksi tehdyt työkalut.
+Saman tutkimuksen järjestämässä Slashdot-sivustolla julkaistussa kyselyssä noin
+40\% vastaajista arvioi tärkeäksi kriteeriksi työkalut. Kyselyn perusteella
+kielen olisi siis hyvä tarjota toimivat työkalut, kuten kirjastopakettien
+hakemiseen paketinhallintajärjestelmän\defword{package manager}, nopean ja
+käyttäjäystävällisen käännöstyökalun sekä valmiudet olemassa oleviin
+kehitysympäristöihin integroitumiselle. Olemassaolevien C-ohjelmistojen
+tukeminen on välttämätöntä, mutta haastavaa johtuen C:n ekosysteemin
+monimuotoisuudesta, erityisesti lukuisista kääntämistyökaluista.
 
-Kyselyssä selvitettiin myös suosittuja ominaisuuksia ohjelmointikieleltä (s.
-13, SaaS MOOC -kurssin yhteydessä oleva kysely, n=415). Useita tutkimuksessa
-selvitetyistä suosituimmista ominaisuuksista ei ole mahdollista toteuttaa
-johtuen luvussa~\ref{sec:abs} määritetyistä rajoitteista, kuten poikkeuksia ja
-rajapintoja. Useat muut tutkimuksessa esiin nousseet ominaisuudet, kuten
-suorituskyky, dokumentaatio ja yksinkertaisuus, ovat täysin mahdollisia
-toteuttaa.
+Tutkimuksessa selvitettiin myös suosittuja ominaisuuksia ohjelmointikieliltä
+(s. 13, SaaS MOOC -kurssin yhteydessä oleva kysely, n=415). Useita
+tutkimuksessa selvitetyistä suosituimmista ominaisuuksista ei ole mahdollista
+toteuttaa johtuen luvussa~\ref{sec:abs} määritetyistä rajoitteista, kuten
+poikkeuksia ja rajapintoja. Useat muut tutkimuksessa esiin nousseet
+ominaisuudet, kuten suorituskyky, dokumentaatio ja yksinkertaisuus, ovat täysin
+mahdollisia toteuttaa.
 
 Tutkimuksessa myös verrattiin tiettyjen toteamuksien keskenäistä korrelaatiota.
-Kielen tiiviys\defword{terseness, expressiveness} korreloi eniten
-(korrelaatiokertoimella 0.76) kielestä pitämisen kanssa (s. 13, The Hammer
-Principle -sivustolla julkaistu kysely).
+Kielen tiiviys korreloi eniten (korrelaatiokertoimella 0.76) kielestä pitämisen
+kanssa (s. 13, The Hammer Principle -sivustolla julkaistu kysely).
 
 %Eräässä blogikirjoituksessa \citep{microsoftdictperf} vertaillaan C\#:n ja
 %C++:n suorituskykyä. Kirjoituksessa C\#:llä kirjoitettu yksinkertainen toteutus
@@ -90,8 +95,8 @@ helpommaksi sitä mukaa, mitä useampaa kieltä tuntee\citationneeded. Uusien
 ohjelmointikielten käyttöönottoa helpottaa siis muiden vastaavien kielten
 osaaminen. Suunnittelemalla C:n korvaajan C:n kanssa samankaltaiseksi kieleksi
 voidaan pienentää uuden kielen opettelun kynnystä. Kielen eriävät ominaisuudet
-tulee siis toteuttaa siten, että ne ovat mahdollisimman helppoja oppia C:stä
-kieleen siirtyvälle ohjelmoijalle.
+olisi siis hyvä toteuttaa siten, että ne ovat mahdollisimman helppoja oppia
+C:stä kieleen siirtyvälle ohjelmoijalle.
 
 %Helppokäyttöisyys \\
 %- turvallisuus (esim. tyypit) \\
@@ -151,27 +156,26 @@ päätyneet hyvin suosituiksi ohjelmointikieliksi, kuten esimerkiksi C++ ja Go.
 Kielten suosion mittaamiseen on tehty useita projekteja, jotka vertailevat
 kieliä esimerkiksi hakutulosten tai projektien mukaan. Näitä ovat esimerkiksi
 TIOBEn ohjelmointikielten suosion indeksi~\citep{tiobe} ja GitHubin julkaisema
-Octoverse~\citep{octoverse}. Valitsemalla vertailuun suosittuja kieliä voidaan
-tutkia, miksi muuten selkeästi täysin käyttökelpoinen kieli ei ole syrjäyttänyt
-C:tä.
+Octoverse~\citep{octoverse}.%Valitsemalla vertailuun suosittuja kieliä voidaan tutkia, miksi muuten selkeästi täysin käyttökelpoinen kieli ei ole syrjäyttänyt C:tä.
 
-\hl{... Lisäksi olisi hyvä selittää, millä tavoin vertailu ylipäätään voisi
-selvittää syitä C:n syrjäyttämättä jäämiseen.}
-
-Koska C on yksi suorituskyvyltään nopeimmista ohjelmointikielistä, on
-tärkeää rajata vertailuun vain muita tehokkaita kieliä -- korkeamman tason
+Koska tutkimuskysymys on rajattu suorituskyvyn ja muistinkäytön mukaisesti,
+vertailuun kannattaa ottaa mukaan vain tehokkaita kieliä -- korkeamman tason
 ohjelmointikielet on tarkoitettu ohjelmointinopeuden parantamiseen ja
 turvallisempien ohjelmistojen toteuttamiseen nopeiden ohjelmien sijaan. Tällöin
-suorituskyky on jäänyt vähemmälle, koska on usein halvempaa optimoida
-kirjoittamiseen käytettyä aikaa kuin nopeuttaa suorituskykyä\citationneeded.
-Yksi kattava suorituskykyä mittaava vertailu on Benchmarks
-game~\citep{benchmarks}, jossa pyritään kirjoittamaan mahdollisimman nopea
-ohjelma pysyen silti kielelle idiomaattisessa ohjelmakoodissa.
+suorituskyky on heikompi, koska on usein halvempaa optimoida kirjoittamiseen
+käytettyä aikaa kuin nopeuttaa suorituskykyä\citationneeded. Yksi kattava
+suorituskykyä mittaava vertailu on Benchmarks Game~\citep{benchmarks}, jossa
+pyritään kirjoittamaan mahdollisimman nopea ohjelma pysyen silti kielelle
+idiomaattisessa ohjelmakoodissa\footnote{Hyvin monessa kielessä voi kirjoittaa
+C:hen verrattavissa olevaa matalan tason ohjelmointia, mutta Benchmarks Gamessa
+on tarkoituksena välttää tätä.}.
 
-Ada, C++, D, Go ja Rust nousevat esiin näistä kolmesta vertailusta. Kaikki
-viisi kieltä ovat sekä suosittuja että tehokkaita.
+TIOBEn listasta Ada, C++, D, Go ja Rust nousevat esiin verrattavina kielinä.
+Kaikki viisi kieltä ovat tehokkaita. Tämän lisäksi jokaisen kielten historiassa
+on ollut tavoitteena korvata C:n tai C++:n käyttö, kuten luvussa~\ref{sec:muut}
+kerrotaan.
 
-Lähivuosina on tehty myös useita C:hen käännettäviä ohjelmointikieliä, jotka
+Viime vuosina on tehty myös useita C:hen käännettäviä ohjelmointikieliä, jotka
 ovat jääneet pitkälti ilman mitään näkyvyyttä, kuten LISP/c~\citep{clisp1},
 C-Mera~\citep{clisp2}, Carp~\citep{clisp3} ja Nymph~\citep{nymph}. LISP/c,
 C-Mera ja Carp ovat LISP-perheeseen kuuluvia C:ksi kääntyviä ohjelmointikieliä,
@@ -180,6 +184,8 @@ syntaksilla. Nymph taas on olio-ohjelmointikieli. Erityisesti Carp on tämän
 tutkielman kannalta kiintoisa ohjelmointikieli, sillä se on C:ksi kääntyvä
 ohjelmointikieli, joka on suunniteltu mahdollisimman suorituskykyiseksi.
 
-\hl{Tässä voisi olla jotain pohdintaa, miksi nuo ovat jääneet huomiotta ja
-miten tämän voisi välttää. Erityisesti Carp tuntuu tätä tutkielmaa vastaavalta
-kieleltä, olisi ikävää jättää se täysin huomiotta.}
+%\hl{Tässä voisi olla jotain pohdintaa, miksi nuo ovat jääneet huomiotta ja
+%miten tämän voisi välttää. Erityisesti Carp tuntuu tätä tutkielmaa vastaavalta
+%kieleltä, olisi ikävää jättää se täysin huomiotta. Tosin tällaiset pohdinnat
+%jäänee puhtaasti spekulaatioksi, sillä noista ei ole erityisen paljoa dataa
+%saatavilla.}

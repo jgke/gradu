@@ -1,3 +1,3 @@
 $ cc c-hygiene.c
 $ ./a.out
-one plus one doubled is 3
+One plus one doubled is 3

@@ -110,7 +110,7 @@
     \if@swedish
       \RequirePackage[swedish]{babel}[2001/03/01 v3.7h The Babel package]
     \else
-      \RequirePackage[finnish]{babel}[2001/03/01 v3.7h The Babel package]
+      \RequirePackage[english,finnish]{babel}[2001/03/01 v3.7h The Babel package]
     \fi
   \fi
 \fi

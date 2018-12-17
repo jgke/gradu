@@ -1,8 +1,8 @@
-@techreport{C11,
+@techreport{C18,
     type = {Standard},
     key = {ISO/IEC},
-    year = {2011},
-    title = {{ISO/IEC 9899:2011 -- Information technology -- Programming languages -- C}},
+    year = {2018},
+    title = {{ISO/IEC 9899:2018 -- Information technology -- Programming languages -- C}},
     address = {Geneva, CH},
     institution = {International Organization for Standardization}
 }
@@ -49,14 +49,14 @@
 @misc{tiobe,
     author = {{TIOBE software BV}},
     title = {{TIOBE index}},
-    howpublished = {{\\\url{https://www.tiobe.com/tiobe-index}}},
+    howpublished = {{\url{https://www.tiobe.com/tiobe-index}}},
     year = {2018}
 }
 @misc{octoverse,
     author = {{GitHub, Inc.}},
-    title = {{GitHub Octoverse 2017 | Highlights from the last twelve months}},
+    title = {{The State of the Octoverse | The State of the Octoverse reflects on 2018 so far, teamwork across time zones, and 1.1 billion contributions.}},
     howpublished = {{\\\url{https://octoverse.github.com/}}},
-    year = {2017}
+    year = {2018}
 }
 
 @misc{benchmarks,
@@ -253,7 +253,7 @@
 @misc{effectivego,
     author = {{Google, Inc.}},
     title = {{Effective Go - The Go Programming Language}},
-    howpublished = {{\\\url{https://golang.org/doc/effective_go.html#panic}}},
+    howpublished = {\\\href{https://golang.org/doc/effective_go.html\#panic}{\texttt{https://golang.org/doc/effective\textunderscore{}go.html\#panic}}},
     year = {2018}
 }
 
@@ -332,7 +332,7 @@
 
 @misc{microsoftdictperf,
     author = {Mariani, Rico and Chen, Raymond},
-    title = {Performance Quiz \#6 — Chinese/English Dictionary reader – Rico Mariani's Performance Tidbits},
+    title = {{Performance Quiz \#6 — Chinese/English Dictionary reader – Rico Mariani's Performance Tidbits}},
     howpublished = {\url{https://blogs.msdn.microsoft.com/ricom/2005/05/10/performance-quiz-6-chineseenglish-dictionary-reader/}},
     month = {5},
     year = {2005}
@@ -342,19 +342,19 @@
     year = {2018},
     author = {{Rust Project Developers}},
     title = {Patterns},
-    howpublished = {\url{https://doc.rust-lang.org/1.5.0/book/patterns.html#guards}}
+    howpublished = {\\\url{https://doc.rust-lang.org/1.5.0/book/patterns.html#guards}}
 }
 
 @misc{slashdot,
     author = {{Slashdotmedia}},
-    title = {Slashdot: News for nerds, stuff that matters},
+    title = {{Slashdot: News for nerds, stuff that matters}},
     howpublished = {\url{https://slashdot.org/}},
     year = {2018}
 }
 
 @misc{rustbinarysize,
     author = {{Rust Project Developers}},
-    title = {Frequently Asked Questions · The Rust Programming Language},
+    title = {{Frequently Asked Questions - The Rust Programming Language}},
     howpublished = {\url{https://www.rust-lang.org/en-US/faq.html#why-do-rust-programs-have-larger-binary-sizes-than-C-programs}},
     year = {2018}
 }
@@ -389,7 +389,56 @@
 
 @misc{i915debugfs,
     author = {Anholt, Eric and Packard, Keith},
-    title = {i915\_debugfs.c\textbackslash{}i915\textbackslash{}drm\textbackslash{}gpu\textbackslash{}drivers - kernel/git/torvalds/linux.git - {Linux kernel source tree}},
-    howpublished = {\url{https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/tree/drivers/gpu/drm/i915/i915\_debugfs.c?id=10dc890d4228cd17ddfd09ba9aaa9221627e29b2}},
+    title = {i915\textunderscore{}debugfs.c\textbackslash{}i915\textbackslash{}drm\textbackslash{}gpu\textbackslash{}drivers - kernel/git/torvalds/linux.git - {Linux kernel source tree}},
+    howpublished = {\href{https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/tree/drivers/gpu/drm/i915/i915_debugfs.c?id=10dc890d4228cd17ddfd09ba9aaa9221627e29b2}{\texttt{https://git.kernel.org/\allowbreak pub/scm/linux/kernel/git/torvalds/linux.git/tree/drivers/gpu/drm/\allowbreak i915/i915\textunderscore{}debugfs.c?id=10dc890d4228cd17ddfd09ba9aaa9221627e29b2}}},
     year = {2018}
+}
+
+@misc{openssl,
+    author = {{OpenSSL Project Authors}},
+    title = {{OpenSSL}},
+    howpublished = {\url{https://www.openssl.org/}},
+    year = {2018}
+}
+
+@misc{goreflection,
+    author = {{Google, Inc.}},
+    title = {{Effective Go - The Go Programming Language}},
+    howpublished = {\href{https://golang.org/doc/effective_go.html#interface_conversions}{https://golang.org/doc/effective\textunderscore{}go.html\#interface\textunderscore{}conversions}},
+    year = {2018}
+}
+
+@misc{gogenerate,
+    author = {Pike, Rob},
+    title = {{Generating code - The Go Blog}},
+    howpublished = {\\\url{https://blog.golang.org/generate}},
+    year = {2014}
+}
+
+@inproceedings{macrohygiene,
+ author = {Kohlbecker, Eugene and Friedman, Daniel P. and Felleisen, Matthias and Duba, Bruce},
+ title = {{Hygienic Macro Expansion}},
+ booktitle = {{Proceedings of the 1986 ACM Conference on LISP and Functional Programming}},
+ series = {LFP '86},
+ year = {1986},
+ isbn = {0-89791-200-4},
+ location = {Cambridge, Massachusetts, USA},
+ pages = {151--161},
+ numpages = {11},
+ url = {http://doi.acm.org/10.1145/319838.319859},
+ doi = {10.1145/319838.319859},
+ acmid = {319859},
+ publisher = {ACM},
+ address = {New York, NY, USA},
+} 
+
+@book{unicode11,
+  address = {Mountain View, CA},
+  author = {{The Unicode Consortium}},
+  institution = {{Unicode Consortium}},
+  isbn = {978-1-936213-19-1},
+  keywords = {Characters Encoding Unicode standard},
+  title = {{The Unicode Standard, version 11.0.0 - Core Standard}},
+  url = {http://www.unicode.org/versions/Unicode11.0.0/},
+  year = 2018
 }

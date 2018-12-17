@@ -1,15 +1,18 @@
 \section{Johdanto} 
 
-C~\citep{C11} on ollut vallitseva ohjelmointikieli järjestelmäohjelmoinnissa
+\hl{otsikot kakkaa}
+
+C~\citep{C18} on ollut vallitseva ohjelmointikieli järjestelmäohjelmoinnissa
 C:n alkuajoista lähtien. Useita ohjelmointikieliä on luotu historian saatossa,
 joiden oli tarkoitus syrjäyttää C, mutta C on vieläkin johtavana kielenä
 varsinkin sulautetuissa järjestelmissä ja UNIX-pohjaisten käyttöjärjestelmien
 vallitsevana ohjelmointikielenä. C on myös käytössä
 Windows-käyttöjärjestelmäperheen ydinkomponenttien toteutuksessa.
-Opinnäytetyössä tutkitaan, miksi vaihtoehdoista huolimatta C on vieläkin
-laajalti käytössä myös uusissa projekteissa ja minkälainen ohjelmointikieli
-voisi syrjäyttää C:n. Syrjäyttämisessä tutkitaan erityisesti mahdollisuuksia
-olemassaolevien C-kielellä kirjoitettujen ohjelmien jatkokehittämistä uudella
+Tutkielmassa selvitetään, mitkä vaihtoehtoisten kielten ominaisuudet ovat
+voineet estää kielen käytön C:n sijaan uusissa ja olemassa olevissa projekteissa
+ja minkälaista ohjelmointikieltä voisi aina ominaisuuksiensa puolesta käyttää
+C:n sijaan. Vertailussa tutkitaan erityisesti mahdollisuuksia olemassa olevien
+C-kielellä kirjoitettujen ohjelmien jatkokehittämistä uudella
 ohjelmointikielellä ja uusien projektien toteuttamista C:n sijaan uudella
 ohjelmointikielellä.
 
@@ -22,21 +25,21 @@ korkean tason ominaisuuksia, jotka ovat hyödyllisiä matalan tason
 ohjelmoinnissa ja jotka voi toteuttaa korvaavan kielen määrittelyssä luotujen
 rajoitusten puitteissa.
 
-Tutkittavana on myös, mitä optimointeja C:ssä ei voi tehdä helposti johtuen
-kielen rajoitteista ja miten tämän voisi korjata. Näitä ominaisuuksia ovat
-esimerkiksi sivuvaikutuksettoman ohjelmakoodin merkitseminen,
-optimointivinkkien kääntäjäriippumaton ilmaiseminen (esimerkiksi funktioiden
-koristelulla\defword{function annotation}) ja funktioiden
-yliajaminen\defword{function overloading} riippuen parametrien tyypistä tai
-arvoista, mikäli ne voidaan kääntöaikaisesti päätellä. Koska C:n spesifikaatio
-ei salli useaa samannimistä funktiota, funktioiden yliajaminen on haastavaa
-toteuttaa alustariippumattomasti.
+%Tutkittavana on myös, mitä optimointeja C:ssä ei voi tehdä helposti johtuen
+%kielen rajoitteista ja miten tämän voisi korjata. Näitä ominaisuuksia ovat
+%esimerkiksi sivuvaikutuksettoman ohjelmakoodin merkitseminen,
+%optimointivinkkien kääntäjäriippumaton ilmaiseminen (esimerkiksi funktioiden
+%koristelulla\defword{function annotation}) ja funktioiden
+%yliajaminen\defword{function overloading} riippuen parametrien tyypistä tai
+%arvoista, mikäli ne voidaan kääntöaikaisesti päätellä. Koska C:n spesifikaatio
+%ei salli useaa samannimistä funktiota, funktioiden yliajaminen on haastavaa
+%toteuttaa alustariippumattomasti.
 
 Tämän tutkielmasuunnitelman toisessa luvussa määritellään seuraavat
 ominaisuudet kielelle, joka voisi korvata C:n kokonaan:
 
 Vaihtoehtoinen kieli aina
-\begin{itemize}[topsep=0pt]
+\begin{itemize}[topsep=0pt,itemsep=0pt]
     \item on yhtä nopea tai nopeampi kuin C,
     \item käyttää saman verran muistia tai vähemmän kuin C,
     \item toimii kaikissa järjestelmissä, joissa C toimii,
@@ -46,17 +49,14 @@ Vaihtoehtoinen kieli aina
 Jotta jokin kieli olisi absoluuttisesti parempi, vähintään yhden näistä
 kriteereistä tulee olla aidosti parempi.
 
-Lisäksi kielistä tutkitaan muita suosioon vaikuttavia syitä, kuten
-helppokäyttöisyyttä sekä kielen luojan aiheuttamaa suosiota (esimerkiksi
-Googlen tarjoama tuki Go-kielelle).
+%Lisäksi kielistä tutkitaan muita suosioon vaikuttavia syitä, kuten
+%helppokäyttöisyyttä ja sosiaalisia aspekteja, kuten Googlen tarjoaman tuen
+%vaikutusta Go-kielen suosioon.%\hl{Vai tutkitaanko?}
 
-Toisessa luvussa esitetään tutkielman kannalta oleellinen teoria, eli
-määritetään tutkielman kontekstissa paremman kielen rajoitteet, pohditaan
-kielen suosioon vaikuttavia tekijöitä sekä kerrotaan lyhyesti muista
-tutkittavista kielistä. Kolmannessa luvussa kerrotaan, miksi muut tutkitut
-kielet eivät täytä näitä ominaisuuksia. Neljännessä luvussa kerrotaan, miten
-C:tä voisi parantaa.
+Tämän tutkimussuunnitelman toisessa luvussa esitetään tutkielman kannalta
+oleellinen teoria, eli määritetään tutkielman kontekstissa paremman kielen
+rajoitteet, pohditaan kielen suosioon vaikuttavia tekijöitä sekä kerrotaan
+lyhyesti muista tutkittavista kielistä. Kolmannessa luvussa kerrotaan, miksi
+muut tutkitut kielet eivät täytä näitä ominaisuuksia. Neljännessä luvussa
+kerrotaan, miten C:tä voisi parantaa.
 %kuvaillaan toisen luvun määrittämien ominaisuuksien täyttävä ohjelmointikieli.
-
-\hl{Miten käännökset tulisi ilmaista? Alaviitteeseen\footnote{eng. \emph{footnote}} vai
-sulkuihin (eng. \emph{parens})?}

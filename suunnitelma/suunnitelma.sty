@@ -9,6 +9,7 @@
 \usepackage{amsfonts,amsmath,amssymb,amsthm,booktabs,color,enumitem,graphicx}
 %\usepackage[pdftex,hidelinks]{hyperref}
 \usepackage[hidelinks]{hyperref}
+\usepackage{textcomp}
 \usepackage{bookmark}
 \usepackage{appendix}
 \usepackage[natbibapa,sectionbib]{apacite}
@@ -31,6 +32,8 @@
 \usepackage{adjustbox}
 \usepackage{hyphenat}
 \usepackage{relsize}
+\usepackage{benchmarks/gnuplot-lua-tikz}
+ 
 \makesavenoteenv{tabular}
 \makesavenoteenv{table}
 
@@ -111,8 +114,8 @@
 \newcommand{\bnf}[3]{%
     \inputminted[firstline=#1,lastline=#2]{\bnflexer}{#3}}
 
-\newcommand{\defword}[2][]{\footnote{eng. \emph{#2}#1}}
-\newcommand{\defwordin}[2][]{~(eng. \emph{#2}#1)}
+\newcommand{\defword}[2][]{~(engl. \emph{\foreignlanguage{english}{#2}#1)}}
+\newcommand{\defwordin}[2][]{~(engl. \emph{#2}#1)}
 
 \newcommand{\bnfdescription}{%
     Tämä on hahmotelma kielen syntaksista ISO/IEC 14977
@@ -120,6 +123,7 @@
     aloittaa säännöllisen lausekkeen ja ''!'' aloittaa kielteisen
     etukurkistuksen\defword{negative lookahead}}
 
+\linespread{1.1}
 %\linespread{1.25}
 
 \renewcommand\listingscaption{Ohjelma}

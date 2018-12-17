@@ -2,16 +2,19 @@
 
 \subsection{C:n kehitettävissä olevat ominaisuudet}
 
+%\hl{Tämä voisi olla oma lukunsa, jolloin aliluvusta 4.2 tulisi luku 5.}
+
 C on lähes kaikissa moderneissa järjestelmissä käytetty ohjelmointikieli, jota
 käytetään matalan tason ohjelmointiin. C mahdollistaa erityisesti nopeutta tai
 pientä muistijalanjälkeä vaativien sovelluksien toteuttamisen. C on hyvin
-lähellä konekieltä, ja koodista voikin ennustaa hyvin suurella tarkkuudella,
-mihin konekielen rakenteisiin se kääntyy. C on suosittu erityisesti
-käyttöjärjestelmien ytimien toteutukseen sekä sulautettujen järjestelmien
-toteuttamiseen. C:n toteutuksessa on on otettu huomioon mahdollisimman helppo
-kääntäjän toteuttaminen\citationneeded, sillä tuolloin jokaiselle alustalle
-piti toteuttaa oma kääntäjänsä. \hl{Tässä kappaleessa on aika paljon väitteitä
-ilman lähteitä...}
+lähellä konekieltä~--~koodista voi päätellä hyvin suurella tarkkuudella, miksi
+konekielen käskyiksi se kääntyy. C on suosittu erityisesti käyttöjärjestelmien
+ytimien toteutukseen sekä sulautettujen järjestelmien toteuttamiseen.%
+%C:n
+%toteutuksessa on on otettu huomioon mahdollisimman helppo kääntäjän
+%toteuttaminen\citationneeded, sillä tuolloin jokaiselle alustalle piti
+%toteuttaa oma kääntäjänsä.
+%\hl{Tässä kappaleessa on aika paljon väitteitä ilman lähteitä...}
 
 C:n syntaksia on usein kritisoitu\citationneeded~vuolaudesta. Koska C on
 kielenä hyvin yksinkertainen, siinä on hyvin vähän rakenteita ohjelman
@@ -19,7 +22,52 @@ rakenteen hallitsemiseen. Erityisesti virheidenhallinta vie paljon
 ohjelmakoodia, sillä ohjelmoijan pitää erikseen tunnistaa virhetilanne,
 jonka jälkeen ohjelmoijan tulee tilanteesta riippuen joko palauttaa jokin
 tietty arvo, vapauttaa muistia tai tehdä jotain muuta.
-Ohjelma~\ref{fig:cerrorhandling} on esimerkki tästä.
+
+\hl{Tarkista kieli}
+
+Ohjelma~\ref{fig:cerrorhandling} esittelee C:n virheidenkäsittelyä. Ohjelmassa
+tarkistetaan useita arvoja, jotka vaikuttavat funktion kontrollivuohon.
+Ensimmäisessä osassa tarkistetaan ajurin tilaa \texttt{dev\_priv}
+-muistiosoittimen läpi, ja palautetaan virhearvot \texttt{-EINVAL} tai
+\texttt{-ENODEV} riippuen virheestä. Toisessa osassa tarkistetaan
+\texttt{oa\_get\_render\_ctx\_id} -funktion paluuarvo, ja palautetaan sen
+palauttama virhekoodi virhetilanteessa. Tämäv jälkeen tarkistenaan
+\texttt{get\_oa\_config} -funktion paluuarvo, ja virhetilanteessa hypätään
+\texttt{err\_config} -osioon, jossa mahdollisesti kutsutaan
+\texttt{oa\_put\_render\_ctx\_id} -funktiota, joka vapautetaan
+\texttt{oa\_get\_render\_ctx\_id} -funktion varaama semafori.
+
+Ohjelmassa on useita tyypillisiä piirteitä C:n virheidenkäsittelystä. Alussa
+tarkistetaan ohjelman tilan invariantteja, palauttaen tiettyjä virhearvoja
+riippuen arvoista. Myöhemmin käsitellään muiden funktioiden paluuarvoja ja
+mahdollisesti vapautetaan ohjelman varaamia resursseja virhetilanteiden
+yhteydessä.
+
+C:n makrojärjestelmä on hyvin yksinkertainen. Kun esikääntäjä tunnistaa
+lähdekoodissa makron tai makrokutsun, esikääntäjä korvaa sen makron
+määritelmällä. C:n makrojärjestelmä on kuitenkin rajoittunut -- rekursiivisten
+makrojen rakentaminen on mahdotonta, sillä itsensä sisältäviä makroja ei voi
+muodostaa johtuen makrojärjestelmän rajoituksista~\citep[luku 6.10.3.4]{C18}.
+
+C:n makrot eivät myöskään ole hygieenisiä, kuten aikaisemmin todettiin. C:n
+makrot eivät myöskään pysty muokkaamaan ohjelmakoodin rakennetta, kun taas
+esimerkiksi LISP-kieliperheessä lukuisat ominaisuudet voi toteuttaa
+käännösaikaisilla makroilla. Myös Rustissa oleva makrojärjestelmä antaa suoran
+pääsyn kielen syntaksipuun muokkaamiseen. Vahva makrojärjestelmä mahdollistaa
+yksinkertaisen kielen, jota voi muokata kirjastoilla.
+
+C:n tyyppisyntaksi on moderneihin tyyppisyntakseihin verrattuna hyvin epäselvä.
+Erityisesti osoitintyypit ja funktio-osoitintyypit ovat hyvin epäselkeitä%
+%,
+%vaikka kielessä onkin sinänsä järkevä logiikka tyyppimäärittelyyn: jos
+%tyyppimäärittely on esimerkiksi \texttt{int~(*fp)(int~arg,~char~arg2)},
+%kirjoittamalla ohjelmakoodiin \texttt{(*fp)(int,~char)} saa arvon tyyppiä
+%\texttt{int}
+. Monimutkaisissa tapauksissa on vaikeaa seurata muuttujien oikeaa tyyppiä.
+Uudemmissa ohjelmointikielissä onkin selkeämpiä tapoja merkitä tyyppejä.
+Esimerkiksi C:n funktio-osoitintyypin \texttt{int~(*fp)(int~arg,~char~arg2)}
+voisi ilmaista TypeScriptin syntaksilla \texttt{fp:~(int,~char)~=>~int}, jossa
+tyypin voi lukea suoraviivaisesti vasemmalta oikealle.
 
 \FloatBarrier
 
@@ -27,10 +75,11 @@ Ohjelma~\ref{fig:cerrorhandling} on esimerkki tästä.
     \inputminted{C}{c-error-handling.c}
     \caption{Linux-kernelin i915-näytönohjainajrin lähdekoodia
     typistettynä~\citep[\texttt{drivers/gpu/drm/i915/i915\_perf.c}, funktio
-    \texttt{i915\_oa\_stream\_init}]{i915debugfs}. Ajurin lähdekoodissa
-    tarkistetaan useita arvoja, jotka vaikuttavat funktion kontrollivuohon.}
+    \texttt{i915\_oa\_stream\_init}]{i915debugfs}.}
     \label{fig:cerrorhandling}
 \end{listing}
+
+\FloatBarrier
 
 %\begin{listing}[ht!]
 %    \inputminted{Kotlin}{c-error-handling-maybe.kt}
@@ -45,92 +94,173 @@ Ohjelma~\ref{fig:cerrorhandling} on esimerkki tästä.
 %    \vspace*{1cm}
 %\end{listing}
 
-C:n makrojärjestelmä on hyvin yksinkertainen. Kun esikääntäjä lukee
-lähdekoodissa makron, se korvaa sen makron määritelmällä. C:n makrojärjestelmä
-on kuitenkin rajoittunut -- rekursiivisten makrojen rakentaminen on mahdotonta,
-sillä itsensä sisältävät makrot eivät korvaa itseään kuin kerran\footnote{C90:
-3.8.3.4 Rescanning and further replacement. Ks. sivun~\pageref{cspecnote}
-alaviite~\ref{cspecnote}}. C:n makrot eivät myöskään ole hygieenisiä, kuten
-ohjelma~\ref{fig:cmacro} näyttää.
-
 \begin{listing}[ht!]
-    \inputminted{C}{c-hygiene.c}
-    \inputminted{text}{c-hygiene-output.txt}
-    \caption{C:n makrot eivät ole hygieenisiä. DOUBLE-makro muuttuu
-    käännösvaiheessa muotoon 1+1*2, joka on laskujärjestyksen takia 3 eikä
-    odotettu 4. Koko printf-kutsuksi muodostuu siis
-    ''\texttt{printf("one plus one doubled is \%d", 1+1*2)}''}
-    \label{fig:cmacro}
+    \inputminted{C}{openssl_md5.c}
+
+    \caption{OpenSSL-kirjaston~\citep{openssl} MD5-tiivisteen laskevan koodin
+    R0-makro. Ylimmässä versiossa on alkuperäinen versio, keskimmäisessä on
+    C-versio, josta on laajennettu \texttt{F}- ja \texttt{ROTATE}-makrot ja
+    alimmassa versiossa on teoreettista \texttt{<<<}-operaattoria käyttävä
+    laajennettu versio.}
+
+    \label{fig:opensslmd5}
 \end{listing}
 
-C:n makrot eivät myöskään pysty muokkaamaan ohjelmakoodin rakennetta, kun taas
-esimerkiksi LISP-kieliperheessä lukuisat ominaisuudet voi toteutettaa
-käännösaikaisilla makroilla. Myös Rustissa oleva makrojärjestelmä antaa suoran
-pääsyn kielen syntaksipuun muokkaamiseen. Vahva makrojärjestelmä mahdollistaa
-yksinkertaisen kielen, jota voi muokata kirjastoilla.
-
-C:n tyyppisyntaksi on moderneihin tyyppysyntakseihin verrattuna hyvin epäselkeä.
-Erityisesti osoitintyypit ja funktio-osoitintyypit ovat hyvin epäselkeitä
-%,
-%vaikka kielessä onkin sinänsä järkevä logiikka tyyppimäärittelyyn: jos
-%tyyppimäärittely on esimerkiksi \texttt{int~(*fp)(int~arg,~char~arg2)},
-%kirjoittamalla ohjelmakoodiin \texttt{(*fp)(int,~char)} saa arvon tyyppiä
-%\texttt{int}
-. Monimutkaisissa tapauksissa on vaikeaa seurata tyypin oikeaa
-arvoa, ja muissa ohjelmointikielissä onkin muita tapoja merkitä tyyppejä.
-Esimerkiksi C:n funktio-osoitintyypin \texttt{int~(*fp)(int~arg,~char~arg2)}
-voisi ilmaista TypeScriptin syntaksilla \texttt{fp:~(int,~char)~=>~int}, jossa
-tyypin voi lukea suoraviivaisesti vasemmalta oikealle.
-
 \newpage
-
-C on suunniteltu olemaan mahdollisimman alustariippumaton, mutta jos tämä
-aiheuttaa ristiriidan mahdollisimman nopean toteutuksen kanssa, suositaan
-nopeutta -- useista C:n operaatioista tulee eri tuloksia riippuen
-alustasta\footnote{C90: liite A, luku 6. ks. sivun~\pageref{cspecnote}
-alaviite~\ref{cspecnote}}. Tästä yleisin esimerkki on kokonaislukujen ylivuoto,
-jonka tulos riippuu kääntäjäoptimoinnista, kuten ohjelma~\ref{fig:coverflow}
-näyttää.
 
 \begin{listing}[ht!]
     \inputminted{C}{c-overflow.c}
     \inputminted{text}{c-overflow-output.txt}
 
-    \caption{Kokonaisluvun ylivuoto C-kielessä. Ylivuodon käyttäytyminen
-    riippuu kääntäjäoptimoinnin määrästä -- GCC-kääntäjän optimointitasolla -O0
-    lauseketta $x~+~1~<=~x$ ei optimoida pois, mutta optimointitasolla -O3
-    kääntäjä ''tietää'' että operaation $+1$ jälkeen kokonaisluvut eivät
-    ylivuoda, sillä C-kielen spesifikaatiossa kokonaislukujen ylivuoto on
-    ''määrittelemätöntä toimintaa'' \defwordin{undefined behavior}.
-    Luonnollisten lukujen yli- ja alivuoto taas on määritelty -- operaation
-    $+1$ ylivuotaessa tulos on aina $0$.}
+    \caption{Kokonaisluvun ylivuoto C-kielessä. C-kielen
+    spesifikaatiossa kokonaislukujen ylivuoto on määrittelemätöntä toimintaa,
+    ja GCC-kääntäjän eri optimointitasoilla ohjelma käyttäytyy eri tavoin.}
     \label{fig:coverflow}
 \end{listing}
 
+C on suunniteltu olemaan mahdollisimman alustariippumaton, mutta jos tämä
+aiheuttaa ristiriidan mahdollisimman nopean toteutuksen kanssa, suositaan
+nopeutta -- useista C:n operaatioista tulee eri tuloksia riippuen
+alustasta~\citep[liite J, luku J.3]{C18}. Tästä yleisin esimerkki on
+kokonaislukujen ylivuoto, jonka tulos riippuu kääntäjäoptimoinnista, kuten
+ohjelma~\ref{fig:coverflow} näyttää.
+
+\hl{tarkista kieli}
+
+Ylivuodon käyttäytyminen C:ssä riippuu kääntäjäoptimoinnin määrästä --
+GCC-kääntäjän optimointitasolla~0 lauseketta $x~+~1~<=~x$ ei optimoida pois,
+mutta optimointitasolla~3 kääntäjä ''tietää'' että kokonaisluvut eivät
+ylivuoda, sillä C-kielen spesifikaatiossa kokonaislukujen ylivuoto on
+määrittelemätöntä toimintaa\defword{undefined behavior}~\citep[liite J, luku
+J.2]{C18}. Luonnollisten lukujen yli- ja alivuoto taas on määritelty -- minkä
+tahansa operaation yli- tai alivuodon tulos on aina $x$ modulo $n$, missä $x$
+on operaation tulos ja $n$ on yhtä suurempi kuin suurin muuttujan mahdollinen
+arvo.~\citep[luku 6.2.5]{C18}.
+
+\hl{tarkista kieli}
+
 C:stä puuttuu useita matalan tason operaatioita, joista yksi on erityisesti
-kryptografiassa käytetty kiertobittisiirto\defword{circular bit shift}. C ei
-mahdollista uusien operaattoreiden määrittämistä, vaan ohjelmoijat joutuvat 
-luomaan funktioita ja luottamaan siihen, että kääntäjä ymmärtää mistä
-operaatiosta on kyse. Liki kaikista moderneista prosessoreista
-kiertobittisiirto löytyy suoraan assembly-komentona.
+kryptografiassa käytetty kiertobittisiirto\defword{circular bit shift}, joka
+löytyy lähestä kaikista moderneista prosessoreista suoraan assembly-komentona.
+C:n syntaksi ei mahdollista uusien operaattoreiden määrittämistä, vaan
+ohjelmoijat joutuvat käyttämään tavallisia funktioita. Tämä toisaalta pitää
+kielen eksplisiittisenä, mutta pidentää koodin pituutta.
+Ohjelmassa~\ref{fig:opensslmd5} näytetään, miten koodia voisi selkeyttää
+käyttämällä käyttäjän määrittelemiä operaattoreita. Ohjelmassa esitetään useita
+bittitason operaatioita osana MD5-tiivisteen laskemista. Esimerkissä on kolme
+vaihtoehtoa, joista ensimmäisessä on siivottu alkuperäinen makron sisältö, kun
+taas toisessa vaihtoehdossa makrojen sisältö on laajennettu loppuun.
+Kolmannessa vaihtoehdossa käytetään teoreettista \texttt{<<<}-operaattoria,
+joka tarkoittaa esimerkissä kiertobittisiirtoa vasemmalle, ja vastaa
+ROTATE-makroa.
+
+\hl{tarkista kieli}
 
 C:n standardikirjastossa on suuri määrä merkkijonojen hallintaan tarkoitettuja
-funktioita. Nämä eivät kuitenkaan tue monitavuisia enkoodauksia, kuten
-UTF-8:aa, vaan toimivat pelkästään yksittäisistä merkeistä koostuvista
-merkkijonoista. Standardikirjastosta löytyy myös sekä monitavuisia merkkijonoja
-että monitavuisia merkkejä varten tukea, mutta niiden osalta C-standardi on
-tarkoituksenmukaisesti jätetty avoimeksi. Parempi ratkaisu olisi irroittaa
-merkkijonojen käsittely kielestä erilliseksi kirjastoksi, ja mahdollistaa
-merkkijonojen muodon määrittäminen kirjastotasolla. Kieli voisi tarjota
-järkevän oletusenkoodauksen, kuten vaikka UTF-8:n.
+funktioita. Nämä eivät kuitenkaan tue monitavuisia merkistöjä\defword{multibyte
+character set}, kuten Unicodea~\citep{unicode11}\footnote{Esimekiksi
+\texttt{strlen}-funktio palauttaa Unicode-merkkijonon pituuden sijaan tavujen
+määrän ennen ensimmäistä tavua, jonka lukuarvo on 0.}, vaan toimivat pelkästään
+yksittäisistä tavuista koostuvista merkkijonoilla. Standardikirjastosta löytyy
+myös sekä monitavuisia merkkijonoja että monitavuisia merkkejä varten
+funktioita, mutta niiden osalta C-standardi on tarkoituksenmukaisesti jätetty
+avoimeksi. Joustavampi ratkaisu olisi irroittaa merkkijonojen käsittely
+kielestä erilliseksi kirjastoksi, ja mahdollistaa merkkijonojen muodon
+määrittäminen kirjastotasolla. Kieli voisi tarjota oletuksena jonkin
+merkistökoodauksen\defword{encoding} merkkijonoliteraaleille, kuten vaikka
+UTF-8:n~\citep[s. 36]{unicode11}, joka on laajalti käytössä moderneissa
+järjestelmissä. UTF-8 on myös taaksepäin yhteensopiva 7-bittisen
+ASCII-merkistön kanssa, jota C tukee.
 
-\subsection{Ominaisuuksia}
+\FloatBarrier
+
+\newpage
+
+\subsection{Mahdollisia uusia ominaisuuksia}
+
+\subsubsection{Tyypit}
+
+Ajoaikaisen tyyppijärjestelmän tulee olla täysin yhteensopiva C:n kanssa. Kieli
+ei siis voi tuottaa esimerkiksi automaattisesti vapautettua muistia, sillä sen
+integroiminen olemassa olevaan C-ohjelmaan ei ole saumatonta. Myös rajapintojen
+toteuttaminen on hankalaa.
+
+Tyhjiä arvoja on kuvailtu ''Miljardin dollarin virheeksi'' niiden keksijän
+toimesta~\citep{billiondollars}. Useat modernit ohjelmointikielet ovatkin
+poistaneet muuttujilta mahdollisuuden olla tyhjiä arvoja, kuitenkin
+mahdollistaen tyhjät arvot esimerkiksi yhdellä merkillä lisää
+tyyppimäärittelyssä. Jos uuteen kieleen otetaan tällainen oletus,
+C-funktiomäärittelyiden tyhjien arvojen tulee saumattoman yhteistyön takia olla
+''limbossa'' näiden kahden tilan välillä, sillä C:n syntaksi ei sisällä
+lupauksia mahdollisista tyhjistä arvoista -- tai niiden puutteesta. Ohjelmoijaa
+siis ei tule pakottaa tarkistamaan tyhjiä arvoja jos hän kutsuu jotain
+C-funktiota, mutta toisaalta ei myöskään varoittaa ''turhista'' tarkistuksista.
+Kotlin-ohjelmointikieli~\citep{kotlin} on toteutettu tällä periaatteella.
+Kutsuessa Java-koodia Kotlinista mikä tahansa operaatio voi palauttaa
+\texttt{null}in, joka voi kaataa Kotlin-koodin. Kotlin olettaa tyypin
+erityiseksi tyypiksi, joka sallii tarkistukset tyhjiä arvoja varten, mutta ei
+vaadi niitä~\citep{kotlinnullability}.
+
+%Esimerkiksi Rustin ajoaikainen tyypitys on lähellä C:tä; Rustin
+%\texttt{Option<T>} vastaa C:n osoitinmuuttujia\footnote{Vastaava tietotyyppi on
+%Javan \texttt{Optional<T>} ja Haskellin \texttt{Maybe a}.}. \texttt{Option<T>}
+%vaatii, että sen sisältö ei ole tyhjä osoitin\defword[~-- onko tähän parempia
+%käännöksiä?]{NULL pointer}. Tällöin \texttt{Option}-muuttuja voi ilmaista tyhjää
+%arvoa olemalla ajoaikaisesti identtinen C:n NULL-arvon kanssa, ja on siten
+%ajoaikaisesti muistissa identtinen C-osoitinmuuttujien kanssa. Tällöin
+%C-rajapintojen osoitinargumenteiksi voi antaa \texttt{Option<T>} -muuttujia.
+
+Yksi hyvin suosituista ominaisuuksista moderneissa ohjelmointikielissä on
+tyyppipäättely. Oikein käytettynä sillä voidaan poistaa lähdekoodista
+pääteltävissä olevat tyypit, jolloin ohjelmoija voi keskittyä
+ohjelmalogiikkaan. Tyyppipäättely onkin erityisen kätevä lambdafunktioiden
+kirjoittamisessa, sillä ohjelmoijan ei tarvitse kirjoittaa täysin pääteltäviä
+tyyppejä.
+
+\hl{Tarkista kieli}
+
+Summatyypit\defword{sum type \emph{tai} tagged union} ovat useasta modernista
+ohjelmointikielestä löytyvä ominaisuus. Summatyyppi yhdistää tyyppiturvallisesti
+enumeraation unioniin, jolloin summatyypin sisältämä data ei voi olla keskenään
+ristiriidassa.
+
+\hl{Mahd. avaa ohjelmiä lisää ehkä}
+
+Ohjelmassa~\ref{fig:sumtype} määritetään summatyyppi, jossa luetellaan värejä.
+Summatyyppi \texttt{Color} sisältää parametrittomat vaihtoehdot \texttt{Red},
+\texttt{Green} ja \texttt{Blue}. Näiden lisäksi \texttt{Color} sisältää yhden
+parametrin ottavan \texttt{Grayscale}-vaihtoehdon, kolmen parametrin
+\texttt{RGB}-vaihtoehdon, ja neliparametrisen \texttt{RGBA}-vaihtoehdon. Kaikki
+\texttt{Color}issa esiintyvät parametrit ovat yhden tavun kokoisia arvoja
+(\texttt{i8}), mutta parametrit voivat yleisesti olla mitä tahansa.
+Ohjelmassa~\ref{fig:sumtypec} määritellään vastaava tyyppi C:llä. C-versio on
+huomattavasti monimutkaisempi. Tämän lisäksi C-versiossa on mahdollista, että
+\texttt{type}-kenttä ei vastaa unionin todellista sisältöä, mikä voi johtaa
+määrittelemättömään toimintaan lukiessa unionin arvoa~\citep[luku
+6.7.2.1]{C18}.
+
+\begin{listing}[ht!]
+    \inputminted{Rust}{sumtype.rs}
+    \caption{Esimerkki Rustissä summatyypin määrittelystä.}
+    \label{fig:sumtype}
+\end{listing}
+
+\begin{listing}[ht!]
+    \inputminted{C}{sumtype.c}
+    \caption{Vastaavan tyypin määrittely C:llä. C:ssä on mahdollista, että
+    type-kenttä ei vastaa unionin todellista sisältöä, jolloin ohjelman tila
+    voi olla määrittelemätön.}
+    \label{fig:sumtypec}
+\end{listing}
+
+\FloatBarrier
+
 
 \subsubsection{Syntaksi}
 
 Jotta kielestä toiseen vaihtaminen olisi kannattavaa, uuden kielen on oltava
 tarpeeksi erilainen: samanlainen kieli ei tarjoa tarpeeksi parannusta
-olemassaolevaan, että siirtyminen olisi kannattavaa. C:n syntaksia on usein
+olemassa olevaan, että siirtyminen olisi kannattavaa. C:n syntaksia on usein
 kritisoitu\citationneeded~vuolaudesta, joten syntaksia typistämällä voisi saada
 huomattavia parannuksia.
 
@@ -156,10 +286,18 @@ poikkeuksellisia arvoja, jotka ovat kuitenkin hyvin tavallisia C:ssä.
 Virhetilanteiden käsittelyssä voisi siis olla parannettavaa.
 
 \newpage
+
+\hl{tarkista kieli}
+
 Yksi suosittu ominaisuus on hahmontunnistus\defword{pattern matching}, jolla
 voidaan kasvattaa kielen ilmaisuvoimaa. Hahmontunnistus soveltuu erityisen
 hyvin monimutkaiseen arvojen käsittelyyn. Esimerkiksi Rustissa käytetään
-hahmontunnistusta yhdistettynä summatyyppeihin:
+hahmontunnistusta yhdistettynä summatyyppeihin, kuten ohjelma~\ref{fig:guards}
+näyttää. Ohjelmassa Rivien 8--12 \texttt{match}-lauseke käsittelee kolme
+\texttt{OptionalInt}in mahdollista tilaa: arvo on olemassa ja on suurempi kuin
+viisi, arvo on olemassa, ja arvoa ei ole olemassa. Ohjelma tulostaa lauseen
+''Got an int!''. Ohjelman tyyppi \texttt{OptionalInt} on summatyyppi, jonka
+mahdolliset arvot ovat \texttt{Missing} ja \texttt{Value(i32)}.
 
 \FloatBarrier
 
@@ -180,8 +318,9 @@ hahmontunnistusta yhdistettynä summatyyppeihin:
 \subsubsection{Makrot}
 
 Koska kieli voi erota C:stä käännösaikaisesti, kielen makrojärjestelmä on yksi
-harvoista osa-alueista, joita voi muokata melko vapaasti. olla sekä turvallinen
-että voimakas. Rustin makrojärjestelmä on vahvasti tyypitetty sekä
+harvoista osa-alueista, joita voi muokata melko vapaasti. Uuden
+makrojärjestelmän tulisi olla sekä turvallinen että voimakas. Esimerkiksi
+Rustin makrojärjestelmä on vahvasti tyypitetty sekä
 Turing-täydellinen~\citep{rustmacros}. Tämä mahdollistaa myös monimutkaisten
 makrojen kirjoittamisen ja käytön. Rustin makrosyntaksi on kuitenkin
 ensisilmäyksellä vaikeaselkoista, kun taas C:n makrot ovat pitkälti
@@ -189,83 +328,26 @@ helppolukuisia.
 
 Joidenkin C-ohjelmien otsikkotiedostoissa luodaan makroja, joita
 otsikkotiedoston käyttäjät voivat käyttää. Kielen tulee mahdollistaa makrojen
-tuottaminen, joita voi käyttää myös C-ohjelmista. Tätä ei kuitenkaan voi
-toteuttaa kaikille makroille, sillä C:n makrot ovat hyvin rajoittuneita.
+tuottaminen, joita voi käyttää myös C-ohjelmista. Kehittyneempien
+makrojärjestelmien kaikkia makroja ei kuitenkaan voi muuntaa C:n makroiksi,
+sillä C:n makrot ovat hyvin rajoittuneita.
 
-\subsubsection{Tyypit}
-
-Tyhjiä arvoja on kuvailtu ''Miljardin dollarin virheeksi'' niiden keksijän
-toimesta~\citep{billiondollars}. Useat modernit ohjelmointikielet ovatkin
-poistaneet muuttujilta mahdollisuuden olla tyhjiä arvoja, kuitenkin
-mahdollistaen tyhjät arvot esimerkiksi yhdellä merkillä lisää
-tyyppimäärittelyssä. Jos uuteen kieleen otetaan tällainen oletus,
-C-funktiomäärittelyiden tyhjien arvojen tulee saumattoman yhteistyön takia olla
-''limbossa'' näiden kahden tilan välillä, sillä C:n syntaksi ei sisällä
-lupauksia mahdollisista tyhjistä arvoista -- tai niiden puutteesta. Ohjelmoijaa
-siis ei tule pakottaa tarkistamaan tyhjiä arvoja jos hän kutsuu jotain
-C-funktiota, mutta toisaalta ei myöskään varoittaa ''turhista'' tarkistuksista.
-Kotlin-ohjelmointikieli~\citep{kotlin} on toteutettu tällä periaatteella.
-Kutsuessa Java-koodia kutsuttaessa mikä tahansa operaatio voi palauttaa
-\texttt{null}in, joka voi kaataa Kotlin-koodin. Kotlin olettaa tyypin
-erityiseksi tyypiksi, joka sallii tarkistukset tyhjiä arvoja varten, mutta ei
-vaadi niitä~\citep{kotlinnullability}.
-
-Ajoaikaisen tyyppijärjestelmän tulee olla täysin yhteensopiva C:n kanssa.
-Esimerkiksi Rustin ajoaikainen tyypitys on lähellä C:tä; Rustin
-\texttt{Option<T>} vastaa C:n osoitinmuuttujia\footnote{Vastaava tietotyyppi on
-Javan \texttt{Optional<T>} ja Haskellin \texttt{Maybe a}.}. \texttt{Option<T>}
-vaatii, että sen sisältö ei ole tyhjä osoitin\defword[~-- onko tähän parempia
-käännöksiä?]{NULL pointer}. Tällöin \texttt{Option}-muuttuja voi ilmaista tyhjää
-arvoa olemalla ajoaikaisesti identtinen C:n NULL-arvon kanssa, ja on siten
-ajoaikaisesti muistissa identtinen C-osoitinmuuttujien kanssa. Tällöin
-C-rajapintojen osoitinargumenteiksi voi antaa \texttt{Option<T>} -muuttujia.
-
-Yksi hyvin suosituista ominaisuuksista moderneissa ohjelmointikielissä on
-tyyppi-inferenssi. Oikein käytettynä sillä voidaan poistaa lähdekoodista
-pääteltävissä olevat tyypit, jolloin ohjelmoija voi keskittyä ohjelmalogiikkaan.
-Tyyppi-inferenssi onkin erityisen kätevä lambdafunktioiden kirjoittamisessa,
-sillä ohjelmoijan ei tarvitse kirjoittaa täysin pääteltäviä tyyppejä.
-
-\subsubsection{Kääntäminen}
-
-Jotta kieltä voi käyttää nykyisissä ympäristöissä, sen tulee kääntyä C:ksi.
-Tällöin ohjelmointikieli toimii kaikissa ympäristöissä, joihin on olemassa
-C-standardin mukainen C-kääntäjä. Tämä mahdollistaa integroinnin nykyisten
-työkalujen kanssa -- esimerkiksi \texttt{GNU Make}-työkalulla~\citep{gnumake}
-uuden kielen voi integroida projektiin kahdella rivillä:
-
-\inputminted{make}{Makefile.kieli}
-
-Tämän jälkeen .kieli-tiedostoja vastaavat .c-tiedostot voi poistaa, ja
-\texttt{Make} osaa luoda ne .kieli-tiedostojen pohjalta. Kääntäjän tulee pystyä
-tuottamaan ylläpitokelpoisia .c-tiedostoja, jotta kielestä voi myös
-tarvittaessa siirtyä pois helposti.  Kielen tulee myös tukea C:n
-otsikkotiedostoja, jotta ohjelmoijilta ei mene turhaan aikaa
-funktiomäärittelyiden kääntämiseen kieleltä toiselle. Vastaavasti kielen tulee
-myös tarvittaessa tuottaa C-kielen otsikkotiedostoja -- näin voi helposti
-uudelleenkirjoittaa C-kirjastoja.
-
-\begin{listing}[ht!]
-    \inputminted[firstline=4]{C}{vectorization.c}
-
-    \caption{Vektorisointi nopeuttaa fn\_size -funktion noin kolme kertaa
-    nopeammaksi fn\_iter -versioon verrattuna.}
-\end{listing}
-
-\subsubsection{Ajoaikaiset ominaisuudet}
+\subsubsection{Suoritusaikaiset ominaisuudet}
 
 Uuden ohjelmointikielen tulee olla mahdollisimman yhteensopiva C:n kanssa. Tämä
-onnistuu parhaiten pitämällä ajoaikaisten ominaisuuksien määrän mahdollisimman
+onnistuu parhaiten pitämällä suoritusaikaisten ominaisuuksien määrän mahdollisimman
 pienenä. Muistinhallinnan tulee olla manuaalinen, jotta kutsuessa C-funktioita
-kielet voivat saumattomasti ja tehokkaasti jakaa osoitinmuuttujia. Moniajoa ei
-voi alustariippumattomuuden takia tukea suoraan standardikirjastossa, sillä
-kaikki alustat eivät tue rinnakkaisuutta. Standardi voi kuitenkin luoda
-rajapinnan, jonka moniajoa tukevat alustat voivat käyttää.
+kielet voivat saumattomasti ja tehokkaasti välittää toisilleen
+osoitinmuuttujia.
+%Moniajoa ei
+%voi alustariippumattomuuden takia tukea suoraan standardikirjastossa, sillä
+%kaikki alustat eivät tue rinnakkaisuutta. Standardi voi kuitenkin luoda
+%rajapinnan, jonka moniajoa tukevat alustat voivat käyttää.
 
-C-kääntäjissä on aina alustariippuvaisia ominaisuuksia, ja yksi tärkeimmistä on
-funktioiden kutsuminen. GCC:n~\citep{gcc} kanssa yhteensopivat kääntäjät
-tukevat funktiomäärittelyn kohdalla \texttt{\_\_attribute\_\_()} -määrettä,
-jolla voi määrätä, mikä funktion kutsukonventio on.
+%C-kääntäjissä on aina alustariippuvaisia ominaisuuksia, ja yksi tärkeimmistä on
+%funktioiden kutsuminen. GCC:n~\citep{gcc} kanssa yhteensopivat kääntäjät
+%tukevat funktiomäärittelyn kohdalla \texttt{\_\_attribute\_\_()} -määrettä,
+%jolla voi määrätä, mikä funktion kutsukonventio on.
 
 C++:n yksi tärkeistä ominaisuuksista on nimiavaruudet, joita C:ssä ei ole. Jos
 samassa ohjelmassa on kaksi samannimistä funktiota, ei ole määritelty, kumpaa
@@ -273,77 +355,103 @@ niistä kutsutaan. C++:ssa ongelma on ratkaistu nimiruntelulla. Tämä on
 kuitenkin aiheuttanut ristiriitoja sekä C-yhteensopivuuden kanssa että eri
 C++-kääntäjien yhteensopivuuden kanssa. Nimiruntelu voi myös aiheuttaa pidempiä
 nimiä funktioille, jolloin kirjastot voivat viedä useita tavuja enemmän
-levytilaa jokaista kirjaston funktiota kohden.
+levytilaa jokaista kirjaston funktiota kohden. Tiedosto- ja projektikohtaisella
+nimiruntelun määrittelyllä saisi tehtyä alustariippumattoman nimiruntelun.
 
 Jotta kieli on mahdollisimman kevyt ja alustariippumaton, kielen
 standardikirjaston tulee olla mahdollisimman kevyt. Kielen makrojärjestelmän
 tulee olla tarpeeksi voimakas, että alustariippuvaiset ominaisuudet voidaan
 toteuttaa puhtaasti kirjastotasolla.
 
-Go-kielen yksi innovatiivisimmista ominaisuuksista on \texttt{defer}-avainsana,
-jolla voidaan viivästyttää laskentaa funktiosta poistumiseen asti. Esimerkiksi
-\emph{A Tour of Go} -sivuston esimerkissä~\citep{gotourdefer} käytetään
-\texttt{defer}iä Hello World -ohjelman toteuttamiseen:
+%Go-kielen yksi innovatiivisimmista ominaisuuksista on \texttt{defer}-avainsana,
+%jolla voidaan viivästyttää laskentaa funktiosta poistumiseen asti. Esimerkiksi
+%\emph{A Tour of Go} -sivuston esimerkissä~\citep{gotourdefer} käytetään
+%\texttt{defer}iä Hello World -ohjelman toteuttamiseen:
+%
+%\begin{listing}[ht!]
+%    \inputminted{Go}{defer.go}
+%    \inputminted{text}{defer-output.txt}
+%    \caption{\emph{A Tour of Go} -sivuston esimerkki \texttt{defer} -avainsanan
+%    käytöstä. \texttt{defer}-avainsana siirtää world-sanan tulostamisen
+%    funktion loppuun, jolloin ohjelma tulostaa sanat ''hello'' ja ''world''.}
+%\end{listing}
+%
+%\FloatBarrier
+%
+%Ilman automaattista muistinhallintaa kaikissa tilanteissa toimivaa
+%\texttt{defer}iä ei voi toteuttaa, mutta yksinkertaisissa tilanteissa myös
+%hyvin matalan tason kieli voisi toteuttaa \texttt{defer}-avainsanan.
+%Avainsanalle tulisi käyttöä -- esimerkiksi Linux-ytimessä on yleinen
+%suunnittelumalli vapauttaa kaikki funktion varaama muisti käänteisessä
+%järjestyksessä virhetilanteissa. Vain virhetilanteissa ajettu \texttt{defer}
+%mahdollistaisi huomattavaa ohjelmakoodin siivoamista -- ohjelmoijan ei
+%tarvitsisi ajatella muistin vapauttamista, sillä ohjelmointikieli tekisi sen
+%ohjelmoijan puolesta.
 
-\begin{listing}[ht!]
-    \inputminted{Go}{defer.go}
-    \inputminted{text}{defer-output.txt}
-    \caption{\emph{A Tour of Go} -sivuston esimerkki \texttt{defer} -avainsanan
-    käytöstä. \texttt{defer}-avainsana siirtää world-sanan tulostamisen
-    funktion loppuun, jolloin ohjelma tulostaa sanat ''hello'' ja ''world''.}
-\end{listing}
-
-\FloatBarrier
-
-Ilman automaattista muistinhallintaa kaikissa tilanteissa toimivaa
-\texttt{defer}iä ei voi toteuttaa, mutta yksinkertaisissa tilanteissa myös
-hyvin matalan tason kieli voisi toteuttaa \texttt{defer}-avainsanan.
-Avainsanalle tulisi käyttöä -- esimerkiksi Linux-ytimessä on yleinen
-suunnittelumalli vapauttaa kaikki funktion varaama muisti käänteisessä
-järjestyksessä virhetilanteissa. Vain virhetilanteissa ajettu \texttt{defer}
-mahdollistaisi huomattavaa ohjelmakoodin siivoamista -- ohjelmoijan ei
-tarvitsisi ajatella muistin vapauttamista, sillä ohjelmointikieli tekisi sen
-ohjelmoijan puolesta.
-
-Vielä monimutkaisempi tapaus on sulkeumat, joita suositaan erityisesti
-funktionaalisen ohjelmoinnin yhteydessä. GCC-kääntäjä on toteuttanut sulkeumat
+Monimutkaisempi tapaus on sulkeumat, joita suositaan erityisesti
+funktionaalisen ohjelmoinnin yhteydessä. GCC-kääntäjään on toteutettu sulkeumat
 C-kielelle käyttämällä Thomas Breuelin esittelemää
 trampoliinimenetelmää~\citep{gccnested, cppclosure}.
 
-Ohjelmointikieli voi toteuttaa olio-ohjelmoinnin rajapinnat käytännössä kahdella
-tavalla: Joko korvaamalla jokaisen rajapintaviittauksen numerolla jaettuun
-tauluun funktioita (vtable-rajapinnat), tai korvaamalla rajapintaviittaukset
-tietueella, joka sisältää rajapinnan toteutuksen funktioiden osoitteet
-(tietue-rajapinnat). Ensimmäistä käytetään eritoten C++:n rajapintojen
-toteuttamiseen, kun taas jälkimmäistä käytetään esimerkiksi Go-kielessä.
-Jälkimmäistä käytetään myös C:n kanssa; Linux-ytimen laiteajurit on toteutettu
-tietue-rajapintoina, joita ajurit voivat tarvittaessa periä. Molemmissa
-toteutustavoissa on omat hyvät jä huonot puolensa -- vtable-rajapinnat vievät
-vähemmän muistia, kun taas tietue-rajapinnat ovat yksinkertaisempia
-toteuttaa~\citationneeded.
+%Ohjelmointikieli voi toteuttaa olio-ohjelmoinnin rajapinnat käytännössä kahdella
+%tavalla: Joko korvaamalla jokaisen rajapintaviittauksen numerolla jaettuun
+%tauluun funktioita (vtable-rajapinnat), tai korvaamalla rajapintaviittaukset
+%tietueella, joka sisältää rajapinnan toteutuksen funktioiden osoitteet
+%(tietue-rajapinnat). Ensimmäistä käytetään eritoten C++:n rajapintojen
+%toteuttamiseen, kun taas jälkimmäistä käytetään esimerkiksi Go-kielessä.
+%Jälkimmäistä käytetään myös C:n kanssa; Linux-ytimen laiteajurit on toteutettu
+%tietue-rajapintoina, joita ajurit voivat tarvittaessa periä. Molemmissa
+%toteutustavoissa on omat hyvät jä huonot puolensa -- vtable-rajapinnat vievät
+%vähemmän muistia, kun taas tietue-rajapinnat ovat yksinkertaisempia
+%toteuttaa~\citationneeded.
+%
+%C tukee yksinkertaista poikkeusten
+%käsittelyä \texttt{setjmp}- ja
+%\texttt{longjmp}-funktioilla\footnote{\label{cspecnote}C90: Luku 4.6. Tämä tarvitsee viitteen
+%oikeaan C:n speksin lukuun. Minulla ei ole pääsyä uusimpaan spesifikaatioon,
+%eli en pääse (vielä) tarkistamaan, mistä kohtaa tämä löytyy C11:n
+%standardista.}, mutta C:n kanssa käytetään lähes poikkeuksetta paluuarvoihin
+%perustuvaa virheidenkäsittelyä\citationneeded.
 
-C tukee yksinkertaista poikkeusten
-käsittelyä \texttt{setjmp}- ja
-\texttt{longjmp}-funktioilla\footnote{\label{cspecnote}C90: Luku 4.6. Tämä tarvitsee viitteen
-oikeaan C:n speksin lukuun. Minulla ei ole pääsyä uusimpaan spesifikaatioon,
-eli en pääse (vielä) tarkistamaan, mistä kohtaa tämä löytyy C11:n
-standardista.}, mutta C:n kanssa käytetään lähes poikkeuksetta paluuarvoihin
-perustuvaa virheidenkäsittelyä\citationneeded.
+\subsubsection{Kääntäminen ja työkalut}
 
-\subsubsection{Työkalut}
+Jotta kieltä voi käyttää nykyisissä ympäristöissä, sen tulee kääntyä C:ksi.
+Tällöin ohjelmointikieli toimii kaikissa ympäristöissä, joihin on olemassa
+C-standardin mukainen C-kääntäjä. Tämä mahdollistaa integroinnin nykyisten
+työkalujen kanssa -- esimerkiksi \texttt{GNU Make} -työkalulla~\citep{gnumake}
+uuden kielen voi integroida projektiin kahdella rivillä.
+
+%\inputminted{make}{Makefile.kieli}
+
+%Tämän jälkeen uuden kieli-tiedostoja vastaavat .c-tiedostot voi poistaa, ja
+%\texttt{Make} osaa luoda ne .kieli-tiedostojen pohjalta.
+Kääntäjän tulee pystyä tuottamaan tarvittaessa ylläpitokelpoisia .c-tiedostoja,
+jotta kielestä voi myös tarvittaessa siirtyä pois helposti.  Kielen tulee myös
+pystyä lukemaan C:n otsikkotiedostoja, jotta ohjelmoijilta ei mene turhaan
+aikaa funktiomäärittelyiden kääntämiseen kieleltä toiselle. Vastaavasti kielen
+tulee myös tarvittaessa tuottaa C-kielen otsikkotiedostoja -- näin voi helposti
+jatkaa olemassa olevien C-kirjastojen kehittämistä uudella kielellä.
+
+%\begin{listing}[ht!]
+%    \inputminted[firstline=4]{C}{vectorization.c}
+%
+%    \caption{Vektorisointi nopeuttaa fn\_size -funktion noin kolme kertaa
+%    nopeammaksi fn\_iter -versioon verrattuna.}
+%\end{listing}
 
 Modernissa ohjelmointikielessä on tärkeänä osana kehittäjän hyvinvointi, jota
 voidaan ylläpitää hyvillä työkaluilla. Go-kieli kehitettiin yhdessä kattavan
 työkalupaketin kanssa, jolloin työkalut pysyivät mukana kielen kehityksessä.
-Go-kielen mukana tuleekin nykyään kääntäjän (\texttt{go build}) yhteydessä mm.
-paketinhallinta \texttt{go get}, koodin automaattinen muotoilija \texttt{go
-fmt} sekä ohjelmointivirheiden tarkastaja \texttt{go vet}.
+Go-kielen mukana tuleekin nykyään kääntäjän (\texttt{go build}) yhteydessä muun
+muassa paketinhallinta \texttt{go get}, koodin automaattinen muotoilija
+\texttt{go fmt} sekä ohjelmointivirheiden tarkastaja \texttt{go vet}. Uuden
+kielen yhteydessä tulisi kirjoittaa helppokäyttöiset mutta joustavat työkalut.
 
-Kirjoittamalla kääntäjän ensin C:llä ja vasta myöhemmin funktio kerrallaan
-siirtymällä uuteen kieleen voidaan esitellä kielen mahdollisuutta toimia C:n
-korvaajana. Vaihtoehtoisesti kääntäjän voi kirjoittaa jollain toisella
-kielellä, jolloin voi todistaa uuden kielen C-yhteensopivuutta alkuperäisen
-kielen siltausominaisuuksilla.
+%Kirjoittamalla kääntäjän ensin C:llä ja vasta myöhemmin funktio kerrallaan
+%siirtymällä uuteen kieleen voidaan esitellä kielen mahdollisuutta toimia C:n
+%korvaajana. Vaihtoehtoisesti kääntäjän voi kirjoittaa jollain toisella
+%kielellä, jolloin voi todistaa uuden kielen C-yhteensopivuutta alkuperäisen
+%kielen siltausominaisuuksilla.
 
 
 % ---------------------
