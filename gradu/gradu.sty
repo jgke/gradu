@@ -20,29 +20,24 @@
 \usepackage{tocloft}
 \usepackage[nottoc]{tocbibind}
 \usepackage{xassoccnt}
-%\usepackage{showframe}
 
 %\usepackage[top=2em]{geometry}
 %\usepackage{showframe}
 
-%\usepackage[style=apa]{biblatex}
-%\DeclareLanguageMapping{finnish}{finnish-apa}
-
 \bibliographystyle{apacite}
-
-%\addto\captionsfinnish{\renewcommand{\refname}{Lähteet}}
-
-\addto{\captionsfinnish}{%
-        \renewcommand{\refname}{Bibliography}%
-            \renewcommand{\contentsname}{Table of Contents}}
 
 \newcommand{\citationneeded}{\textbf{[citation\_needed]}}
 
 \makeatletter
+\@ifundefined{@auxappendixtotalcount}{\gdef{\auxappendixtotalcount}{0}{}}
 \newcommand{\totalpagecount}{\pageref{mylastpage}}
 \newcommand{\totalappendixcount}{%
     \@ifundefined{r@appendixbegin}{0}{%
-        \the\numexpr\TotalValue{totalrealpage}-\getpagerefnumber{mylastpage}-2\relax%
+        \ifcsname @auxappendixtotalcount \endcsname
+            \csname @auxappendixtotalcount \endcsname
+        \else
+            ??%
+        \fi
     }%
 }
 \numberofpagesinformation{%
@@ -97,6 +92,11 @@
 }
 
 \newcommand{\tocbeginshere}{\label{tocbegin}}
-\newcommand{\appendixendhere}{\label{appendixend}}
+\newcommand{\appendixendhere}{%
+    \label{appendixend}%
+    \write\@auxout{%
+        \unexpanded{\global\@namedef{usevalue@#1}{#2}}%
+    }%
+}
 
 \newcommand{\hilight}[1]{\colorbox{yellow}{#1}}

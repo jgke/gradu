@@ -1,11 +1,12 @@
-\section{Verrattavat ohjelmointikielet}
+\section{Ohjelmointikielten vertailu}
 \label{sec:muut}
 
 \subsection{Yleisiä vertailtavien ohjelmointikielten ominaisuuksia}
 
 C:hen vertailtavissa ohjelmointikielissä on yleisesti useita ominaisuuksia,
 jotka vaikuttavat ohjelmien suoritusaikaiseen nopeuteen hidastavasti, lisäävät
-muistinkäyttöä tai vähentävät alustariippumattomuutta.
+muistinkäyttöä, vähentävät alustariippumattomuutta tai heikentävät
+yhteensopivuutta C:n kanssa.
 
 Yleisin näistä on automaattinen muistinhallinta, joka muistin vapauttamisen
 automatisoimiseksi seuraa ohjelman käyttämää muistia. Lähes aina automaattinen
@@ -19,68 +20,47 @@ Monissa vertailtavissa kielissä on käytössä nimiruntelu\defword{name manglin
 joka mahdollistaa useat näennäisesti samannimiset funktiot. Tämä kuitenkin
 aiheuttaa ohjelmointikielten välille yhteensopivuusongelmia, sillä toisesta
 kielestä kutsuttaessa pitää tietää kutsuttavan funktion todellinen nimi.
+Esimerkiksi \texttt{int}-tyyppiä palauttava funktion \texttt{foo()} nimeksi
+voisi tulla \texttt{\_Z3foov}, kuten \texttt{g++}-kääntäjä tekee.
 
 Ohjelmointikielen ominaisuudet vaikuttavat siihen, minkälaisia
-ohjelmistoarkkitehtuureja kielellä tehdään\citationneeded. Moderneissa
-ohjelmointkielissä virheiden käsittely on yleensä toteutettu kahdella tavalla:
-toinen on poikkeavat paluuarvot ja toinen on poikkeuksien heittäminen.
-Yleisesti ottaen kaikki ohjelmointikielet tukevat ensimmäistä ja suurin osa
-toista tapaa. Poikkeusten käsittely on hieman hitaampaa ja aiheuttaa hieman
-suuremman muistinkäytön, ja tehokkaaseen ohjelmakoodiin pyrkiessä yleensä
-vältetään poikkeusten käyttämistä\citationneeded. Monet poikkeuksia tukevien
-ohjelmointikielten vakiokirjastot kuitenkin hallitsevat virhetilanteita
-poikkeuksilla, mikä pakottaa ohjelmoijan käyttämään poikkeuksia ohjelmoidessa.
+ohjelmistoarkkitehtuureja kielellä tehdään~\citep{designpatternsdesign}.
+Moderneissa ohjelmointkielissä virheiden käsittely on yleensä toteutettu
+kahdella tavalla: toinen on poikkeavat paluuarvot ja toinen on poikkeuksien
+heittäminen. Yleisesti ottaen kaikki ohjelmointikielet tukevat ensimmäistä ja
+suurin osa toista tapaa. Poikkeusten käsittely on hieman hitaampaa ja aiheuttaa
+hieman suuremman muistinkäytön, ja tehokkaaseen ohjelmakoodiin pyrkiessä
+yleensä vältetään poikkeusten käyttämistä~\citep{exceptioncosts}. Monet
+poikkeuksia tukevien ohjelmointikielten vakiokirjastot kuitenkin hallitsevat
+virhetilanteita poikkeuksilla, mikä pakottaa ohjelmoijan käyttämään poikkeuksia
+ohjelmoidessa.
 
-\hl{Tarkista kieli}
+\hl{tarkista kieli}
 
-Ada on ainoa ohjelmointikieli, jossa ei ole mahdollisuutta käännösaikaisille
-makroille. C ja C++ jakavat yksinkertaisen makrojärjestelmän, joka on
-kuitenkin hyvin rajoittunut. Rustissa on kaksi erillistä makrojärjestelmää:
-varsinaiset makrot, joiden lisäksi Rustista löytyy kokeellinen lisäosapohjainen
-koodingenerointi. Go-kielessä taas on pelkästään lisäosapohjainen
-koodigenerointi.
+Ohjelmointikielten makrojärjestelmillä tarkoitetaan ohjelmointikielen
+ominaisuuksia, joita voidaan käyttää käännösaikaiseen koodin luomiseen ja
+muuntamiseen. Koodin luonti käännösaikaisesti voi pienentää huomattavasti
+tarvittavaa koodin määrää tietyissä tilanteissa. Koodia luodessa voi kuitenkin 
+tapahtua konflikteja esimerkiksi luodessa väliaikaisia muuttujia, joilla on
+sama tunniste kuin aikaisemmin koodissa määritellyillä
+muuttujilla~\citep{macrohygiene}. Luotu koodi voi myös aiheuttaa
+syntaksivirheitä sekä muuta odottamatonta käytöstä. Jos ohjelmointikielen
+makrojärjestelmä estää tällaiset konfliktit, sitä kutsutaan hygieeniseksi
+makrojärjestelmäksi.
 
-C:n ja C++:n makrot ajetaan ennen muuta koodin käsittelyä, eli makroja voi
-sijoittaa mihin tahansa koodia. Rust ja Go taas käsittelevät makrot vasta
-parsimisen jälkeen, eli ohjelman täytyy olla kielen mukaista ennen kuin makrot
-suoritetaan -- makroilla ei voi käsitellä mitä tahansa tekstiä. Rust vaatii
-erottimet, eli sulkeiden, lainausmerkkien ja heittomerkkien olevan kunnossa.
-Lisäksi Rust-kääntäjän tulee tunnistaa kielen tekstialkiot~\defword{lexeme}
-ennen makrojen suorittamista, eli Rust ei mahdollista uusien operaattoreiden
-määrittämistä. Go ei salli yhtään alkuperäisestä kielestä poikkeamista ennen
-makrojen ajamista. Go-kielen ja Rustin makroprosessorit ovat
-turing-täydellisiä~\citep{rustmacros, gogenerate}\footnote{Rust ja Go
-mahdollistavat koodin generoinnin suoraan Rustilla ja Go-kielellä erillisen
-ohjelmointikielen sijaan. Rust ja Go ovat Turing-täydellisiä, eli näiden
-kielien makroprosessorit ovat myös itsessään turing-täydellisiä.}, kun taas C:n
-ja C++:n ei\footnote{C:n ja C++:n makrojärjestelmä ei ole edes
-primitiivirekursiivinen, sillä makrot eivät voi sisältää itseään.}. 
+%\subsection{Vertailtavien kielten makrojärjestelmät}
+%
+%\hl{Tarkista kieli}
 
-Makrojärjestelmän hygieenisyydellä tarkoitetaan makrojen evaluoinnissa
-tapahtuvien mahdollisten konfliktien ratkaisemiseen liittyviä ominaisuuksia.
-Näitä konflikteja ovat esimerkiksi käytössä olevat muuttujien tunnisteet ja
-ohjelmien rakenne~\citep{macrohygiene}. C ja C++ eivät sisällä hygieenistä
-makroprosessoria, kun taas Go-kielen ja Rustin makroprosessorit ovat
-hygieenisiä. Ohjelmassa~\ref{fig:cmacro} on esimerkki epähygieenisestä
-makrosta. \texttt{DOUBLE}-makro muuttuu käännösvaiheessa muotoon $1+1*2$, joka
-on laskujärjestyksen takia 3 eikä odotettu 4. Lopulliseksi printf-kutsuksi
-muodostuu siis \texttt{printf("One plus one doubled is \%d", 1+1*2)}. Ongelman
-voi kiertää tässä tapauksessa määrittelemällä \texttt{DOUBLE}-makron
-\texttt{x*2} sijaan \texttt{((x)*2)}, jolloin sulut pakottavat
-laskujärjestyksen oikein.
-
-\FloatBarrier
-
-\begin{listing}[ht!]
-    \inputminted{C}{c-hygiene.c}
-    \inputminted{text}{c-hygiene-output.txt}
-    \caption{C:n ja C++:n makrot eivät ole hygieenisiä. DOUBLE-makro muuttuu
-    käännösvaiheessa muotoon $1+1*2$, joka on laskujärjestyksen takia 3 eikä
-    odotettu 4.}
-    \label{fig:cmacro}
-\end{listing}
-
-\FloatBarrier
+%Ada, D ja Go eivät sisällä mahdollisuutta käännösaikaisille makroille. C ja C++
+%käyttävät samaa makrojärjestelmää, joka on kuitenkin hyvin
+%rajoittunut~(\citeauthor{CPP17}, \citeyear{CPP17}, luku~19; \citeauthor{C18},
+%\citeyear{C18}, luku~6.10).
+%
+%C:n ja C++:n makrot ajetaan ennen muuta koodin käsittelyä, eli makroja voi
+%sijoittaa mihin tahansa koodia., kun taas C:n ja C++:n ei\footnote{C:n ja
+%C++:n makrojärjestelmä ei ole edes primitiivirekursiivinen, sillä makrot eivät
+%voi sisältää itseään.}. 
 
 \subsection{Ada}
 
@@ -91,7 +71,7 @@ taipuva kieli, sillä se on suunniteltu hallitsemaan monia eri
 käyttötarkoituksia matalan tason bittitason ohjelmoinnista korkean tason
 arkkitehtuureihin.
 
-Ohjelmoinnin tehostamiseksi Adassa on sekä poikkeukset että automaattinen
+Ohjelmoinnin helpottamiseksi Adassa on sekä poikkeukset että automaattinen
 muistinhallinta. Nämä kuitenkin hidastavat kieltä hieman aikaisemmin todetuistä
 syistä. Lisäksi C-kielen kanssa yhteensopivuus on kielen taipuvuudesta johtuen
 hankalaa -- jokainen kutsuttava C-funktio on yksitellen määritettävä
@@ -103,7 +83,8 @@ vertailuin ainoa kieli, joka voi kutsua muilla ohjelmointikielillä
 kirjoitettuja kirjastorutiineja suoraan ilman C-rajapintojen käyttöä. Adassa on
 C:n lisäksi tuki C++:lle\footnote{C++-tuki ei sisällä nimiruntelun tukemista,
 vaan kutsuttavista funktioista pitää määrittää runnellut nimet.}, Fortranille
-ja Cobolille~\citep[s.~585]{ADA12}.
+ja Cobolille~\citep[s.~585]{ADA12}. Adassa ei kuitenkaan ole makrojärjestelmää,
+eikä Ada tue C:n makrojärjestelmää.
 
 \subsection{C++}
 
@@ -141,10 +122,22 @@ Tämä mahdollistaa jokaisen luokan ilmentymän\defword{instance} erillisen
 optimoinnin, mutta yleisesti kasvattaa sekä kääntämisaikoja että ohjelmien
 kokoa.
 
+\hl{tarkista kieli}
+
+C++ kayttää lähes samaa makrojärjestelmää kuin C. C++:n makrojärjestelmässä on
+11 avainsanaa, joita ei voi määrittää uudelleen
+esikäsittelijässä~\citep[luku~19.2]{CPP17}\footnote{ Avainsanat ovat
+\texttt{and}, \texttt{and\_eq}, \texttt{bitand}, \texttt{bitor},
+\texttt{compl}, \texttt{not}, \texttt{not\_eq}, \texttt{or}, \texttt{or\_eq},
+\texttt{xor} sekä \texttt{xor\_eq}. }. Tämä tarkoittaa sitä, että C++:n
+esikäsittelijä ei hyväksy joitakin C:n esikäsittelijän hyväksymiä makroja,
+tosin tämä ei tapahdu käytännössä koskaan. Koska makrojärjestelmä on muuten
+sama kuin C:n makrojärjestelmä, se on hyvin rajoittunut \citep[luku~19]{CPP17}.
+
 \subsection{D}
 
 D on 2000-luvun alussa Digital Mars -yrityksen julkaisema ohjelmointikieli,
-jonka tarkoituksena on mahdollistaa tehokkaan ohjelmakoodin kirjoittaminen
+jonka tarkoituksena on mahdollistaa tehokkaiden ohjelmien kirjoittaminen
 helposti ja turvallisesti~\citep{dhistory}. D on suunniteltu syntaksiltaan ja
 käytökseltään lähelle C:tä ja C++:aa. Vaikka D-kielessä on olemassa
 automaattinen muistinhallinta, D:n \emph{BetterC}-tila tekee kielestä
@@ -160,7 +153,8 @@ funktiota kohden, sillä D:n tyyppijärjestelmä on hyvin lähellä C:tä. D:lle
 myös olemassa useita työkaluja otsikkotiedostojen automaattiseen muuntamiseen,
 kuten \texttt{htod}-työkalu~\citep{htod}. Työkalut eivät kuitenkaan ole
 täydellisiä, sillä useiden D:n ominaisuuksien semantiikka ei ole C:n kanssa
-yhteensopiva.
+yhteensopiva. D ei sisällä tukea C:n makrojärjestelmälle, eikä D:ssä ole
+omaa makrojärjestelmää.
 
 \subsection{Go}
 
@@ -176,27 +170,35 @@ Go-kielessä ei ole muista vertailtavista kielistä poiketen tyyppiparametreja.
 Tämä estää käännösaikaisesti tyyppitarkistetun geneerisen koodin
 kirjoittamisen. Ohjelmat voivat kuitenkin suoritusaikaisesti reflektion kautta
 tunnistaa muuttujien konkreettisen tyypin. Tämän mahdollistaminen kasvattaa
-ohjelmakoodin kokoa, sillä rajapinnan mukana on säilytettävä rajapinnan oikeaa
+ohjelmien kokoa, sillä rajapinnan mukana on säilytettävä rajapinnan oikeaa
 tyyppiä. Tämä kuitenkin yksinkertaistaa ohjelmien kirjoittamista, sillä
 ohjelmoijan ei tarvitse miettiä kirjoittamishetkellä monimutkaisia
 tyyppejä~\citep[esim.][kalvo 8]{gohistory}, kuitenkin mahdollistaen geneerisen
-koodin kirjoittamisen. Ohjelmassa~\ref{fig:goreflection} käsitellään
-value-muuttujaa geneerisesti - jos muuttuja on tyyppiä \texttt{string},
-muuttuja palautetaan sellaisenaan. Jos muuttujassa toteuttaa
-\texttt{Stringer}-rajapinnan, eli siinä on \texttt{String()}-metodi, sitä
-kutsutaan ja palautetaan tulos. Muussa tapauksessa palautetaan tyhjä
-merkkijono.
+koodin kirjoittamisen.
+%Ohjelmassa~\ref{fig:goreflection} käsitellään
+%value-muuttujaa geneerisesti - jos muuttuja on tyyppiä \texttt{string},
+%muuttuja palautetaan sellaisenaan. Jos muuttujassa toteuttaa
+%\texttt{Stringer}-rajapinnan, eli siinä on \texttt{String()}-metodi, sitä
+%kutsutaan ja palautetaan tulos. Muussa tapauksessa palautetaan tyhjä
+%merkkijono.
 
+Vaikka Go-kielessä ei itsessään ole makroja, se sisältää \texttt{go~generate}
+-työkalun, jota voidaan käyttää koodin generointiin~\citep{gogenerate}.
+\texttt{go~generate} mahdollistaa minkä tahansa komentorivikomennon ajamisen,
+ja on enemmänkin standardoitu tapa ajaa tiettyjä komentorivikäskyjä osana
+ohjelman kääntämistä kuin tyypillinen makrojärjestelmä.
+\texttt{\mbox{go~generate}} ajetaan erillisenä komentona,
+eikä esimerkiksi osana \texttt{\mbox{go~build}}-komentoa.
 
-\begin{listing}[ht!]
-    \inputminted{go}{goreflect.go}
-    \caption{Geneerinen funktio Go-kielessä. Jos \texttt{value}-muuttuja on
-    tyyppiä \texttt{string}, muuttuja palautetaan sellaisenaan. Jos muuttujassa
-    toteuttaa \texttt{Stringer}-rajapinnan, eli siinä on
-    \texttt{String()}-metodi, sitä kutsutaan ja palautetaan tulos. Muussa
-    tapauksessa palautetaan tyhjä merkkijono.}
-    \label{fig:goreflection}
-\end{listing}
+%\begin{listing}[ht!]
+%    \inputminted{go}{goreflect.go}
+%    \caption{Geneerinen funktio Go-kielessä. Jos \texttt{value}-muuttuja on
+%    tyyppiä \texttt{string}, muuttuja palautetaan sellaisenaan. Jos muuttujassa
+%    toteuttaa \texttt{Stringer}-rajapinnan, eli siinä on
+%    \texttt{String()}-metodi, sitä kutsutaan ja palautetaan tulos. Muussa
+%    tapauksessa palautetaan tyhjä merkkijono.}
+%    \label{fig:goreflection}
+%\end{listing}
 
 
 Go-kielen virheidenkäsittely on toteutettu useissa kohdissa C:n tavoin;
@@ -210,7 +212,7 @@ C:n kutsuminen Go-kielestä ei ole aukotonta: koska Go on muistinkäytöltä
 turvallinen kieli, erityisesti muistin jakaminen C:n ja Go-kielen välillä on
 hankalaa. Lisäksi C:n funktio-osoittimia ei voi kutsua Go-kielen
 puolelta~\citep{cgo}. Go mahdollistaa C-otsikkotiedostojen suoran käytön
-ohjelmakoodista, mikä helpottaa C-koodin kutsumista.
+lähdekoodista, mikä helpottaa C-koodin kutsumista.
 
 \subsection{Rust}
 
@@ -232,10 +234,10 @@ Rustin monimutkainen tyyppijärjestelmä kannustaa kirjoittamaan turvallisia
 ohjelmia, Tietorakenteiden mutatoiminen on tehty tietoisesti hankalaksi, sillä
 monimutkaisissa ohjelmissa holtittomasti muuttuva tila on usean vian syynä, ja
 muuttumaton tila tekee monisäikeistettyjen\defword{multithreaded} ohjelmien
-toteutuksesta huomattavasti helpompaa\citationneeded. Kullakin muuttujalla voi
-olla joko rajaton määrä muuttumattomia viitteitä\defword{immutable reference}
-tai yksi muuttuva viite\defword{mutable reference}, mutta molempia ei voi
-käyttää yhtä aikaa.
+toteutuksesta huomattavasti helpompaa~\citep[luku 4, kohta 17]{effectivejava}.
+Kullakin muuttujalla voi olla joko rajaton määrä muuttumattomia
+viitteitä\defword{immutable reference} tai yksi muuttuva viite\defword{mutable
+reference}, mutta molempia ei voi käyttää yhtä aikaa.
 
 Turvallisuudella on kuitenkin hintansa -- Rust-ohjelmat vievät enemmän tilaa
 kuin vastaavat C-ohjelmat. Jos Rust-ohjelmista poistaa standardikirjaston ja
@@ -251,23 +253,39 @@ muuntamiseen~\citep{rustbindgen}. Rust kuitenkin suosittelee jokaisen kirjaston
 kohdalla käsin ympäröimään C-kirjaston funktiot, sillä C:n tyyppimäärittelyt
 eivät tarjoa Rustin vaatimaa tarkkuutta funktioiden turvallisuudesta.
 
+Vaikka Rust ei tue C:n makroja, siinä on useita erillisiä kattavia
+makrojärjestelmiä: varsinaiset makrot~\citep{rustmacros}, joiden lisäksi
+Rustista löytyy useita kokeellisia koodin generointiin tarkoitettuja
+ominaisuuksia~\citep{rustprocmacros, rustplugins}. Rust taas käsittelee makrot
+vasta ohjelman tokenisoinnin jälkeen, eli ohjelman täytyy olla kyseisen
+ohjelmointikielen mukaista ennen kuin makrot suoritetaan -- makroilla ei voi
+käsitellä mitä tahansa tekstiä. Rust vaatii myös erottimien (sulkeiden,
+lainausmerkkien ja heittomerkkien) olevan kielen syntaksin mukaisesti. Lisäksi
+Rust-kääntäjän tulee tunnistaa kielen tekstialkiot eli
+lekseemit\defword{lexeme} ennen makrojen suorittamista, eli Rust ei mahdollista
+uusien operaattoreiden määrittämistä makrojen avulla. Rustin makroprosessori on
+Turing-täydellinen~\citep{rustmacros} sekä hygieeninen.
+
 \newpage
 
 \subsection{Yhteenveto}
 
 Yksikään vertailtavista kielistä ei täytä kaikkia luvussa~\ref{sec:abs}
 määriteltyjä rajoitteita. Yksikään kielistä ei täytä muistinkäytön rajoitteita,
-jonka lisäksi saumaton yhteistyö C:n kanssa onnistuu vain C++:n kanssa. C++, D
-ja Rust mahdollistavat nimiruntelun poistamisen käytöstä, mutta tämä ei toimi
-esimerkiksi C++:n luokkien yhteydessä. Ada mahdollistaa funktioiden nimien
-muuttamisen linkkeriä varten, jolloin esimerkiksi
-\texttt{EsimerkkiFunktio}-nimistä funktiota voidaan kutsua
-\texttt{esimFunk}-nimellä. Kaikki vertailtavat kielet tukevat
-vierasfunktiorajapintoja C:n mukaisesti, eli kielet voivat kutsua muita kieliä
-C-rajapintojen läpi. C++ ja Rust ovat hyvin lähellä C:tä käännettyjen ohjelmien
-koossa, mutta häviävät C:lle laajojen vakiokirjastojen takia. Molemmat ovat
-myös hyvin monimutkaisia kieliä. Vain C++ ja Go voivat sisällyttää ohjelmiin
-C:n otsikkotiedostoja, kun taas Ada, D ja Rust vaativat jokaisen funktion
+jonka lisäksi saumaton yhteistyö C:n kanssa onnistuu vain C++:n kanssa.
+
+C++, D ja Rust mahdollistavat yhteensopivuuden parantamiseksi nimiruntelun
+poistamisen käytöstä, mutta tämä ei toimi esimerkiksi C++:n luokkien
+yhteydessä. Ada ja Go mahdollistavat funktioiden nimien valitsemisen linkkeriä
+varten, jolloin esimerkiksi \texttt{EsimerkkiFunktio}-nimistä funktiota voidaan
+kutsua \texttt{esimFunk}-nimellä C-ohjelmasta. Kaikki vertailtavat kielet
+tukevat vierasfunktiorajapintoja C:n mukaisesti, eli kielet voivat kutsua muita
+kieliä C-rajapintojen läpi.
+
+C++ ja Rust ovat hyvin lähellä C:tä käännettyjen ohjelmien koossa, mutta
+häviävät C:lle laajojen vakiokirjastojen takia. Molemmat ovat myös hyvin
+monimutkaisia kieliä. Vain C++ ja Go voivat sisällyttää ohjelmiin C:n
+otsikkotiedostoja, kun taas Ada, D ja Rust vaativat jokaisen funktion
 määrittämistä. Adalle, D:lle ja Rustille on tosin olemassa työkaluja, joilla
 tämän määrittämisen voi automatisoida.
 
@@ -276,9 +294,9 @@ tämän määrittämisen voi automatisoida.
     \begin{tabular}{@{}lllll@{}} \toprule
         Kieli & Nimiruntelu   & Muistinhallinta                                     & C:n VFR               & muiden kielten VFR \\ \midrule
         Ada   & täysin hallittavissa & automaattinen                                       & Työläs mutta kattava  & C, C++, Fortran, Cobol \\
-        C++   & saa pois päältä            & manuaalinen                                         & Lähes saumaton        & C:n läpi \\
-        D     & saa pois päältä            & molemmat                                            & Työläs mutta kattava  & C:n läpi \\
-        Go    & on            & automaattinen                                       & Epätäydellinen        & C:n läpi \\
+        C++   & saa pois päältä      & manuaalinen                                         & Lähes saumaton        & C:n läpi \\
+        D     & saa pois päältä      & molemmat                                            & Työläs mutta kattava  & C:n läpi \\
+        Go    & saa pois päältä      & automaattinen                                       & Epätäydellinen        & C:n läpi \\
         Rust  & saa pois päältä & automaattinen\footnote{Borrow Checkerin hallitsemana, joka mahdollistaa automaattisen muistinhallinnan ilman sen aiheuttamaa hidastusta.} & Työläs mutta kattava  & C:n läpi \\ \bottomrule
     \end{tabular}
     \end{adjustbox}
@@ -288,43 +306,59 @@ tämän määrittämisen voi automatisoida.
     \label{table:properties}
 \end{table}
 
-\hl{Tänne lisää tekstiä.}
-
-\FloatBarrier
+Rust ja C++ ovat verrattavista kielistä ainoat, joilla on olemassa varsinainen
+makrojärjestelmä. C++:n makrojärjestelmä on melkein täysin yhteensopiva C:n
+makrojärjestelmän kanssa, kun taas Rustin makrojärjestelmä on huomattavasti
+ilmaisukykyisempi.
 
 \newpage
 
-Benchmarks gamen tulokset myös heijastavat näitä tuloksia -- C++ ja Rust ovat
-nopeudeltaan hyvin lähellä C:tä, kun taas Ada ja Go ovat huomattavasti
-hitaampia.
-
-\FloatBarrier
-
 \begin{figure}[ht!]
     \begin{adjustbox}{center}
-    \begin{minipage}{1.1\textwidth}
+    \begin{minipage}{1.15\textwidth}
     \begin{minipage}{0.5\textwidth}
         \input{benchmarks/benchmarkscpu.tex}
+        \vspace*{-0.8cm}
     \end{minipage}
     \begin{minipage}{0.5\textwidth}
         \input{benchmarks/benchmarksmem.tex}
+        \vspace*{-0.9cm}
     \end{minipage}
     \end{minipage}
     \end{adjustbox}
+    \begin{adjustbox}{center}
+    \begin{minipage}{1.15\textwidth}\makebox[\textwidth][c]{%
+    \begin{minipage}{0.5\textwidth}
+        \input{benchmarks/benchmarkslines.tex}
+        \vspace*{-1cm}
+    \end{minipage}}
+    \end{minipage}
+    \end{adjustbox}
     \caption{
-        Benchmarks gamen~\citep[data haettu 29.11.2018]{benchmarks} dataan
-        perustuvat kuvaajat ohjelmointikielten suorituskyvystä ja
-        muistinkäytöstä.
-    }
+        Benchmarks gamen~\citep[tiedot haettu 1.1.2019]{benchmarks} tuloksiin
+        perustuvat kuvaajat ohjelmointikielten suorituskyvystä, muistinkäytöstä
+        ja ohjelmien koosta verrattuna C:llä kirjoitettujen ohjelmien
+        tuloksiin.}
     \label{fig:benchmarksgame}
 \end{figure}
 
 \FloatBarrier
 
-Kuvassa~\ref{fig:benchmarksgame} verrataan kielien suorituskykyä ja
-muistinkäyttöä. C, C++ ja Rust ovat hyvin lähellä toisiaan sekä muistinkäytössä
-että suoritusnopeudessa. Ada ja Go ovat selkeästi hitaampia, ja käyttävät
-enemmän muistia. C++ on yksittäisissä suorituskykytesteissä C:tä nopeampi. Rust
-sijoittuu muistinkäytössään C:n ja C++:n väliin.
+Benchmarks gamen tulokset myös heijastavat näitä tuloksia -- C++ ja Rust ovat
+nopeudeltaan hyvin lähellä C:tä, kun taas Ada ja Go ovat huomattavasti
+hitaampia. Kuvassa~\ref{fig:benchmarksgame} verrataan suorituskykyä,
+muistinkäyttöä ja ohjelmien lähdekoodin pituutta C:llä kirjoitettuun ohjelmaan.
+Lähdekoodimittauksessa mitataan ohjelman kokoa siten, että ohjelmasta
+poistetaan kommentit sekä ylimääräiset välimerkit. Tämän jälkeen ohjelma
+pakataan \texttt{gzip}-pakkausohjelmalla~\citep{howmeasured}. Kuvaajat
+perustuvat nopeimman kielellä kirjoitetun ohjelman tuloksiin -- lähes kaikilla
+kielillä on jokaisessa suorituskykymittauksissa useampi ohjelma.
 
-\hl{Tänne lisää tekstiä.}
+C ja C++ ovat hyvin lähellä toisiaan ajonopeudessa. Rust on jonkin verran
+hitaampi, ja Ada ja Go huomattavasti hitaampia. C++ käyttää jonkin verran
+enemmän muistia kuin C, kun taas Rust, Ada ja Go käyttävät selkeästi enemmän
+muistia. C++ ja Rust ovat yksittäisissä suorituskykymittauksissa C:tä
+nopeampia. Yhdessä suorituskykymittauksista Go käyttää noin puolet C:n
+käyttämästä muistista, mutta on samassa mittauksessa kaksi kertaa hitaampi.
+Mielenkiintoisesti Rust, Ada ja Go ovat C:hen verrattuna hitaampia ja vievät
+enemmän muistia, mutta eivät tarjoa merkittäviä säästöjä lähdekoodin määrään.

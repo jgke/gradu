@@ -7,11 +7,11 @@
     institution = {International Organization for Standardization}
 }
 
-@techreport{CPP14,
+@techreport{CPP17,
     type = {Standard},
     key = {ISO/IEC},
-    year = {2014},
-    title = {{ISO/IEC 14882:2014 -- Information technology -- Programming languages -- C++}},
+    year = {2017},
+    title = {{ISO/IEC 14882:2017 -- Information technology -- Programming languages -- C++}},
     address = {Geneva, CH},
     institution = {International Organization for Standardization}
 }
@@ -141,6 +141,20 @@
     title = {{Macros - The Rust Programming Language}},
     howpublished = {{\url{https://doc.rust-lang.org/book/first-edition/macros.html#the-deep-end}}},
     year = "2017"
+}
+
+@misc{rustprocmacros,
+    author = {{Rust Project Developers}},
+    title = {{Procedural Macros - The Rust Reference}},
+    howpublished = {{\url{https://doc.rust-lang.org/reference/procedural-macros.html}}},
+    year = "2018"
+}
+
+@misc{rustplugins,
+    author = {{Rust Project Developers}},
+    title = {{plugin - The Unstable Book}},
+    howpublished = {{\url{https://doc.rust-lang.org/unstable-book/language-features/plugin.html}}},
+    year = "2018"
 }
 
 @misc{gotourdefer,
@@ -298,7 +312,7 @@
     howpublished = {{\url{https://gcc.gnu.org/}}},
     year = {2018}
 }
-  
+
 @misc{euler,
     author = {Hughes, Colin},
     title = {{Problem 6 - Project Euler}},
@@ -416,29 +430,110 @@
 }
 
 @inproceedings{macrohygiene,
- author = {Kohlbecker, Eugene and Friedman, Daniel P. and Felleisen, Matthias and Duba, Bruce},
- title = {{Hygienic Macro Expansion}},
- booktitle = {{Proceedings of the 1986 ACM Conference on LISP and Functional Programming}},
- series = {LFP '86},
- year = {1986},
- isbn = {0-89791-200-4},
- location = {Cambridge, Massachusetts, USA},
- pages = {151--161},
- numpages = {11},
- url = {http://doi.acm.org/10.1145/319838.319859},
- doi = {10.1145/319838.319859},
- acmid = {319859},
- publisher = {ACM},
- address = {New York, NY, USA},
+    author = {Kohlbecker, Eugene and Friedman, Daniel P. and Felleisen, Matthias and Duba, Bruce},
+    title = {{Hygienic Macro Expansion}},
+    booktitle = {{Proceedings of the 1986 ACM Conference on LISP and Functional Programming}},
+    series = {LFP '86},
+    year = {1986},
+    isbn = {0-89791-200-4},
+    location = {Cambridge, Massachusetts, USA},
+    pages = {151--161},
+    numpages = {11},
+    doi = {10.1145/319838.319859},
+    acmid = {319859},
+    publisher = {ACM},
+    address = {New York, NY, USA},
 } 
+%url = {http://doi.acm.org/10.1145/319838.319859},
 
 @book{unicode11,
-  address = {Mountain View, CA},
-  author = {{The Unicode Consortium}},
-  institution = {{Unicode Consortium}},
-  isbn = {978-1-936213-19-1},
-  keywords = {Characters Encoding Unicode standard},
-  title = {{The Unicode Standard, version 11.0.0 - Core Standard}},
-  url = {http://www.unicode.org/versions/Unicode11.0.0/},
+    address = {Mountain View, CA},
+    author = {{The Unicode Consortium}},
+    institution = {{Unicode Consortium}},
+    isbn = {978-1-936213-19-1},
+    keywords = {Characters Encoding Unicode standard},
+    title = {{The Unicode Standard, version 11.0.0 - Core Standard}},
+    url = {http://www.unicode.org/versions/Unicode11.0.0/},
+    year = 2018
+}
+
+
+@misc{pretod,
+    author = {{D Language Foundation}},
+    title = {{The C Preprocessor vs D - D Programming Language}},
+    howpublished = {\\\url{https://dlang.org/articles/pretod.html}},
+    year = {2018}
+}
+
+@article{designpatternsdesign,
+    author={J. Gil and D. H. Lorenz},
+    journal={Computer},
+    title={Design patterns and language design},
+    year={1998},
+    volume={31},
+    number={3},
+    pages={118-120},
+    doi={10.1109/2.660196},
+    ISSN={0018-9162},
+}
+
+@article{exceptioncosts,
+    author={C. de Dinechin},
+    journal={IEEE Concurrency},
+    title={C++ Exception Handling},
+    year={2000},
+    volume={8},
+    number={4},
+    pages={72-79},
+    doi={10.1109/4434.895109},
+    ISSN={1092-3063},
+}
+
+@article{codelength,
+    author={L. Prechelt},
+    journal={Computer},
+    title={An empirical comparison of seven programming languages},
+    year={2000},
+    volume={33},
+    number={10},
+    pages={23-29},
+    doi={10.1109/2.876288},
+    ISSN={0018-9162},
+}
+
+@misc{qsmcodelength,
+    author = {{QSM}},
+    title = {{Function Point Languages Table | QSM SLIM-Estimate}},
+    year = {2017},
+    howpublished = {{\\\url{http://www.qsm.com/resources/function-point-languages-table}}},
+}
+
+@misc{howmeasured,
+    author = {Gouy, Isaac},
+    title = {{How programs are measured | Computer Language Benchmarks Game}},
+    year = {2018},
+    howpublished = {{\\\url{https://benchmarksgame-team.pages.debian.net/benchmarksgame/how-programs-are-measured.html}}}
+}
+
+@article{languagelearning,
+    author = {Scholtz, Jean and Wiedenbeck, Susan},
+    title = {Learning second and subsequent programming languages: A problem of transfer},
+    journal = {International Journal of Human-Computer Interaction},
+    volume = {2},
+    number = {1},
+    pages = {51-72},
+    year  = {1990},
+    publisher = {Taylor \& Francis},
+    doi = {10.1080/10447319009525970},
+}
+
+@book{effectivejava,
+  address = {Boston, MA},
+  author = {Bloch, Joshua},
+  edition = 3,
+  isbn = {978-0-13-468599-1},
+  publisher = {Addison-Wesley},
+  title = {{Effective Java}},
   year = 2018
 }
+

@@ -2,40 +2,34 @@
 
 \subsection{C:n kehitettävissä olevat ominaisuudet}
 
-%\hl{Tämä voisi olla oma lukunsa, jolloin aliluvusta 4.2 tulisi luku 5.}
-
 C on lähes kaikissa moderneissa järjestelmissä käytetty ohjelmointikieli, jota
 käytetään matalan tason ohjelmointiin. C mahdollistaa erityisesti nopeutta tai
 pientä muistijalanjälkeä vaativien sovelluksien toteuttamisen. C on hyvin
 lähellä konekieltä~--~koodista voi päätellä hyvin suurella tarkkuudella, miksi
 konekielen käskyiksi se kääntyy. C on suosittu erityisesti käyttöjärjestelmien
-ytimien toteutukseen sekä sulautettujen järjestelmien toteuttamiseen.%
-%C:n
-%toteutuksessa on on otettu huomioon mahdollisimman helppo kääntäjän
-%toteuttaminen\citationneeded, sillä tuolloin jokaiselle alustalle piti
-%toteuttaa oma kääntäjänsä.
-%\hl{Tässä kappaleessa on aika paljon väitteitä ilman lähteitä...}
+ytimien toteutukseen sekä sulautettujen järjestelmien toteuttamiseen.
 
-C:n syntaksia on usein kritisoitu\citationneeded~vuolaudesta. Koska C on
-kielenä hyvin yksinkertainen, siinä on hyvin vähän rakenteita ohjelman
-rakenteen hallitsemiseen. Erityisesti virheidenhallinta vie paljon
-ohjelmakoodia, sillä ohjelmoijan pitää erikseen tunnistaa virhetilanne,
-jonka jälkeen ohjelmoijan tulee tilanteesta riippuen joko palauttaa jokin
-tietty arvo, vapauttaa muistia tai tehdä jotain muuta.
+C:llä kirjoitetut ohjelmat ovat usein pidempiä kuin modernemmilla
+ohjelmointikielillä kirjoitetut vastaavat ohjelmat~\citep{codelength,
+qsmcodelength}. Koska C on kielenä hyvin yksinkertainen, siinä on hyvin vähän
+rakenteita ohjelman rakenteen hallitsemiseen. Erityisesti hyvin tehty
+virheidenhallinta vie paljon lähdekoodia, sillä ohjelmoijan pitää erikseen
+tunnistaa virhetilanne, jonka jälkeen ohjelmoijan tulee tilanteesta riippuen
+joko palauttaa jokin tietty arvo, vapauttaa muistia tai tehdä jotain muuta.
 
 \hl{Tarkista kieli}
 
 Ohjelma~\ref{fig:cerrorhandling} esittelee C:n virheidenkäsittelyä. Ohjelmassa
 tarkistetaan useita arvoja, jotka vaikuttavat funktion kontrollivuohon.
-Ensimmäisessä osassa tarkistetaan ajurin tilaa \texttt{dev\_priv}
--muistiosoittimen läpi, ja palautetaan virhearvot \texttt{-EINVAL} tai
-\texttt{-ENODEV} riippuen virheestä. Toisessa osassa tarkistetaan
-\texttt{oa\_get\_render\_ctx\_id} -funktion paluuarvo, ja palautetaan sen
-palauttama virhekoodi virhetilanteessa. Tämäv jälkeen tarkistenaan
-\texttt{get\_oa\_config} -funktion paluuarvo, ja virhetilanteessa hypätään
-\texttt{err\_config} -osioon, jossa mahdollisesti kutsutaan
-\texttt{oa\_put\_render\_ctx\_id} -funktiota, joka vapautetaan
-\texttt{oa\_get\_render\_ctx\_id} -funktion varaama semafori.
+Ensimmäisessä osassa tarkistetaan ajurin tilaa
+\texttt{dev\_priv}-muistiosoittimen läpi, ja palautetaan virhearvo
+\texttt{-EINVAL} tai \texttt{-ENODEV} riippuen virheestä. Toisessa osassa
+tarkistetaan \texttt{oa\_get\_render\_ctx\_id}-funktion paluuarvo, ja
+palautetaan sen palauttama virhekoodi virhetilanteessa. Tämän jälkeen
+tarkistetaan \texttt{get\_oa\_config}-funktion paluuarvo, ja virhetilanteessa
+hypätään \texttt{err\_config}-osioon, jossa mahdollisesti kutsutaan
+\texttt{oa\_put\_render\_ctx\_id}-funktiota, joka vapautetaan
+\texttt{oa\_get\_render\_ctx\_id}-funktion varaama semafori.
 
 Ohjelmassa on useita tyypillisiä piirteitä C:n virheidenkäsittelystä. Alussa
 tarkistetaan ohjelman tilan invariantteja, palauttaen tiettyjä virhearvoja
@@ -49,8 +43,30 @@ määritelmällä. C:n makrojärjestelmä on kuitenkin rajoittunut -- rekursiivi
 makrojen rakentaminen on mahdotonta, sillä itsensä sisältäviä makroja ei voi
 muodostaa johtuen makrojärjestelmän rajoituksista~\citep[luku 6.10.3.4]{C18}.
 
+\FloatBarrier
+
+\begin{listing}[ht!]
+    \inputminted{C}{c-hygiene.c}
+    \inputminted{text}{c-hygiene-output.txt}
+    \caption{C:n ja C++:n makrot eivät ole hygieenisiä. DOUBLE-makro muuttuu
+    käännösvaiheessa muotoon $1+1*2$, joka on laskujärjestyksen takia 3 eikä
+    odotettu 4.}
+    \label{fig:cmacro}
+\end{listing}
+
+\FloatBarrier
+
+C:n ja C++:n makro eivät ole hygieenisiä, kun taas esimerkiksi Rustin makrot
+ovat. Ohjelmassa~\ref{fig:cmacro} on esimerkki C:llä kirjoitetusta
+epähygieenisestä makrosta. \texttt{DOUBLE}-makro muuttuu käännösvaiheessa
+muotoon $1+1*2$, joka on laskujärjestyksen takia 3 eikä odotettu 4.
+Lopulliseksi printf-kutsuksi muodostuu siis \texttt{printf("One plus one
+doubled is \%d", 1+1*2)}. Ongelman voi kiertää tässä tapauksessa
+määrittelemällä \texttt{DOUBLE}-makron \texttt{x*2} sijaan \texttt{((x)*2)},
+jolloin sulut säilyttävät oikean laskujärjestyksen.
+
 C:n makrot eivät myöskään ole hygieenisiä, kuten aikaisemmin todettiin. C:n
-makrot eivät myöskään pysty muokkaamaan ohjelmakoodin rakennetta, kun taas
+makrot eivät myöskään pysty muokkaamaan lähdekoodin rakennetta, kun taas
 esimerkiksi LISP-kieliperheessä lukuisat ominaisuudet voi toteuttaa
 käännösaikaisilla makroilla. Myös Rustissa oleva makrojärjestelmä antaa suoran
 pääsyn kielen syntaksipuun muokkaamiseen. Vahva makrojärjestelmä mahdollistaa
@@ -61,7 +77,7 @@ Erityisesti osoitintyypit ja funktio-osoitintyypit ovat hyvin epäselkeitä%
 %,
 %vaikka kielessä onkin sinänsä järkevä logiikka tyyppimäärittelyyn: jos
 %tyyppimäärittely on esimerkiksi \texttt{int~(*fp)(int~arg,~char~arg2)},
-%kirjoittamalla ohjelmakoodiin \texttt{(*fp)(int,~char)} saa arvon tyyppiä
+%kirjoittamalla lähdekoodiin \texttt{(*fp)(int,~char)} saa arvon tyyppiä
 %\texttt{int}
 . Monimutkaisissa tapauksissa on vaikeaa seurata muuttujien oikeaa tyyppiä.
 Uudemmissa ohjelmointikielissä onkin selkeämpiä tapoja merkitä tyyppejä.
@@ -128,13 +144,14 @@ ohjelma~\ref{fig:coverflow} näyttää.
 \hl{tarkista kieli}
 
 Ylivuodon käyttäytyminen C:ssä riippuu kääntäjäoptimoinnin määrästä --
-GCC-kääntäjän optimointitasolla~0 lauseketta $x~+~1~<=~x$ ei optimoida pois,
-mutta optimointitasolla~3 kääntäjä ''tietää'' että kokonaisluvut eivät
-ylivuoda, sillä C-kielen spesifikaatiossa kokonaislukujen ylivuoto on
-määrittelemätöntä toimintaa\defword{undefined behavior}~\citep[liite J, luku
-J.2]{C18}. Luonnollisten lukujen yli- ja alivuoto taas on määritelty -- minkä
-tahansa operaation yli- tai alivuodon tulos on aina $x$ modulo $n$, missä $x$
-on operaation tulos ja $n$ on yhtä suurempi kuin suurin muuttujan mahdollinen
+esimerkiksi GCC-kääntäjän version 7.3.0 optimointitasolla~0 lauseketta
+$x~+~1~<=~x$ ei optimoida pois. Optimointitasolla~3 kääntäjä ''tietää'' että
+kokonaisluvut eivät ylivuoda, sillä \mbox{C-kielen} spesifikaatiossa
+kokonaislukujen ylivuoto on määrittelemätöntä toimintaa\defword{undefined
+behavior}~\citep[liite J, luku J.2]{C18}, ja kääntäjä poistaa lausekkeen.
+Luonnollisten lukujen yli- ja alivuoto taas on määritelty -- minkä tahansa
+operaation yli- tai alivuodon tulos on aina $x$ modulo $n$, missä $x$ on
+operaation tulos ja $n$ on yhtä suurempi kuin suurin muuttujan mahdollinen
 arvo.~\citep[luku 6.2.5]{C18}.
 
 \hl{tarkista kieli}
@@ -143,8 +160,8 @@ C:stä puuttuu useita matalan tason operaatioita, joista yksi on erityisesti
 kryptografiassa käytetty kiertobittisiirto\defword{circular bit shift}, joka
 löytyy lähestä kaikista moderneista prosessoreista suoraan assembly-komentona.
 C:n syntaksi ei mahdollista uusien operaattoreiden määrittämistä, vaan
-ohjelmoijat joutuvat käyttämään tavallisia funktioita. Tämä toisaalta pitää
-kielen eksplisiittisenä, mutta pidentää koodin pituutta.
+ohjelmoijat joutuvat käyttämään tavallisia funktioita. Tämä pitää kielen
+eksplisiittisenä, mutta pidentää koodin pituutta.
 Ohjelmassa~\ref{fig:opensslmd5} näytetään, miten koodia voisi selkeyttää
 käyttämällä käyttäjän määrittelemiä operaattoreita. Ohjelmassa esitetään useita
 bittitason operaatioita osana MD5-tiivisteen laskemista. Esimerkissä on kolme
@@ -180,7 +197,7 @@ ASCII-merkistön kanssa, jota C tukee.
 
 \subsubsection{Tyypit}
 
-Ajoaikaisen tyyppijärjestelmän tulee olla täysin yhteensopiva C:n kanssa. Kieli
+Suoritusaikaisen tyyppijärjestelmän tulee olla täysin yhteensopiva C:n kanssa. Kieli
 ei siis voi tuottaa esimerkiksi automaattisesti vapautettua muistia, sillä sen
 integroiminen olemassa olevaan C-ohjelmaan ei ole saumatonta. Myös rajapintojen
 toteuttaminen on hankalaa.
@@ -201,13 +218,13 @@ Kutsuessa Java-koodia Kotlinista mikä tahansa operaatio voi palauttaa
 erityiseksi tyypiksi, joka sallii tarkistukset tyhjiä arvoja varten, mutta ei
 vaadi niitä~\citep{kotlinnullability}.
 
-%Esimerkiksi Rustin ajoaikainen tyypitys on lähellä C:tä; Rustin
+%Esimerkiksi Rustin suoritusaikainen tyypitys on lähellä C:tä; Rustin
 %\texttt{Option<T>} vastaa C:n osoitinmuuttujia\footnote{Vastaava tietotyyppi on
 %Javan \texttt{Optional<T>} ja Haskellin \texttt{Maybe a}.}. \texttt{Option<T>}
 %vaatii, että sen sisältö ei ole tyhjä osoitin\defword[~-- onko tähän parempia
 %käännöksiä?]{NULL pointer}. Tällöin \texttt{Option}-muuttuja voi ilmaista tyhjää
-%arvoa olemalla ajoaikaisesti identtinen C:n NULL-arvon kanssa, ja on siten
-%ajoaikaisesti muistissa identtinen C-osoitinmuuttujien kanssa. Tällöin
+%arvoa olemalla suoritusaikaisesti identtinen C:n NULL-arvon kanssa, ja on siten
+%suoritusaikaisesti muistissa identtinen C-osoitinmuuttujien kanssa. Tällöin
 %C-rajapintojen osoitinargumenteiksi voi antaa \texttt{Option<T>} -muuttujia.
 
 Yksi hyvin suosituista ominaisuuksista moderneissa ohjelmointikielissä on
@@ -220,11 +237,16 @@ tyyppejä.
 \hl{Tarkista kieli}
 
 Summatyypit\defword{sum type \emph{tai} tagged union} ovat useasta modernista
-ohjelmointikielestä löytyvä ominaisuus. Summatyyppi yhdistää tyyppiturvallisesti
-enumeraation unioniin, jolloin summatyypin sisältämä data ei voi olla keskenään
-ristiriidassa.
-
-\hl{Mahd. avaa ohjelmiä lisää ehkä}
+ohjelmointikielestä löytyvä ominaisuus. Toisin kuin
+tulotyypeillä\defword{product type}, joissa tyypin mahdolliset arvot ovat
+tulotyypin sisältämien arvojen tulojoukko eli tyyppien
+monikko\footnote{Tyypillisesti tulotyypit määritellään ohjelmointikielissä
+tietueina\defword{struct}, joissa jokaista tyyppiä vastaa jokin tunniste.},
+summatyyppi voi sisältää vain yksittäisen tyypin arvon kerrallaan. C:llä
+summatyypin voi määritellä yhdistämällä \texttt{enum}- ja \texttt{union}-tyypin
+ohjelman~\ref{fig:sumtypec} esittelemällä tavalla. Useassa modernissa
+ohjelmointikielessä kääntäjä voi yhdistää nämä tyyppiturvallisesti, jolloin
+summatyypin sisältämä arvo ei voi olla itsensä kanssa ristiriidassa.
 
 Ohjelmassa~\ref{fig:sumtype} määritetään summatyyppi, jossa luetellaan värejä.
 Summatyyppi \texttt{Color} sisältää parametrittomat vaihtoehdot \texttt{Red},
@@ -232,12 +254,16 @@ Summatyyppi \texttt{Color} sisältää parametrittomat vaihtoehdot \texttt{Red},
 parametrin ottavan \texttt{Grayscale}-vaihtoehdon, kolmen parametrin
 \texttt{RGB}-vaihtoehdon, ja neliparametrisen \texttt{RGBA}-vaihtoehdon. Kaikki
 \texttt{Color}issa esiintyvät parametrit ovat yhden tavun kokoisia arvoja
-(\texttt{i8}), mutta parametrit voivat yleisesti olla mitä tahansa.
-Ohjelmassa~\ref{fig:sumtypec} määritellään vastaava tyyppi C:llä. C-versio on
-huomattavasti monimutkaisempi. Tämän lisäksi C-versiossa on mahdollista, että
-\texttt{type}-kenttä ei vastaa unionin todellista sisältöä, mikä voi johtaa
-määrittelemättömään toimintaan lukiessa unionin arvoa~\citep[luku
-6.7.2.1]{C18}.
+(\texttt{i8}). Ohjelmassa~\ref{fig:sumtypec} määritellään vastaava tyyppi
+C:llä. C-versio on huomattavasti monimutkaisempi. Tämän lisäksi C-versiossa on
+mahdollista, että \texttt{type}-kenttä ei vastaa unionin todellista sisältöä,
+mikä voi johtaa määrittelemättömään toimintaan lukiessa unionin
+arvoa~\citep[luku 6.7.2.1]{C18}. Tämä voisi tapahtua esimerkiksi tilanteessa,
+jossa \texttt{type}-kenttä sisältää arvon \texttt{RGBA}, kun \texttt{d}-kentän
+arvona on \texttt{empty}-tietue. Tällöin muiden \texttt{d}-kentän arvojen
+lukeminen on määrittelemätöntä toimintaa.
+
+\FloatBarrier
 
 \begin{listing}[ht!]
     \inputminted{Rust}{sumtype.rs}
@@ -245,11 +271,13 @@ määrittelemättömään toimintaan lukiessa unionin arvoa~\citep[luku
     \label{fig:sumtype}
 \end{listing}
 
+\FloatBarrier
+
 \begin{listing}[ht!]
     \inputminted{C}{sumtype.c}
     \caption{Vastaavan tyypin määrittely C:llä. C:ssä on mahdollista, että
-    type-kenttä ei vastaa unionin todellista sisältöä, jolloin ohjelman tila
-    voi olla määrittelemätön.}
+    \texttt{type}-kenttä ei vastaa unionin todellista sisältöä, jolloin
+    ohjelman tila voi olla määrittelemätön.}
     \label{fig:sumtypec}
 \end{listing}
 
@@ -260,9 +288,9 @@ määrittelemättömään toimintaan lukiessa unionin arvoa~\citep[luku
 
 Jotta kielestä toiseen vaihtaminen olisi kannattavaa, uuden kielen on oltava
 tarpeeksi erilainen: samanlainen kieli ei tarjoa tarpeeksi parannusta
-olemassa olevaan, että siirtyminen olisi kannattavaa. C:n syntaksia on usein
-kritisoitu\citationneeded~vuolaudesta, joten syntaksia typistämällä voisi saada
-huomattavia parannuksia.
+olemassa olevaan, että siirtyminen olisi kannattavaa. C:n syntaksia on hyvin
+vuolasta verrattuna moderneihin ohjelmointikieliin, joten syntaksia
+typistämällä voisi saada huomattavia parannuksia.
 
 \begin{listing}[ht!]
     \inputminted{C}{squaresum.c}
@@ -297,7 +325,8 @@ näyttää. Ohjelmassa Rivien 8--12 \texttt{match}-lauseke käsittelee kolme
 \texttt{OptionalInt}in mahdollista tilaa: arvo on olemassa ja on suurempi kuin
 viisi, arvo on olemassa, ja arvoa ei ole olemassa. Ohjelma tulostaa lauseen
 ''Got an int!''. Ohjelman tyyppi \texttt{OptionalInt} on summatyyppi, jonka
-mahdolliset arvot ovat \texttt{Missing} ja \texttt{Value(i32)}.
+mahdolliset arvot ovat \texttt{Missing} ja \texttt{Value}, joista jälkimmäinen
+sisältää muuttujan tyyppiä \texttt{i32}.
 
 \FloatBarrier
 
@@ -384,7 +413,7 @@ toteuttaa puhtaasti kirjastotasolla.
 %Avainsanalle tulisi käyttöä -- esimerkiksi Linux-ytimessä on yleinen
 %suunnittelumalli vapauttaa kaikki funktion varaama muisti käänteisessä
 %järjestyksessä virhetilanteissa. Vain virhetilanteissa ajettu \texttt{defer}
-%mahdollistaisi huomattavaa ohjelmakoodin siivoamista -- ohjelmoijan ei
+%mahdollistaisi huomattavaa lähdekoodin siivoamista -- ohjelmoijan ei
 %tarvitsisi ajatella muistin vapauttamista, sillä ohjelmointikieli tekisi sen
 %ohjelmoijan puolesta.
 

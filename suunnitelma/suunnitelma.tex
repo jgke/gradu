@@ -4,6 +4,7 @@
 
 \makeatletter
 \AtBeginDocument{%
+    \renewcommand{\BEd}{painos\hbox{}}
     \renewcommand{\BOthers}[1]{ja muut\hbox{}}%
     \renewcommand{\BOthersPeriod}[1]{ja muut\hbox{}}%
 }
@@ -54,8 +55,8 @@ $\rightarrow$ Embedded software \\
 \newpage
 \input{oma.tex}
 \newpage
-%\input{rakenne.tex}
-%\newpage
+\input{luettelo.tex}
+\newpage
 
 \renewcommand{\bibname}{Lähteet}
 \renewcommand{\BRetrievedFrom}{Saatavilla\ }
@@ -65,6 +66,7 @@ $\rightarrow$ Embedded software \\
 \bibliography{references}
 
 \appendixbeginhere
+%\inputappendix{luettelo.tex}
 %\inputappendix{github.tex}
 %\restoregeometry
 %\inputappendix{kieli.tex}

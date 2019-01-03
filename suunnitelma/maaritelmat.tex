@@ -1,4 +1,5 @@
-\section{Määritelmät} 
+\section[Ohjelmointikielten vertailuun liittyvät määritelmät]
+{Ohjelmointikielten vertailuun liittyvät \\ määritelmät}
 
 \subsection{Aidosti paremman kielen rajoitteet}
 \label{sec:abs}
@@ -19,15 +20,15 @@ Tutkielmassa käsitellään myös subjektiivisia kielten ominaisuuksia, kuten
 kielen tiiviyttä\defword{terseness, expressiveness}, mutta näitä
 ominaisuuksia ei huomioida kielten paremmuusvertailussa.
 
-Ohjelmointikielellä kirjoitetun tulee olla ajoaikaisesti vähintään yhtä nopea
+Ohjelmointikielellä kirjoitetun tulee olla suoritusaikaisesti vähintään yhtä nopea
 kuin vastaava C:llä kirjoitettu ohjelma. Kieli siis ei saa vaatia ohjelmoijaa
 käyttämään mitään kielen ominaisuuksia, jotka voisivat hidastaa ohjelmien
-suoritusta C:hen verrattuna. Monet ajoaikaiset turvallisuutta lisäävät
-ominaisuudet, kuten muistialueiden tarkistukset, hidastavat kielen ajoaikaista
+suoritusta C:hen verrattuna. Monet suoritusaikaiset turvallisuutta lisäävät
+ominaisuudet, kuten muistialueiden tarkistukset, hidastavat kielen suoritusaikaista
 nopeutta.
 
 Ohjelmointikielellä toteutettu ohjelma ei myöskään saa käyttää enempää muistia
-niin ajoaikaisesti kuin talletusvälineelläkään kuin vastaava C-ohjelma. Tämä
+niin suoritusaikaisesti kuin talletusvälineelläkään kuin vastaava C-ohjelma. Tämä
 koskee myös vakiokirjastoa\defword{standard library} -- yksikin konkreettinen
 vakiokirjaston funktio linkitettynä ohjelmaan kasvattaa ohjelman kokoa. Mikäli
 jokin vakiokirjasto toteutetaan, sen käyttäminen tulee olla ohjelmoijalle
@@ -50,8 +51,8 @@ lisäksi toimia kaikissa ympäristöissä, joissa C toimii.
 
 Eräässä tutkimuksessa~\citep{empiricalpopularity} tutkittiin syitä
 ohjelmointkielten valintaan. Yhden tutkimuksen järjestämän kyselyn (s. 8,
-Slashdotissa julkaistu kysely, n=1679) perusteella kielen valintaan vaikuttaa
-avoimen lähdekoodin kirjastojen saatavuus, olemassa olevien ohjelmien
+\mbox{Slashdotissa} julkaistu kysely, n=1679) perusteella kielen valintaan
+vaikuttaa avoimen lähdekoodin kirjastojen saatavuus, olemassa olevien ohjelmien
 jatkokehitys sekä kielen tunnettavuus ohjelmoijien keskuudessa -- ohjelmoijat
 siis suosivat jo käytettyjä ohjelmointikieliä uusien kielten sijaan. Saman
 kyselyn vastaajat arvioivat suorituskyvyn turvallisuutta tärkeämmäksi.
@@ -90,13 +91,14 @@ C:lle tehtyjä kirjastoja, jolloin kielellä on käytettävissään laaja C:n
 ekosysteemi\footnote{Esimerkiksi GitHubista hakusanalla 'library' löytyy yli
 26\,000 C:llä kirjoitettua projektia.}.
 
-Kuten luonnollisissa kielissä, saman kieliperheen jäsenten opettelu muuttuu
-helpommaksi sitä mukaa, mitä useampaa kieltä tuntee\citationneeded. Uusien
+Uusia ohjelmointikieliä opetellessa ohjelmoijat turvautuvat aikaisemmista
+kielistä opittuihin käytäntöihin~\citep{languagelearning}. Uusien
 ohjelmointikielten käyttöönottoa helpottaa siis muiden vastaavien kielten
-osaaminen. Suunnittelemalla C:n korvaajan C:n kanssa samankaltaiseksi kieleksi
-voidaan pienentää uuden kielen opettelun kynnystä. Kielen eriävät ominaisuudet
-olisi siis hyvä toteuttaa siten, että ne ovat mahdollisimman helppoja oppia
-C:stä kieleen siirtyvälle ohjelmoijalle.
+osaaminen, sillä aikaisempi kokemus tukee vastaavan kielen opiskelua.
+Suunnittelemalla C:n korvaajan C:n kanssa samankaltaiseksi kieleksi voidaan
+pienentää uuden kielen opettelun kynnystä. Kielen eriävät ominaisuudet olisi
+siis hyvä toteuttaa siten, että ne ovat mahdollisimman helppoja oppia C:stä
+kieleen siirtyvälle ohjelmoijalle.
 
 %Helppokäyttöisyys \\
 %- turvallisuus (esim. tyypit) \\
@@ -116,7 +118,7 @@ C:stä kieleen siirtyvälle ohjelmoijalle.
 %BitC-ohjelmointikielen sähköpostilistalla käydyssä keskustelussa pohdittiin
 %mahdollisia ongelmia vahvan tyypityksen (etenkin tyyppiluokkien) käytöstä
 %matalan tason ohjelmoinnissa~\citep{bitc}. Shapiron sähköpostissa todetaan,
-%että tyyppiluokkia ei voi toteuttaa ilman ajoaikaista tukea.
+%että tyyppiluokkia ei voi toteuttaa ilman suoritusaikaista tukea.
 %
 %On huomioitava, että lukuisten olemassa olevien C:n kirjastojen, rajapintojen
 %ja projektien vuoksi yhteensopivuus C:n kanssa tulee olla saumatonta
@@ -162,13 +164,12 @@ Koska tutkimuskysymys on rajattu suorituskyvyn ja muistinkäytön mukaisesti,
 vertailuun kannattaa ottaa mukaan vain tehokkaita kieliä -- korkeamman tason
 ohjelmointikielet on tarkoitettu ohjelmointinopeuden parantamiseen ja
 turvallisempien ohjelmistojen toteuttamiseen nopeiden ohjelmien sijaan. Tällöin
-suorituskyky on heikompi, koska on usein halvempaa optimoida kirjoittamiseen
-käytettyä aikaa kuin nopeuttaa suorituskykyä\citationneeded. Yksi kattava
-suorituskykyä mittaava vertailu on Benchmarks Game~\citep{benchmarks}, jossa
-pyritään kirjoittamaan mahdollisimman nopea ohjelma pysyen silti kielelle
-idiomaattisessa ohjelmakoodissa\footnote{Hyvin monessa kielessä voi kirjoittaa
-C:hen verrattavissa olevaa matalan tason ohjelmointia, mutta Benchmarks Gamessa
-on tarkoituksena välttää tätä.}.
+kielen suorituskyky on heikompi. Yksi kattava suorituskykyä mittaava vertailu
+on Benchmarks Game~\citep{benchmarks}, jossa pyritään kirjoittamaan
+mahdollisimman nopea ohjelma pysyen silti kielelle idiomaattisessa
+lähdekoodissa\footnote{Hyvin monessa kielessä voi kirjoittaa C:hen
+verrattavissa olevaa matalan tason ohjelmointia, mutta Benchmarks Gamessa on
+tarkoituksena välttää tätä.}.
 
 TIOBEn listasta Ada, C++, D, Go ja Rust nousevat esiin verrattavina kielinä.
 Kaikki viisi kieltä ovat tehokkaita. Tämän lisäksi jokaisen kielten historiassa
