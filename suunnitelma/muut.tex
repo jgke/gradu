@@ -25,7 +25,7 @@ voisi tulla \texttt{\_Z3foov}, kuten \texttt{g++}-kääntäjä tekee.
 
 Ohjelmointikielen ominaisuudet vaikuttavat siihen, minkälaisia
 ohjelmistoarkkitehtuureja kielellä tehdään~\citep{designpatternsdesign}.
-Moderneissa ohjelmointkielissä virheiden käsittely on yleensä toteutettu
+Moderneissa ohjelmointikielissä virheiden käsittely on yleensä toteutettu
 kahdella tavalla: toinen on poikkeavat paluuarvot ja toinen on poikkeuksien
 heittäminen. Yleisesti ottaen kaikki ohjelmointikielet tukevat ensimmäistä ja
 suurin osa toista tapaa. Poikkeusten käsittely on hieman hitaampaa ja aiheuttaa
@@ -72,13 +72,13 @@ käyttötarkoituksia matalan tason bittitason ohjelmoinnista korkean tason
 arkkitehtuureihin.
 
 Ohjelmoinnin helpottamiseksi Adassa on sekä poikkeukset että automaattinen
-muistinhallinta. Nämä kuitenkin hidastavat kieltä hieman aikaisemmin todetuistä
+muistinhallinta. Nämä kuitenkin hidastavat kieltä hieman aikaisemmin todetuista
 syistä. Lisäksi C-kielen kanssa yhteensopivuus on kielen taipuvuudesta johtuen
 hankalaa -- jokainen kutsuttava C-funktio on yksitellen määritettävä
 kutsukonvention\defword{calling convention} kanssa~\citep[s.~471]{ADA12}. Adan
 alustariippumaton C-tuki on kuitenkin äärimmäisen kattava, paikoitellen C:n
 omaa tukea kattavampi (C:n standardi ei kuvaile esimerkiksi kutsukonventioita,
-vaan ne on jätetty kään\-tä\-jä\-spesifeiksi asetuksiksi). Ada on myös
+vaan ne on jätetty kunkin kääntäjätoteutuksen päätettäväksi). Ada on myös
 vertailuin ainoa kieli, joka voi kutsua muilla ohjelmointikielillä
 kirjoitettuja kirjastorutiineja suoraan ilman C-rajapintojen käyttöä. Adassa on
 C:n lisäksi tuki C++:lle\footnote{C++-tuki ei sisällä nimiruntelun tukemista,
@@ -124,7 +124,7 @@ kokoa.
 
 \hl{tarkista kieli}
 
-C++ kayttää lähes samaa makrojärjestelmää kuin C. C++:n makrojärjestelmässä on
+C++ käyttää lähes samaa makrojärjestelmää kuin C. C++:n makrojärjestelmässä on
 11 avainsanaa, joita ei voi määrittää uudelleen
 esikäsittelijässä~\citep[luku~19.2]{CPP17}\footnote{ Avainsanat ovat
 \texttt{and}, \texttt{and\_eq}, \texttt{bitand}, \texttt{bitor},
@@ -335,7 +335,7 @@ ilmaisukykyisempi.
     \end{minipage}
     \end{adjustbox}
     \caption{
-        Benchmarks gamen~\citep[tiedot haettu 1.1.2019]{benchmarks} tuloksiin
+        Benchmarks Gamen~\citep[tiedot haettu 1.1.2019]{benchmarks} tuloksiin
         perustuvat kuvaajat ohjelmointikielten suorituskyvystä, muistinkäytöstä
         ja ohjelmien koosta verrattuna C:llä kirjoitettujen ohjelmien
         tuloksiin.}
@@ -344,7 +344,7 @@ ilmaisukykyisempi.
 
 \FloatBarrier
 
-Benchmarks gamen tulokset myös heijastavat näitä tuloksia -- C++ ja Rust ovat
+Benchmarks Gamen tulokset myös heijastavat näitä tuloksia -- C++ ja Rust ovat
 nopeudeltaan hyvin lähellä C:tä, kun taas Ada ja Go ovat huomattavasti
 hitaampia. Kuvassa~\ref{fig:benchmarksgame} verrataan suorituskykyä,
 muistinkäyttöä ja ohjelmien lähdekoodin pituutta C:llä kirjoitettuun ohjelmaan.
