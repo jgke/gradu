@@ -65,6 +65,7 @@ fp
 Game
 Gamen
 Gamessa
+gcc-kääntäjä
 GCC-kääntäjään
 GCC-kääntäjän
 Gecko-selainmoottorin
@@ -92,10 +93,12 @@ id-funktiota
 idiomaattisessa
 int
 int-tyyppiä
+int-tyyppisen
 is
 Java-koodia
 JavaScriptin
 Kotlin
+Kotlinilla
 Kotlinista
 Kotlin-koodin.
 Kotlin-ohjelmointikieli
@@ -103,6 +106,7 @@ languagelearning
 library
 limbossa
 linkkeriä
+LISPin
 LISP-kieliperheessä
 LISP-perheen
 LISP-perheeseen
@@ -110,6 +114,7 @@ macrohygiene
 Make
 match-lauseke
 merkkijonoliteraaleille
+Meyerovichin
 Missing
 modulo
 monisäikeistettyjen
@@ -127,6 +132,7 @@ printf
 printf-kutsuksi
 priv-muistiosoittimen
 ptr
+Rabkinin
 rectangle
 Red
 render
@@ -142,10 +148,12 @@ Rustista
 Rust-kääntäjän
 Rust-ohjelmat
 Rust-ohjelmista
+Rust-rajapinnan
 SaaS
 sec:abs
 sec:muut
 semafori.
+semaforin.
 shared
 Slashdot-sivustolla
 std

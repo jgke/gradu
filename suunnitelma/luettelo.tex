@@ -1,33 +1,5 @@
 \section{Gradun sisällysluettelo}
 
-\begin{itemize}
-    \item ehdotettu jäsentely perustuu ja on ymmärrettävissä kirjallisuusosassa esitetyn
-taustamateriaalin perusteella
-
-    \item tutkielman numeroiduista pääluvuista ja niiden aliluvuista kustakin
-        yksi tekstikappale kuvaamaan luvun
-
-        \begin{itemize}
-            \item sisältö
-            \item tarkoitus/tavoite,
-            \item käsittelytapa (kirjallisuuteen perustuva, analyysi/vertailu,
-                esimerkin käsittely)
-        \end{itemize}
-
-
-    \item tässä jäsentelyosassa esitetään vapaamuotoisesti ongelmia kysymyksiä,
-        hypoteeseja ja pohdiskeluja (toisin kuin kirjallisuusosassa)  eli sisältö
-        on kuvailevaa "metatekstiä"
-
-    \item kuvauksessa viitataan lähteisiin ja edeltävään suunnitelman
-        kirjallisuusosuuteen (jossa osin valmista/täydennettävää tekstiä)
-
-    \item luettele myös liitteet (koodiesimerkit \& tekniset kuvaukset)
-
-    \item tutkielman jäsentelyn kuvauksen pituus on n. 5 sivua
-
-\end{itemize}
-
 \subsection{Johdanto}
 
 Johdantoluku, jossa avataan tutkielman aihe, eli C-ohjelmointikielen
@@ -36,15 +8,25 @@ tiettyjen kriteerien ohjaamana.
 
 \subsection{Ohjelmointikielten vertailuun liittyvät määritelmät}
 
-\subsubsection{jotain}
-
 Määrittelyt vertailuun liittyville kriteereille, perustelut verrattavien
 kielten valinnoille sekä pohdintaa erilaisista mahdollisista syistä kielten
-suosioon.
+suosioon. Tämän luvun sisältö on hyvin samankaltainen tutkimussuunnitelman
+kirjallisuusosan toisen luvun kanssa.
 
-Kriteereiksi valitaan suorituskyky, muistinkäyttö ja yhteensopivuus C:n ja
-muiden ohjelmointikielten kanssa. Vertailtavat kielet eivät saa olla C:tä
-huonompia millään osa-alueella.
+\subsubsection{Ohjelmointikielten vertailun kriteerit}
+
+Jotta kielten vertailun voi tehdä objektiivisesti, valitaan vertailua varten
+jotkin kriteerit. Kriteereiksi valitaan suorituskyky, muistinkäyttö ja
+yhteensopivuus C:n ja muiden ohjelmointikielten kanssa. Vertailtavat kielet
+eivät saa olla C:tä huonompia millään osa-alueella.
+
+\subsubsection{Kielten suosioon vaikuttavat tekijät}
+
+Analyysiä muista syistä kielen suosioon, erityisesti Meyerovichin ja Rabkinin
+(\citeyear{empiricalpopularity}) tekemän tutkimuksen perusteella. Tämä antaa
+mahdollista tietoa ominaisuuksista, jotka ohjelmointikielessä tulisi olla.
+
+\subsubsection{C:hen verrattavissa olevat ohjelmointikielet}
 
 Vertailtaviksi kieliksi valitaan Ada, C++, D, Go ja Rust. Kaikki vertailtavat
 kielet ovat kohtalaisen tehokkaita, jonka lisäksi kaikilla on yritetty korvata
@@ -54,25 +36,116 @@ C:n tai C++:n käyttöä.
 
 Vertailuluku, jossa käydään läpi toisessa luvussa määriteltyjä kriteerejä
 kunkin kielen kohdalla, ja pohditaan, täyttääkö kukin kieli kriteerejä.
-Jokaiselle kielelle tulee yksi aliluku, jossa käydään kriteerejä läpi
+Jokaiselle kielelle tulee yksi aliluku, jossa käydään kriteerejä läpi kyseisen
+kielen kohdalla. Tämän luvun sisältö on hyvin samankaltainen
+tutkimussuunnitelman kirjallisuusosan kolmannen luvun kanssa.
+
+\subsubsection{Yleisiä vertailtavien ohjelmointikielten ominaisuuksia}
+
+Kooste verrattavien ohjelmointikielten yhteisistä ominaisuuksista. Koska
+verrattavissa ohjelmointikielissä on useita ominaisuuksia, joita C:ssä ei ole,
+mutta muissa verrattavissa kielissä on, tällä aliluvulla voidaan merkittävästi
+poistaa turhaa toistoa.
+
+\subsubsection{Jokaiselle verrattavalle kielelle oma aliluku}
+
+Jokaiselle kielelle tulee oma aliluku, jossa kerrotaan kyseisen
+ohjelmointikielen uniikeista ominaisuuksista.
+
+\subsubsection{Yhteenveto}
+
+Tässä aliluvussa tehdään yhteenveto ohjelmointikielten vertailussa, ja
+todetaan, miksi yksikään verrattavista kielistä ei täytä toisessa luvussa
+määriteltyjä vertailukriteerejä.
 
 \subsection{Kehitettävissä olevat ominaisuudet C-ohjelmointikielessä}
 
 Analyysiä C:n ominaisuuksista, ja mitä näistä voisi kehittää toisen luvun
-kriteerien mukaan. Analyysiä myös ominaisuuksista, joita C:hen voisi lisätä
-siten, että toisen luvun kriteerit täyttyvät.
+kriteerien mukaan. Luku sisältää myös pohdintaa ominaisuuksista, joita C:hen
+voisi lisätä ilman, että kieli olisi toisen luvun kriteerien mukaan C:tä
+huonompi.
 
 \subsection{Uuden ohjelmointikielen määrittäminen}
 
 Määritetään uusi ohjelmointikieli lukujen 2--4 tulosten ohjaamana.
 
-\subsection{Uuden ohjelmointikielen vertaaminen muihin ohjelmointikieliin}
+\subsubsection{Tyypit}
 
-Verrataan uutta ohjelmointikieltä muihin tutkielmassa käsiteltyihin
-ohjelmointikieliin.
+Koska kieli ei voi erota ratkaisevasti C:stä suoritusaikaisesti, tyypitys on
+todennäköisesti hyvin lähellä C:n tyypitystä. Tästä huolimatta tutkielmassa
+tutkitaan mahdollisuuksia helpottaa yleisiä käyttötapauksia, kuten virhearvoja,
+tietorakenteita sekä summatyyppejä. Näistä tietorakenteet ovat luultavasti
+liian monimutkainen asia sisällytettäväksi yksinkertaisena pidettävään kieleen
+johtuen niiden vaatimasta geneerisestä ohjelmoinnista. Esimerkiksi summatyypit
+taas voidaan toteuttaa helposti myös C:llä.
+
+\subsubsection{Syntaksi}
+
+Kielestä  tulee todennäköisesti myös syntaksin kannalta C:n sukulaiskieli. Tämä
+helpottaa kielen omaksumista, mikäli ohjelmoija osaa aikaisemmin
+C:tä~\citep{languagelearning}. Erityisesti virheidenhallinnassa on kuitenkin
+mahdollisuuksia tehdä huomattavia parannuksia C:hen verrattuna.
+
+\subsubsection{Makrot}
+
+Koska makrot eivät aiheuta suoritusaikaisia haittoja, tässä osiossa voi tehdä
+hyvinkin suuria eroavaisuuksia C:n makrojärjestelmään. Yhteensopivuuden
+parantamiseksi makrojärjestelmän tulisi kuitenkin ymmärtää C:n makroja, sekä
+mahdollistaa C-makrojen tuottaminen.
+
+\subsubsection{Suoritusaikaiset ominaisuudet}
+
+Koska kielen tulee olla täysin yhteensopiva suoritusaikaisesti C:n kanssa,
+kielessä ei välttämättä ole yhtään suoritusaikaisia ominaisuuksia. Kieli
+kuitenkin voi mahdollistaa vapaaehtoisia ominaisuuksia, joita standardien
+mukaisesta C:stä ei löydy, kuten koodin ajamisen ennen ohjelman suorituksen
+aloittamista. Esimerkiksi \texttt{gcc}-kääntäjä tukee tätä
+ominaisuutta~\citep{gccattributes}.
+
+\subsubsection{Ohjelmointikielen kääntäminen}
+
+Yhteensopivuuden C:n kanssa saa helposti toteutettua kääntämällä
+ohjelmointikielen lähdekoodin C:ksi.
+
+\subsection[Uuden ohjelmointikielen vertaaminen muihin ohjelmointikieliin]
+{Uuden ohjelmointikielen vertaaminen muihin \\ ohjelmointikieliin}
+
+Tässä luvussa uutta ohjelmointikieltä vertaillaan muihin tutkielmassa
+käsiteltyihin ohjelmointikieliin, ja kerrotaan, miksi tai miksei se päihitä
+C:tä vertailuehtojen mukaisesti.
 
 \subsection{Yhteenveto}
 
 Yhteenveto tutkimuksen lopputuloksista, pohdintaa mahdollisista tutkimusaiheen
 rajoittamisen aiheuttamista ongelmista sekä mahdollisista
 jatkotutkimuskohteista.
+
+\subsubsection{Tutkimuksen tulokset}
+
+Tässä aliluvussa kerrotaan tutkimuksen tuloksista, eli kerrotaan lyhyesti uuden
+ohjelmointikielen ja muiden verrattavien kielten suhteesta C:hen.
+
+\subsubsection{Tutkimusalueen rajoittamisen ongelmat}
+
+Tässä aliluvussa kerrotaan mahdollisista tutkimusalueen rajoittamisesta
+aiheuttamista ongelmista tutkielman tuloksien kannalta.
+
+Erityisesti tutkimusaiheen rajaus ei välttämättä päde tutkimuksen ulkopuolella,
+sillä ohjelmointikielten valintaan liittyy usein monimutkaisia syitä, kuten
+aikaisempi kokemus tai ohjelmoijan henkilökohtainen mieltymys johonkin kieleen,
+eikä projekteissa käytettyjä ohjelmointikieliä valita pelkästään kielen
+ominaisuuksien perusteella.
+
+\subsubsection{Jatkotutkimuskohteet}
+
+Jos tutkielmassa ilmenee mahdollisia jatkotutkimuskohteita, niistä kerrotaan
+tässä aliluvussa.
+
+\renewcommand{\thesubsubsection}{Liite \arabic{subsubsection}. }
+
+\subsection{Liitteet}
+
+\subsubsection{Kielen syntaksi}
+
+Jos tutkimuksen tuloksiin sisältyy kielen formaali syntaksi, se on tässä
+liitteessä.

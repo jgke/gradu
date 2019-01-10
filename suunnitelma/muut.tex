@@ -20,8 +20,9 @@ Monissa vertailtavissa kielissä on käytössä nimiruntelu\defword{name manglin
 joka mahdollistaa useat näennäisesti samannimiset funktiot. Tämä kuitenkin
 aiheuttaa ohjelmointikielten välille yhteensopivuusongelmia, sillä toisesta
 kielestä kutsuttaessa pitää tietää kutsuttavan funktion todellinen nimi.
-Esimerkiksi \texttt{int}-tyyppiä palauttava funktion \texttt{foo()} nimeksi
-voisi tulla \texttt{\_Z3foov}, kuten \texttt{g++}-kääntäjä tekee.
+Esimerkiksi \texttt{int}-tyyppisen arvon palauttava funktion \texttt{foo()}
+oikeaksi nimeksi voisi tulla \texttt{\_Z3foov}, kuten
+\texttt{g++}-kääntäjä~\citep{gcc} tekee.
 
 Ohjelmointikielen ominaisuudet vaikuttavat siihen, minkälaisia
 ohjelmistoarkkitehtuureja kielellä tehdään~\citep{designpatternsdesign}.
@@ -34,8 +35,6 @@ yleensä vältetään poikkeusten käyttämistä~\citep{exceptioncosts}. Monet
 poikkeuksia tukevien ohjelmointikielten vakiokirjastot kuitenkin hallitsevat
 virhetilanteita poikkeuksilla, mikä pakottaa ohjelmoijan käyttämään poikkeuksia
 ohjelmoidessa.
-
-\hl{tarkista kieli}
 
 Ohjelmointikielten makrojärjestelmillä tarkoitetaan ohjelmointikielen
 ominaisuuksia, joita voidaan käyttää käännösaikaiseen koodin luomiseen ja
@@ -101,9 +100,9 @@ C++\hyp{}funktiot nimirunnellaan eikä nimiruntelua ole määritelty tarkasti C+
 standardissa, C++-koodia on hankalaa kutsua jopa samalla alustalla eri
 C++-kääntäjien välillä. C-koodin otsikkotiedostoissa\defword{header file} on
 usein alussa C++-koodia, joka laittaa nimiruntelun pois päältä. Näin
-C++-ohjelmat voivat helposti kutsua C:llä kirjoitettujen kirjastojen funktioita
--- C++-ohjelmat voivat usein käyttää C-kielen otsikkotiedostoja ilman muita
-muokkauksia.
+C++-ohjelmat voivat helposti kutsua C:llä kirjoitettujen kirjastojen
+funktioita, sillä C++-ohjelmat voivat käyttää C-kielen otsikkotiedostoja lähes
+aina ilman muita muokkauksia.
 
 C++:n standardikirjaston virheidenkäsittely on toteutettu poikkeuksilla, jotka
 aiheuttavat pienen hidastuksen. C++:ssa on myös käytettävissä
@@ -121,8 +120,6 @@ lopulliseen ohjelmaan kopio mallin funktioista, joka kasvattaa ohjelmien kokoa.
 Tämä mahdollistaa jokaisen luokan ilmentymän\defword{instance} erillisen
 optimoinnin, mutta yleisesti kasvattaa sekä kääntämisaikoja että ohjelmien
 kokoa.
-
-\hl{tarkista kieli}
 
 C++ käyttää lähes samaa makrojärjestelmää kuin C. C++:n makrojärjestelmässä on
 11 avainsanaa, joita ei voi määrittää uudelleen
@@ -222,8 +219,8 @@ järjestelmäohjelmointikieleksi~\citep{rustfaq}. Rustissa on monimutkainen
 tyyppijärjestelmä, jolla ohjelmat voivat todistaa esimerkiksi turvallisen
 rinnakkaisajon ilman, että ohjelmaan tulee suoritusaikaisia rajoitteita tai
 hidastuksia. Rust alkoi Graydon Hoaren henkilökohtaisena sivuprojektina, mutta
-on nyt käytössä osana Gecko-selainmoottorin kehitystä C++:n ja JavaScriptin
-ohella.
+on nyt käytössä esimerkiksi osana Gecko-selainmoottorin kehitystä C++:n ja
+JavaScriptin ohella.
 
 Kuten Go-kielessä, Rustissa voi myös käyttää poikkeuksia. Rustin
 virheidenhallinta on muutenkin lähellä Go-kielen virhehallintaa -- Rustin
@@ -249,21 +246,21 @@ yksinkertaisemman kielen tyyppijärjestelmä.
 
 Rust ei pysty suoraan käsittelemään C:n otsikkotiedostoja, mutta D:n tavoin
 Rustille on saatavilla työkaluja otsikkotiedostojen automaattiseen
-muuntamiseen~\citep{rustbindgen}. Rust kuitenkin suosittelee jokaisen kirjaston
-kohdalla käsin ympäröimään C-kirjaston funktiot, sillä C:n tyyppimäärittelyt
-eivät tarjoa Rustin vaatimaa tarkkuutta funktioiden turvallisuudesta.
+muuntamiseen~\citep{rustbindgen}. Rustin kehittäjät kuitenkin suosittelevat
+jokaisen kirjaston kohdalla kirjoittamaan käsin Rust-rajapinnan C-kirjastoille,
+sillä C:n tyyppimäärittelyt eivät tarjoa Rustin vaatimaa tarkkuutta funktioiden
+turvallisuudesta.
 
 Vaikka Rust ei tue C:n makroja, siinä on useita erillisiä kattavia
 makrojärjestelmiä: varsinaiset makrot~\citep{rustmacros}, joiden lisäksi
 Rustista löytyy useita kokeellisia koodin generointiin tarkoitettuja
-ominaisuuksia~\citep{rustprocmacros, rustplugins}. Rust taas käsittelee makrot
-vasta ohjelman tokenisoinnin jälkeen, eli ohjelman täytyy olla kyseisen
-ohjelmointikielen mukaista ennen kuin makrot suoritetaan -- makroilla ei voi
-käsitellä mitä tahansa tekstiä. Rust vaatii myös erottimien (sulkeiden,
-lainausmerkkien ja heittomerkkien) olevan kielen syntaksin mukaisesti. Lisäksi
-Rust-kääntäjän tulee tunnistaa kielen tekstialkiot eli
+ominaisuuksia~\citep{rustprocmacros, rustplugins}. Rust käsittelee makrot
+vasta ohjelman tokenisoinnin jälkeen, eli makroilla ei voi käsitellä mitä
+tahansa tekstiä. Rust-kääntäjän tulee tunnistaa kielen tekstialkiot eli
 lekseemit\defword{lexeme} ennen makrojen suorittamista, eli Rust ei mahdollista
-uusien operaattoreiden määrittämistä makrojen avulla. Rustin makroprosessori on
+uusien operaattoreiden määrittämistä makrojen avulla. Rust vaatii myös
+erottimien (sulkeiden, lainausmerkkien ja heittomerkkien) olevan kielen
+syntaksin mukaisesti pareina. Rustin makroprosessori on
 Turing-täydellinen~\citep{rustmacros} sekä hygieeninen.
 
 \newpage
@@ -308,8 +305,8 @@ tämän määrittämisen voi automatisoida.
 
 Rust ja C++ ovat verrattavista kielistä ainoat, joilla on olemassa varsinainen
 makrojärjestelmä. C++:n makrojärjestelmä on melkein täysin yhteensopiva C:n
-makrojärjestelmän kanssa, kun taas Rustin makrojärjestelmä on huomattavasti
-ilmaisukykyisempi.
+makrojärjestelmän kanssa. Rustin makrojärjestelmä on taas huomattavasti
+ilmaisukykyisempi, mutta epäyhteensopiva C:n kanssa.
 
 \newpage
 
@@ -335,7 +332,7 @@ ilmaisukykyisempi.
     \end{minipage}
     \end{adjustbox}
     \caption{
-        Benchmarks Gamen~\citep[tiedot haettu 1.1.2019]{benchmarks} tuloksiin
+        Benchmarks Gamen~\citep[tiedot haettu 10.1.2019]{benchmarks} tuloksiin
         perustuvat kuvaajat ohjelmointikielten suorituskyvystä, muistinkäytöstä
         ja ohjelmien koosta verrattuna C:llä kirjoitettujen ohjelmien
         tuloksiin.}
@@ -351,14 +348,15 @@ muistinkäyttöä ja ohjelmien lähdekoodin pituutta C:llä kirjoitettuun ohjelm
 Lähdekoodimittauksessa mitataan ohjelman kokoa siten, että ohjelmasta
 poistetaan kommentit sekä ylimääräiset välimerkit. Tämän jälkeen ohjelma
 pakataan \texttt{gzip}-pakkausohjelmalla~\citep{howmeasured}. Kuvaajat
-perustuvat nopeimman kielellä kirjoitetun ohjelman tuloksiin -- lähes kaikilla
-kielillä on jokaisessa suorituskykymittauksissa useampi ohjelma.
+perustuvat nopeimman kielellä kirjoitetun ohjelman tuloksiin -- lähes
+jokaisella verrattavalla kielellä on jokaisessa suorituskykymittauksissa
+useampi ohjelma.
 
-C ja C++ ovat hyvin lähellä toisiaan ajonopeudessa. Rust on jonkin verran
-hitaampi, ja Ada ja Go huomattavasti hitaampia. C++ käyttää jonkin verran
-enemmän muistia kuin C, kun taas Rust, Ada ja Go käyttävät selkeästi enemmän
-muistia. C++ ja Rust ovat yksittäisissä suorituskykymittauksissa C:tä
-nopeampia. Yhdessä suorituskykymittauksista Go käyttää noin puolet C:n
-käyttämästä muistista, mutta on samassa mittauksessa kaksi kertaa hitaampi.
-Mielenkiintoisesti Rust, Ada ja Go ovat C:hen verrattuna hitaampia ja vievät
-enemmän muistia, mutta eivät tarjoa merkittäviä säästöjä lähdekoodin määrään.
+C ja C++ ovat hyvin lähellä toisiaan suoritusnopeudessa. Rust on jonkin verran
+hitaampi, ja Ada ja Go huomattavasti hitaampia. Kaikki verrattavat kielet
+käyttävät enemmän muistia kuin C. C++ ja Rust ovat yksittäisissä
+suorituskykymittauksissa C:tä nopeampia. Yhdessä suorituskykymittauksista Go
+käyttää noin puolet C:n käyttämästä muistista, mutta on samassa mittauksessa
+kaksi kertaa hitaampi. Mielenkiintoisesti Rust, Ada ja Go ovat C:hen verrattuna
+hitaampia ja vievät enemmän muistia, mutta eivät tarjoa merkittäviä säästöjä
+lähdekoodin määrään.
