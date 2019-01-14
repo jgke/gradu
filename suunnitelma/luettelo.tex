@@ -24,7 +24,7 @@ eivät saa olla C:tä huonompia millään osa-alueella.
 
 Analyysiä muista syistä kielen suosioon, erityisesti Meyerovichin ja Rabkinin
 (\citeyear{empiricalpopularity}) tekemän tutkimuksen perusteella. Tämä antaa
-mahdollista tietoa ominaisuuksista, jotka ohjelmointikielessä tulisi olla.
+tietoa ominaisuuksista, jotka ohjelmointikielessä olisi hyvä olla.
 
 \subsubsection{C:hen verrattavissa olevat ohjelmointikielet}
 
@@ -37,8 +37,8 @@ C:n tai C++:n käyttöä.
 Vertailuluku, jossa käydään läpi toisessa luvussa määriteltyjä kriteerejä
 kunkin kielen kohdalla, ja pohditaan, täyttääkö kukin kieli kriteerejä.
 Jokaiselle kielelle tulee yksi aliluku, jossa käydään kriteerejä läpi kyseisen
-kielen kohdalla. Tämän luvun sisältö on hyvin samankaltainen
-tutkimussuunnitelman kirjallisuusosan kolmannen luvun kanssa.
+kielen yksilöllisten ominaisuuksien kannalta. Tämän luvun sisältö on hyvin
+samankaltainen tutkimussuunnitelman kirjallisuusosan kolmannen luvun kanssa.
 
 \subsubsection{Yleisiä vertailtavien ohjelmointikielten ominaisuuksia}
 
@@ -60,20 +60,24 @@ määriteltyjä vertailukriteerejä.
 
 \subsection{Kehitettävissä olevat ominaisuudet C-ohjelmointikielessä}
 
-Analyysiä C:n ominaisuuksista, ja mitä näistä voisi kehittää toisen luvun
-kriteerien mukaan. Luku sisältää myös pohdintaa ominaisuuksista, joita C:hen
-voisi lisätä ilman, että kieli olisi toisen luvun kriteerien mukaan C:tä
-huonompi.
+Analyysiä C:n mahdollisesti kehitettävissä olevista ominaisuuksista. Luku
+sisältää myös pohdintaa ominaisuuksista, joita C:hen voisi lisätä ilman, että
+kieli olisi toisen luvun kriteerien mukaan C:tä huonompi.
+
+Näitä ominaisuuksia ovat ainakin tarkempi käännösaikainen tyypitys etenkin
+tyhjien osoittimien osalta, makrojärjestelmän uusiminen, syntaksin
+selkeyttäminen sekä merkkijonojen modernisoiminen.
 
 \subsection{Uuden ohjelmointikielen määrittäminen}
 
-Määritetään uusi ohjelmointikieli lukujen 2--4 tulosten ohjaamana.
+Tässä luvussa määritetään uusi ohjelmointikieli lukujen 2--4 tulosten
+ohjaamana.
 
 \subsubsection{Tyypit}
 
 Koska kieli ei voi erota ratkaisevasti C:stä suoritusaikaisesti, tyypitys on
-todennäköisesti hyvin lähellä C:n tyypitystä. Tästä huolimatta tutkielmassa
-tutkitaan mahdollisuuksia helpottaa yleisiä käyttötapauksia, kuten virhearvoja,
+todennäköisesti hyvin lähellä C:n tyypitystä. Tutkielmassa tutkitaan, voiko
+yleisiä käyttötapauksia helpottaa, kuten virhearvoja, geneerisiä
 tietorakenteita sekä summatyyppejä. Näistä tietorakenteet ovat luultavasti
 liian monimutkainen asia sisällytettäväksi yksinkertaisena pidettävään kieleen
 johtuen niiden vaatimasta geneerisestä ohjelmoinnista. Esimerkiksi summatyypit
@@ -81,31 +85,43 @@ taas voidaan toteuttaa helposti myös C:llä.
 
 \subsubsection{Syntaksi}
 
-Kielestä  tulee todennäköisesti myös syntaksin kannalta C:n sukulaiskieli. Tämä
-helpottaa kielen omaksumista, mikäli ohjelmoija osaa aikaisemmin
+Kielestä tulee todennäköisesti myös syntaksin kannalta C:n sukulaiskieli. Tämä
+helpottaa kielen omaksumista, mikäli ohjelmoija osaa
 C:tä~\citep{languagelearning}. Erityisesti virheidenhallinnassa on kuitenkin
 mahdollisuuksia tehdä huomattavia parannuksia C:hen verrattuna.
 
 \subsubsection{Makrot}
 
-Koska makrot eivät aiheuta suoritusaikaisia haittoja, tässä osiossa voi tehdä
-hyvinkin suuria eroavaisuuksia C:n makrojärjestelmään. Yhteensopivuuden
-parantamiseksi makrojärjestelmän tulisi kuitenkin ymmärtää C:n makroja, sekä
-mahdollistaa C-makrojen tuottaminen.
+Koska makrot eivät aiheuta suoritusaikaisia haittoja, uuden kielen
+makrojärjestelmässä voi olla hyvinkin suuria eroavaisuuksia C:n
+makrojärjestelmään verrattuna. Yhteensopivuuden parantamiseksi
+makrojärjestelmän tulisi kuitenkin ymmärtää C:n makroja, sekä mahdollistaa
+C-makrojen tuottaminen. Jos makrojärjestelmästä tekee Turing-täydellisen,
+kaikkia makroja ei pysty muuntamaan C:n makroiksi johtuen C:n makrojärjestelmän
+rajoituksista. Tämän lisäksi hygieeninen makrojärjestelmä ei välttämättä tee
+C:n makrojärjestelmän tukemisesta yksinkertaista.
+
+Yksi mahdollinen tapa tuottaa kattava makrojärjestelmä olisi ottaa Rustin
+makrojärjestelmästä mallia, mutta tämä jättäisi avoimeksi kysymykseksi
+yhteensopivuuden C:n makrojärjestelmän kanssa.
 
 \subsubsection{Suoritusaikaiset ominaisuudet}
 
 Koska kielen tulee olla täysin yhteensopiva suoritusaikaisesti C:n kanssa,
-kielessä ei välttämättä ole yhtään suoritusaikaisia ominaisuuksia. Kieli
-kuitenkin voi mahdollistaa vapaaehtoisia ominaisuuksia, joita standardien
-mukaisesta C:stä ei löydy, kuten koodin ajamisen ennen ohjelman suorituksen
-aloittamista. Esimerkiksi \texttt{gcc}-kääntäjä tukee tätä
-ominaisuutta~\citep{gccattributes}.
+kielessä ei välttämättä ole yhtään C:stä eroavia suoritusaikaisia
+ominaisuuksia. Kieli kuitenkin voi mahdollistaa vapaaehtoisia ominaisuuksia,
+joita standardien mukaisesta C:stä ei löydy, kuten koodin ajamisen ennen
+ohjelman varsinaisen suorituksen aloittamista. Esimerkiksi
+\texttt{gcc}-kääntäjä tukee tätä ominaisuutta
+\texttt{constructor}-määreellä~\citep{gccattributes}.
 
 \subsubsection{Ohjelmointikielen kääntäminen}
 
 Yhteensopivuuden C:n kanssa saa helposti toteutettua kääntämällä
-ohjelmointikielen lähdekoodin C:ksi.
+ohjelmointikielen C:ksi. Tällöin ohjelmointikieli toimii kaikissa
+järjestelmissä, joissa C toimii. Tämä mahdollistaa myös uuden ohjelmointikielen
+kokeilemisen olemassa olevan C-projektin kanssa ilman, että projektin tulisi
+muuten käyttää uutta ohjelmointikieltä.
 
 \subsection[Uuden ohjelmointikielen vertaaminen muihin ohjelmointikieliin]
 {Uuden ohjelmointikielen vertaaminen muihin \\ ohjelmointikieliin}
@@ -120,21 +136,20 @@ Yhteenveto tutkimuksen lopputuloksista, pohdintaa mahdollisista tutkimusaiheen
 rajoittamisen aiheuttamista ongelmista sekä mahdollisista
 jatkotutkimuskohteista.
 
-\subsubsection{Tutkimuksen tulokset}
+\subsubsection{Tulokset}
 
 Tässä aliluvussa kerrotaan tutkimuksen tuloksista, eli kerrotaan lyhyesti uuden
 ohjelmointikielen ja muiden verrattavien kielten suhteesta C:hen.
 
-\subsubsection{Tutkimusalueen rajoittamisen ongelmat}
+\subsubsection{Tutkimuksen rajoitteet}
 
-Tässä aliluvussa kerrotaan mahdollisista tutkimusalueen rajoittamisesta
-aiheuttamista ongelmista tutkielman tuloksien kannalta.
+Tässä aliluvussa kerrotaan mahdollisista tutkimuksen rajoitteista.
 
-Erityisesti tutkimusaiheen rajaus ei välttämättä päde tutkimuksen ulkopuolella,
-sillä ohjelmointikielten valintaan liittyy usein monimutkaisia syitä, kuten
-aikaisempi kokemus tai ohjelmoijan henkilökohtainen mieltymys johonkin kieleen,
-eikä projekteissa käytettyjä ohjelmointikieliä valita pelkästään kielen
-ominaisuuksien perusteella.
+Erityisesti tutkimusaiheen rajaus ei välttämättä yleisty tutkimuksen
+ulkopuolelle, sillä ohjelmointikielten valintaan liittyy usein monimutkaisia
+syitä, kuten aikaisempi kokemus tai ohjelmoijan henkilökohtainen mieltymys
+johonkin kieleen, eikä projekteissa käytettyjä ohjelmointikieliä valita
+pelkästään kielen ominaisuuksien perusteella.
 
 \subsubsection{Jatkotutkimuskohteet}
 
@@ -147,5 +162,5 @@ tässä aliluvussa.
 
 \subsubsection{Kielen syntaksi}
 
-Jos tutkimuksen tuloksiin sisältyy kielen formaali syntaksi, se on tässä
-liitteessä.
+Jos tutkimuksen tuloksiin sisältyy uuden ohjelmointikielen formaali syntaksi,
+se on tässä liitteessä.

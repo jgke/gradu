@@ -5,6 +5,7 @@
 ------------------
 ----------------------
 ------------------------
+--------------------------
 ----------------------------------
 -----------------------------------
 --------------------------------------------
@@ -36,6 +37,7 @@ Color
 Colorissa
 config-funktion
 config-osioon
+constructor-määreellä
 cppapps
 cpphistory
 .c-tiedostoja
@@ -66,7 +68,9 @@ Game
 Gamen
 Gamessa
 gcc-kääntäjä
+gcc-kääntäjään
 GCC-kääntäjään
+gcc-kääntäjän
 GCC-kääntäjän
 Gecko-selainmoottorin
 generate
@@ -165,6 +169,7 @@ TIOBEn
 tocbegin
 tokenisoinnin
 Turing-täydellinen
+Turing-täydellisen
 type-kenttä
 TypeScriptin
 union-tyypin

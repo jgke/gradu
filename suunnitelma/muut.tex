@@ -288,12 +288,13 @@ tämän määrittämisen voi automatisoida.
 
 \begin{table}[ht!]
     \begin{adjustbox}{center}
+    \kern -1cm
     \begin{tabular}{@{}lllll@{}} \toprule
         Kieli & Nimiruntelu   & Muistinhallinta                                     & C:n VFR               & muiden kielten VFR \\ \midrule
         Ada   & täysin hallittavissa & automaattinen                                       & Työläs mutta kattava  & C, C++, Fortran, Cobol \\
-        C++   & saa pois päältä      & manuaalinen                                         & Lähes saumaton        & C:n läpi \\
+        C++   & saa osittain pois päältä      & manuaalinen                                         & Lähes saumaton        & C:n läpi \\
         D     & saa pois päältä      & molemmat                                            & Työläs mutta kattava  & C:n läpi \\
-        Go    & saa pois päältä      & automaattinen                                       & Epätäydellinen        & C:n läpi \\
+        Go    & täysin hallittavissa      & automaattinen                                       & Epätäydellinen        & C:n läpi \\
         Rust  & saa pois päältä & automaattinen\footnote{Borrow Checkerin hallitsemana, joka mahdollistaa automaattisen muistinhallinnan ilman sen aiheuttamaa hidastusta.} & Työläs mutta kattava  & C:n läpi \\ \bottomrule
     \end{tabular}
     \end{adjustbox}

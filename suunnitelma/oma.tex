@@ -12,11 +12,11 @@ ytimien toteutukseen sekä sulautettujen järjestelmien toteuttamiseen.
 C:llä kirjoitetut ohjelmat ovat usein pidempiä kuin modernimmilla
 ohjelmointikielillä kirjoitetut vastaavat ohjelmat~\citep{codelength,
 qsmcodelength}. Koska C on kielenä hyvin yksinkertainen, siinä on hyvin vähän
-rakenteita ohjelman rakenteen hallitsemiseen. Erityisesti C:llä kirjoitetuissa
-ohjelmissa hyvin tehty virheidenhallinta vie paljon lähdekoodia, sillä
-ohjelmoijan pitää erikseen tunnistaa virhetilanne, jonka jälkeen ohjelmoijan
-tulee tilanteesta riippuen joko palauttaa jokin tietty arvo, vapauttaa muistia
-tai tehdä jotain muuta.
+valmiita rakenteita ohjelman rakenteen hallitsemiseen. Erityisesti C:llä
+kirjoitetuissa ohjelmissa hyvin tehty virheidenhallinta vie paljon lähdekoodia,
+sillä ohjelmoijan pitää erikseen tunnistaa virhetilanne, jonka jälkeen
+ohjelmoijan tulee tilanteesta riippuen joko palauttaa jokin tietty arvo,
+vapauttaa muistia tai tehdä jotain muuta.
 
 Ohjelma~\ref{fig:cerrorhandling} esittelee C:n virheidenkäsittelyä. Ohjelmassa
 tarkistetaan useita arvoja, jotka vaikuttavat funktion kontrollivuohon.
@@ -382,7 +382,7 @@ osoitinmuuttujia.
 %jolla voi määrätä, mikä funktion kutsukonventio on.
 
 C++:n yksi tärkeistä ominaisuuksista on nimiavaruudet, joita C:ssä ei ole. Jos
-samassa ohjelmassa on kaksi samannimistä funktiota, ei ole määritelty, kumpaa
+samassa C-ohjelmassa on kaksi samannimistä funktiota, ei ole määritelty, kumpaa
 niistä kutsutaan. C++:ssa ongelma on osittain ratkaistu nimiruntelulla. Tämä on
 kuitenkin aiheuttanut ristiriitoja sekä C-yhteensopivuuden kanssa että eri
 C++-kääntäjien yhteensopivuuden kanssa. Nimiruntelu voi myös aiheuttaa pidempiä
@@ -421,11 +421,14 @@ toteuttaa puhtaasti kirjastotasolla.
 %tarvitsisi ajatella muistin vapauttamista, sillä ohjelmointikieli tekisi sen
 %ohjelmoijan puolesta.
 
-Tällaisesta ominaisuudesta esimerkki on sulkeumat, joita suositaan erityisesti
-funktionaalisen ohjelmoinnin yhteydessä. GCC-kääntäjään on toteutettu sulkeumat
-C-kielelle käyttämällä Thomas Breuelin esittelemää
-trampoliinimenetelmää~\citep{gccnested, cppclosure}. C ei itsessään tue
-sulkeumia, eikä C tarjoa mahdollisuuksia lambdafunktioiden kirjoittamiseen.
+Tällaisesta ominaisuudesta esimerkki on lambdalausekkeet, joita käytetään
+erityisesti funktionaalisen ohjelmoinnin yhteydessä. C tukee funktioita
+parametreina funktio-osoittimien avulla, eli yksinkertaisella
+syntaksimuunnoksella voisi tukea lambdalausekkeita (mutta ei sulkeumia)
+heikentämättä C-yhteensopivuutta. Tuki sulkeumille \texttt{gcc}-kääntäjään on
+toteutettu käyttämällä Thomas Breuelin esittelemää
+trampoliinimenetelmää~\citep{gccnested, cppclosure}. Tämä ei kuitenkaan ole
+standardien mukaista C:tä, vaan \texttt{gcc}-kääntäjän lisäominaisuus.
 
 %Ohjelmointikieli voi toteuttaa olio-ohjelmoinnin rajapinnat käytännössä kahdella
 %tavalla: Joko korvaamalla jokaisen rajapintaviittauksen numerolla jaettuun
