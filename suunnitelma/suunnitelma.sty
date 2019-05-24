@@ -33,6 +33,7 @@
 \usepackage{hyphenat}
 \usepackage{relsize}
 \usepackage{benchmarks/gnuplot-lua-tikz}
+\usepackage{chngcntr}
  
 \makesavenoteenv{tabular}
 \makesavenoteenv{table}
@@ -129,3 +130,7 @@
 \renewcommand\listingscaption{Ohjelma}
 \renewcommand{\_}{\relax\ifmmode_\else \textscale{0.7}{\textunderscore}\fi}
 \makeatother
+
+\counterwithin{figure}{section}
+\counterwithin{table}{section}
+\counterwithin{listing}{section}

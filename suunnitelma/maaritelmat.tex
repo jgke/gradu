@@ -1,6 +1,13 @@
 \section[Ohjelmointikielten vertailuun liittyvät määritelmät]
 {Ohjelmointikielten vertailuun liittyvät \\ määritelmät}
 
+\hl{Kömpelö otsikko}
+
+\hl{Luvun 2 otsikko ei oikein vastaa sisältöä (miten kielten suosioon
+vaikuttavat tekijät liittyvät ohjelmointikielten vertailua koskeviin
+määritelmiin?). Parempi otsikko voisi olla ''Järjestelmäohjelmointikielistä''
+tai ''Taustaa'' tms.}
+
 \subsection{Ohjelmointikielten vertailun kriteerit}
 \label{sec:abs}
 
@@ -20,12 +27,12 @@ Tutkielmassa käsitellään myös subjektiivisia kielten ominaisuuksia, kuten
 kielen tiiviyttä\defword{terseness, expressiveness}, mutta näitä
 ominaisuuksia ei huomioida kielten paremmuusvertailussa.
 
-Ohjelmointikielellä kirjoitetun tulee olla suoritusaikaisesti vähintään yhtä nopea
-kuin vastaava C:llä kirjoitettu ohjelma. Kieli siis ei saa vaatia ohjelmoijaa
-käyttämään mitään kielen ominaisuuksia, jotka voisivat hidastaa ohjelmien
-suoritusta C:hen verrattuna. Monet suoritusaikaiset turvallisuutta lisäävät
-ominaisuudet, kuten muistialueiden tarkistukset, hidastavat kielen suoritusaikaista
-nopeutta.
+Ohjelmointikielellä kirjoitetun ohjelman tulee olla suoritusaikaisesti
+vähintään yhtä nopea kuin vastaava C:llä kirjoitettu ohjelma. Kieli siis ei saa
+vaatia ohjelmoijaa käyttämään mitään kielen ominaisuuksia, jotka voisivat
+hidastaa ohjelmien suoritusta C:hen verrattuna. Monet suoritusaikaiset
+turvallisuutta lisäävät ominaisuudet, kuten muistialueiden tarkistukset,
+hidastavat kielen suoritusaikaista nopeutta.
 
 Ohjelmointikielellä toteutettu ohjelma ei myöskään saa käyttää enempää muistia
 niin suoritusaikaisesti kuin talletusvälineelläkään verrattuna vastaavaan
@@ -45,6 +52,9 @@ ohjelman käynnistys voi kestää hieman kauemmin. C:n vakiokirjasto liitetään
 moderneissa käyttöjärjestelmissä ohjelmiin jaettuna kirjastona, sillä se
 liitetään käytännössä kaikkiin järjestelmän käyttämiin ohjelmiin.
 
+
+\hl{C-VFR (?) keksi parempi lyhenne / älä lyhennä tjsp?}
+
 Ohjelmointikielen tulee olla täysin yhteensopiva C:n kanssa. Tämä koskee
 C-koodin kutsumista (C-vie\-ras\-funk\-tio\-ra\-ja\-pin\-ta, C-VFR\defword{Foreign
 function interface, FFI}) sekä kielen funktioiden kutsumista muiden
@@ -62,6 +72,8 @@ mukaan ohjelmoijat siis suosivat jo käytettyjä ohjelmointikieliä uusien kielt
 sijaan. Saman kyselyn vastaajat arvioivat suorituskyvyn turvallisuutta
 tärkeämmäksi.
 
+\hl{package -> packet}
+
 Saman tutkimuksen järjestämässä Slashdot-sivustolla julkaistussa kyselyssä noin
 40\% vastaajista arvioi tärkeäksi kriteeriksi työkalut. Kyselyn perusteella
 kielen olisi siis hyvä tarjota toimivat työkalut, kuten kirjastopakettien
@@ -70,6 +82,8 @@ käyttäjäystävällisen käännöstyökalun sekä valmiudet olemassa oleviin
 kehitysympäristöihin integroitumiselle. Olemassa olevien C-ohjelmistojen
 tukeminen on välttämätöntä, mutta haastavaa johtuen C:n ekosysteemin
 monimuotoisuudesta, erityisesti lukuisista kääntämistyökaluista.
+
+\hl{? (alleviivattu: ei ole mahdollista toteuttaa, ovat täysin mahdollisia toteuttaa)}
 
 Tutkimuksessa selvitettiin myös suosittuja ominaisuuksia ohjelmointikieliltä
 (s. 13, SaaS MOOC -kurssin yhteydessä oleva kysely, n=415). Useita
@@ -168,8 +182,8 @@ Octoverse~\citep{octoverse}.
 %selkeästi täysin käyttökelpoinen kieli ei ole syrjäyttänyt C:tä.
 
 Koska tutkimuskysymyksessä vertaillaan ohjelmointikieliä suorituskyvyn ja
-muistinkäytön mukaisesti, vertailuun kannattaa ottaa mukaan vain tehokkaita
-kieliä -- korkeamman tason ohjelmointikielet on tarkoitettu ohjelmointinopeuden
+muistinkäytön suhteen, vertailuun kannattaa ottaa mukaan vain tehokkaita kieliä
+-- korkeamman tason ohjelmointikielet on tarkoitettu ohjelmointinopeuden
 parantamiseen ja turvallisempien ohjelmistojen toteuttamiseen nopeiden
 ohjelmien sijaan. Tällöin kielen suorituskyky on heikompi. Yksi kattava
 suorituskykyä mittaava vertailu on Benchmarks Game~\citep{benchmarks}, jossa

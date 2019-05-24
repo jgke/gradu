@@ -36,10 +36,17 @@ poikkeuksia tukevien ohjelmointikielten vakiokirjastot kuitenkin hallitsevat
 virhetilanteita poikkeuksilla, mikä pakottaa ohjelmoijan käyttämään poikkeuksia
 ohjelmoidessa.
 
+\hl{generoitu koodi voi kasvaa}
+
+\hl{koodi on slangia}
+
+\hl{Makrojärjestelmän tarpeellisuus jäi hieman epäselväksi, vrt. geneeriset
+komponentit Adassa ja C++:ssa}
+
 Ohjelmointikielten makrojärjestelmillä tarkoitetaan ohjelmointikielen
 ominaisuuksia, joita voidaan käyttää käännösaikaiseen koodin luomiseen ja
 muuntamiseen. Koodin luonti käännösaikaisesti voi pienentää huomattavasti
-tarvittavaa koodin määrää tietyissä tilanteissa. Koodia luodessa voi kuitenkin 
+tarvittavaa koodin määrää tietyissä tilanteissa\citationneeded. Koodia luodessa voi kuitenkin 
 tapahtua konflikteja esimerkiksi luodessa väliaikaisia muuttujia, joilla on
 sama tunniste kuin aikaisemmin koodissa määritellyillä
 muuttujilla~\citep{macrohygiene}. Luotu koodi voi myös aiheuttaa
@@ -70,6 +77,8 @@ taipuva kieli, sillä se on suunniteltu hallitsemaan monia eri
 käyttötarkoituksia matalan tason bittitason ohjelmoinnista korkean tason
 arkkitehtuureihin.
 
+\hl{? ('kielen taipuvuudesta' alleviivattu)}
+
 Ohjelmoinnin helpottamiseksi Adassa on sekä poikkeukset että automaattinen
 muistinhallinta. Nämä kuitenkin hidastavat kieltä hieman aikaisemmin todetuista
 syistä. Lisäksi C-kielen kanssa yhteensopivuus on kielen taipuvuudesta johtuen
@@ -78,11 +87,11 @@ kutsukonvention\defword{calling convention} kanssa~\citep[s.~471]{ADA12}. Adan
 alustariippumaton C-tuki on kuitenkin äärimmäisen kattava, paikoitellen C:n
 omaa tukea kattavampi (C:n standardi ei kuvaile esimerkiksi kutsukonventioita,
 vaan ne on jätetty kunkin kääntäjätoteutuksen päätettäväksi). Ada on myös
-vertailuin ainoa kieli, joka voi kutsua muilla ohjelmointikielillä
-kirjoitettuja kirjastorutiineja suoraan ilman C-rajapintojen käyttöä. Adassa on
-C:n lisäksi tuki C++:lle\footnote{C++-tuki ei sisällä nimiruntelun tukemista,
-vaan kutsuttavista funktioista pitää määrittää runnellut nimet.}, Fortranille
-ja Cobolille~\citep[s.~585]{ADA12}. Adassa ei kuitenkaan ole makrojärjestelmää,
+vertailun ainoa kieli, joka voi kutsua muilla ohjelmointikielillä kirjoitettuja
+kirjastorutiineja suoraan ilman C-rajapintojen käyttöä. Adassa on C:n lisäksi
+tuki C++:lle\footnote{C++-tuki ei sisällä nimiruntelun tukemista, vaan
+kutsuttavista funktioista pitää määrittää runnellut nimet.}, Fortranille ja
+Cobolille~\citep[s.~585]{ADA12}. Adassa ei kuitenkaan ole makrojärjestelmää,
 eikä Ada tue C:n makrojärjestelmää.
 
 \subsection{C++}
@@ -95,6 +104,8 @@ monipuolisuutensa takia monimutkaisissa ohjelmistoissa, kuten
 palvelinohjelmistoissa, kuvankäsittelyohjelmistoissa sekä
 peleissä~\citep{cppapps}.
 
+\hl{nimirunnellaan -> onko tämä selostettu jossakin?}
+
 C++ on kehitetty C:n pohjalta, ja siinä onkin erittäin hyvä C-tuki. Koska
 C++\hyp{}funktiot nimirunnellaan eikä nimiruntelua ole määritelty tarkasti C++:n
 standardissa, C++-koodia on hankalaa kutsua jopa samalla alustalla eri
@@ -106,7 +117,7 @@ aina ilman muita muokkauksia.
 
 C++:n standardikirjaston virheidenkäsittely on toteutettu poikkeuksilla, jotka
 aiheuttavat pienen hidastuksen. C++:ssa on myös käytettävissä
-viitemäärälaskettu\defword{reference counting} muistinhallinta (vakiokirjaston
+viitemäärälaskettu\defword{reference counting} muistinhallinta (\hl{esimerkiksi} vakiokirjaston
 \texttt{std::shared\_ptr}), jolla voidaan käyttää suoritusaikaisesti varattua
 muistia ilman muistivuotoja. C++:n \texttt{std::shared\_ptr} ei käytä erillistä
 roskien keräystä, vaan kun viimeinen viite olioon poistetaan, myös varattu
@@ -116,10 +127,10 @@ roskienkeräystaukoja.
 C++ tukee geneeristä ohjelmointia\defword{generic programming} luokkien
 yhteydessä malliohjelmoinnilla\defword{template programming}. C++:n
 toteutuksessa jokaisesta uniikista mallin tyyppiparametrikombinaatiosta luodaan
-lopulliseen ohjelmaan kopio mallin funktioista, joka kasvattaa ohjelmien kokoa.
-Tämä mahdollistaa jokaisen luokan ilmentymän\defword{instance} erillisen
-optimoinnin, mutta yleisesti kasvattaa sekä kääntämisaikoja että ohjelmien
-kokoa.
+lopulliseen ohjelmaan kopio mallin \hl{kutsutuista, ei kaikista} funktioista,
+joka kasvattaa ohjelmien kokoa. Tämä mahdollistaa jokaisen luokan
+ilmentymän\defword{instance} erillisen optimoinnin, mutta yleisesti kasvattaa
+sekä kääntämisaikoja että ohjelmien kokoa.
 
 C++ käyttää lähes samaa makrojärjestelmää kuin C. C++:n makrojärjestelmässä on
 11 avainsanaa, joita ei voi määrittää uudelleen
@@ -130,6 +141,9 @@ esikäsittelijässä~\citep[luku~19.2]{CPP17}\footnote{ Avainsanat ovat
 esikäsittelijä ei hyväksy joitakin C:n esikäsittelijän hyväksymiä makroja,
 tosin tämä ei tapahdu käytännössä koskaan. Koska makrojärjestelmä on muuten
 sama kuin C:n makrojärjestelmä, se on hyvin rajoittunut \citep[luku~19]{CPP17}.
+
+\hl{Pidenpi selitys miksi tärkeää ylipäätään (alleviivattu 'se on hyvin
+rajoittunut')}
 
 \subsection{D}
 
@@ -152,6 +166,8 @@ kuten \texttt{htod}-työkalu~\citep{htod}. Työkalut eivät kuitenkaan ole
 täydellisiä, sillä useiden D:n ominaisuuksien semantiikka ei ole C:n kanssa
 yhteensopiva. D ei sisällä tukea C:n makrojärjestelmälle, eikä D:ssä ole
 omaa makrojärjestelmää.
+
+\hl{viimeinen lause: eli sitä ei ole pidetty tarpeellisena}
 
 \subsection{Go}
 
@@ -179,13 +195,16 @@ koodin kirjoittamisen.
 %kutsutaan ja palautetaan tulos. Muussa tapauksessa palautetaan tyhjä
 %merkkijono.
 
+\hl{Jää epäselväksi, eli ei ole geneerisiä malleja? (alleviivattu:
+'mahdollistaen geneerisen koodin kirjoittamisen')}
+
 Vaikka Go-kielessä ei itsessään ole makroja, se sisältää \texttt{go~generate}
 -työkalun, jota voidaan käyttää koodin generointiin~\citep{gogenerate}.
 \texttt{go~generate} mahdollistaa minkä tahansa komentorivikomennon ajamisen,
 ja on enemmänkin standardoitu tapa ajaa tiettyjä komentorivikäskyjä osana
 ohjelman kääntämistä kuin tyypillinen makrojärjestelmä.
-\texttt{\mbox{go~generate}} ajetaan erillisenä komentona,
-eikä esimerkiksi osana \texttt{\mbox{go~build}}-komentoa.
+\texttt{\mbox{go~generate}} ajetaan erillisenä komentona eikä esimerkiksi osana
+\texttt{\mbox{go~build}}-komentoa.
 
 %\begin{listing}[ht!]
 %    \inputminted{go}{goreflect.go}
@@ -227,6 +246,12 @@ virheidenhallinta on muutenkin lähellä Go-kielen virhehallintaa -- Rustin
 ohjekirja opastaa käyttämään mieluummin paluuarvoja kuin
 poikkeuksia~\citep{rusterrorhandling}.
 
+\hl{kieli (alleviivattu 'mutatoiminen')}
+
+\hl{Onko suomennos? määritelmät (alleviivattu 'muuttumattomia viitteitä' ja 'muuttuva viite')}
+
+\hl {? (viimeiset 3 riviä)}
+
 Rustin monimutkainen tyyppijärjestelmä kannustaa kirjoittamaan turvallisia
 ohjelmia, Tietorakenteiden mutatoiminen on tehty tietoisesti hankalaksi, sillä
 monimutkaisissa ohjelmissa holtittomasti muuttuva tila on usean vian syynä, ja
@@ -251,6 +276,14 @@ jokaisen kirjaston kohdalla kirjoittamaan käsin Rust-rajapinnan C-kirjastoille,
 sillä C:n tyyppimäärittelyt eivät tarjoa Rustin vaatimaa tarkkuutta funktioiden
 turvallisuudesta.
 
+\hl{tokenisointi, tekstialkiot, lekseemit -> suomeksi}
+
+\hl{tokenisointi = alkioanalyysi}
+
+\hl{lexeme =/= token, lekseemi = merkkijonoarvo, token = tekstialkio}
+
+\hl{esim. x on lexeme, joka on tunnus eli identifier-tekstialkio}
+
 Vaikka Rust ei tue C:n makroja, siinä on useita erillisiä kattavia
 makrojärjestelmiä: varsinaiset makrot~\citep{rustmacros}, joiden lisäksi
 Rustista löytyy useita kokeellisia koodin generointiin tarkoitettuja
@@ -270,6 +303,9 @@ Turing-täydellinen~\citep{rustmacros} sekä hygieeninen.
 Yksikään vertailtavista kielistä ei täytä kaikkia luvussa~\ref{sec:abs}
 määriteltyjä rajoitteita. Yksikään kielistä ei täytä muistinkäytön rajoitteita,
 jonka lisäksi saumaton yhteistyö C:n kanssa onnistuu vain C++:n kanssa.
+
+\hl{linkkeri -> suomeksi}
+
 
 C++, D ja Rust mahdollistavat yhteensopivuuden parantamiseksi nimiruntelun
 poistamisen käytöstä, mutta tämä ei toimi esimerkiksi C++:n luokkien
@@ -303,6 +339,8 @@ tämän määrittämisen voi automatisoida.
     }
     \label{table:properties}
 \end{table}
+
+\hl{Taulukkoon ei ole viittausta tekstissä}
 
 Rust ja C++ ovat verrattavista kielistä ainoat, joilla on olemassa varsinainen
 makrojärjestelmä. C++:n makrojärjestelmä on melkein täysin yhteensopiva C:n
@@ -341,6 +379,8 @@ ilmaisukykyisempi, mutta epäyhteensopiva C:n kanssa.
 \end{figure}
 
 \FloatBarrier
+
+\hl{figure 1 -> figure 3.1}
 
 Benchmarks Gamen tulokset myös heijastavat näitä tuloksia -- C++ ja Rust ovat
 nopeudeltaan hyvin lähellä C:tä, kun taas Ada ja Go ovat huomattavasti

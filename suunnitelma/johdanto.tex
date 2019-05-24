@@ -1,5 +1,52 @@
 \section{Johdanto} 
 
+\hl{Johdantoluvun perusteella ei edellenkään ymmärrä, mikä tarkkaan ottaen on
+gradun tavoite. Koko suunnitelman luettua se jollain tapaa selviää. Minusta
+näyttää, että tavoitteena on suunnitella (jollain tasolla) uusi
+ohjelmointikieli, joka voisi korvata C-kielen systeemiohjelmoinnissa, eikö?}
+
+\hl{Motivaatio tälle jää kyllä vähän epäselväksi (miksi tarvittaisiin jokin
+uusi kieli). Rivien välistä lukemalla se jotenkin aukeaa, mutta varsinaiseen
+tutkielmaan tutkielman tavoitteet ja motivaatio pitää hioa kirkkaammiksi.
+Vaikka sitten reverse-engineeraamalla tuloksista (missä on riskinsä).}
+
+\hl{Gradusta puuttuu C-kielen esittely ja analyysi. C-kieli mainitaan
+tutkielman otsikossa ja C on tietysti erityisen olennainen asia koko käsittelyn
+kannalta. Mikä on kielen tausta, tavoitteet, kehitys ja nykytilanne? Mitkä
+olivat kielen kehittämisen alkuperäiset syyt ja mistä sen saama suosio johtui?
+C-kielestä tulee tutkielman alussa olla oma pääluku. Samalla tulee määriteltyä
+ja käsiteltyä aihepiirin käsitteistöä ja termejä. Suunnitelmaan ei minusta
+tarvitse lisätä C:n kuvausta.}
+
+\hl{Suunnitelmassa ja itse tutkielmassa perusteellisemmin: miksi C pitäisi tai
+halutaan korvata? Mitkä ovat C:n ongelmat ja puutteet?}
+
+\hl{C:n tärkeimpänä kilpailijana voi pitää C++-kieltä, joten tarvitaan
+vertailua C++:aan. C++ on usein käytännössä korvannut C-kielen toteutuskielenä.
+Mihin tämä perustuu? Ja miksei C++ C-kielen suorana laajennoksena riittäisi sen
+korvaajaksi?}
+
+\hl{Johdannon tulee olla aiheeseen johdatteleva: taustaa, motivointia,
+rajaukset ja kysymyksenasettelut. Varsinainen asian käsittely  eli määritelmät,
+tekniset asiat jne. alkavat vasta toisessa luvussa. Tämä koskee sekä
+suunnitelmaa että tutkielman johdantolukua.}
+
+\hl{Yhteenvedossa ei saa olla alilukuja. Yhteenveto on koko tutkielman sisällön
+läpikäynti eikä siinä saa olla uutta asiaa. Kaikki tulokset, analyysi ja
+merkittävyyden arviointi esitetään sitä edeltävässä luvussa.}
+
+\hl{Kuvat, koodiesimerkit ja taulukot yms. numeroidaan tutkielmassa
+päälukukohtaisesti. Samoin voi tehdä jo suunnitelmassa. Kaikkiin kuviin tulee
+viitata tekstissä.}
+
+\hl{Tekstissä esiintyy turhaa it-slangia, ainakin seuraavat:  tokenisointi  po.
+alkioanalyysi, linkkeri  po. linkittäjä,   paketti (packet) po. pakkaus
+(package), koodi po. (lähde)- ohjelma tai ohjelmisto.}
+
+\hrule
+
+\hl{Johdannon luonne!}
+
 C~\citep{C18} on ollut vallitseva ohjelmointikieli järjestelmäohjelmoinnissa
 C:n alkuajoista lähtien. Useita ohjelmointikieliä on luotu historian saatossa,
 joiden oli tarkoitus syrjäyttää C, mutta C on vieläkin johtavana kielenä
@@ -10,9 +57,10 @@ Tutkielmassa selvitetään, mitkä vaihtoehtoisten kielten ominaisuudet ovat
 voineet estää kielen käytön C:n sijaan uusissa ja olemassa olevissa projekteissa
 ja minkälaista ohjelmointikieltä voisi aina ominaisuuksiensa puolesta käyttää
 C:n sijaan. Vertailussa tutkitaan erityisesti mahdollisuuksia olemassa olevien
-C-kielellä kirjoitettujen ohjelmien jatkokehittämistä uudella
-ohjelmointikielellä ja uusien projektien toteuttamista C:n sijaan uudella
-ohjelmointikielellä.
+C-kielellä kirjoitettujen ohjelmien jatkokehittämistä uudella kielellä ja
+uusien projektien toteuttamista C:n sijaan uudella kielellä.
+
+\hl{uusi kieli}
 
 C:n vaihtoehdoiksi tutkitaan seuraavia tehokkaaseen ohjelmointiin tarkoitettuja
 kieliä: Ada~\citep{ADA12}, C++~\citep{CPP17}, D~\citep{D}, Go~\citep{golang}
@@ -51,9 +99,13 @@ kriteereistä tulee olla aidosti parempi.
 %helppokäyttöisyyttä ja sosiaalisia aspekteja, kuten Googlen tarjoaman tuen
 %vaikutusta Go-kielen suosioon.%\hl{Vai tutkitaanko?}
 
+\hl{kieli (alleviivattu 'kontekstissa' ja 'miten C:tä voisi parantaa')}
+
 Tämän tutkimussuunnitelman toisessa luvussa esitetään tutkielman kannalta
 oleellinen teoria, eli määritetään tutkielman kontekstissa paremman kielen
 rajoitteet, pohditaan kielen suosioon vaikuttavia tekijöitä sekä kerrotaan
 lyhyesti muista tutkittavista kielistä. Kolmannessa luvussa kerrotaan, miksi
 muut tutkitut kielet eivät täytä näitä ominaisuuksia. Neljännessä luvussa
 kerrotaan, miten C:tä voisi parantaa.
+
+\hl{Suunnitelmasta ja ehdotetusta tutkielmasta puuttuu kokonaan C:n esittely ja tausta (kuka, milloin, miksi, kehitys, nykytilanne)}
