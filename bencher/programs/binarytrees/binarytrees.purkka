@@ -1,0 +1,152 @@
+// The Computer Language Benchmarks Game
+// https://salsa.debian.org/benchmarksgame-team/benchmarksgame/
+//
+// Contributed by Jeremy Zerfas
+// Based on the C++ program from Jon Harrop, Alex Mizrahi, and Bruno Coutinho.
+
+import "stdint.h"
+import "stdlib.h"
+import "stdio.h"
+import "apr_pools.h"
+
+struct TreeNode {
+    left: &?TreeNode,
+    right: &?TreeNode
+};
+
+
+// Create a binary tree of depth treeDepth in memoryPool and return a pointer
+// to the created binary tree.
+fun createTree(treeDepth: i64, memoryPool: &apr_pool_t) {
+    let rootNode = @"apr_pcalloc(memoryPool, sizeof(TreeNode))" as &TreeNode;
+
+    // If treeDepth is one or more then recursively call createTree() in order
+    // to create the left and right subtrees.
+    if(treeDepth > 0) {
+        rootNode.left=createTree(treeDepth-1, memoryPool);
+        rootNode.right=createTree(treeDepth-1, memoryPool);
+    }
+
+    return rootNode;
+}
+
+
+// Compute and return the checksum for the binary tree that has rootNode as the
+// root node.
+fun computeTreeChecksum(rootNode: &TreeNode) -> i64 {
+    // If there are subtrees then recursively call computeTreeChecksum() on
+    // them and return 1 plus the checksum of those subtrees.
+    if(rootNode.left && rootNode.right) {
+        return computeTreeChecksum(rootNode.left)+
+            computeTreeChecksum(rootNode.right)+1;
+    }
+
+    // If the function gets here then this is a single node tree so just return
+    // 1 as the checksum.
+    return 1;
+}
+
+
+fun main(argc: i32, argv) -> i32 {
+    // Set minimumTreeDepth to 4 and maximumTreeDepth to the maximum of what
+    // was specified as the argument to the program and minimumTreeDepth+2.
+    let minimumTreeDepth: i64 = 4;
+    let maximumTreeDepth: i64 = atol(argv[1]) < minimumTreeDepth+2
+        ? minimumTreeDepth+2
+        : atol(argv[1]);
+
+    apr_initialize();
+
+    // Create a memoryPool which will be used for storing both the stretchTree
+    // and the longLivedTree.
+    let memoryPool: &apr_pool_t;
+    @"apr_pool_create_unmanaged(&memoryPool)";
+
+    // Create a stretchTree of depth maximumTreeDepth+1, compute its
+    // checksum, and print its statistics. This work could be done in parallel
+    // along with all the other tree processing but APR memory pools aren't
+    // quite as streamlined as other memory pool implementations so it uses less
+    // resources to do this work by itself and then clear the memoryPool so
+    // that most of the memory that was already allocated for the stretchTree
+    // can be reused for the upcoming longLivedTree work rather than having
+    // APR allocate more memory for memory pools. Unfortunately since the
+    // longLivedTree is about half the size of the stretchTree, this ends up
+    // wasting about half the memory that was being used by the stretchTree.
+    // APR subpools could be used to use that otherwise wasted memory for the
+    // processing of other trees that will be done later but it appears subpools
+    // only work with managed pools (even though APR's documentation for the
+    // apr_pool_create_unmanaged_ex() function seems to suggest that it possibly
+    // should work for unmanaged pools too) which are noticeably slower than
+    // unmanaged memory pools.
+    let stretchTree = createTree(maximumTreeDepth+1, memoryPool);
+    printf("stretch tree of depth %jd\t check: %jd\n",
+            maximumTreeDepth+1,
+            computeTreeChecksum(stretchTree));
+    apr_pool_clear(memoryPool);
+
+    // The longLivedTree will be created in just a little bit simultaneously
+    // (assuming OpenMP was enabled and the program is running on a multi-
+    // processor system) while the rest of the trees are also being processed.
+    // longLivedTree will store the reference to it which will remain valid
+    // until near the end of the program.
+    let longLivedTree: &?TreeNode;
+
+    // These will be used to store checksums for the various trees so the
+    // statistics for the various trees can be output in the correct order
+    // later.
+    let longLivedTreeChecksum: i64;
+    let treeChecksums: [i64;(maximumTreeDepth-minimumTreeDepth+2)/2];
+
+    pragma "omp parallel"
+    {
+        // Have one thread create the longLivedTree of depth
+        // maximumTreeDepth in the memoryPool which was already previously
+        // used for the stretchTree, compute the longLivedTreeChecksum, and
+        // then just leave the longLivedTree alone for a while while the rest
+        // of the binary trees finish processing (which should have
+        // simultaneously been started to be processed by any other available
+        // threads).
+        pragma "omp single nowait"
+        {
+            longLivedTree = createTree(maximumTreeDepth, memoryPool);
+            longLivedTreeChecksum = computeTreeChecksum(longLivedTree);
+        }
+
+        // Create a threadMemoryPool for this thread to use.
+        let threadMemoryPool: &apr_pool_t;
+        apr_pool_create_unmanaged(&threadMemoryPool);
+
+        pragma "omp for nowait"
+        for(let treeDepth = minimumTreeDepth; treeDepth <= maximumTreeDepth; treeDepth += 2) {
+            // Create a bunch of binary trees of depth treeDepth, compute their
+            // checksums, and add the checksums to the totalTreesChecksum.
+            let totalTreesChecksum = 0;
+            for(let iterations = 1<<(maximumTreeDepth-treeDepth+minimumTreeDepth); iterations-- > 0;) {
+                apr_pool_clear(threadMemoryPool);
+                totalTreesChecksum += computeTreeChecksum(createTree(treeDepth, threadMemoryPool));
+            }
+
+            // Record the totalTreesChecksum for the trees of depth
+            // treeDepth.
+            treeChecksums[(treeDepth-minimumTreeDepth)/2] = totalTreesChecksum;
+        }
+
+        apr_pool_destroy(threadMemoryPool);
+    }
+
+    // Print the statistics for all of the various tree depths.
+    for(let treeDepth = minimumTreeDepth; treeDepth <= maximumTreeDepth; treeDepth += 2) {
+        printf("%jd\t trees of depth %jd\t check: %jd\n",
+                1<<(maximumTreeDepth-treeDepth+minimumTreeDepth),
+                treeDepth,
+                treeChecksums[(treeDepth-minimumTreeDepth)/2]);
+    }
+
+    printf("long lived tree of depth %jd\t check: %jd\n",
+            maximumTreeDepth,
+            longLivedTreeChecksum);
+    apr_pool_destroy(memoryPool);
+
+    apr_terminate();
+    return 0;
+}

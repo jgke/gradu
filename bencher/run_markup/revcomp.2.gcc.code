@@ -1,0 +1,96 @@
+<span class="com">/* The Computer Language Benchmarks Game</span>
+<span class="com"> * https://salsa.debian.org/benchmarksgame-team/benchmarksgame/</span>
+<span class="com"></span>
+<span class="com">   contributed by Mr Ledrug</span>
+<span class="com">*/</span>
+
+<span class="ppc">#define _GNU_SOURCE</span>
+<span class="ppc">#include &lt;sched.h&gt;</span>
+<span class="ppc">#include &lt;stdio.h&gt;</span>
+<span class="ppc">#include &lt;stdlib.h&gt;</span>
+<span class="ppc">#include &lt;ctype.h&gt;</span>
+<span class="ppc">#include &lt;unistd.h&gt;</span>
+<span class="ppc">#include &lt;pthread.h&gt;</span>
+<span class="ppc">#include &lt;string.h&gt;</span>
+
+<span class="kwb">char</span> *pairs = <span class="str">&quot;ATCGGCTAUAMKRYWWSSYRKMVBHDDHBVNN</span><span class="esc">\n\n</span><span class="str">&quot;</span>;
+<span class="kwb">char</span> tbl[<span class="num">128</span>];
+
+<span class="kwc">typedef</span> <span class="kwb">struct</span> work_s work_t;
+<span class="kwb">struct</span> work_s {
+   pthread_t id;
+   work_t *next;
+   <span class="kwb">char</span> *begin, *end;
+};
+
+<span class="kwb">void</span> *<span class="kwd">process</span>(<span class="kwb">void</span> *ww) {
+   work_t *w = ww;
+   <span class="kwb">char</span> *from = w-&gt;begin, *to = w-&gt;end;
+   <span class="kwa">while</span> (*from++ != <span class="str">&apos;</span><span class="esc">\n</span><span class="str">&apos;</span>);
+
+   <span class="kwb">size_t</span> len = to - from;
+   <span class="kwb">size_t</span> off = <span class="num">60</span> - (len % <span class="num">61</span>);
+
+   <span class="kwa">if</span> (off) {
+      <span class="kwb">char</span> *m;
+      <span class="kwa">for</span> (m = from + <span class="num">60</span> - off; m &lt; to; m += <span class="num">61</span>) {
+         <span class="kwd">memmove</span>(m + <span class="num">1</span>, m, off);
+         *m = <span class="str">&apos;</span><span class="esc">\n</span><span class="str">&apos;</span>;
+      }
+   }
+
+   <span class="kwb">char</span> c;
+   <span class="kwa">for</span> (to--; from &lt;= to; from++, to--)
+      c = tbl[(<span class="kwb">int</span>)*from], *from = tbl[(<span class="kwb">int</span>)*to], *to = c;
+
+   <span class="kwa">return</span> <span class="num">0</span>;
+}
+
+<span class="kwb">int</span> <span class="kwd">main</span>() {
+   <span class="kwb">char</span> *s;
+   <span class="kwa">for</span> (s = pairs; *s; s += <span class="num">2</span>) {
+      tbl[<span class="kwd">toupper</span>(s[<span class="num">0</span>])] = s[<span class="num">1</span>];
+      tbl[<span class="kwd">tolower</span>(s[<span class="num">0</span>])] = s[<span class="num">1</span>];
+   }
+
+
+   <span class="kwb">size_t</span> buflen = <span class="num">1024</span>, len, end = <span class="num">0</span>;
+   <span class="kwb">char</span> *buf = <span class="kwd">malloc</span>(<span class="num">1024</span>);
+
+   <span class="kwb">int</span> in = <span class="kwd">fileno</span>(stdin);
+   <span class="kwa">while</span> ((len = <span class="kwd">read</span>(in, buf + end, buflen - <span class="num">256</span> - end))) {
+      end += len;
+      <span class="kwa">if</span> (end &lt; buflen - <span class="num">256</span>) <span class="kwa">break</span>;
+      buf = <span class="kwd">realloc</span>(buf, buflen *= <span class="num">2</span>);
+   }
+   buf[end] = <span class="str">&apos;&gt;&apos;</span>;
+
+   work_t *work = <span class="num">0</span>;
+   <span class="kwb">char</span> *from, *to = buf + end - <span class="num">1</span>;
+   <span class="kwa">while</span> (<span class="num">1</span>) {
+      <span class="kwa">for</span> (from = to; *from != <span class="str">&apos;&gt;&apos;</span>; from--);
+
+      work_t *w = <span class="kwd">malloc</span>(<span class="kwa">sizeof</span>(work_t));
+      w-&gt;begin = from;
+      w-&gt;end = to;
+      w-&gt;next = work;
+      work = w;
+
+      <span class="kwd">pthread_create</span>(&amp;w-&gt;id, <span class="num">0</span>, process, w);
+
+      to = from - <span class="num">1</span>;
+      <span class="kwa">if</span> (to &lt; buf) <span class="kwa">break</span>;
+   }
+
+   <span class="kwa">while</span> (work) {
+      work_t *w = work;
+      work = work-&gt;next;
+      <span class="kwd">pthread_join</span>(w-&gt;id, <span class="num">0</span>);
+      <span class="kwd">free</span>(w);
+   }
+
+   <span class="kwd">write</span>(<span class="kwd">fileno</span>(stdout), buf, end);
+   <span class="kwd">free</span>(buf);
+
+   <span class="kwa">return</span> <span class="num">0</span>;
+}

@@ -1,0 +1,294 @@
+<span class="com">/* The Computer Language Benchmarks Game</span>
+<span class="com"> * https://salsa.debian.org/benchmarksgame-team/benchmarksgame/</span>
+<span class="com"></span>
+<span class="com">   contributed by Petr Prokhorenkov</span>
+<span class="com">*/</span>
+<span class="ppc">#define _GNU_SOURCE</span>
+
+<span class="ppc">#include &lt;assert.h&gt;</span>
+<span class="ppc">#include &lt;ctype.h&gt;</span>
+<span class="ppc">#include &lt;pthread.h&gt;</span>
+<span class="ppc">#include &lt;stdint.h&gt;</span>
+<span class="ppc">#include &lt;stdio.h&gt;</span>
+<span class="ppc">#include &lt;stdlib.h&gt;</span>
+<span class="ppc">#include &lt;string.h&gt;</span>
+<span class="ppc">#include &lt;sys/types.h&gt;</span>
+<span class="ppc">#include &lt;unistd.h&gt;</span>
+
+<span class="ppc">#define LINE_LENGTH 60 </span>
+<span class="ppc">#define STDOUT 1</span>
+
+<span class="kwc">typedef</span> <span class="kwb">struct</span> lookup {
+    <span class="kwb">uint8_t</span> bytes[<span class="num">256</span>];
+    <span class="kwb">uint16_t</span> pairs[<span class="num">256</span>*<span class="num">256</span>];
+} lookup_t;
+
+<span class="kwb">void</span>
+<span class="kwd">init_lookup</span>(<span class="kwb">const uint8_t</span> *from, <span class="kwb">const uint8_t</span> *to, lookup_t *lookup) {
+    <span class="kwa">for</span> (<span class="kwb">int</span> i = <span class="num">0</span>; i &lt; <span class="num">256</span>; ++i) {
+        lookup-&gt;bytes[i] = i;
+    }
+    <span class="kwa">for</span> (; *from &amp;&amp; *to; ++from, ++to) {
+        lookup-&gt;bytes[<span class="kwd">tolower</span>(*from)] = *to;
+        lookup-&gt;bytes[<span class="kwd">toupper</span>(*from)] = *to;
+    }
+
+    <span class="kwa">for</span> (<span class="kwb">int</span> i = <span class="num">0</span>; i != <span class="num">256</span>; ++i) {
+        <span class="kwa">for</span> (<span class="kwb">int</span> j = <span class="num">0</span>; j != <span class="num">256</span>; ++j) {
+            lookup-&gt;pairs[(i &lt;&lt; <span class="num">8</span>) + j] =
+                ((<span class="kwb">uint16_t</span>)lookup-&gt;bytes[j] &lt;&lt; <span class="num">8</span>) + lookup-&gt;bytes[i];
+        }
+    }
+}
+
+<span class="kwc">typedef</span> <span class="kwb">struct</span> job {
+    <span class="kwb">struct</span> job *prev_job;
+
+    pthread_mutex_t *io_mutex;
+    pthread_cond_t condition;
+    <span class="kwb">int</span> finished;
+
+    <span class="kwb">const uint8_t</span> *header_begin;
+    <span class="kwb">const uint8_t</span> *header_end;
+    <span class="kwb">const uint8_t</span> *body_begin;
+    <span class="kwb">const uint8_t</span> *body_end;
+    <span class="kwb">const</span> lookup_t *lookup;
+    pthread_t thread;
+    <span class="kwb">uint8_t</span> *buffer;
+    <span class="kwb">int</span> free_buffer;
+} job_t;
+
+off_t <span class="kwd">get_file_size</span>(<span class="kwb">FILE</span> *f) {
+    <span class="kwb">long</span> begin = <span class="kwd">ftell</span>(f);
+    <span class="kwd">fseek</span>(f, <span class="num">0</span>, SEEK_END);
+    <span class="kwb">long</span> size = <span class="kwd">ftell</span>(f) - begin;
+    <span class="kwd">fseek</span>(f, begin, SEEK_SET);
+
+    <span class="kwa">return</span> size;
+}
+
+<span class="kwb">void</span>
+<span class="kwd">persistent_write</span>(<span class="kwb">int</span> fd, <span class="kwb">const void</span> *ptr, <span class="kwb">size_t</span> size) {
+    <span class="kwa">while</span> (size &gt; <span class="num">0</span>) {
+        ssize_t result = <span class="kwd">write</span>(fd, ptr, size);
+
+        <span class="kwa">assert</span>(result &gt;= <span class="num">0</span>);
+
+        size -= result;
+    }
+}
+
+<span class="kwb">size_t</span>
+<span class="kwd">reverse_complement</span>(
+        <span class="kwb">const uint8_t</span> *begin,
+        <span class="kwb">const uint8_t</span> *end,
+        <span class="kwb">const</span> lookup_t *lookup,
+        <span class="kwb">uint8_t</span> *buffer) {
+    <span class="kwb">size_t</span> size = end - begin;
+    <span class="kwb">const uint8_t</span> *read_p = (<span class="kwb">const uint8_t</span> *)end;
+    <span class="kwb">uint8_t</span> *buffer_begin = buffer;
+
+    <span class="kwa">while</span> (size &gt;= LINE_LENGTH) {
+        <span class="kwb">uint16_t</span> *pair_buffer = (<span class="kwb">uint16_t</span> *)buffer;
+        <span class="kwb">const uint16_t</span> *read_pair = (<span class="kwb">const uint16_t</span> *)read_p;
+
+        <span class="kwa">for</span> (<span class="kwb">size_t</span> i = <span class="num">0</span>; i &lt; LINE_LENGTH; i += <span class="num">2</span>) {
+            *pair_buffer++ = lookup-&gt;pairs[*--read_pair];
+        }
+
+        read_p -= LINE_LENGTH&amp;(~<span class="num">1</span>);
+        buffer += LINE_LENGTH&amp;(~<span class="num">1</span>);
+
+        <span class="kwa">if</span> (LINE_LENGTH % <span class="num">2</span> != <span class="num">0</span>) {
+            *buffer++ = *--read_p;
+        }
+
+        *buffer++ = <span class="str">&apos;</span><span class="esc">\n</span><span class="str">&apos;</span>;
+        size -= LINE_LENGTH;
+    }
+
+    <span class="kwa">if</span> (size &gt; <span class="num">0</span>) {
+       <span class="kwa">while</span> (read_p &gt; begin) {
+           *buffer++ = lookup-&gt;bytes[*--read_p];
+       }
+       *buffer++ = <span class="str">&apos;</span><span class="esc">\n</span><span class="str">&apos;</span>;
+    }
+
+    <span class="kwa">return</span> buffer - buffer_begin;
+}
+
+<span class="kwb">size_t</span> <span class="kwd">round_by</span>(<span class="kwb">size_t</span> a, <span class="kwb">size_t</span> b) {
+    <span class="kwa">return</span> a - a%b;
+}
+
+<span class="kwb">void</span>
+<span class="kwd">process_block</span>(
+        job_t *job) {
+    <span class="kwb">const uint8_t</span> *header_begin = job-&gt;header_begin;
+    <span class="kwb">const uint8_t</span> *header_end = job-&gt;header_end;
+    <span class="kwb">const uint8_t</span> *body_begin = job-&gt;body_begin;
+    <span class="kwb">const uint8_t</span> *body_end = job-&gt;body_end;
+    <span class="kwb">const</span> lookup_t *lookup = job-&gt;lookup;
+    pthread_mutex_t *io_mutex = job-&gt;io_mutex;
+    pthread_cond_t *condition = &amp;job-&gt;condition;
+    <span class="kwb">uint8_t</span> *buffer = job-&gt;buffer;
+
+    <span class="kwb">size_t</span> size = <span class="kwd">reverse_complement</span>(
+            body_begin, body_end,
+            lookup,
+            buffer);
+
+    <span class="kwd">pthread_mutex_lock</span>(io_mutex);
+    <span class="kwa">if</span> (job-&gt;prev_job) {
+        <span class="kwa">if</span> (!job-&gt;prev_job-&gt;finished) {
+            <span class="kwd">pthread_cond_wait</span>(
+                    &amp;job-&gt;prev_job-&gt;condition, io_mutex);
+        }
+    }
+    
+    <span class="kwa">if</span> (header_begin &amp;&amp; header_end) {
+        <span class="kwd">persistent_write</span>(
+                STDOUT, header_begin, header_end - header_begin);
+    }
+    <span class="kwd">persistent_write</span>(STDOUT, buffer, size);
+    job-&gt;finished = <span class="num">1</span>;
+    <span class="kwd">pthread_cond_signal</span>(condition);
+    <span class="kwd">pthread_mutex_unlock</span>(io_mutex);
+}
+
+job_t *<span class="kwd">detach_job</span>(
+        <span class="kwb">const uint8_t</span> *header_begin, <span class="kwb">const uint8_t</span> *header_end,
+        <span class="kwb">const uint8_t</span> *body_begin, <span class="kwb">const uint8_t</span> *body_end,
+        <span class="kwb">const</span> lookup_t *lookup,
+        pthread_mutex_t *mutex,
+        job_t *prev_job,
+        <span class="kwb">uint8_t</span> *buffer,
+        <span class="kwb">int</span> free_buffer) {
+    job_t *job = <span class="kwd">calloc</span>(<span class="num">1</span>, <span class="kwa">sizeof</span>(*job));
+    <span class="kwa">assert</span>(job);
+
+    job-&gt;io_mutex = mutex;
+    <span class="kwd">pthread_cond_init</span>(&amp;job-&gt;condition, <span class="num">0</span>);
+    job-&gt;header_begin = header_begin;
+    job-&gt;header_end = header_end;
+    job-&gt;body_begin = body_begin;
+    job-&gt;body_end = body_end;
+    job-&gt;lookup = lookup;
+    job-&gt;buffer = buffer;
+    job-&gt;prev_job = prev_job;
+    job-&gt;free_buffer = free_buffer;
+
+    <span class="kwd">pthread_create</span>(&amp;job-&gt;thread, <span class="num">0</span>, (<span class="kwb">void</span> *(*)(<span class="kwb">void</span> *))&amp;process_block, job);
+
+    <span class="kwa">return</span> job;
+}
+
+job_t *
+<span class="kwd">do_process_block</span>(
+        <span class="kwb">const uint8_t</span> *header_begin, <span class="kwb">const uint8_t</span> *header_end,
+        <span class="kwb">const uint8_t</span> *body_begin, <span class="kwb">const uint8_t</span> *body_end,
+        <span class="kwb">const</span> lookup_t *lookup,
+        pthread_mutex_t *mutex,
+        job_t *prev_job) {
+    <span class="kwb">uint64_t</span> body_size = body_end - body_begin;
+    <span class="kwb">uint64_t</span> tail_len = <span class="kwd">round_by</span>(body_size/<span class="num">2</span>, LINE_LENGTH);
+    <span class="kwb">const uint8_t</span> *split_at = body_end - tail_len;
+
+    <span class="kwb">uint8_t</span> *buffer = <span class="kwd">malloc</span>(
+            body_size*(LINE_LENGTH + <span class="num">1</span>)/LINE_LENGTH + LINE_LENGTH);
+    <span class="kwa">assert</span>(buffer);
+
+    prev_job = <span class="kwd">detach_job</span>(
+            header_begin, header_end,
+            split_at, body_end,
+            lookup,
+            mutex,
+            prev_job,
+            buffer,
+            <span class="num">1</span>);
+    prev_job = <span class="kwd">detach_job</span>(
+            <span class="num">0</span>, <span class="num">0</span>,
+            body_begin, split_at,
+            lookup,
+            mutex,
+            prev_job,
+            buffer + tail_len*(LINE_LENGTH + <span class="num">1</span>)/LINE_LENGTH,
+            <span class="num">0</span>);
+
+    <span class="kwa">return</span> prev_job;
+}
+
+<span class="kwb">int</span>
+<span class="kwd">main</span>(<span class="kwb">void</span>) {
+    <span class="kwd">setvbuf</span>(stdin, <span class="num">0</span>, _IOFBF, <span class="num">1024</span>*<span class="num">1024</span>);
+
+    <span class="kwb">long</span> stdin_size = <span class="kwd">get_file_size</span>(stdin);
+    <span class="kwb">uint8_t</span> *buffer = <span class="kwd">calloc</span>(stdin_size + LINE_LENGTH, <span class="num">1</span>);
+    <span class="kwa">assert</span>(buffer);
+    lookup_t lookup;
+    pthread_mutex_t mutex;
+    job_t *job = <span class="num">0</span>;
+
+    <span class="kwd">init_lookup</span>(
+            (<span class="kwb">const uint8_t</span> *)<span class="str">&quot;acbdghkmnsrutwvy&quot;</span>,
+            (<span class="kwb">const uint8_t</span> *)<span class="str">&quot;TGVHCDMKNSYAAWBR&quot;</span>,
+            &amp;lookup);
+
+    <span class="kwd">pthread_mutex_init</span>(&amp;mutex, <span class="num">0</span>);
+
+    <span class="kwb">uint8_t</span> *current = buffer;
+    <span class="kwb">uint8_t</span> *end = buffer + stdin_size;
+    <span class="kwb">uint8_t</span> *header_begin = <span class="num">0</span>;
+    <span class="kwb">uint8_t</span> *header_end = <span class="num">0</span>;
+    <span class="kwb">uint8_t</span> *body_begin = <span class="num">0</span>;
+
+    <span class="kwa">while</span> (<span class="kwd">fgets_unlocked</span>((<span class="kwb">char</span> *)current, end - current, stdin)) {
+        <span class="kwa">if</span> (current[<span class="num">0</span>] == <span class="str">&apos;&gt;&apos;</span>) {
+            <span class="kwa">if</span> (body_begin != <span class="num">0</span>) {
+                job = <span class="kwd">do_process_block</span>(
+                        header_begin, header_end,
+                        body_begin, current,
+                        &amp;lookup,
+                        &amp;mutex,
+                        job); 
+            }
+            <span class="kwb">size_t</span> len = <span class="kwd">strlen</span>((<span class="kwb">const char</span> *)current);
+            header_begin = current;
+            header_end = current + len;
+            current += len;
+            body_begin = current;
+        } <span class="kwa">else</span> {
+            <span class="kwa">if</span> (current[LINE_LENGTH] == <span class="str">&apos;</span><span class="esc">\n</span><span class="str">&apos;</span>) {
+                current += LINE_LENGTH;
+            } <span class="kwa">else</span> {
+                <span class="kwb">size_t</span> len = <span class="kwd">strlen</span>((<span class="kwb">const char</span> *)current);
+                <span class="kwa">if</span> (current[len - <span class="num">1</span>] == <span class="str">&apos;</span><span class="esc">\n</span><span class="str">&apos;</span>) {
+                    --len;
+                }
+                current += len;
+            }
+        }
+    }
+
+    <span class="kwa">if</span> (body_begin != <span class="num">0</span>) {
+        job = <span class="kwd">do_process_block</span>(
+                header_begin, header_end,
+                body_begin, current,
+                &amp;lookup,
+                &amp;mutex,
+                job); 
+    }
+
+    <span class="kwa">while</span> (job) {
+        <span class="kwd">pthread_join</span>(job-&gt;thread, <span class="num">0</span>);
+
+        <span class="kwa">if</span> (job-&gt;free_buffer) {
+            <span class="kwd">free</span>(job-&gt;buffer);
+        }
+        job = job-&gt;prev_job;
+    }
+    
+    <span class="kwd">free</span>(buffer);
+
+    <span class="kwa">return</span> <span class="num">0</span>;
+}

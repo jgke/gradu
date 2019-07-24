@@ -1,0 +1,260 @@
+<span class="slc">// The Computer Language Benchmarks Game</span>
+<span class="slc">// https://salsa.debian.org/benchmarksgame-team/benchmarksgame/</span>
+<span class="slc">//</span>
+<span class="slc">// Contributed by Sławomir Madej</span>
+<span class="slc">// Added more threads</span>
+
+<span class="ppc">#define _GNU_SOURCE</span>
+<span class="ppc">#include &lt;sched.h&gt;</span>
+<span class="ppc">#include &lt;stdio.h&gt;</span>
+<span class="ppc">#include &lt;stdlib.h&gt;</span>
+<span class="ppc">#include &lt;ctype.h&gt;</span>
+<span class="ppc">#include &lt;unistd.h&gt;</span>
+<span class="ppc">#include &lt;pthread.h&gt;</span>
+<span class="ppc">#include &lt;string.h&gt;</span>
+<span class="ppc">#include &lt;sys/stat.h&gt;</span>
+
+<span class="kwb">char</span> *pairs = <span class="str">&quot;ATCGGCTAUAMKRYWWSSYRKMVBHDDHBVNN</span><span class="esc">\n\n</span><span class="str">&quot;</span>;
+<span class="kwb">char</span> tbl[<span class="num">128</span>];
+
+<span class="ppc">#define MAX_THREADS 16</span>
+<span class="ppc">#define WORKING_THREADS 8</span>
+<span class="ppc">#define WORKING_THREADS_IN (WORKING_THREADS - 1)</span>
+
+<span class="kwc">typedef</span> <span class="kwb">struct</span> {
+   <span class="kwb">char</span> *from;
+   <span class="kwb">char</span> *to;
+   <span class="kwb">char</span> *marker[<span class="num">16</span>];
+   <span class="kwb">int</span>  markers;
+   <span class="kwb">size_t</span> off;
+} thread_data_t;
+
+<span class="kwb">void</span> *<span class="kwd">set_offset</span>(<span class="kwb">void</span> *data)
+{
+   thread_data_t *td = data;
+   <span class="kwb">char</span> *from = td-&gt;from, *to = td-&gt;to;
+   <span class="kwb">size_t</span> off = td-&gt;off;
+
+   <span class="kwb">char</span> *m;
+   <span class="kwa">for</span> (m = from + <span class="num">60</span> - off; m &lt; to; m += <span class="num">61</span>) {
+      <span class="kwd">memmove</span>(m + <span class="num">1</span>, m, off);
+      *m = <span class="str">&apos;</span><span class="esc">\n</span><span class="str">&apos;</span>;
+   }
+
+   <span class="kwa">return</span> NULL;
+}
+
+<span class="kwb">void</span> *<span class="kwd">set_rc</span>(<span class="kwb">void</span> *data)
+{
+   thread_data_t *td = data;
+   <span class="kwb">char</span> *from = td-&gt;from, *to = td-&gt;to;
+
+   <span class="kwb">size_t</span> i;
+   <span class="kwb">char</span> c;
+   <span class="kwa">for</span> (to--, i = td-&gt;off; i; from++, to--, i--)
+      c = tbl[(<span class="kwb">int</span>)*from], *from = tbl[(<span class="kwb">int</span>)*to], *to = c;
+
+   <span class="kwa">return</span> NULL;
+}
+
+<span class="kwb">void</span> *<span class="kwd">process</span>(<span class="kwb">void</span> *data)
+{
+   thread_data_t *td = data;
+   <span class="kwb">char</span> *from = td-&gt;from, *to = td-&gt;to;
+
+   from = <span class="kwd">memchr</span>(from, <span class="str">&apos;</span><span class="esc">\n</span><span class="str">&apos;</span>, to - from);
+   from++;
+
+   <span class="kwb">size_t</span> len = to - from;
+   <span class="kwb">size_t</span> off = <span class="num">60</span> - (len % <span class="num">61</span>);
+   <span class="kwb">size_t</span> lines = len / <span class="num">61</span>;
+   <span class="kwb">size_t</span> part = (len / ((WORKING_THREADS_IN + <span class="num">1</span>) * <span class="num">2</span>));
+
+   pthread_t thread[WORKING_THREADS_IN];
+   thread_data_t tdata[WORKING_THREADS_IN + <span class="num">1</span>];
+   <span class="kwb">unsigned int</span> t = WORKING_THREADS_IN;
+   <span class="kwb">unsigned int</span> i;
+
+   <span class="kwa">if</span> (off) {
+
+      tdata[<span class="num">0</span>].from = from;
+      tdata[<span class="num">0</span>].to = from + lines / (t + <span class="num">1</span>) * <span class="num">61</span>;
+      tdata[<span class="num">0</span>].off = off;
+
+      <span class="kwa">for</span>(i = <span class="num">1</span>; i &lt; t; i++) {
+         tdata[i].from = tdata[i-<span class="num">1</span>].to;
+         tdata[i].to = from + lines / (t + <span class="num">1</span>) * <span class="num">61</span> * (i + <span class="num">1</span>);
+         tdata[i].off = off;
+      }
+      tdata[t].from = tdata[t-<span class="num">1</span>].to;
+      tdata[t].to = to;
+      tdata[t].off = off;
+
+      i = t;
+      <span class="kwa">while</span>(i--)
+         <span class="kwd">pthread_create</span>(&amp;thread[i], NULL, set_offset, &amp;tdata[i]);
+      
+      <span class="kwd">set_offset</span>(&amp;tdata[t]);
+
+      i = t;
+      <span class="kwa">while</span>(i--)
+         <span class="kwd">pthread_join</span>(thread[i], NULL);
+   }
+
+   tdata[<span class="num">0</span>].from = from;
+   tdata[<span class="num">0</span>].to = to;
+   tdata[<span class="num">0</span>].off = part;
+
+   <span class="kwa">for</span>(i = <span class="num">1</span>; i &lt; t; i++) {
+      tdata[i].from = tdata[i-<span class="num">1</span>].from + part;
+      tdata[i].to = tdata[i-<span class="num">1</span>].to - part;
+      tdata[i].off = part;
+   }
+
+   from = tdata[t-<span class="num">1</span>].from + part;
+   to = tdata[t-<span class="num">1</span>].to - part;
+
+   i = t;
+   <span class="kwa">while</span> (i--)
+      <span class="kwd">pthread_create</span>(&amp;thread[i], NULL, set_rc, &amp;tdata[i]);
+
+   <span class="kwb">char</span> c;
+   <span class="kwa">for</span> (to--; from &lt;= to; from++, to--)
+      c = tbl[(<span class="kwb">int</span>)*from], *from = tbl[(<span class="kwb">int</span>)*to], *to = c;
+
+   i = t;
+   <span class="kwa">while</span> (i--)
+      <span class="kwd">pthread_join</span>(thread[i], NULL);
+
+   <span class="kwa">return</span> <span class="num">0</span>;
+}
+
+<span class="kwb">void</span> *<span class="kwd">get_markers</span>(<span class="kwb">void</span> *data)
+{
+   thread_data_t *td = data;
+   <span class="kwb">char</span> *from = td-&gt;from, *to = td-&gt;to;
+   <span class="kwb">int</span> marker = <span class="num">0</span>;
+
+   <span class="kwa">while</span> (<span class="num">1</span>) {
+      from = <span class="kwd">memrchr</span>(from, <span class="str">&apos;&gt;&apos;</span>, to - from);
+
+      <span class="kwa">if</span> (!from)
+         <span class="kwa">break</span>;
+
+      td-&gt;marker[marker] = from;
+      marker++;
+
+      to = from;
+      from = td-&gt;from;
+   }
+
+   td-&gt;markers = marker;
+
+   <span class="kwa">return</span> NULL;
+}
+
+<span class="kwb">int</span> <span class="kwd">qs</span>(<span class="kwb">const void</span> *a, <span class="kwb">const void</span> *b)
+{
+   a = *(<span class="kwb">char</span>**)a;
+   b = *(<span class="kwb">char</span>**)b;
+
+   <span class="kwa">if</span> (a &lt; b) <span class="kwa">return</span> <span class="num">1</span>;
+   <span class="kwa">if</span> (a &gt; b) <span class="kwa">return</span> -<span class="num">1</span>;
+
+   <span class="kwa">return</span> <span class="num">0</span>;
+}
+
+<span class="kwb">int</span> <span class="kwd">main</span>() {
+   <span class="kwb">char</span> *s;
+   <span class="kwa">for</span> (s = pairs; *s; s += <span class="num">2</span>) {
+      tbl[<span class="kwd">toupper</span>(s[<span class="num">0</span>])] = s[<span class="num">1</span>];
+      tbl[<span class="kwd">tolower</span>(s[<span class="num">0</span>])] = s[<span class="num">1</span>];
+   }
+
+   <span class="kwb">int</span> in = <span class="kwd">fileno</span>(stdin);
+
+   <span class="kwb">struct</span> stat st;
+   <span class="kwd">fstat</span>(in, &amp;st);
+   off_t size = st.st_size;
+   <span class="kwb">char</span> *buf = <span class="kwd">malloc</span>(size + <span class="num">1</span>);
+   buf[size] = <span class="str">&apos;&gt;&apos;</span>;
+
+   <span class="kwd">read</span>(in, buf, size);
+
+   <span class="kwb">char</span> *from = buf, *to = buf + size - <span class="num">1</span>;
+
+   pthread_t thread[MAX_THREADS];
+   thread_data_t tdata[MAX_THREADS];
+   <span class="kwb">unsigned int</span> t = <span class="num">0</span>;
+   <span class="kwb">int</span> round = <span class="num">0</span>;
+   <span class="kwb">int</span> markersno = <span class="num">0</span>;
+   <span class="kwb">char</span> *markers[<span class="num">32</span>];
+   <span class="kwb">int</span> i;
+
+   t = WORKING_THREADS;
+
+   <span class="kwb">size_t</span> part = size / t;
+
+   tdata[<span class="num">0</span>].from = from;
+   tdata[<span class="num">0</span>].to = to - part * (t - <span class="num">1</span>);
+   <span class="kwa">for</span> (i = <span class="num">1</span>; i &lt; t; i++) {
+      tdata[i].from = tdata[i-<span class="num">1</span>].to;
+      tdata[i].to = to - part * (t - i - <span class="num">1</span>);
+   }
+
+   i = t;
+   <span class="kwa">while</span>(i--)
+      <span class="kwd">pthread_create</span>(&amp;thread[i], NULL, get_markers, &amp;tdata[i]);
+
+   i = t;
+   <span class="kwa">while</span>(i--)
+      <span class="kwd">pthread_join</span>(thread[i], NULL);
+
+   <span class="kwa">while</span>(t--) {
+      i = tdata[t].markers;
+      <span class="kwa">while</span> (i--) {
+         markers[markersno + i] = tdata[t].marker[i];
+      }
+      markersno += tdata[t].markers;
+   }
+
+   markers[markersno] = to + <span class="num">1</span>;
+
+   <span class="kwd">qsort</span>(markers, markersno, <span class="kwa">sizeof</span>(<span class="kwb">char</span>*), qs);
+
+   t = <span class="num">0</span>;
+   to = buf + size - <span class="num">1</span>;
+
+   <span class="kwa">while</span> (<span class="num">1</span>) {
+      from = markers[t];
+      to = markers[(t ? t - <span class="num">1</span> : markersno)] - <span class="num">1</span>;
+
+      <span class="kwa">if</span> (t == MAX_THREADS) {
+         round = <span class="num">1</span>;
+         t = <span class="num">0</span>;
+      }
+
+      <span class="kwa">if</span> (round)
+         <span class="kwd">pthread_join</span>(thread[t], <span class="num">0</span>);   
+
+      tdata[t].from = from;
+      tdata[t].to = to;
+
+      <span class="kwd">pthread_create</span>(&amp;thread[t], NULL, process, &amp;tdata[t]);
+      t++;
+
+      to = from - <span class="num">1</span>;
+      <span class="kwa">if</span> (to &lt; buf) <span class="kwa">break</span>;
+   }
+
+   <span class="kwa">if</span> (round)
+      t = MAX_THREADS;
+
+   <span class="kwa">while</span> (t--)
+      <span class="kwd">pthread_join</span>(thread[t], NULL);
+
+   <span class="kwd">write</span>(<span class="kwd">fileno</span>(stdout), buf, size);
+   <span class="kwd">free</span>(buf);
+
+   <span class="kwa">return</span> <span class="num">0</span>;
+}

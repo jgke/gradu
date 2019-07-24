@@ -1,0 +1,72 @@
+<span class="com">/* The Computer Language Benchmarks Game</span>
+<span class="com"> * https://salsa.debian.org/benchmarksgame-team/benchmarksgame/</span>
+<span class="com"> *</span>
+<span class="com"> * Contributed by Michael Ganss</span>
+<span class="com"> * derived from PHP version that was</span>
+<span class="com"> * contributed by Oleksii Prudkyi</span>
+<span class="com"> * port from pidigits.lua-5.lua (Mike Pall, Wim Couwenberg)</span>
+<span class="com"> * modified by Craig Russell</span>
+<span class="com"> * </span>
+<span class="com"> * Original C version by Mr Ledrug</span>
+<span class="com">*/</span>
+
+<span class="ppc">#include &lt;stdio.h&gt;</span>
+<span class="ppc">#include &lt;stdlib.h&gt;</span>
+<span class="ppc">#include &lt;gmp.h&gt;</span>
+
+mpz_t n1, n2, d, u, v, w;
+
+<span class="kwb">int</span> <span class="kwd">main</span>(<span class="kwb">int</span> argc, <span class="kwb">char</span> **argv)
+{
+    <span class="kwb">int</span> k = <span class="num">1</span>, k2, i = <span class="num">0</span>;
+    <span class="kwb">int</span> n = <span class="kwd">atoi</span>(argv[<span class="num">1</span>]);
+
+    <span class="kwd">mpz_init</span>(u);
+    <span class="kwd">mpz_init</span>(v);
+
+    <span class="kwd">mpz_init_set_si</span>(w, <span class="num">0</span>);
+    <span class="kwd">mpz_init_set_si</span>(n1, <span class="num">4</span>);
+    <span class="kwd">mpz_init_set_si</span>(n2, <span class="num">3</span>);
+    <span class="kwd">mpz_init_set_si</span>(d, <span class="num">1</span>);
+
+    <span class="kwa">for</span> (;;)
+    {
+        <span class="kwd">mpz_tdiv_q</span>(u, n1, d);
+        <span class="kwd">mpz_tdiv_q</span>(v, n2, d);
+
+        <span class="kwa">if</span> (<span class="kwd">mpz_cmp</span>(u, v) == <span class="num">0</span>)
+        {
+            <span class="kwd">putchar</span>(<span class="str">&apos;0&apos;</span> + <span class="kwd">mpz_get_si</span>(u));
+            i++;
+            <span class="kwa">if</span> (i % <span class="num">10</span> == <span class="num">0</span>)
+                <span class="kwd">printf</span>(<span class="str">&quot;</span><span class="esc">\t</span><span class="str">:%d</span><span class="esc">\n</span><span class="str">&quot;</span>, i);
+            <span class="kwa">if</span> (i == n)
+                <span class="kwa">break</span>;
+
+            <span class="slc">// extract</span>
+            <span class="kwd">mpz_mul_si</span>(u, u, -<span class="num">10</span>);
+            <span class="kwd">mpz_mul</span>(u, d, u);
+            <span class="kwd">mpz_mul_si</span>(n1, n1, <span class="num">10</span>);
+            <span class="kwd">mpz_add</span>(n1, n1, u);
+            <span class="kwd">mpz_mul_si</span>(n2, n2, <span class="num">10</span>);
+            <span class="kwd">mpz_add</span>(n2, n2, u);
+        }
+        <span class="kwa">else</span> 
+        {
+            <span class="slc">// produce</span>
+            k2 = k * <span class="num">2</span>;
+            <span class="kwd">mpz_mul_si</span>(u, n1, k2 - <span class="num">1</span>);
+            <span class="kwd">mpz_add</span>(v, n2, n2);
+            <span class="kwd">mpz_mul_si</span>(w, n1, k - <span class="num">1</span>);
+            <span class="kwd">mpz_add</span>(n1, u, v);
+            <span class="kwd">mpz_mul_si</span>(u, n2, k + <span class="num">2</span>);
+            <span class="kwd">mpz_add</span>(n2, w, u);
+            <span class="kwd">mpz_mul_si</span>(d, d, k2 + <span class="num">1</span>);
+            k++;
+        }
+    }
+
+    <span class="kwa">if</span> (i % <span class="num">10</span> != <span class="num">0</span>)
+        <span class="kwd">printf</span>(<span class="str">&quot;%*s</span><span class="esc">\t</span><span class="str">:%d</span><span class="esc">\n</span><span class="str">&quot;</span>, <span class="num">10</span> - n % <span class="num">10</span>, <span class="str">&quot;&quot;</span>, n);
+    <span class="kwa">return</span> <span class="num">0</span>;
+}

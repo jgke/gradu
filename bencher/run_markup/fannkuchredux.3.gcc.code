@@ -1,0 +1,94 @@
+<span class="com">/* The Computer Language Benchmarks Game</span>
+<span class="com"> * https://salsa.debian.org/benchmarksgame-team/benchmarksgame/</span>
+<span class="com"> *</span>
+<span class="com"> * contributed by Ledrug Katz</span>
+<span class="com"> *</span>
+<span class="com"> */</span>
+
+<span class="ppc">#include &lt;stdio.h&gt;</span>
+<span class="ppc">#include &lt;stdlib.h&gt;</span>
+<span class="ppc">#include &lt;stdint.h&gt;</span>
+
+<span class="com">/* this depends highly on the platform.  It might be faster to use</span>
+<span class="com">   char type on 32-bit systems; it might be faster to use unsigned. */</span>
+
+<span class="kwc">typedef</span> <span class="kwb">int</span> elem;
+
+elem s[<span class="num">16</span>], t[<span class="num">16</span>];
+
+<span class="kwb">int</span> maxflips = <span class="num">0</span>;
+<span class="kwb">int</span> max_n;
+<span class="kwb">int</span> odd = <span class="num">0</span>;
+<span class="kwb">int</span> checksum = <span class="num">0</span>;
+
+<span class="kwb">int</span> <span class="kwd">flip</span>()
+{
+   <span class="kwc">register</span> <span class="kwb">int</span> i;
+   <span class="kwc">register</span> elem *x, *y, c;
+
+   <span class="kwa">for</span> (x = t, y = s, i = max_n; i--; )
+      *x++ = *y++;
+   i = <span class="num">1</span>;
+   <span class="kwa">do</span> {
+      <span class="kwa">for</span> (x = t, y = t + t[<span class="num">0</span>]; x &lt; y; )
+         c = *x, *x++ = *y, *y-- = c;
+      i++;
+   } <span class="kwa">while</span> (t[t[<span class="num">0</span>]]);
+   <span class="kwa">return</span> i;
+}
+
+<span class="kwc">inline</span> <span class="kwb">void</span> <span class="kwd">rotate</span>(<span class="kwb">int</span> n)
+{
+   elem c;
+   <span class="kwc">register</span> <span class="kwb">int</span> i;
+   c = s[<span class="num">0</span>];
+   <span class="kwa">for</span> (i = <span class="num">1</span>; i &lt;= n; i++) s[i-<span class="num">1</span>] = s[i];
+   s[n] = c;
+}
+
+<span class="com">/* Tompkin-Paige iterative perm generation */</span>
+<span class="kwb">void</span> <span class="kwd">tk</span>(<span class="kwb">int</span> n)
+{
+   <span class="kwb">int</span> i = <span class="num">0</span>, f;
+   elem c[<span class="num">16</span>] = {<span class="num">0</span>};
+
+   <span class="kwa">while</span> (i &lt; n) {
+      <span class="kwd">rotate</span>(i);
+      <span class="kwa">if</span> (c[i] &gt;= i) {
+         c[i++] = <span class="num">0</span>;
+         <span class="kwa">continue</span>;
+      }
+
+      c[i]++;
+      i = <span class="num">1</span>;
+      odd = ~odd;
+      <span class="kwa">if</span> (*s) {
+         f = s[s[<span class="num">0</span>]] ? <span class="kwd">flip</span>() : <span class="num">1</span>;
+         <span class="kwa">if</span> (f &gt; maxflips) maxflips = f;
+         checksum += odd ? -f : f;
+      }
+   }
+}
+
+<span class="kwb">int</span> <span class="kwd">main</span>(<span class="kwb">int</span> argc, <span class="kwb">char</span> **v)
+{
+   <span class="kwb">int</span> i;
+
+   <span class="kwa">if</span> (argc &lt; <span class="num">2</span>) {
+      <span class="kwd">fprintf</span>(stderr, <span class="str">&quot;usage: %s number</span><span class="esc">\n</span><span class="str">&quot;</span>, v[<span class="num">0</span>]);
+      <span class="kwd">exit</span>(<span class="num">1</span>);
+   }
+
+   max_n = <span class="kwd">atoi</span>(v[<span class="num">1</span>]);
+   <span class="kwa">if</span> (max_n &lt; <span class="num">3</span> || max_n &gt; <span class="num">15</span>) {
+      <span class="kwd">fprintf</span>(stderr, <span class="str">&quot;range: must be 3 &lt;= n &lt;= 12</span><span class="esc">\n</span><span class="str">&quot;</span>);
+      <span class="kwd">exit</span>(<span class="num">1</span>);
+   }
+
+   <span class="kwa">for</span> (i = <span class="num">0</span>; i &lt; max_n; i++) s[i] = i;
+   <span class="kwd">tk</span>(max_n);
+
+   <span class="kwd">printf</span>(<span class="str">&quot;%d</span><span class="esc">\n</span><span class="str">Pfannkuchen(%d) = %d</span><span class="esc">\n</span><span class="str">&quot;</span>, checksum, max_n, maxflips);
+
+   <span class="kwa">return</span> <span class="num">0</span>;
+}

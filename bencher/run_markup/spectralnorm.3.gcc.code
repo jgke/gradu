@@ -1,0 +1,72 @@
+<span class="com">/* The Computer Language Benchmarks Game</span>
+<span class="com"> * https://salsa.debian.org/benchmarksgame-team/benchmarksgame/</span>
+<span class="com"> *</span>
+<span class="com"> * Contributed by Mr Ledrug</span>
+<span class="com"> *</span>
+<span class="com"> * Algorithm lifted from Intel Fortran #2 code by Steve Decker et al.</span>
+<span class="com">*/</span>
+
+<span class="ppc">#include &lt;stdio.h&gt;</span>
+<span class="ppc">#include &lt;stdlib.h&gt;</span>
+<span class="ppc">#include &lt;math.h&gt;</span>
+
+<span class="kwc">inline</span> <span class="kwb">int</span> <span class="kwd">A</span>(<span class="kwb">int</span> i, <span class="kwb">int</span> j) {
+   <span class="kwa">return</span> ((i+j) * (i+j+<span class="num">1</span>) / <span class="num">2</span> + i + <span class="num">1</span>);
+}
+
+<span class="kwb">double</span> <span class="kwd">dot</span>(<span class="kwb">double</span> * v, <span class="kwb">double</span> * u, <span class="kwb">int</span> n) {
+   <span class="kwb">int</span> i;
+   <span class="kwb">double</span> sum = <span class="num">0</span>;
+   <span class="kwa">for</span> (i = <span class="num">0</span>; i &lt; n; i++)
+      sum += v[i] * u[i];
+   <span class="kwa">return</span> sum;
+}
+
+<span class="kwb">void</span> <span class="kwd">mult_Av</span>(<span class="kwb">double</span> * v, <span class="kwb">double</span> * out, <span class="kwb">const int</span> n) {
+   <span class="kwb">int</span> i, j;
+   <span class="kwb">double</span> sum;
+<span class="ppc">#   pragma omp parallel for private(sum,j)</span>
+   <span class="kwa">for</span> (i = <span class="num">0</span>; i &lt; n; i++) {
+      <span class="kwa">for</span> (sum = j = <span class="num">0</span>; j &lt; n; j++)
+         sum += v[j] / <span class="kwd">A</span>(i,j);
+      out[i] = sum;
+   }
+}
+
+<span class="kwb">void</span> <span class="kwd">mult_Atv</span>(<span class="kwb">double</span> * v, <span class="kwb">double</span> * out, <span class="kwb">const int</span> n) {
+   <span class="kwb">int</span> i, j;
+   <span class="kwb">double</span> sum;
+<span class="ppc">#   pragma omp parallel for private(sum,j)</span>
+   <span class="kwa">for</span> (i = <span class="num">0</span>; i &lt; n; i++) {
+      <span class="kwa">for</span> (sum = j = <span class="num">0</span>; j &lt; n; j++)
+         sum += v[j] / <span class="kwd">A</span>(j,i);
+      out[i] = sum;
+   }
+}
+
+<span class="kwb">double</span> *tmp;
+<span class="kwb">void</span> <span class="kwd">mult_AtAv</span>(<span class="kwb">double</span> *v, <span class="kwb">double</span> *out, <span class="kwb">const int</span> n) {
+   <span class="kwd">mult_Av</span>(v, tmp, n);
+   <span class="kwd">mult_Atv</span>(tmp, out, n);
+}
+
+<span class="kwb">int</span> <span class="kwd">main</span>(<span class="kwb">int</span> argc, <span class="kwb">char</span>**argv) {
+   <span class="kwb">int</span> n = <span class="kwd">atoi</span>(argv[<span class="num">1</span>]);
+   <span class="kwa">if</span> (n &lt;= <span class="num">0</span>) n = <span class="num">2000</span>;
+
+   <span class="kwb">double</span> *u, *v;
+   u = <span class="kwd">malloc</span>(n * <span class="kwa">sizeof</span>(<span class="kwb">double</span>));
+   v = <span class="kwd">malloc</span>(n * <span class="kwa">sizeof</span>(<span class="kwb">double</span>));
+   tmp = <span class="kwd">malloc</span>(n * <span class="kwa">sizeof</span>(<span class="kwb">double</span>));
+
+   <span class="kwb">int</span> i;
+   <span class="kwa">for</span> (i = <span class="num">0</span>; i &lt; n; i++) u[i] = <span class="num">1</span>;
+   <span class="kwa">for</span> (i = <span class="num">0</span>; i &lt; <span class="num">10</span>; i++) {
+      <span class="kwd">mult_AtAv</span>(u, v, n);
+      <span class="kwd">mult_AtAv</span>(v, u, n);
+   }
+
+   <span class="kwd">printf</span>(<span class="str">&quot;%.9f</span><span class="esc">\n</span><span class="str">&quot;</span>, <span class="kwd">sqrt</span>(<span class="kwd">dot</span>(u,v, n) / <span class="kwd">dot</span>(v,v,n)));
+
+   <span class="kwa">return</span> <span class="num">0</span>;
+}
