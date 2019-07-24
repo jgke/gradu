@@ -1,0 +1,52 @@
+\section{Uuden ohjelmointikielen määrittäminen}
+
+\hl{Tässä luvussa määritetään uusi ohjelmointikieli toisen ja kolmannen luvun
+tulosten ohjaamana.}
+
+\subsection{Tyypit}
+
+\hl{Koska kieli ei voi erota ratkaisevasti C:stä suoritusaikaisesti, tyypitys
+on todennäköisesti hyvin lähellä C:n tyypitystä. Tutkielmassa tutkitaan, voiko
+yleisiä käyttötapauksia helpottaa, kuten virhearvoja, geneerisiä
+tietorakenteita sekä summatyyppejä. Näistä geneeriset tietorakenteet ovat
+luultavasti liian monimutkainen asia sisällytettäväksi yksinkertaisena
+pidettävään kieleen johtuen niiden vaatimasta geneerisestä ohjelmoinnista.
+Esimerkiksi summatyypit taas voidaan toteuttaa helposti myös C:llä.}
+
+\subsection{Syntaksi}
+
+\hl{Kielestä tulee todennäköisesti myös syntaksin kannalta C:n sukulaiskieli.
+Tämä helpottaa kielen omaksumista, mikäli ohjelmoija osaa C:tä. Erityisesti
+virheidenhallinnassa on kuitenkin mahdollisuuksia tehdä huomattavia parannuksia
+C:hen verrattuna.}
+
+\subsection{Makrot}
+
+\hl{Koska makrot eivät aiheuta suoritusaikaisia haittoja, uuden kielen
+makrojärjestelmässä voi olla hyvinkin suuria eroavaisuuksia C:n
+makrojärjestelmään verrattuna. Yhteensopivuuden parantamiseksi
+makrojärjestelmän tulisi kuitenkin ymmärtää C:n makroja sekä mahdollistaa
+C-makrojen tuottaminen. Jos makrojärjestelmästä tekee Turing-täydellisen,
+kaikkia makroja ei pysty muuntamaan C:n makroiksi johtuen C:n makrojärjestelmän
+rajoituksista. Tämän lisäksi hygieeninen makrojärjestelmä ei välttämättä tee
+C:n makrojärjestelmän tukemisesta yksinkertaista.}
+
+\hl{Yksi mahdollinen tapa tuottaa kattava makrojärjestelmä olisi ottaa Rustin
+makrojärjestelmästä mallia, mutta tämä jättäisi avoimeksi kysymykseksi
+yhteensopivuuden C:n makrojärjestelmän kanssa.}
+
+\subsection{Suoritusaikaiset ominaisuudet}
+
+\hl{Koska kielen tulee olla täysin yhteensopiva suoritusaikaisesti C:n kanssa,
+kielessä ei välttämättä ole yhtään C:stä eroavia suoritusaikaisia
+ominaisuuksia. Kieli kuitenkin voi mahdollistaa vapaaehtoisia ominaisuuksia,
+joita standardien mukaisesta C:stä ei löydy, kunhan ohjelmoijaa ei pakoteta
+käyttämään näitä.}
+
+\subsection{Ohjelmointikielen kääntäminen}
+
+\hl{Yhteensopivuuden C:n kanssa saa helposti toteutettua kääntämällä
+ohjelmointikielen C:ksi. Tällöin ohjelmointikieli toimii kaikissa
+järjestelmissä, joissa C toimii. Tämä mahdollistaa myös uuden ohjelmointikielen
+kokeilemisen olemassa olevan C-projektin kanssa ilman, että projektin tulisi
+muuten käyttää uutta ohjelmointikieltä.}

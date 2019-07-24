@@ -1,19 +1,25 @@
 \documentclass[gradu]{tktltiki}
-%\documentclass[gradu,draft]{tktltiki}
 
 \usepackage{gradu}
 
+\makeatletter
+\AtBeginDocument{%
+    \renewcommand{\BEd}{painos\hbox{}}
+    \renewcommand{\BOthers}[1]{ja muut\hbox{}}%
+    \renewcommand{\BOthersPeriod}[1]{ja muut\hbox{}}%
+}
+\makeatother
+
 \begin{document}
 
-\title{C-ohjelmointikielen korvaajiksi tehdyt ohjelmointikielet \\
-ja miksi C on niistä huolimatta käytössä}
-\gdef\formtitle{C-ohjelmointikielen korvaajiksi tehdyt ohjelmointikielet
-ja miksi C on niistä huolimatta käytössä}
+\title{C-ohjelmointikielen korvaaminen muilla ohjelmointikielillä}
 \author{Jaakko Hannikainen}
 \date{\today}
 \level{Pro gradu -tutkielma}
 
+\hypersetup{pageanchor=false}
 \maketitle
+\hypersetup{pageanchor=false}
 
 \classification{\protect{\ \\
 \  \textbf{Software and its engineering
@@ -33,25 +39,12 @@ $\rightarrow$ Embedded software \\
 \keywords{C, ohjelmointikielet}
 
 \begin{abstract}
-    C on ollut vallitseva ohjelmointikieli järjestelmäohjelmoinnissa C:n
-    alkuajoista lähtien. Useita ohjelmointikieliä on luotu historian saatossa,
-    joiden oli tarkoitus syrjäyttää C, mutta C on vieläkin johtavana kielenä
-    varsinkin sulautetuissa järjestelmissä ja UNIX-pohjaisten
-    käyttöjärjestelmien vallitsevana ohjelmointikielenä. C on myös käytössä
-    Windows-käyttöjärjestelmäperheen ydinkomponenttien toteutuksessa.
-
-    Tässä opinnäytetyössä selvitetään, miksi vaihtoehdoista huolimatta C on vieläkin
-    laajalti käytössä myös uusissa projekteissa ja minkälainen ohjelmointikieli
-    voisi syrjäyttää C:n.
-
-    Johtopäätöksinä saatiin, että muut kielet eivät ole parempia.
-
-    Tähän tulee parempi kuvaus graduprosessin loppupuolella, kun on
-    tiedossa, mitä tämä gradu oikeasti sisältää.
+    Tutkielman tiivistelmä.
 \end{abstract}
 
 \newpage
 \tocbeginshere
+\addtocontents{toc}{\protect\thispagestyle{empty}}
 
 \mytableofcontents
 
@@ -61,16 +54,29 @@ $\rightarrow$ Embedded software \\
 \newpage
 \input{muut.tex}
 \newpage
-\input{oma.tex}
+\input{uusi.tex}
+\newpage
+\input{tulokset.tex}
 \newpage
 \input{yhteenveto.tex}
 \newpage
 
-%\bibliographystyle{apacite}
+\renewcommand{\bibname}{Lähteet}
+\renewcommand{\BRetrievedFrom}{Saatavilla\ }
+\renewcommand{\BOthers}[1]{ja muut\hbox{}}
+\renewcommand{\BOthersPeriod}[1]{ja muut\hbox{}}
+\renewcommand*{\bibfont}{\interlinepenalty 10000\relax}
+
 \bibliography{references}
 
 \appendixbeginhere
-%\input{liite.tex}
+%\inputappendix{luettelo.tex}
+%\inputappendix{github.tex}
+%\restoregeometry
+%\inputappendix{kieli.tex}
+%\inputappendix{lisp.tex}
+%\inputappendix{curly.tex}
 \appendixendhere
+
 
 \end{document}

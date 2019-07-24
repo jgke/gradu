@@ -1,80 +1,381 @@
-\section{Määritelmät} 
+\section{Taustaa}
 
-Verrattavissa ohjelmointikielissä on yritetty parantaa C:n huonoja puolia
+\hl{Ohjelmointikielten piirteistä ja vertailukriteereistä}
+
+\hl{Tässä luvussa kerrotaan ohjelmointikielten taustoista ja yleisistä
+ominaisuuksista, luodaan määrittelyt vertailuun liittyville kriteereille,
+perustelut verrattavien kielten valinnoille sekä pohditaan erilaisia
+mahdollisia syitä kielten suosioon. Tämän luvun sisältö on hyvin samankaltainen
+tutkimussuunnitelman kirjallisuusosan toisen luvun kanssa.}
+
+\subsection{Ohjelmointikielten vertailun kriteerit}
+\label{sec:ctaustaa}
+
+\hl{Tässä aliluvussa kerrotaan C-kielen taustasta, alkuperäisistä käyttökohteista,
+historiasta, suosion kehityksestä sekä nykytilanteesta. Erityisesti keskitytään
+C:n tämänhetkisiin käyttökohteisiin, joista selviää, mitä ohjelmointikielten
+ominaisuuksia tulisi käsitellä ohjelmointikielten vertailussa.}
+
+\subsection{Kehitettävissä olevat ominaisuudet C-ohjelmointikielessä}
+
+\hl{Tässä aliluvussa pohditaan, miksi C pitäisi korvata uudella
+ohjelmointikielellä, mitä ominaisuuksia C:stä voisi kehittää, mitkä C:n
+ominaisuudet voisi jättää pois ja mitä uusia ominaisuuksia voisi tulla.}
+
+\hl{Näitä ominaisuuksia ovat ainakin tarkempi käännösaikainen tyypitys etenkin
+tyhjien osoittimien osalta, makrojärjestelmän uusiminen sekä syntaksin
+selkeyttäminen.}
+
+\subsection{Ohjelmointikielten vertailun kriteerit}
+\label{sec:abs}
+
+\hl{Jotta kielten vertailun voi tehdä objektiivisesti, valitaan vertailua
+varten jotkin kriteerit. Kriteereiksi valitaan suorituskyky, muistinkäyttö ja
+yhteensopivuus C:n ja muiden ohjelmointikielten kanssa. Vertailtavat kielet
+eivät saa olla C:tä huonompia millään osa-alueella.}
+
+Verrattavissa ohjelmointikielissä on pyritty parantamaan C:n huonoja puolia
 hyvien puolien kustannuksella, usein lisäämällä kieleen turvallisuutta
-parantavia ominaisuuksia. Tämä kuitenkin heikentää kielen tehokkuutta tai
-alustayhteensopivuutta, tehden kielten suorasta vertailusta mahdotonta. Jos
-määritellään absoluuttiset reunaehdot, voidaan näiden puitteissa vertailla
-kieliä.
+parantavia ominaisuuksia tai tehden kielestä helppokäyttöisemmän esimerkiksi
+automaattisella muistinhallinnalla. Tämä kuitenkin heikentää kielen tehokkuutta
+tai alustariippumattomuutta tehden kielten suorasta vertailusta hankalaa.
+Määrittelemällä absoluuttiset reunaehdot voidaan vertailla kieliä ehtojen
+puitteissa objektiivisesti. Jos yksikin näistä kriteereistä ei pidä, verrattava
+kieli ei ole aidosti C:tä parempi, vaan se häviää C:lle joissain osa-alueissa
+ja vastaavasti voi olla parempi joissakin toisissa.
 
-Määritellään C:tä paremmaksi kieleksi jokin kieli, mikä C:hen verrattuna aina:
+Tutkielmassa vertaillaan kolmea osa-aluetta ohjelmointikielistä: suorituskykyä,
+muistinkäyttöä sekä yhteensopivuutta C:n ja muiden ohjelmointikielten kanssa.
+Tutkielmassa käsitellään myös subjektiivisia kielten ominaisuuksia, kuten
+kielen tiiviyttä\defword{terseness, expressiveness}, mutta näitä
+ominaisuuksia ei huomioida kielten paremmuusvertailussa.
 
-\begin{itemize}
-    \item on yhtä nopea tai nopeampi
-    \item käyttää saman verran muistia tai vähemmän
-    \item toimii kaikissa järjestelmissä, joissa C toimii
-    \item on helpompi käyttää \hilight{paitsi että tämä on subjektiivista}
-    \item \hilight{Onko jotain, mistä voisi sanoa suoraan, että se on parannus?}
-\end{itemize}
+Ohjelmointikielellä kirjoitetun ohjelman tulee olla suoritusaikaisesti
+vähintään yhtä nopea kuin vastaava C:llä kirjoitettu ohjelma. Kieli siis ei saa
+vaatia ohjelmoijaa käyttämään mitään kielen ominaisuuksia, jotka voisivat
+hidastaa ohjelmien suoritusta C:hen verrattuna. Monet suoritusaikaiset
+turvallisuutta lisäävät ominaisuudet, kuten muistialueiden tarkistukset,
+hidastavat kielen suoritusaikaista nopeutta.
 
-Jos yksikin näistä kriteereistä ei pidä, verrattava kieli ei ole absoluuttisesti
-C:tä parempi.
+Ohjelmointikielellä toteutettu ohjelma ei myöskään saa käyttää enempää muistia
+niin suoritusaikaisesti kuin talletusvälineelläkään verrattuna vastaavaan
+C-ohjelmaan. Tämä koskee myös vakiokirjastoa\defword{standard library} --
+yksikin konkreettinen vakiokirjaston funktio linkitettynä ohjelmaan kasvattaa
+ohjelman kokoa. Mikäli jokin vakiokirjasto toteutetaan, sen käyttäminen tulee
+olla ohjelmoijalle täysin vapaaehtoista. Yksi tapa toteuttaa tämä on liittää
+vain käytetyt funktiot osaksi ohjelmaa, jolloin käyttämättömät funktiot eivät
+kasvata ohjelman kokoa.
 
-On huomioitava, että lukuisten olemassaolevien C:n kirjastojen, rajapintojen ja
-projektien vuoksi yhteensopivuus C:n kanssa tulee olla saumatonta mahdollisten
-vaihtoehtoisten ohjelmointikielten osalta, jotta kielen vaihtaminen olisi
-mahdollista. Tämä sisältää myös kirkastorutiinien kutsumisen muista
-ohjelmointikielistä, sillä C on lukuisissa järjestelmissä \emph{lingua franca},
-jolla voidaan sillata ohjelmointikieliä toisiinsa.
+Jos samaa vakiokirjastoa käytetään useassa ohjelmassa, tilankäytön kannalta on
+edullisempaa säilöä vakiokirjasto jaettuna kirjastona, mutta tämä heikentää
+kääntäjän mahdollisuuksia käännösaikaiseen optimointiin. Jos vakiokirjastoa ei
+ole ladattu muistiin ohjelman käynnistyessä, ohjelman käynnistys voi kestää
+hieman kauemmin. C:n vakiokirjasto liitetään usein moderneissa
+käyttöjärjestelmissä ohjelmiin jaettuna kirjastona, sillä C:tä käytetään lähes
+jokaisessa käyttöjärjestelmän ohjelmassa, ja näin jaetun kirjaston käyttäminen
+välttää osan jaetun kirjaston huonoista puolista: kirjasto löytyy vain yhtenä
+kopiona kiintolevyltä, ja se on valmiina ladattuna välimuistiin.
 
-Ohjelmointikielten ekosysteemit koostuvat eri tahojen luomista kirjastoista. On
-tärkeää, että näihin kirjastoihin pääsee käsiksi mahdollisimman helposti. Tämä
-vaatii toimiakseen hyvät työkalut, kuten paketinhallinnat, käännöstyökalu sekä
-kehitysympäristöt.
+\newpage
 
-Kirjastojen lisenssen tulee myös olla yhteensopivia, jotta kirjastoja voi
-käyttää yhdessä toistensa kanssa. Eri ekosysteemeissä on erilaisia lisenssejä
--- JavaScript-kirjastot ovat usein MIT-yhteensopivia~\citationneeded, kun taas
-Java-kirjastot ovat usein Apache 2 -yhteensopivia~\citationneeded. (Mitä C:ssä
-nyt onkaan eniten, GPL, LGPL, BSD, Apache2... taitaa olla aika sekasikiö.
-Tekstiä lisää tästä kunhan saan tutkittua)
-Kirjastot voi myös julkaista useammalla kuin yhdellä lisenssillä, jolloin
-käyttäjät voivat päättää, mitä lisenssiä haluaa seurata. On kuitenkin
-filosofinen kysymys, onko esimerkiksi Apache2+GPL parempi kuin pelkkä GPL,
-sillä Apache2 ei vaadi tiettyjä oikeuksia loppukäyttäjille.\hilight{Teksti
-vähän tökkii}
+Ohjelmointikielen tulee olla täysin yhteensopiva C:n suoritusympäristön kanssa.
+Tämä koskee C-koodin kutsumista C:n vierasfunktiorajapinnan
+läpi\defword{Foreign function interface, FFI, \emph{käännös
+\citealt[s.~8]{vierasfunktiorajapinta}}} sekä kielen funktioiden kutsumista
+muiden ohjelmointikielten C-rajapinnan läpi. Kielen tulee näiden lisäksi toimia
+kaikissa ympäristöissä, joissa C toimii. Kielen olisi myös hyvä tukea C:n
+esikäsittelijää, jotta C:n käyttäminen verrattavan ohjelmointikielen kanssa
+olisi mahdollisimman saumatonta.
 
-\subsection{Verrattavien ohjelmointikielten valinta}
+\subsection{Kielten suosioon vaikuttavat tekijät}
 
-C:hen verrattavien ohjelmointikielten valintaan käytettiin
+\hl{Analyysiä muista syistä kielen suosioon, erityisesti Meyerovichin ja
+Rabkinin tekemän tutkimuksen perusteella. Tämä antaa tietoa ominaisuuksista,
+jotka ohjelmointikielessä olisi hyvä olla.}
 
-TIOBEn indeksi~\citep{tiobe} ja Octoverse~\citep{octoverse} suosion
-mukaan järjestämiseksi, ei valita aivan tuntematonta kieltä
+Eräässä tutkimuksessa~\citep{empiricalpopularity} tutkittiin syitä
+ohjelmointikielten valintaan. Yhden tutkimuksen järjestämän kyselyn (s. 8,
+\mbox{Slashdotissa} julkaistu kysely, n=1679) perusteella kielen valintaan
+vaikuttaa avoimen lähdekoodin kirjastojen saatavuus, olemassa olevien ohjelmien
+jatkokehitys sekä kielen tunnettavuus ohjelmoijien keskuudessa -- tutkimuksen
+mukaan ohjelmoijat siis suosivat jo käytettyjä ohjelmointikieliä uusien kielten
+sijaan. Saman kyselyn vastaajat arvioivat suorituskyvyn turvallisuutta
+tärkeämmäksi.
 
-Benchmarks gamen~\citep{benchmarks} tuloksia, nähdään tehokkaat kielet
+Saman tutkimuksen järjestämässä Slashdot-sivustolla julkaistussa kyselyssä noin
+40\% vastaajista arvioi tärkeäksi kriteeriksi työkalut. Kyselyn perusteella
+kielen olisi siis hyvä tarjota toimivat työkalut, kuten
+ohjelmistopakettien~\defword{software package, \emph{käännös
+\citealt[s.~18]{ohjelmistopaketti}}} hakemiseen
+paketinhallintajärjestelmän\defword{package manager}, nopean ja
+käyttäjäystävällisen käännöstyökalun sekä valmiudet olemassa oleviin
+kehitysympäristöihin integroitumiselle. Olemassa olevien C-ohjelmistojen
+tukeminen on välttämätöntä mutta haastavaa johtuen C:n ekosysteemin
+monimuotoisuudesta, erityisesti lukuisista kääntämistyökaluista.
 
-Valittiin Ada, C++, D, Go, Rust
+Tutkimuksessa selvitettiin myös suosittuja ominaisuuksia ohjelmointikieliltä
+(s. 13, SaaS MOOC -kurssin yhteydessä oleva kysely, n=415). Useita
+tutkimuksessa selvitetyistä suosituimmista ominaisuuksista ei ole mahdollista
+toteuttaa johtuen luvussa~\ref{sec:abs} määritetyistä rajoitteista, kuten
+poikkeuksia ja rajapintoja. Useat muut tutkimuksessa esiin nousseet
+ominaisuudet, kuten suorituskyky, ovat taas suoraan rajotteiden mukaisesti osa
+verrattavan ohjelmointikielen tavoitteita.
 
-Muita liittyviä kieliä: Fortran, Objective-C \\
-\hilight{Pitäisikö nämä vain ottaa joukon jatkoksi? Menisi helposti samaan syssyyn} \\
-\hilight{Fortran toisaalta vähän hassu tähän koska se on tehty ennen C:tä}
+Tutkimuksessa myös verrattiin tiettyjen toteamuksien keskinäistä korrelaatiota.
+Kielen tiiviys korreloi eniten (korrelaatiokertoimella 0.76) kielestä pitämisen
+kanssa (s. 13, The Hammer Principle -sivustolla julkaistu kysely).
 
-%Muita tehokkaita kieliä:
+\hl{? (alleviivattu toteamuksien)}
 
-%Halide; innovatiivinen DSL, jossa on erikseen
-%algoritmi ja sen rinnakkaistaminen. Ei yleiskäyttöinen, mutta hieno ideatasolla
+%Eräässä blogikirjoituksessa \citep{microsoftdictperf} vertaillaan C\#:n ja
+%C++:n suorituskykyä. Kirjoituksessa C\#:llä kirjoitettu yksinkertainen toteutus
+%suoriutuu tehtävästä nopeammin ja yksinkertaisemmin kuin optimoitu C++-ohjelma.
+%Vasta usean C++-ohjelma päihitti C\#-toteuden nopeudella. C\#-toteutus
+%kuitenkin vei noin neljä kertaa enemmän muistia kuin C++-toteutus.
 
-Muita huomattavia kieliä:
+Tutkimuksen perusteella valmiiksi suosittuja kieliä käytetään enemmän myös
+uusissa projekteissa. Olemassa olevien kirjastojen tärkeyttä korostetaan
+useassa kohdassa tutkimusta. Täysin C:n kanssa yhteensopiva kieli voi käyttää
+C:lle tehtyjä kirjastoja, jolloin kielellä on käytettävissään laaja C:n
+ekosysteemi\footnote{Esimerkiksi GitHubista hakusanalla 'library' löytyy yli
+26\,000 C:llä kirjoitettua projektia.}.
 
-LISP-perhe: makrot jotka käsittelee S-exprejä eikä
-vain läimi tekstiä ympäriinsä,
+Uusia ohjelmointikieliä opetellessa ohjelmoijat turvautuvat aikaisemmista
+kielistä opittuihin käytäntöihin~\citep{languagelearning}. Uusien
+ohjelmointikielten käyttöönottoa helpottaa siis muiden vastaavien kielten
+osaaminen, sillä aikaisempi kokemus tukee uuden kielen opiskelua.
+Suunnittelemalla C:n korvaajan C:n kanssa samankaltaiseksi kieleksi voidaan
+pienentää uuden kielen opettelun kynnystä. Kielen eriävät ominaisuudet olisi
+siis hyvä toteuttaa siten, että ne ovat mahdollisimman helppoja oppia C:stä
+uuteen ohjelmointikieleen siirtyvälle ohjelmoijalle.
 
-ML-perhe: erinomainen syntaksi tyyppi- ja funktiomäärittelyihin sekä pattern
-matchaukseen, sääli että kaikki kovemman tason tyypitys käytännössä vaatii
-interfacejen toteutuksen mikä taas on hankalaa absolutismissa (tradeoff
-vtable/function pointereita kaikkialle/C++:n ja Rustin inlinetys jolloin
-binääri kasvaa).  Esim. enumeihin voisi silti saada hyvän matchauksen
+%Helppokäyttöisyys \\
+%- turvallisuus (esim. tyypit) \\
+%- esim. annotaatiot \\
+%- selkeä mitä tekee
 
-C-subsetit jotka voi formaalisti verifioida esim. 
-\url{https://github.com/PrincetonUniversity/VST}
-\url{http://vst.cs.princeton.edu/}
+%\subsection{Mahdollisia kielen ominaisuuksia}
+%
+%Kielen ominaisuudet vaikuttavat sillä rakennettujen ohjelmistojen
+%arkkitehtuuriin. Tyyppiluokat tai rajapinnat kannustavat vahvan
+%tyypityksen kautta tyyppiturvalliseen ohjelmointiin, kun taas dynaamiset kielet
+%(esimerkiksi LISP-perheen kielet) kannustavat nopeaan kehitystahtiin staattisen
+%turvallisuuden hinnalla. Yksinkertaiset kielet, kuten C ja Go, tarjoavat usein
+%vain yhden selkeän tavan toteuttaa yksittäiset funktiot, kun taas
+%monimutkaisemmat kielet tarjoavat lukuisia vaihtoehtoja.\citationneeded
+%
+%BitC-ohjelmointikielen sähköpostilistalla käydyssä keskustelussa pohdittiin
+%mahdollisia ongelmia vahvan tyypityksen (etenkin tyyppiluokkien) käytöstä
+%matalan tason ohjelmoinnissa~\citep{bitc}. Shapiron sähköpostissa todetaan,
+%että tyyppiluokkia ei voi toteuttaa ilman suoritusaikaista tukea.
+%
+%On huomioitava, että lukuisten olemassa olevien C:n kirjastojen, rajapintojen
+%ja projektien vuoksi yhteensopivuus C:n kanssa tulee olla saumatonta
+%mahdollisten vaihtoehtoisten ohjelmointikielten osalta, jotta kielen
+%vaihtaminen olisi mahdollista. Tämä sisältää myös kirkastorutiinien kutsumisen
+%muista ohjelmointikielistä, sillä C on lukuisissa järjestelmissä \emph{lingua
+%franca}, jonka avulla ohjelmointikielet pystyvät kommunikoimaan keskenään.
+%Esimerkiksi Python-ohjelmointikieli~\citep{python} sisältää tuen C-funktioiden
+%kutsumiseen~\citep{pythonffi}, jota voi käyttää muiden ohjelmointikielten
+%funktioiden kutsumiseen, mikäli käyttäjä kirjoittaa ''sillan'' C-ohjelmana.
+%Käytännössä jokaisesta aktiivisesti käytetystä ohjelmointikielestä on
+%mahdollista kutsua C-koodia.
+%
+%Ohjelmointikielten ekosysteemit koostuvat eri tahojen luomista kirjastoista. On
+%tärkeää, että näihin kirjastoihin pääsee käsiksi mahdollisimman helposti.
+
+% Kirjastojen lisenssien tulee myös olla yhteensopivia, jotta kirjastoja voi
+% käyttää yhdessä toistensa kanssa. Eri ohjelmointikieliekosysteemeissä on
+% käytössä erilaisia lisenssejä -- JavaScript-kirjastot ovat usein
+% MIT-yhteensopivia, kun taas Java-kirjastot ovat usein Apache 2 -yhteensopivia.
+% Liitteessä~\ref{app:github} on taulukko GitHub-verkkopalvelun sisältämien
+% julkisten projektien määrä ryhmiteltynä lisenssin ja kielen mukaan.
+%
+% Kirjastot voi myös julkaista useammalla kuin yhdellä lisenssillä, jolloin
+% käyttäjät voivat päättää, mitä lisenssiä haluaa seurata. On kuitenkin
+% filosofinen kysymys, onko esimerkiksi Apache2+GPL parempi lisenssi kuin pelkkä
+% GPL, sillä Apache2 ei vaadi tiettyjä oikeuksia loppukäyttäjille, kuten pääsyä
+% ohjelmiston lähdekoodiin~\citep{apachetldr, gpl3tldr}. Apache2 siis antaa
+% ohjelmoijille enemmän vapauksia GPL3:een verrattuna, mutta käyttäjien vapaus
+% esimerkiksi muokata ohjelmistoa kärsii tästä.
+
+\subsection{C:hen verrattavissa olevat ohjelmointikielet}
+
+\hl{Vertailtaviksi kieliksi valitaan Ada, C++, D, Go ja Rust. Kaikki
+vertailtavat kielet ovat kohtalaisen tehokkaita, jonka lisäksi kaikilla on
+yritetty korvata C:n tai C++:n käyttöä.}
+
+Historian saatossa on tehty useita C:n kilpailijoita, jotka ovat yrittäneet
+parantaa C:tä joidenkin C:n hyvien puolien kustannuksella. Muutamat näistä ovat
+päätyneet hyvin suosituiksi ohjelmointikieliksi, kuten esimerkiksi C++ ja Go.
+Kielten suosion mittaamiseen on tehty useita projekteja, jotka vertailevat
+kieliä esimerkiksi hakutulosten tai projektien mukaan. Näitä ovat esimerkiksi
+TIOBEn ohjelmointikielten suosion indeksi~\citep{tiobe} ja GitHub-palvelun
+julkaisema \mbox{Octoverse}~\citep{octoverse}.
+%Valitsemalla vertailuun suosittuja kieliä voidaan tutkia, miksi muuten
+%selkeästi täysin käyttökelpoinen kieli ei ole syrjäyttänyt C:tä.
+
+Koska tutkimuskysymyksessä vertaillaan ohjelmointikieliä suorituskyvyn ja
+muistinkäytön suhteen, vertailuun kannattaa ottaa mukaan vain tehokkaita kieliä
+-- korkeamman tason ohjelmointikielet on tarkoitettu ohjelmointinopeuden
+parantamiseen ja turvallisempien ohjelmistojen toteuttamiseen nopeiden
+ohjelmien sijaan. Tällöin kielen suorituskyky on heikompi. Yksi kattava
+suorituskykyä mittaava vertailu on Benchmarks Game~\citep{benchmarks}, jossa
+pyritään kirjoittamaan mahdollisimman nopea ohjelma pysyen silti kielelle
+idiomaattisessa lähdekoodissa\footnote{Hyvin monessa kielessä voi kirjoittaa
+C:hen verrattavissa olevaa matalan tason ohjelmointia, mutta Benchmarks Gamessa
+on tarkoituksena välttää tätä.}.
+
+TIOBEn listasta Ada, C++, D, Go ja Rust nousevat esiin verrattavina kielinä.
+Kaikki viisi kieltä ovat tehokkaita. Tämän lisäksi jokaisen kielten historiassa
+on ollut tavoitteena korvata C:n tai C++:n käyttö, kuten luvussa~\ref{sec:muut}
+kerrotaan.
+
+Viime vuosina on tehty myös useita C:hen käännettäviä ohjelmointikieliä, jotka
+ovat jääneet pitkälti ilman mitään näkyvyyttä, kuten LISP/c~\citep{clisp1},
+C-Mera~\citep{clisp2}, Carp~\citep{clisp3} ja Nymph~\citep{nymph}. LISP/c,
+C-Mera ja Carp ovat LISP-perheeseen kuuluvia C:ksi kääntyviä ohjelmointikieliä,
+jotka pyrkivät parantamaan C:n syntaksia korvaamalla sen LISP-perheen
+syntaksilla. Nymph taas on olio-ohjelmointikieli. Erityisesti Carp on tämän
+tutkielman kannalta kiintoisa ohjelmointikieli, sillä se on C:ksi kääntyvä
+ohjelmointikieli, joka on suunniteltu mahdollisimman suorituskykyiseksi.
+
+%\hl{Tässä voisi olla jotain pohdintaa, miksi nuo ovat jääneet huomiotta ja
+%miten tämän voisi välttää. Erityisesti Carp tuntuu tätä tutkielmaa vastaavalta
+%kieleltä, olisi ikävää jättää se täysin huomiotta. Tosin tällaiset pohdinnat
+%jäänee puhtaasti spekulaatioksi, sillä noista ei ole erityisen paljoa dataa
+%saatavilla.}
+
+\subsection{Makrojärjestelmät}
+
+\hl{Tässä aliluvussa selitetään makrojärjestelmien käsite, kerrotaan
+makrojärjestelmien tarpeellisuudesta ja käyttökohteista sekä verrataan
+vaihtoehtoisia toteutuksia makrojärjestelmiin.}
+
+Ohjelmointikielten makrojärjestelmillä tarkoitetaan ohjelmointikielen
+ominaisuuksia, joita voidaan käyttää käännösaikaiseen lähdekoodin luomiseen ja
+muuntamiseen. Lähdekoodin luonti käännösaikaisesti voi pienentää huomattavasti
+tarvittavaa lähdekoodin määrää tietyissä tilanteissa aiheuttamatta
+suoritusaikaisia haittoja. Ensimmäiset makrojärjestelmät rakennettiin
+symbolisen konekielen käsittelyyn, jolloin makrojärjestelmiä käytettiin
+poistamaan turhaa toistoa ohjelmien lähdekoodista.
+
+Rust käyttää vakiokirjastonsa lähdekoodissa paljon makroja erityisesti
+alkeistyyppien liittyvien määrittelyjen kohdalla. Rustin vakiokirjaston
+kokonaislukutyyppejä määrittelevässä moduulissa \texttt{std::num} on käytetty
+makroja huomattavan paljon lähdekoodin määrän vähentämiseen -- tiedoston
+\texttt{mod.rs} lähdekoodin koko kasvaa noin 5\,000 rivistä yli 20\,000 riviin,
+kun makrot laajennetaan. Kaikki makroilla määritellyt funktiot ovat identtisiä
+tyyppejä tai tiettyjä vakioita lukuun ottamatta, ja makrojärjestelmän käytöllä
+taataan paras mahdollinen suorituskyky. Makrojärjestelmän käyttäminen
+määrittelyihin pakottaa yhtenäiset määrittelyt kaikille alkeistyypeille,
+jolloin ohjelmointivirheiden määrä pysyy mahdollisimman pienenä.
+
+\hl{? (alleviivattu lause funktioiden identtisyydestä)}
+
+Lähdekoodin luominen käännösaikaisesti voi kasvattaa lopullisen ohjelman kokoa,
+sillä makron sisältö kopioidaan makrokutsun paikalle. Toisaalta ohjelmakoodin
+luonti voi myös mahdollistaa optimointeja, joita kääntäjä ei olisi pystynyt
+tekemään tavalliselle funktiolle. Kääntäjästä riippuen lähdekoodin
+sijoittaminen funktiokutsun paikalle voi esimerkiksi mahdollistaa paremman
+silmukoiden vektorisoinnin tai kuolleen koodin poistamisen~\citep{cinlining}.
+Ohjelmoijalle tulisi siis antaa mahdollisuus päättää, haluaako hän
+ohjelmoidessaan käyttää ohjelmointikielen makrojärjestelmää vai perinteisiä
+funktioita.
+
+Makroja käyttäessä voi tapahtua ristiriitoja esimerkiksi luodessa väliaikaisia
+muuttujia, joilla on sama tunniste kuin aikaisemmin lähdekoodissa
+määritellyillä muuttujilla~\citep{macrohygiene}. Makrojen tulokset voivat myös
+aiheuttaa syntaksivirheitä sekä muuta odottamatonta käytöstä. Jos
+ohjelmointikielen makrojärjestelmä estää tällaiset ristiriidat, sitä kutsutaan
+hygieeniseksi makrojärjestelmäksi.
+
+\hl{? (alleviivattu syntaksivirheitä, odottamatonta käytöstä, estää
+ristiriidat), pidempi selitys}
+
+Makrojärjestelmiin on runsaasti vaihtoehtoisia toteutustapoja. Yksinkertaisin
+vaihtoehto on jättää makrot kokonaan pois ohjelmointikielestä, mikä tosin
+rajoittaa ohjelmointikielen mahdollisuuksia käännösaikaiseen
+laajennettavuuteen.
+
+Tekstialkioiden korvaamiseen perustuvat makrojärjestelmät ovat erittäin
+yksinkertainen ja joustava tapa toteuttaa käännösaikainen makrojärjestelmä.
+Tekstialkioiden korvaamisessa makroprosessori etsii syötteestä tiettyjä
+tekstialkioita ja korvaa niitä joukoilla tekstialkioita. Tekstialkioiden
+korvaaminen toimii yleensä erillisenä osana kääntämistä, eikä makroilla ole
+tällöin tietoa varsinaisen ohjelmointikielen tyypeistä tai tunnisteista.
+
+Mallipohjaisissa makrojärjestelmissä asetetaan tyyppejä tai arvoja ennalta
+määritettyyn malliin, yleensä luokkiin tai funktioihin. Mallipohjaiset
+makrojärjestelmät eivät voi tehdä kaikkea, mitä tekstialkioiden korvaamiseen
+perustuvat makroprosessorit voivat tehdä. Mallipohjaiset järjestelmät voivat
+käyttää hyväksi ohjelmointikielen tyyppijärjestelmää ja asettaa käännösaikaisia
+rajoitteita mallin parametreille, mikä mahdollistaa paremmat käännösaikaiset
+tarkistukset ohjelmien oikeellisuudesta. Monet mallipohjaisen ohjelmoinnin
+käyttökohteista ovat suunnattu geneeristen funktioiden tai luokkien luomiseen
+eikä syntaksin muuttamiseen.
+
+Syntaksipuupohjaiset makrojärjestelmät käsittelevät ohjelmointikielten
+syntaksipuita. Syntaksipuiden käsittely pelkkien tekstialkioiden sijaan
+mahdollistaa uusien kontrollirakenteiden määrittämisen yksinkertaisesti ja
+turvallisesti. Puhtaassa syntaksipuiden käsittelyssä sekä syötteen että makron
+paluuarvon on oltava ohjelmointikielen syntaksin mukaisia, eli syntaksipuita
+käsittelevä makro ei voi käsitellä mitä tahansa syötettä.
+
+\hl{paluuarvon -> tuloksen ?}
+
+Monikäyttöisimmät makrojärjestelmät ovat proseduraalisia makrojärjestelmiä.
+Proseduraalisissa makrojärjestelmissä ohjelmoija voi käyttää samaa
+ohjelmointikieltä sekä tavalliseen ohjelmointiin että makrojen toteutukseen.
+Proseduraaliset makrojärjestelmät vaativat yleensä enemmän koodia makrojen
+toteutukseen verrattuna muihin makrojärjestelmiin, mutta toisaalta
+mahdollistavat kaiken, mitä ohjelmointikielellä voisi tehdä. Proseduraalinen
+makrojärjestelmä voisi esimerkiksi lukea tiedostoja käännösaikaisesti ja
+vaikuttaa lopulliseen lähdekoodiin tiedoston sisällöstä riippuen.
+
+Mikään makrojärjestelmä ei ole täydellinen, vaan jokaisessa makrojärjestelmässä
+on sekä hyviä että huonoja puolia. Kun makrojärjestelmän tehokkuutta
+kasvatetaan, sen käyttäminen muuttuu monimutkaisemmaksi.
+
+%\hl{Osa tästä seuraavaan lukuun?}
+%
+%C:n ja C++:n tekstin korvaamiseen perustuvassa makrojärjestelmissä korvataan
+%tekstialkioita ja funktion kaltaisia makroja uusilla sekvensseillä alkioita. Ei
+%rekursiota yleisessä tapauksessa, ei turing-täydellinen. Yksinkertainen
+%yksinkertaisissa tapauksissa.
+%
+%C++:n ja D:n mallipohjaisissa järjestelmissä ... C++ erittäin hidas kääntää.
+%Turing-täydellinen. D:n mallipohjainen ei turing-täydellinen.
+%
+%Rust syntaksipohjainen, ottaa tyypitettyjä ja pattern match. Oma DSL, joka
+%eroaa jonkin verran varsinaisesta kielestä.
+%
+%D ja Rust myös proseduraalinen (D: string mixin + ctfe), you can do everything!
+%
+%C:n ja C++:n esikäsittelijä on tekstialkioiden korvaamiseen perustuva
+%makroprosessori.
+%
+%C++:n ja D:n mallit mahdollistavat metaohjelmoinnin, tosin D vaatii kaikkien
+%parametrien olevan tyyppejä.
+%
+%Rustin makrojärjestelmä perustuu syntaksipuiden käsittelyyn.
+%Rustin makrojärjestelmä on käännösaikaisesti tyypitetty, ja sisältää tyypit
+%esimerkiksi tunnisteille ja lausekkeille.
+%
+%Rust sisältää syntaksipuupohjaisen makrojärjestelmän lisäksi kokeellisen
+%proseduraalisen makrojärjestelmän.
+%
+
+%\subsection{Vertailtavien kielten makrojärjestelmät}
+%
+%\hl{Tarkista kieli}
+
+%Ada, D ja Go eivät sisällä mahdollisuutta käännösaikaisille makroille. C ja C++
+%käyttävät samaa makrojärjestelmää, joka on kuitenkin hyvin
+%rajoittunut~(\citeauthor{CPP17}, \citeyear{CPP17}, luku~19; \citeauthor{C18},
+%\citeyear{C18}, luku~6.10).
+%
+%C:n ja C++:n makrot ajetaan ennen muuta koodin käsittelyä, eli makroja voi
+%sijoittaa mihin tahansa koodia., kun taas C:n ja C++:n ei\footnote{C:n ja
+%C++:n makrojärjestelmä ei ole edes primitiivirekursiivinen, sillä makrot eivät
+%voi sisältää itseään.}.

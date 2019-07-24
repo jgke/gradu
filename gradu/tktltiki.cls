@@ -5,17 +5,17 @@
 %% The original source files were:
 %%
 %% tktltiki.dtx  (with options: `luokka')
-%% 
+%%
 %% IMPORTANT NOTICE:
-%% 
+%%
 %% For the copyright see the source file.
-%% 
+%%
 %% Any modified versions of this file must be renamed
 %% with new filenames distinct from tktltiki.cls.
-%% 
+%%
 %% For distribution of the original source see the terms
 %% for copying and modification in the file tktltiki.dtx.
-%% 
+%%
 %% This generated file may be distributed as long as the
 %% original source files, as listed above, are part of the
 %% same distribution. (The sources need not necessarily be
@@ -110,7 +110,7 @@
     \if@swedish
       \RequirePackage[swedish]{babel}[2001/03/01 v3.7h The Babel package]
     \else
-      \RequirePackage[finnish]{babel}[2001/03/01 v3.7h The Babel package]
+      \RequirePackage[english,finnish]{babel}[2001/03/01 v3.7h The Babel package]
     \fi
   \fi
 \fi
@@ -158,6 +158,7 @@
 }
 \newcommand{\mytableofcontents}{%
   \tableofcontents
+  \thispagestyle{empty}
   \newpage
   \pagenumbering{arabic}
   \if@emptyfirstpagenumber
@@ -238,7 +239,7 @@
 
   \vspace*{70mm}
 
-  {\large\bf \@title}
+  {\large\bf \@title}\\
 
   \vspace{5mm}
 
@@ -318,11 +319,7 @@
 \put(58,  784){\makebox(100, 8)[l]{\abst@small\@faculty}}
 \put(289, 784){\makebox(100, 8)[l]{\abst@small\@department}}
 \put(58,  761){\makebox(100, 8)[l]{\abst@small\@author}}
-\ifdefined\formtitle
-\put(58,  732){\parbox[l]{450pt}{\renewcommand{\baselinestretch}{.9}\abst@small\formtitle}}
-\else
 \put(58,  732){\parbox[l]{450pt}{\renewcommand{\baselinestretch}{.9}\abst@small\@title}}
-\fi
 \put(58,  704){\makebox(100, 8)[l]{\abst@small\@subject}}
 \put(58,  681){\makebox(100, 8)[l]{\abst@small\@level}}
 \put(212, 681){\makebox(100, 8)[l]{\abst@small\@date}}

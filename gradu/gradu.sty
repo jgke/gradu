@@ -2,14 +2,20 @@
 
 \usepackage[utf8]{inputenc}
 \usepackage[T1]{fontenc}
+%\usepackage{fontspec}
+%\setmainfont{Comic Sans MS}
 \usepackage{lmodern}
-\usepackage{microtype}
+\usepackage[final]{microtype}
 \usepackage{amsfonts,amsmath,amssymb,amsthm,booktabs,color,enumitem,graphicx}
-\usepackage[pdftex,hidelinks]{hyperref}
+%\usepackage[pdftex,hidelinks]{hyperref}
+\usepackage[hidelinks]{hyperref}
+\usepackage{textcomp}
 \usepackage{bookmark}
 \usepackage{appendix}
 \usepackage[natbibapa,sectionbib]{apacite}
 \usepackage[finnish]{babel}
+\usepackage{calc}
+\usepackage{minted}
 \usepackage{hyperref}
 \usepackage{multirow}
 \usepackage{tikz}
@@ -19,51 +25,50 @@
 \usepackage{refcount}
 \usepackage{tocloft}
 \usepackage[nottoc]{tocbibind}
-\usepackage{xassoccnt}
+\usepackage{totcount}
+\usepackage{inconsolata}
+\usepackage[normalem]{ulem}
+\usepackage{footnote}
+\usepackage{adjustbox}
+\usepackage{hyphenat}
+\usepackage{relsize}
+\usepackage{data/gnuplot-lua-tikz}
+\usepackage{chngcntr}
+
+\makesavenoteenv{tabular}
+\makesavenoteenv{table}
+
+\renewcommand{\underline}[1]{\uline{#1}}
+
+\usepackage{soulutf8}
+\sethlcolor{yellow}
+%\renewcommand{\hl}[1]{}
+%\usepackage{showframe}
 
 %\usepackage[top=2em]{geometry}
 %\usepackage{showframe}
+
+%\usepackage[style=apa]{biblatex}
+%\DeclareLanguageMapping{finnish}{finnish-apa}
 
 \bibliographystyle{apacite}
 
 \newcommand{\citationneeded}{\textbf{[citation\_needed]}}
 
 \makeatletter
-\@ifundefined{@auxappendixtotalcount}{\gdef{\auxappendixtotalcount}{0}{}}
 \newcommand{\totalpagecount}{\pageref{mylastpage}}
-\newcommand{\totalappendixcount}{%
-    \@ifundefined{r@appendixbegin}{0}{%
-        \ifcsname @auxappendixtotalcount \endcsname
-            \csname @auxappendixtotalcount \endcsname
-        \else
-            ??%
-        \fi
-    }%
-}
+\newtotcounter{totalappendixcount}
 \numberofpagesinformation{%
     \@ifundefined{r@appendixbegin}{%
-    \totalpagecount\ sivua%
+        \totalpagecount\ sivua%
     }{%
-    \totalpagecount\ sivua + \totalappendixcount\ liitesivua%
+        \totalpagecount\ sivua + \total{totalappendixcount}\ %
+        \ifnum\totvalue{totalappendixcount}=1 liitesivu \else liitesivua \fi%
     }%
 }
-
-\makeatother
 
 
 \newcounter{appendixCount}
-\newcounter{appendixPageCount}
-
-\NewTotalDocumentCounter{totalrealpage}
-\NewDocumentCounter{realpage}
-
-\DeclareAssociatedCounters{page}{realpage,totalrealpage}
-\makeatletter
-\AtBeginDocument{%
-      \setcounter{realpage}{1}
-      }
-
-      \makeatother
 
 \newcommand{\appendixsection}[1]{
     \newpage
@@ -71,14 +76,17 @@
     \phantomsection
     \stepcounter{appendixCount}
     \section*{Liite \arabic{appendixCount}. #1}
-    \cftaddtitleline{toc}{section}{\arabic{appendixCount} #1}{}
+    \cftaddtitleline{toc}{section}{\numberline{\arabic{appendixCount}}#1}{}
 }
 
+\newcommand{\appendixlabel}[1]{%
+    \protected@write \@auxout {}{\string \newlabel {#1}{{\arabic{appendixCount}}{\thepage}{\arabic{appendixCount}}{#1}{}} }%
+    \hypertarget{#1}{}
+}
 
-\DeclareAssociatedCounters{page}{appendixPageCount}
-\makeatletter
-\AtBeginDocument{%
-\stepcounter{appendixPageCount}
+\newcommand{\inputappendix}[1]{%
+    \input{#1}
+    \addtocounter{totalappendixcount}{\thepage}
 }
 
 \newcommand{\appendixbeginhere}{
@@ -92,11 +100,37 @@
 }
 
 \newcommand{\tocbeginshere}{\label{tocbegin}}
-\newcommand{\appendixendhere}{%
-    \label{appendixend}%
-    \write\@auxout{%
-        \unexpanded{\global\@namedef{usevalue@#1}{#2}}%
-    }%
-}
+\newcommand{\appendixendhere}{\label{appendixend}}
 
-\newcommand{\hilight}[1]{\colorbox{yellow}{#1}}
+\setminted{frame=single}
+% emacs
+% xcode
+% paradiso-dark
+% rainbow_dash
+\usemintedstyle{emacs}
+
+\def\kielilexer{kieli_lexer.py:KieliLexer -x}
+\def\bnflexer{grammar_notation.py:AbnfLexer -x}
+
+\newcommand{\bnf}[3]{%
+    \inputminted[firstline=#1,lastline=#2]{\bnflexer}{#3}}
+
+\newcommand{\defword}[2][]{~(engl. \emph{\foreignlanguage{english}{#2}#1})}
+\newcommand{\defwordin}[2][]{~(engl. \emph{#2}#1)}
+
+\newcommand{\bnfdescription}{%
+    Tämä on hahmotelma kielen syntaksista ISO/IEC 14977
+    -standardin~\citep{iso14977} kuvaamassa Backus-Naur -muodossa, jossa ''\#''
+    aloittaa säännöllisen lausekkeen ja ''!'' aloittaa kielteisen
+    etukurkistuksen\defword{negative lookahead}}
+
+\linespread{1.1}
+%\linespread{1.25}
+
+\renewcommand\listingscaption{Ohjelma}
+\renewcommand{\_}{\relax\ifmmode_\else \textscale{0.7}{\textunderscore}\fi}
+\makeatother
+
+\counterwithin{figure}{section}
+\counterwithin{table}{section}
+\counterwithin{listing}{section}

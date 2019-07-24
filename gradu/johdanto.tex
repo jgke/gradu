@@ -1,39 +1,76 @@
-\section{Johdanto} 
+\section{Johdanto}
 
-C~\citep{C11} on ollut vallitseva ohjelmointikieli järjestelmäohjelmoinnissa C:n
-alkuajoista lähtien. Useita ohjelmointikieliä on luotu historian saatossa,
+\hl{Johdantoluku, jossa avataan tutkielman aihe eli C-ohjelmointikielen
+vertaaminen muihin ohjelmointikieliin sekä uuden ohjelmointikielen luominen
+tiettyjen kriteerien ohjaamana.}
+
+C~\citep{C18} on ollut vallitseva ohjelmointikieli järjestelmäohjelmoinnissa
+\subsection{Jatkotutkimuskohteet}
+
+C:n alkuajoista lähtien. Useita ohjelmointikieliä on luotu historian saatossa,
 joiden oli tarkoitus syrjäyttää C, mutta C on vieläkin johtavana kielenä
 varsinkin sulautetuissa järjestelmissä ja UNIX-pohjaisten käyttöjärjestelmien
 vallitsevana ohjelmointikielenä. C on myös käytössä
-Windows-käyttöjärjestelmäperheen ydinkomponenttien toteutuksessa. Tässä
-opinnäytetyössä tutkitaan, miksi vaihtoehdoista huolimatta C on vieläkin
-laajalti käytössä myös uusissa projekteissa ja minkälainen ohjelmointikieli
-voisi syrjäyttää C:n.
+Windows-käyttöjärjestelmäperheen ydinkomponenttien toteutuksessa.
 
-C:n vaihtoehdoiksi tutkitaan seuraavia tehokkaaseen ohjelmointiin tarkoitettuja kieliä: Ada~\citep{ADA12},
-C++~\citep{CPP14}, D~\citep{D}, Go~\citep{golang} sekä Rust~\citep{rust}.
-Näistä kielistä tutkitaan, mikä tai mitkä ominaisuudet ovat estäneet C:n
-korvaamisen ja mitkä ominaisuudet ovat olleet parannuksia C:hen verrattuna.
-Lisäksi tutkitaan muista suosituista ohjelmointikielistä ominaisuuksia, jotka
-ovat hyödyllisiä matalan tason ohjelmoinnissa ja jotka voi toteuttaa korvaavan
-kielen rajoitteissa.
+Tutkielmassa selvitetään C:n ominaisuuksia, joiden takia se on ollut
+suosituimpien ohjelmointikielten joukossa vuosikymmeniä, kuten myös
+ominaisuuksia, joita C:stä voisi kehittää. Vaihtoehtoisista kielistä
+selvitetään, mitkä ominaisuudet ovat voineet estää kielen käytön C:n sijaan
+uusissa ja olemassa olevissa projekteissa ja mitkä ominaisuudet ovat taas
+olleet parannuksia C:n ominaisuuksiin verrattuna. Tutkielmassa suunnitellaan
+näiden tulosten pohjalta uusi ohjelmointikieli.
+%Vertailussa tutkitaan erityisesti mahdollisuuksia olemassa olevien C-kielellä
+%kirjoitettujen ohjelmien jatkokehittämistä uudella kielellä ja uusien
+%projektien toteuttamista C:n sijaan uudella kielellä.
 
-Tutkittavana on myös, mitä optimointeja C:ssä ei voi tehdä helposti johtuen
-kielen rajoitteista ja miten tämän voisi korjata. Näitä ominaisuuksia ovat
-esimerkiksi sivuvaikutuksettoman ohjelmakoodin merkitseminen,
-optimointivinkkien alustariippumaton ilmaiseminen (esimerkiksi Rustin tavalla
-funktioiden annotointi) ja useat eri funktiot riippuen parametrien arvoista,
-mikäli ne voidaan kääntöaikaisesti päätellä.
+C:n vaihtoehdoiksi tutkitaan seuraavia tehokkaaseen ohjelmointiin tarkoitettuja
+kieliä: Ada~\citep{ADA12}, C++~\citep{CPP17}, D~\citep{D}, Go~\citep{golang}
+sekä Rust~\citep{rust}. Näistä kielistä tutkitaan, mikä tai mitkä ominaisuudet
+ovat estäneet C:n korvaamisen ja mitkä ominaisuudet ovat olleet parannuksia
+C:hen verrattuna. Lisäksi tutkitaan muista suosituista ohjelmointikielistä
+korkean tason ominaisuuksia, jotka ovat hyödyllisiä matalan tason
+ohjelmoinnissa ja jotka voi toteuttaa korvaavan kielen määrittelyssä luotujen
+rajoitusten puitteissa. Vertailun tuloksia käytetään uuden ohjelmointikielen
+suunnitteluun, jossa otetaan tavoitteeksi luoda C:tä parempi ohjelmointikieli
+tutkielman määrittelyjen puitteissa.
 
+%Tutkittavana on myös, mitä optimointeja C:ssä ei voi tehdä helposti johtuen
+%kielen rajoitteista ja miten tämän voisi korjata. Näitä ominaisuuksia ovat
+%esimerkiksi sivuvaikutuksettoman ohjelmakoodin merkitseminen,
+%optimointivinkkien kääntäjäriippumaton ilmaiseminen (esimerkiksi funktioiden
+%koristelulla\defword{function annotation}) ja funktioiden
+%yliajaminen\defword{function overloading} riippuen parametrien tyypistä tai
+%arvoista, mikäli ne voidaan kääntöaikaisesti päätellä. Koska C:n spesifikaatio
+%ei salli useaa samannimistä funktiota, funktioiden yliajaminen on haastavaa
+%toteuttaa alustariippumattomasti.
 
-Toisessa luvussa esitetään tutkielman kannalta oleellinen teoria, eli
-C-kielen historiaa ja nykypäivää, esitellään C:n hyviä ja huonoja puolia sekä
-kerrotaan lyhyesti muista tutkittavista kielistä.
-Toisessa luvussa myös määritellään, minkälaiset ominaisuudet tarvitaan
-kieleltä, joka voisi korvata C:n kokonaan.
-Kolmannessa luvussa kerrotaan, miksi muut tutkitut kielet eivät täytä näitä
-ominaisuuksia.
-Neljännessä luvussa kuvaillaan toisen luvun määrittämien  ominaisuuksien
-täyttävä ohjelmointikieli.
-Lopettavassa luvussa kerrataan tutkielman tavoitteet, vaiheet ja tulokset
-sekä pohditaan tutkielman puutteita ja jatkotutkimuskohteita.
+%Tämän tutkielmasuunnitelman toisessa luvussa määritellään seuraavat
+%ominaisuudet kielelle, joka voisi korvata C:n kokonaan:
+%
+%Vaihtoehtoinen kieli aina
+%\begin{itemize}[topsep=0pt,itemsep=0pt]
+%    \item on yhtä nopea tai nopeampi kuin C,
+%    \item käyttää saman verran muistia tai vähemmän kuin C,
+%    \item toimii kaikissa järjestelmissä, joissa C toimii,
+%    \item toimii saumattomasti C:n kanssa ja
+%    \item toimii saumattomasti muiden kielien C-rajapintojen kanssa.
+%\end{itemize}
+%Jotta jokin kieli olisi absoluuttisesti parempi, vähintään yhden näistä
+%kriteereistä tulee olla aidosti parempi.
+
+%Lisäksi kielistä tutkitaan muita suosioon vaikuttavia syitä, kuten
+%helppokäyttöisyyttä ja sosiaalisia aspekteja, kuten Googlen tarjoaman tuen
+%vaikutusta Go-kielen suosioon.%\hl{Vai tutkitaanko?}
+
+Tämän tutkimussuunnitelman toisessa luvussa esitetään tutkielman kannalta
+oleellinen teoria, eli määritetään tutkielman vertailussa käytetyt kielten
+ominaisuuksien vertailukohteet, pohditaan kielen suosioon vaikuttavia tekijöitä
+sekä kerrotaan lyhyesti muista tutkittavista kielistä. Kolmannessa luvussa
+kerrotaan, miksi muut tutkitut kielet eivät täytä näitä ominaisuuksia.
+Neljännessä luvussa kerrotaan, mitä ominaisuuksia uudesta ohjelmointikielestä
+voisi löytyä, joita ei löydy C:stä. Varsinaisessa tutkielmassa suunnitellaan
+näiden tulosten pohjalta uusi ohjelmointikieli, joka voisi tutkielman
+määritelmien mukaisesti korvata C:n käytön, ja verrataan tätä ohjelmointikieltä
+C:hen.
+
