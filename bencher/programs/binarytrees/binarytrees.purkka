@@ -18,13 +18,13 @@ struct TreeNode {
 // Create a binary tree of depth treeDepth in memoryPool and return a pointer
 // to the created binary tree.
 fun createTree(treeDepth: i64, memoryPool: &apr_pool_t) {
-    let rootNode = @"apr_pcalloc(memoryPool, sizeof(TreeNode))" as &TreeNode;
+    let rootNode: &TreeNode = apr_pcalloc(memoryPool, sizeof(TreeNode));
 
     // If treeDepth is one or more then recursively call createTree() in order
     // to create the left and right subtrees.
     if(treeDepth > 0) {
-        rootNode.left=createTree(treeDepth-1, memoryPool);
-        rootNode.right=createTree(treeDepth-1, memoryPool);
+        rootNode.left = createTree(treeDepth-1, memoryPool);
+        rootNode.right = createTree(treeDepth-1, memoryPool);
     }
 
     return rootNode;
@@ -33,7 +33,7 @@ fun createTree(treeDepth: i64, memoryPool: &apr_pool_t) {
 
 // Compute and return the checksum for the binary tree that has rootNode as the
 // root node.
-fun computeTreeChecksum(rootNode: &TreeNode) -> i64 {
+fun computeTreeChecksum(rootNode: &?TreeNode) -> i64 {
     // If there are subtrees then recursively call computeTreeChecksum() on
     // them and return 1 plus the checksum of those subtrees.
     if(rootNode.left && rootNode.right) {
@@ -60,7 +60,7 @@ fun main(argc: i32, argv) -> i32 {
     // Create a memoryPool which will be used for storing both the stretchTree
     // and the longLivedTree.
     let memoryPool: &apr_pool_t;
-    @"apr_pool_create_unmanaged(&memoryPool)";
+    apr_pool_create_unmanaged(&memoryPool);
 
     // Create a stretchTree of depth maximumTreeDepth+1, compute its
     // checksum, and print its statistics. This work could be done in parallel
@@ -117,19 +117,19 @@ fun main(argc: i32, argv) -> i32 {
         apr_pool_create_unmanaged(&threadMemoryPool);
 
         pragma "omp for nowait"
-        for(let treeDepth = minimumTreeDepth; treeDepth <= maximumTreeDepth; treeDepth += 2) {
-            // Create a bunch of binary trees of depth treeDepth, compute their
-            // checksums, and add the checksums to the totalTreesChecksum.
-            let totalTreesChecksum = 0;
-            for(let iterations = 1<<(maximumTreeDepth-treeDepth+minimumTreeDepth); iterations-- > 0;) {
-                apr_pool_clear(threadMemoryPool);
-                totalTreesChecksum += computeTreeChecksum(createTree(treeDepth, threadMemoryPool));
-            }
+            for(let treeDepth = minimumTreeDepth; treeDepth <= maximumTreeDepth; treeDepth += 2) {
+                // Create a bunch of binary trees of depth treeDepth, compute their
+                // checksums, and add the checksums to the totalTreesChecksum.
+                let totalTreesChecksum = 0;
+                for(let iterations = 1<<(maximumTreeDepth-treeDepth+minimumTreeDepth); iterations-- > 0;) {
+                    apr_pool_clear(threadMemoryPool);
+                    totalTreesChecksum += computeTreeChecksum(createTree(treeDepth, threadMemoryPool));
+                }
 
-            // Record the totalTreesChecksum for the trees of depth
-            // treeDepth.
-            treeChecksums[(treeDepth-minimumTreeDepth)/2] = totalTreesChecksum;
-        }
+                // Record the totalTreesChecksum for the trees of depth
+                // treeDepth.
+                treeChecksums[(treeDepth-minimumTreeDepth)/2] = totalTreesChecksum;
+            }
 
         apr_pool_destroy(threadMemoryPool);
     }

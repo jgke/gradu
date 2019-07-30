@@ -1,3 +1,4 @@
+#!/usr/bin/env python2
 # The Computer Language Benchmarks Game
 # $Id: bencher.py,v 1.3 2017/05/02 13:35:31 igouy-guest Exp $
 
