@@ -1,0 +1,294 @@
+// The Computer Language Benchmarks Game
+// https://salsa.debian.org/benchmarksgame-team/benchmarksgame/
+//
+// contributed by Jeremy Zerfas
+// rewritten by Аноним Легионов, inspired by fasta Rust #2 program
+// use two OpenMP locks instead of one critical section
+// decouples IO activity from random number generation
+
+
+// This controls the width of lines that are output by this program.
+let MAXIMUM_LINE_WIDTH: i32 = 60;
+
+// This program will generate the random nucleotide sequences in parallel which
+// are worked on in blocks of lines. The number of lines in those blocks is
+// controlled by this setting.
+let LINES_PER_BLOCK: i32 = 1024;
+
+let CHARACTERS_PER_BLOCK: i32 = (MAXIMUM_LINE_WIDTH*LINES_PER_BLOCK);
+
+let THREADS_TO_USE = 4;
+
+import "stdint.h"
+import "string.h"
+import "stdio.h"
+import "stdlib.h"
+
+import "omp.h"
+
+struct nucleotide_info {
+    letter: char,
+    probability: float
+}
+
+// Repeatedly print string_To_Repeat until it has printed
+// number_Of_Characters_To_Create. The output is also wrapped to
+// MAXIMUM_LINE_WIDTH columns.
+fun repeat_And_Wrap_String(string_To_Repeat: &char, number_Of_Characters_To_Create: i32)
+{
+    let string_To_Repeat_Length = strlen(string_To_Repeat) as i32;
+
+    // Create an extended_String_To_Repeat which is a copy of string_To_Repeat
+    // but extended with another copy of the first MAXIMUM_LINE_WIDTH characters
+    // of string_To_Repeat appended to the end. Later on this allows us to
+    // generate a line of output just by doing simple memory copies using an
+    // appropriate offset into extended_String_To_Repeat.
+    let extended_String_To_Repeat: [char;string_To_Repeat_Length+MAXIMUM_LINE_WIDTH];
+    for(let column=0; column<string_To_Repeat_Length+MAXIMUM_LINE_WIDTH; column++) {
+        extended_String_To_Repeat[column]= string_To_Repeat[column%string_To_Repeat_Length];
+    }
+    let offset=0;
+
+    let line: [char;MAXIMUM_LINE_WIDTH+1];
+    line[MAXIMUM_LINE_WIDTH]='\n';
+
+    for(let current_Number_Of_Characters_To_Create: i32 = number_Of_Characters_To_Create;
+        current_Number_Of_Characters_To_Create>0;)
+    {
+        // Figure out the length of the line we need to write. If it's less than
+        // MAXIMUM_LINE_WIDTH then we also need to add a line feed in the right
+        // spot too.
+        let line_Length = MAXIMUM_LINE_WIDTH;
+        if(current_Number_Of_Characters_To_Create<MAXIMUM_LINE_WIDTH) {
+            line_Length=current_Number_Of_Characters_To_Create;
+            line[line_Length]='\n';
+        }
+
+        memcpy(line, extended_String_To_Repeat+offset, line_Length as u64);
+
+        // Update the offset, reducing it by string_To_Repeat_Length if
+        // necessary.
+        offset+=line_Length;
+        if(offset>string_To_Repeat_Length) {
+            offset-=string_To_Repeat_Length;
+        }
+
+        // Output the line to stdout and update the
+        // current_Number_Of_Characters_To_Create.
+        fwrite(line, (line_Length+1) as u64, 1, stdout);
+        current_Number_Of_Characters_To_Create-=line_Length;
+    }
+}
+
+
+// Generate a pseudorandom number from 0 to max using a linear
+// congruential generator.
+let IM = 139968;
+let IA = 3877;
+let IC = 29573;
+let seed: u32 = 42;
+
+let rng_tid; //Thread ID
+let rng_tnum = 1; //Thread number
+let rng_cnt = 0;
+
+let rng_lock: omp_lock_t;
+fun RNG_LOCK_INIT() => omp_init_lock(&rng_lock);
+fun RNG_LOCK() => omp_set_lock(&rng_lock);
+fun RNG_FREE() => omp_unset_lock(&rng_lock);
+
+fun rng_init() {
+    RNG_LOCK_INIT();
+    rng_tid = 0;
+}
+
+fun rng_gen_blk(buf: [u64], len: i32, curr_tid: i32) -> i32 {
+    let gen_cnt: i32 = -1;//Error by default
+    RNG_LOCK();
+
+    if( rng_tid == curr_tid )
+    {
+        if( ++rng_tid >= rng_tnum )
+        {
+            rng_tid = 0;
+        }
+
+        gen_cnt = (len<rng_cnt)?len:rng_cnt;
+        rng_cnt -= gen_cnt;
+
+        len = gen_cnt;
+
+        while( 0 != len-- )
+        {
+            seed=(seed*IA + IC)%IM;
+            *buf = seed;//This is stupid actually!
+            buf = buf + 1;
+        }
+    }
+
+    RNG_FREE();
+    return gen_cnt;
+}
+
+let out_tid; //Thread ID
+let out_tnum = 1; //Thread number
+let out_lock: omp_lock_t;
+fun OUT_LOCK_INIT() => omp_init_lock(&out_lock);
+fun OUT_LOCK() => omp_set_lock(&out_lock);
+fun OUT_FREE() => omp_unset_lock(&out_lock);
+
+fun out_init() {
+    OUT_LOCK_INIT();
+    rng_tid = 0;
+}
+
+fun out_write(buf: [char], len: u64, curr_tid: i32) {
+    let wr_cnt: i32 = -1;//Error by default
+    OUT_LOCK();
+
+    if( out_tid == curr_tid )
+    {
+        if( ++out_tid >= out_tnum )
+        {
+            out_tid = 0;
+        }
+        wr_cnt = fwrite(buf, len, 1, stdout) as i32;
+    }
+
+    OUT_FREE();
+    return wr_cnt; //-1 - thread error, 0 - IO error, 1 - ОК
+}
+
+fun generate_And_Wrap_Pseudorandom_DNA_Sequence(nucl_info: [nucleotide_info], nucl_num: u32, char_num: i32) {
+    let cumul_p: [u64;nucl_num];
+    let cumul_acc: float = 0.0;
+
+    for(let i=0; i<nucl_num; i++) {
+        cumul_acc+=nucl_info[i].probability;
+        cumul_p[i]= 1 + (cumul_acc * IM as float) as u64; //Compensate rounding errors on test file
+    }
+
+    let tnum = omp_get_num_procs();
+    if(tnum>THREADS_TO_USE) {
+        tnum=THREADS_TO_USE;
+    }
+    omp_set_num_threads(tnum);
+    rng_tnum = tnum;
+    out_tnum = tnum;
+
+    rng_tid = 0;
+    out_tid = 0;
+    rng_cnt = char_num;
+
+    pragma "omp parallel"
+    {
+        let block: [char;CHARACTERS_PER_BLOCK+LINES_PER_BLOCK];
+        let line: &char;
+        let rnd: [u64; CHARACTERS_PER_BLOCK];
+        let r: u64;
+        let cnt: i32;
+        let col;
+        let prid;
+        let nid;
+        let ncnt;
+        let cur_tid: i32;
+        cur_tid = omp_get_thread_num();
+        while(1) {
+            do {
+                cnt = rng_gen_blk(rnd, CHARACTERS_PER_BLOCK, cur_tid);
+            }
+            while( -1 == cnt );
+
+            if( 0 == cnt ) {
+                break;//Work finished!
+            }
+
+            line = block;
+
+            for({col = 0; prid = 0;}; prid < cnt; prid++ ) {
+                r = rnd[prid];
+
+                ncnt = 0;
+                for( nid = 0; nid < nucl_num; nid++ )
+                {
+                    if(cumul_p[nid]<=r)
+                    {
+                        ncnt++;
+                    }
+                }
+
+                *line = nucl_info[ncnt].letter;
+                line = line + 1;
+                if( ++col >= MAXIMUM_LINE_WIDTH )
+                {
+                    col = 0;
+                    *line = '\n';
+                    line = line + 1;
+                }
+            }
+            //Check if we need to end the line
+            if( 0 != col )
+            {
+                //Last iteration didn't end the line, so finish the job.
+                *line = '\n';
+                line = line + 1;
+            }
+            //Print results
+            do
+            {
+                cnt = out_write(block, (line - block) as u64, cur_tid);
+            }
+            while( -1 == cnt );
+            //Check  fot IO error
+            if( 0  == cnt )
+            {
+                exit(1);
+            }
+        }
+    }
+}
+
+fun main(argc: i32, argv: [[char]]) {
+    let n = atoi(argv[1]);
+
+    fputs(">ONE Homo sapiens alu\n", stdout);
+    let homo_Sapiens_Alu=
+        "GGCCGGGCGCGGTGGCTCACGCCTGTAATCCCAGCACTTTGGGAGGCCGAGGCGGGCGGATCACCTGAGGTCAGGAGTTCGAGACCAGCCTGGCCAACATGGTGAAACCCCGTCTCTACTAAAAATACAAAAATTAGCCGGGCGTGGTGGCGCGCGCCTGTAATCCCAGCTACTCGGGAGGCTGAGGCAGGAGAATCGCTTGAACCCGGGAGGCGGAGGTTGCAGTGAGCCGAGATCGCGCCACTGCACTCCAGCCTGGGCGACAGAGCGAGACTCCGTCTCAAAAA";
+    repeat_And_Wrap_String(homo_Sapiens_Alu, 2*n);
+
+    rng_init();
+    out_init();
+
+    fputs(">TWO IUB ambiguity codes\n", stdout);
+    let iub_Nucleotides_Information: [nucleotide_info] = [
+        nucleotide_info {'a', 0.27, },
+        nucleotide_info {'c', 0.12, },
+        nucleotide_info {'g', 0.12, },
+        nucleotide_info {'t', 0.27, },
+        nucleotide_info {'B', 0.02, },
+        nucleotide_info {'D', 0.02, },
+        nucleotide_info {'H', 0.02, },
+        nucleotide_info {'K', 0.02, },
+        nucleotide_info {'M', 0.02, },
+        nucleotide_info {'N', 0.02, },
+        nucleotide_info {'R', 0.02, },
+        nucleotide_info {'S', 0.02, },
+        nucleotide_info {'V', 0.02, },
+        nucleotide_info {'W', 0.02, },
+        nucleotide_info {'Y', 0.02, }
+    ];
+    generate_And_Wrap_Pseudorandom_DNA_Sequence(iub_Nucleotides_Information,
+                                                sizeof(iub_Nucleotides_Information)/sizeof(nucleotide_info), 3*n);
+
+    fputs(">THREE Homo sapiens frequency\n", stdout);
+    let homo_Sapien_Nucleotides_Information = [
+        nucleotide_info {'a', 0.3029549426680, },
+        nucleotide_info {'c', 0.1979883004921, },
+        nucleotide_info {'g', 0.1975473066391, },
+        nucleotide_info {'t', 0.3015094502008, }
+    ];
+    generate_And_Wrap_Pseudorandom_DNA_Sequence(homo_Sapien_Nucleotides_Information,
+                                                sizeof(homo_Sapien_Nucleotides_Information)/sizeof(nucleotide_info), 5*n);
+
+    return 0;
+}

@@ -697,6 +697,7 @@ def sizeCompressedSourceCode(p):
          s = re.sub('&lt;', '<', s)
          s = re.sub('&gt;', '>', s)
          s = re.sub('&#64;', '@', s)
+         #print(s)
    except (OSError,IOError), err:
       if logger: logger.error(err)
 
