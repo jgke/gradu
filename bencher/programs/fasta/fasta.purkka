@@ -8,16 +8,16 @@
 
 
 // This controls the width of lines that are output by this program.
-let MAXIMUM_LINE_WIDTH: i32 = 60;
+const MAXIMUM_LINE_WIDTH: i32 = 60;
 
 // This program will generate the random nucleotide sequences in parallel which
 // are worked on in blocks of lines. The number of lines in those blocks is
 // controlled by this setting.
-let LINES_PER_BLOCK: i32 = 1024;
+const LINES_PER_BLOCK: i32 = 1024;
 
-let CHARACTERS_PER_BLOCK: i32 = (MAXIMUM_LINE_WIDTH*LINES_PER_BLOCK);
+const CHARACTERS_PER_BLOCK: i32 = (MAXIMUM_LINE_WIDTH*LINES_PER_BLOCK);
 
-let THREADS_TO_USE = 4;
+const THREADS_TO_USE = 4;
 
 import "stdint.h"
 import "string.h"
@@ -34,7 +34,7 @@ struct nucleotide_info {
 // Repeatedly print string_To_Repeat until it has printed
 // number_Of_Characters_To_Create. The output is also wrapped to
 // MAXIMUM_LINE_WIDTH columns.
-fun repeat_And_Wrap_String(string_To_Repeat: &char, number_Of_Characters_To_Create: i32)
+fun repeat_And_Wrap_String(string_To_Repeat: [char], number_Of_Characters_To_Create: i32)
 {
     let string_To_Repeat_Length = strlen(string_To_Repeat) as i32;
 
@@ -83,9 +83,9 @@ fun repeat_And_Wrap_String(string_To_Repeat: &char, number_Of_Characters_To_Crea
 
 // Generate a pseudorandom number from 0 to max using a linear
 // congruential generator.
-let IM = 139968;
-let IA = 3877;
-let IC = 29573;
+const IM = 139968;
+const IA = 3877;
+const IC = 29573;
 let seed: u32 = 42;
 
 let rng_tid; //Thread ID
@@ -93,16 +93,16 @@ let rng_tnum = 1; //Thread number
 let rng_cnt = 0;
 
 let rng_lock: omp_lock_t;
-fun RNG_LOCK_INIT() => omp_init_lock(&rng_lock);
-fun RNG_LOCK() => omp_set_lock(&rng_lock);
-fun RNG_FREE() => omp_unset_lock(&rng_lock);
+fun inline RNG_LOCK_INIT() => omp_init_lock(&rng_lock);
+fun inline RNG_LOCK() => omp_set_lock(&rng_lock);
+fun inline RNG_FREE() => omp_unset_lock(&rng_lock);
 
-fun rng_init() {
+fun inline rng_init() {
     RNG_LOCK_INIT();
     rng_tid = 0;
 }
 
-fun rng_gen_blk(buf: [u64], len: i32, curr_tid: i32) -> i32 {
+fun rng_gen_blk(buf: [u32], len: i32, curr_tid: i32) -> i32 {
     let gen_cnt: i32 = -1;//Error by default
     RNG_LOCK();
 
@@ -160,7 +160,7 @@ fun out_write(buf: [char], len: u64, curr_tid: i32) {
 }
 
 fun generate_And_Wrap_Pseudorandom_DNA_Sequence(nucl_info: [nucleotide_info], nucl_num: u32, char_num: i32) {
-    let cumul_p: [u64;nucl_num];
+    let cumul_p: [u32;nucl_num];
     let cumul_acc: float = 0.0;
 
     for(let i=0; i<nucl_num; i++) {
@@ -184,8 +184,8 @@ fun generate_And_Wrap_Pseudorandom_DNA_Sequence(nucl_info: [nucleotide_info], nu
     {
         let block: [char;CHARACTERS_PER_BLOCK+LINES_PER_BLOCK];
         let line: &char;
-        let rnd: [u64; CHARACTERS_PER_BLOCK];
-        let r: u64;
+        let rnd: [u32; CHARACTERS_PER_BLOCK];
+        let r: u32;
         let cnt: i32;
         let col;
         let prid;
@@ -248,11 +248,11 @@ fun generate_And_Wrap_Pseudorandom_DNA_Sequence(nucl_info: [nucleotide_info], nu
     }
 }
 
-fun main(argc: i32, argv: [[char]]) {
+pub fun main(argc: i32, argv: [[char]]) {
     let n = atoi(argv[1]);
 
     fputs(">ONE Homo sapiens alu\n", stdout);
-    let homo_Sapiens_Alu=
+    let homo_Sapiens_Alu: &char =
         "GGCCGGGCGCGGTGGCTCACGCCTGTAATCCCAGCACTTTGGGAGGCCGAGGCGGGCGGATCACCTGAGGTCAGGAGTTCGAGACCAGCCTGGCCAACATGGTGAAACCCCGTCTCTACTAAAAATACAAAAATTAGCCGGGCGTGGTGGCGCGCGCCTGTAATCCCAGCTACTCGGGAGGCTGAGGCAGGAGAATCGCTTGAACCCGGGAGGCGGAGGTTGCAGTGAGCCGAGATCGCGCCACTGCACTCCAGCCTGGGCGACAGAGCGAGACTCCGTCTCAAAAA";
     repeat_And_Wrap_String(homo_Sapiens_Alu, 2*n);
 

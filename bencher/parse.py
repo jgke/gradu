@@ -51,10 +51,12 @@ for benchmark in data:
         for language in languages:
             this = data[benchmark][language]
             biggest_n = max(this.keys())
-            row = this[biggest_n][0]
-            print("{}: time taken {}s, memory usage {} kB, file size {} B".format(benchmark, row["elapsed(s)"], row["mem(KB)"], row["size(B)"]))
-            for ty in ["elapsed(s)", "mem(KB)", "size(B)"]:
-                reference = float(gcc[ty][benchmark])
-                current = float(row[ty])
-                print("  {}: Compared to GCC: {:.2f}% (lower is better)".format(ty, 100+100*(current-reference)/reference))
+            for row in this[biggest_n]:
+                print("{}-{} {}: time taken {}s, memory usage {} kB, file size {} B".format(
+                    row["lang"], row["id"],
+                    benchmark, row["elapsed(s)"], row["mem(KB)"], row["size(B)"]))
+                for ty in ["elapsed(s)", "mem(KB)", "size(B)"]:
+                    reference = float(gcc[ty][benchmark])
+                    current = float(row[ty])
+                    print("  {}: Compared to GCC: {:.2f}% (lower is better)".format(ty, 100+100*(current-reference)/reference))
             print("\n")
