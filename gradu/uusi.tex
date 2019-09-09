@@ -1,7 +1,141 @@
-\section{Uuden ohjelmointikielen määrittäminen}
+\section{Purkka-ohjelmointikieli}
 
 \hl{Tässä luvussa määritetään uusi ohjelmointikieli toisen ja kolmannen luvun
 tulosten ohjaamana.}
+
+\subsection{Kääntäminen}
+
+\hl{Koska kieli ymmärtää C:tä ja Purkkaa, ja muuntaa näiden välillä,
+käännösprosessi on monimutkainen. Kuvassa} \ref{fig:compilerarch} \hl{näytetään
+mahdollisimman epäselkeästi arkkitehtuuri.}
+
+prk -> C:
+\begin{enumerate}
+    \item Lataa tiedoston sisältö
+    \item Tokenisoi
+    \item Parsi
+        \begin{itemize}
+            \item Jos parsimisessa tulee C-makro, niin
+                \begin{enumerate}
+                    \item preprocessor
+                    \item cparser
+                    \item purkkaconverter::c->purkka
+                \end{enumerate}
+            \item Jos parsimisessa tulee C import, niin
+                \begin{enumerate}
+                    \item purkkaconverter::c->purkka
+                \end{enumerate}
+        \end{itemize}
+    \item AST-muunnokset
+        \begin{itemize}
+            \item operaattorit
+            \item tyyppi-inferenssi
+            \item const-exprit
+            \item lambdat funktioiksi
+        \end{itemize}
+    \item muunna C:ksi
+    \item formatoi
+\end{enumerate}
+
+\tikzset{
+    desicion/.style={
+        diamond,
+        draw,
+        text width=3em,
+        text badly centered,
+        inner sep=0pt
+    },
+    block/.style={
+        rectangle,
+        draw,
+        text width=10em,
+        text centered,
+        rounded corners
+    },
+    cloud/.style={
+        draw,
+        ellipse,
+        minimum height=2em
+    },
+    descr/.style={
+        fill=white,
+        inner sep=2.5pt
+    },
+    connector/.style={
+        -latex,
+        font=\scriptsize
+    },
+    rectangle connector/.style={
+        connector,
+        to path={(\tikztostart) -- ++(#1,0pt) \tikztonodes |- (\tikztotarget) },
+        pos=0.5
+    },
+    rectangle connector/.default=-2cm,
+    straight connector/.style={
+        connector,
+        to path=--(\tikztotarget) \tikztonodes
+    }
+}
+
+\begin{figure}[ht!]
+        \footnotesize
+        \begin{adjustbox}{center}
+        \begin{tikzpicture}[-{Latex[length=2mm,width=3mm]},auto, main node/.style={draw,fill=white},align=center]
+            \tikzstyle{ann} = [text width=4cm]
+            \tikzset{
+                -|/.style={to path={-| (\tikztotarget)}},
+                |-/.style={to path={|- (\tikztotarget)}},
+            }
+
+            \node[main node,text width=3cm,fill=black!10] (core) {Tiedosto syötetään kääntäjälle};
+
+            \node[main node,text width=3.3cm] (purkkaparser) [right = of core] {Purkka-jäsentäjä};
+
+            \node[main node] (cpurkka) [right = of purkkaparser,text width=3.5cm] {Muuntaja C-syntaksipuusta Purkka-syntaksipuuksi};
+            \node[main node] (coremacro) [above = of cpurkka,text width=3.5cm] {Purkka-lausekkeet muunnetaan C-lausekkeiksi};
+            \node[main node,text width=3.5cm] (purkkac) [below = of cpurkka] {Muuntaja Purkka-syntaksipuusta C-syntaksipuuksi};
+            \coordinate[above left = of coremacro] (phantom);
+
+            \node[draw = none] (phantom1) [above = of coremacro, text width=3.5cm] {};
+            \node[draw = none] (phantom3) [left = of phantom1, text width=3.3cm] {};
+            \node[draw = none] (phantom2) [right = of phantom1, text width=2.3cm] {};
+
+            \node[main node] (preprocessor) [right = of coremacro,text width=2.3cm] {C-esikäsittelijä};
+            \node[main node] (cparser) [right = of cpurkka,text width=2.3cm] {C-jäsentäjä};
+
+            \node[main node,text width=3.3cm] (cformat) [left = of purkkac] {C-AST-puun muuntaminen lähdekoodiksi};
+            \node[main node,fill=black!10] (done) [left = of cformat] {Tiedosto on käännetty};
+
+            \coordinate (phantom4) at ($(purkkaparser)!0.5!(purkkac)$);
+
+            \draw (purkkaparser.130) |- node[ann,above right = 0cm and -1.3cm] {Purkka-koodi kutsuu C-makroa} (coremacro);
+            \draw (purkkaparser.170) |- (phantom) node[ann,above left = 0cm and -0.5cm] {Purkka-koodi sisällyttää C-tiedoston} -| (preprocessor); 
+            \draw (purkkaparser) |- (phantom4) -| (purkkac);
+
+            \path[every node/.style={font=\sffamily\small},-{Latex[length=2mm,width=3mm]}]
+            (core) edge (purkkaparser)
+            (coremacro) edge (preprocessor)
+            (preprocessor) edge (cparser)
+            (cparser) edge (cpurkka)
+            (cpurkka) edge (purkkaparser)
+            (purkkac) edge (cformat)
+            (cformat) edge (done)
+            ;
+
+            \draw node[above = of phantom1] {\textbf{AST-muuntaja}};
+            \draw node[above = of phantom2] {\textbf{C-kääntäjä}};
+            \draw node[above = of phantom3] {\textbf{Purkka-kääntäjä}};
+            \begin{scope}[on background layer]
+                \draw[thick,dotted,fill=black!5] ($(phantom1.north west)+(-0.3,2)$)  rectangle ($(purkkac.south east)+(0.3,-0.4)$);
+                \draw[thick,dotted,fill=black!5] ($(phantom2.north west)+(-0.3,2)$)  rectangle ($(cparser.south east)+(0.3,-0.4)$);
+                \draw[thick,dotted,fill=black!5] ($(phantom3.north west)+(-0.3,2)$)  rectangle ($(purkkaparser.south east)+(0.3,-0.4)$);
+            \end{scope}
+        \end{tikzpicture}
+        \end{adjustbox}
+
+        \caption{Graafi kääntämisprosessin hienouksista}
+        \label{fig:compilerarch}
+\end{figure}
 
 \subsection{Tyypit}
 
@@ -12,6 +146,11 @@ tietorakenteita sekä summatyyppejä. Näistä geneeriset tietorakenteet ovat
 luultavasti liian monimutkainen asia sisällytettäväksi yksinkertaisena
 pidettävään kieleen johtuen niiden vaatimasta geneerisestä ohjelmoinnista.
 Esimerkiksi summatyypit taas voidaan toteuttaa helposti myös C:llä.}
+
+Primitiivit: void, utf8-chars, i1..x, u1..x, pääsy alustan C-tyyppeihin
+
+Pointer: null/not-null
+
 
 \subsection{Syntaksi}
 
