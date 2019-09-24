@@ -1,0 +1,279 @@
+// The Computer Language Benchmarks Game
+// https://salsa.debian.org/benchmarksgame-team/benchmarksgame/
+//
+// Contributed by Sławomir Madej
+// Added more threads
+
+@"#define _GNU_SOURCE";
+import "sched.h"
+import "stdio.h"
+import "stdlib.h"
+import "ctype.h"
+import "unistd.h"
+import "pthread.h"
+import "string.h"
+import "sys/stat.h"
+
+let pairs = "ATCGGCTAUAMKRYWWSSYRKMVBHDDHBVNN\n\n";
+let tbl: [char;128];
+
+const MAX_THREADS = 16;
+const WORKING_THREADS = 8;
+const WORKING_THREADS_IN = (WORKING_THREADS - 1);
+
+struct thread_data_t {
+   from: &char,
+   to: &char,
+   marker: [&char;16],
+   markers: i32,
+   off: size_t
+}
+
+fun set_offset(data: &void) -> &void {
+   let td: &thread_data_t = data;
+   let from = td.from; 
+   let to = td.to;
+   let off = td.off;
+
+   for (let m = from + 60 - off; m < to; m += 61) {
+      memmove(m + 1, m, off);
+      *m = '\n';
+   }
+
+   return NULL;
+}
+
+fun set_rc(data: &void) -> &void {
+   let td: &thread_data_t = data;
+   let from = td.from;
+   let to = td.to;
+
+   let i;
+   for ({to--; i = td.off;}; i; {from++; to--; i--;}) {
+       let c = tbl[(*from) as i32];
+       *from = tbl[(*to) as i32];
+       *to = c;
+   }
+
+   return NULL;
+}
+
+fun process(data: &void) -> &void {
+   let td: &thread_data_t = data;
+   let from = td.from;
+   let to = td.to;
+
+   from = memchr(from, '\n', to - from);
+   from++;
+
+   let len = to - from;
+   let off = 60 - (len % 61);
+   let lines = len / 61;
+   let part = (len / ((WORKING_THREADS_IN + 1) * 2));
+
+   let thread: [pthread_t;WORKING_THREADS_IN];
+   let tdata: [thread_data_t;WORKING_THREADS_IN + 1];
+   let t = WORKING_THREADS_IN;
+   let i;
+
+   if (off) {
+      tdata[0].from = from;
+      tdata[0].to = from + lines / (t + 1) * 61;
+      tdata[0].off = off;
+
+      for(i = 1; i < t; i++) {
+         tdata[i].from = tdata[i-1].to;
+         tdata[i].to = from + lines / (t + 1) * 61 * (i + 1);
+         tdata[i].off = off;
+      }
+      tdata[t].from = tdata[t-1].to;
+      tdata[t].to = to;
+      tdata[t].off = off;
+
+      i = t;
+      while(i--) {
+         pthread_create(&thread[i], NULL, set_offset, &tdata[i]);
+      }
+      
+      set_offset(&tdata[t]);
+
+      i = t;
+      while(i--) {
+         pthread_join(thread[i], NULL);
+      }
+   }
+
+   tdata[0].from = from;
+   tdata[0].to = to;
+   tdata[0].off = part;
+
+   for(i = 1; i < t; i++) {
+      tdata[i].from = tdata[i-1].from + part;
+      tdata[i].to = tdata[i-1].to - part;
+      tdata[i].off = part;
+   }
+
+   from = tdata[t-1].from + part;
+   to = tdata[t-1].to - part;
+
+   i = t;
+   while (i--) {
+      pthread_create(&thread[i], NULL, set_rc, &tdata[i]);
+   }
+
+   let c;
+   for (to--; from <= to; {from++; to--;}) {
+      c = tbl[(*from) as i32];
+      *from = tbl[(*to) as i32];
+      *to = c;
+   }
+
+   i = t;
+   while (i--) {
+      pthread_join(thread[i], NULL);
+   }
+
+   return 0;
+}
+
+fun get_markers(data: &void) -> &void {
+   let td: &thread_data_t = data;
+   let from = td.from;
+   let to = td.to;
+   let marker = 0;
+
+   while (1) {
+      from = memrchr(from, '>', to - from);
+
+      if (!from) {
+         break;
+      }
+
+      td.marker[marker] = from;
+      marker++;
+
+      to = from;
+      from = td.from;
+   }
+
+   td.markers = marker;
+
+   return NULL;
+}
+
+fun qs(a: &void, b: &void) {
+   a = *a as &&char;
+   b = *b as &&char;
+
+   if (a < b) {
+       return 1;
+   }
+   if (a > b) {
+       return -1;
+   }
+
+   return 0;
+}
+
+pub fun main() {
+   let s: &char;
+   for (s = pairs; *s; s += 2) {
+      tbl[toupper(s[0])] = s[1];
+      tbl[tolower(s[0])] = s[1];
+   }
+
+   let in = fileno(stdin);
+
+   let st;
+   fstat(in, &st);
+   let size = st.st_size;
+   let buf: &char = malloc(size + 1);
+   buf[size] = '>';
+
+   read(in, buf, size);
+
+   let from = buf;
+   let to = buf + size - 1;
+
+   let thread: [pthread_t;MAX_THREADS];
+   let tdata: [thread_data_t;MAX_THREADS];
+   let t = 0;
+   let round = 0;
+   let markersno = 0;
+   let markers: [&char;32];
+   let i;
+
+   t = WORKING_THREADS;
+
+   let part = size / t;
+
+   tdata[0].from = from;
+   tdata[0].to = to - part * (t - 1);
+   for (i = 1; i < t; i++) {
+      tdata[i].from = tdata[i-1].to;
+      tdata[i].to = to - part * (t - i - 1);
+   }
+
+   i = t;
+   while(i--) {
+      pthread_create(&thread[i], NULL, get_markers, &tdata[i]);
+   }
+
+   i = t;
+   while(i--) {
+      pthread_join(thread[i], NULL);
+   }
+
+   while(t--) {
+      i = tdata[t].markers;
+      while (i--) {
+         markers[markersno + i] = tdata[t].marker[i];
+      }
+      markersno += tdata[t].markers;
+   }
+
+   markers[markersno] = to + 1;
+
+   qsort(markers, markersno, sizeof(&char), qs);
+
+   t = 0;
+   to = buf + size - 1;
+
+   while (1) {
+      from = markers[t];
+      to = markers[(t ? t - 1 : markersno)] - 1;
+
+      if (t == MAX_THREADS) {
+         round = 1;
+         t = 0;
+      }
+
+      if (round) {
+         pthread_join(thread[t], 0);   
+      }
+
+      tdata[t].from = from;
+      tdata[t].to = to;
+
+      pthread_create(&thread[t], NULL, process, &tdata[t]);
+      t++;
+
+      to = from - 1;
+      if (to < buf) {
+          break;
+      }
+   }
+
+   if (round) {
+      t = MAX_THREADS;
+   }
+
+   while (t--) {
+      pthread_join(thread[t], NULL);
+   }
+
+   write(fileno(stdout), buf, size);
+   free(buf);
+
+   return 0;
+}
