@@ -1,87 +1,137 @@
 \section{Purkka-ohjelmointikieli}
 
-\hl{Tässä luvussa määritetään uusi ohjelmointikieli toisen ja kolmannen luvun
-tulosten ohjaamana.}
+Tässä luvussa määritellään Purkka-ohjelmointikieli.
 
-\subsection{Kääntäminen}
+\subsection{Tyypit}
+
+Jotta yhteensopivuus C:n kanssa olisi joustavaa, Purkan tyyppijärjestelmä
+muodostetaan mahdollisimman paljon C:n kaltaiseksi. C:n tyyppisyntaksi sisältää
+useita erilaisia tapoja ilmaista samaa pohjatyyppiä -- esimerkisi
+\texttt{long}, \texttt{signed~long}, \texttt{long~int} ja
+\texttt{signed~long~int} ilmaisevat kokonaislukutyyppiä, joka pystyy
+sisältämään ainakin luvut $[-(2^{31} - 1), 2^{31}-1]$.\citationneeded Nämä
+tyypit ovat kuitenkin standardien mukaisessa C:ssä keskenään täysin
+vaihdettavissa, eli kielen ei tarvitse pystyä kääntymään jokaiseen mahdolliseen
+vaihtoehtoon.
+
+Määritetään Purkkaan seuraavat alkeistyypit: \\[0.3cm]
+\begin{tabular}{@{}lp{10cm}@{}} \toprule
+    Purkka-tyyppi & Purkka-tyyppiä vastaava C-tyyppi \\ \midrule
+    \texttt{void} & \texttt{void} \\
+    \texttt{char} & \texttt{char} \\
+    \texttt{i8, i16, i32, i64} & \texttt{signed char}, \texttt{short}, \texttt{int}, \texttt{long}, \texttt{long long} \\
+    \texttt{u8, u16, u32, u64} & \texttt{unsigned char}, \texttt{unsigned short}, \texttt{unsigned int}, \texttt{unsigned long}, \texttt{unsigned long long} \\
+    \bottomrule
+\end{tabular} \\
+
+Määritetään näiden alkeistyyppien pohjalta osoitintyypit, taulukkotyypit sekä
+yhdistetyypit\defword{compound type}: \\[0.3cm]
+\begin{tabular}{@{}ll@{}} \toprule
+    Purkka-tyyppi & Purkka-tyyppiä vastaava C-tyyppi \\ \midrule
+    \texttt{\&T, \&?T} & \texttt{T *} \\[0.2cm]
+
+    \texttt{[T]} & \texttt{T\textsubscript{declaration specifiers}[]T\textsubscript{direct abstract declarator}} \\
+    \texttt{[T;expr]} & \texttt{T\textsubscript{declaration specifiers}[expr]T\textsubscript{direct abstract declarator}} \\[0.2cm]
+
+    \texttt{fun t: (T ..) -> R} & \texttt{R\textsubscript{declaration specifiers}~t(T ..)R\textsubscript{direct abstract declarator}} \\
+    \texttt{fun (T ..) -> R} & \texttt{R\textsubscript{declaration specifiers}~(*)(T ..)R\textsubscript{direct abstract declarator}} \\[0.2cm]
+
+    \texttt{struct \{ k: T ..\}} & \texttt{struct \{ T k ..\}} \\
+    \texttt{enum \{ A [= expr] ..\}} & \texttt{enum \{ A [= expr] ..\}} \\
+    \texttt{union \{ k: T ..\}} & \texttt{union \{ T k ..\}} \\[0.2cm]
+
+    \texttt{enum \{ T(T1 ..) .. \}} & \texttt{struct \{ union \{T1 t1 ..\} v; enum \{T ..\} e;\}} \\
+    \bottomrule
+\end{tabular} \\
+
+Koska kieli ei voi erota C:stä suoritusaikaisesti, tyypitys on hyvin lähellä
+C:n tyypitystä.
+
+Tyypit:
+ C + tagged union + non-nullable pointer
+
+kuinka tagged union käännetään C:ksi? Entä non-nullable ptr?
+
+tyyppi-inferenssi
+
+Mitä optimointeja non-null tarjoaa? Entä tagged union?
+
+\subsection{Syntaksi}
+
+Syntaksi:
+
+funktiot on fun, koska se tekee ohjelmoinnista hauskempaa
+
+deklaraatiot: tyyppi-inferenssi
+
+tyyppisyntaksi "käänteinen" C:hen verrattuna
+C:ssä suurin ongelma on declspec ennen nimeä, mutta directdecl nimen jäklkeem
+
+static:
+    funktiodeklaaratiossa/globaaleissa muuttujissa pub => ei static,
+    muuttujissa static => static
+
+expressiot:
+    yksinkertaistettu kielioppi operaattorijumppaan
+    Array literal != Struct literal
+    if/ym. ekspressioita
+        - miten muunnos?
+
+statementit:
+    suurin osa expr
+
+\subsection{Makrot}
+
+- C-yhteensopivuus tärkeää
+- C-yhteensopivuus toteutettu
+
+Konversio oma c
+- ei rekursiota
+- vain 1 käsi
+
+Oma:
+Rekursio + pattern match
+rajoitettu rekursiosyvyys
+
+...jos export härpäkkeeseen, rekursio?
+
+ei vielä implementoitu omaa
+
+\subsection{Suoritusaikaiset ominaisuudet ja laajennokset}
+
+Purkka ei sisällä yhtään suoritusaikaista ominaisuutta, joita ei ole C:ssä.
+Syntaksi kuitenkin sisältää \texttt{pragma}-avainsanan, jota voidaan käyttää
+vastaavasti kuin C:n esikäsittelijän pragmaa erilaisten laajennosten
+käyttämiseen. Esimerkiksi OpenMP-laajennosta käytetään pragmojen läpi.
+
+Useat C-toteutukset sisältävät erilaisia laajennoksia, joiden tarkoituksena on
+mahdollistaa eilaisten alustariippuvaisten ominaisuuksien käyttö. Benchmarks
+gamessa yksi käytetyimmistä laajennoksista on SIMD-tyypit, joita varten
+esimerkiksi GCC-kääntäjällä on oma syntaksinsa. GCC:llä SIMD-tyypit voidaan
+määritellä käyttäen \texttt{\_\_attribute\_\_(())} -\hl{määrettä}.
+Purkka-kääntäjä osaa tunnistaa useita GCC:n laajennoksia ja välittää ne
+eteenpäin.
+
+\hl{kuva tähän, jossa openmp ja simd + laajennettu muoto}
+
+Sulkeumien toteutus olettaa, että C-kääntäjä tukee sulkeumia.
+
+\subsection{Ohjelmointikielen kääntäminen}
+
+Suurin osa ominaisuuksista kääntyy suoraan vastaaviksi C-ominaisuuksiksi. Muutamat vaatii työtä,
+kuten inferenssi, block expr, lambdat. Inferenssialgo johonkin nurkkaan.
+
+Lambdat käännetään siten, että funktion body nostetaan ulos lambdan paikalta, ja korvataan funktio-osoittimella.
 
 \hl{Koska kieli ymmärtää C:tä ja Purkkaa, ja muuntaa näiden välillä,
 käännösprosessi on monimutkainen. Kuvassa} \ref{fig:compilerarch} \hl{näytetään
 mahdollisimman epäselkeästi arkkitehtuuri.}
 
-prk -> C:
-\begin{enumerate}
-    \item Lataa tiedoston sisältö
-    \item Tokenisoi
-    \item Parsi
-        \begin{itemize}
-            \item Jos parsimisessa tulee C-makro, niin
-                \begin{enumerate}
-                    \item preprocessor
-                    \item cparser
-                    \item purkkaconverter::c->purkka
-                \end{enumerate}
-            \item Jos parsimisessa tulee C import, niin
-                \begin{enumerate}
-                    \item purkkaconverter::c->purkka
-                \end{enumerate}
-        \end{itemize}
-    \item AST-muunnokset
-        \begin{itemize}
-            \item operaattorit
-            \item tyyppi-inferenssi
-            \item const-exprit
-            \item lambdat funktioiksi
-        \end{itemize}
-    \item muunna C:ksi
-    \item formatoi
-\end{enumerate}
-
-\tikzset{
-    desicion/.style={
-        diamond,
-        draw,
-        text width=3em,
-        text badly centered,
-        inner sep=0pt
-    },
-    block/.style={
-        rectangle,
-        draw,
-        text width=10em,
-        text centered,
-        rounded corners
-    },
-    cloud/.style={
-        draw,
-        ellipse,
-        minimum height=2em
-    },
-    descr/.style={
-        fill=white,
-        inner sep=2.5pt
-    },
-    connector/.style={
-        -latex,
-        font=\scriptsize
-    },
-    rectangle connector/.style={
-        connector,
-        to path={(\tikztostart) -- ++(#1,0pt) \tikztonodes |- (\tikztotarget) },
-        pos=0.5
-    },
-    rectangle connector/.default=-2cm,
-    straight connector/.style={
-        connector,
-        to path=--(\tikztotarget) \tikztonodes
-    }
-}
-
 \begin{figure}[ht!]
         \footnotesize
         \begin{adjustbox}{center}
         \begin{tikzpicture}[-{Latex[length=2mm,width=3mm]},auto, main node/.style={draw,fill=white},align=center]
-            \tikzstyle{ann} = [text width=4cm]
+            \tikzstyle{ann} = [rounded corners,fill=black!4,draw=black]
             \tikzset{
                 -|/.style={to path={-| (\tikztotarget)}},
                 |-/.style={to path={|- (\tikztotarget)}},
@@ -92,7 +142,7 @@ prk -> C:
             \node[main node,text width=3.3cm] (purkkaparser) [right = of core] {Purkka-jäsentäjä};
 
             \node[main node] (cpurkka) [right = of purkkaparser,text width=3.5cm] {Muuntaja C-syntaksipuusta Purkka-syntaksipuuksi};
-            \node[main node] (coremacro) [above = of cpurkka,text width=3.5cm] {Purkka-lausekkeet muunnetaan C-lausekkeiksi};
+            \node[main node] (coremacro) [above = of cpurkka,text width=3.5cm] {Muuntaja Purkka-lausekkeista C-syntaksipuiksi};
             \node[main node,text width=3.5cm] (purkkac) [below = of cpurkka] {Muuntaja Purkka-syntaksipuusta C-syntaksipuuksi};
             \coordinate[above left = of coremacro] (phantom);
 
@@ -103,13 +153,13 @@ prk -> C:
             \node[main node] (preprocessor) [right = of coremacro,text width=2.3cm] {C-esikäsittelijä};
             \node[main node] (cparser) [right = of cpurkka,text width=2.3cm] {C-jäsentäjä};
 
-            \node[main node,text width=3.3cm] (cformat) [left = of purkkac] {C-AST-puun muuntaminen lähdekoodiksi};
+            \node[main node,text width=3.3cm] (cformat) [left = of purkkac] {C-syntaksipuun muuntaminen lähdekoodiksi};
             \node[main node,fill=black!10] (done) [left = of cformat] {Tiedosto on käännetty};
 
             \coordinate (phantom4) at ($(purkkaparser)!0.5!(purkkac)$);
 
-            \draw (purkkaparser.130) |- node[ann,above right = 0cm and -1.3cm] {Purkka-koodi kutsuu C-makroa} (coremacro);
-            \draw (purkkaparser.170) |- (phantom) node[ann,above left = 0cm and -0.5cm] {Purkka-koodi sisällyttää C-tiedoston} -| (preprocessor); 
+            \draw (purkkaparser.170) |- (phantom) node[blur shadow={shadow blur steps=5},ann,above right = 0.2cm and 0cm]  {Purkka-koodi sisällyttää C-tiedoston} -| (preprocessor); 
+            \draw (purkkaparser.130) |- node[blur shadow={shadow blur steps=5},ann,text width=2.7cm,above right = 0.2cm and -0.4cm] {Purkka-koodi kutsuu C-makroa} (coremacro);
             \draw (purkkaparser) |- (phantom4) -| (purkkac);
 
             \path[every node/.style={font=\sffamily\small},-{Latex[length=2mm,width=3mm]}]
@@ -136,56 +186,3 @@ prk -> C:
         \caption{Graafi kääntämisprosessin hienouksista}
         \label{fig:compilerarch}
 \end{figure}
-
-\subsection{Tyypit}
-
-\hl{Koska kieli ei voi erota ratkaisevasti C:stä suoritusaikaisesti, tyypitys
-on todennäköisesti hyvin lähellä C:n tyypitystä. Tutkielmassa tutkitaan, voiko
-yleisiä käyttötapauksia helpottaa, kuten virhearvoja, geneerisiä
-tietorakenteita sekä summatyyppejä. Näistä geneeriset tietorakenteet ovat
-luultavasti liian monimutkainen asia sisällytettäväksi yksinkertaisena
-pidettävään kieleen johtuen niiden vaatimasta geneerisestä ohjelmoinnista.
-Esimerkiksi summatyypit taas voidaan toteuttaa helposti myös C:llä.}
-
-Primitiivit: void, utf8-chars, i1..x, u1..x, pääsy alustan C-tyyppeihin
-
-Pointer: null/not-null
-
-
-\subsection{Syntaksi}
-
-\hl{Kielestä tulee todennäköisesti myös syntaksin kannalta C:n sukulaiskieli.
-Tämä helpottaa kielen omaksumista, mikäli ohjelmoija osaa C:tä. Erityisesti
-virheidenhallinnassa on kuitenkin mahdollisuuksia tehdä huomattavia parannuksia
-C:hen verrattuna.}
-
-\subsection{Makrot}
-
-\hl{Koska makrot eivät aiheuta suoritusaikaisia haittoja, uuden kielen
-makrojärjestelmässä voi olla hyvinkin suuria eroavaisuuksia C:n
-makrojärjestelmään verrattuna. Yhteensopivuuden parantamiseksi
-makrojärjestelmän tulisi kuitenkin ymmärtää C:n makroja sekä mahdollistaa
-C-makrojen tuottaminen. Jos makrojärjestelmästä tekee Turing-täydellisen,
-kaikkia makroja ei pysty muuntamaan C:n makroiksi johtuen C:n makrojärjestelmän
-rajoituksista. Tämän lisäksi hygieeninen makrojärjestelmä ei välttämättä tee
-C:n makrojärjestelmän tukemisesta yksinkertaista.}
-
-\hl{Yksi mahdollinen tapa tuottaa kattava makrojärjestelmä olisi ottaa Rustin
-makrojärjestelmästä mallia, mutta tämä jättäisi avoimeksi kysymykseksi
-yhteensopivuuden C:n makrojärjestelmän kanssa.}
-
-\subsection{Suoritusaikaiset ominaisuudet}
-
-\hl{Koska kielen tulee olla täysin yhteensopiva suoritusaikaisesti C:n kanssa,
-kielessä ei välttämättä ole yhtään C:stä eroavia suoritusaikaisia
-ominaisuuksia. Kieli kuitenkin voi mahdollistaa vapaaehtoisia ominaisuuksia,
-joita standardien mukaisesta C:stä ei löydy, kunhan ohjelmoijaa ei pakoteta
-käyttämään näitä.}
-
-\subsection{Ohjelmointikielen kääntäminen}
-
-\hl{Yhteensopivuuden C:n kanssa saa helposti toteutettua kääntämällä
-ohjelmointikielen C:ksi. Tällöin ohjelmointikieli toimii kaikissa
-järjestelmissä, joissa C toimii. Tämä mahdollistaa myös uuden ohjelmointikielen
-kokeilemisen olemassa olevan C-projektin kanssa ilman, että projektin tulisi
-muuten käyttää uutta ohjelmointikieltä.}

@@ -8,7 +8,7 @@ with open('data.csv') as f:
 
     data = {}
 
-    languages = ['gcc', 'gpp', 'rust', 'gnat', 'go']
+    languages = ['gcc', 'purkka', 'gpp', 'rust', 'gnat', 'go']
 
     # name,lang,id,n,size(B),cpu(s),mem(KB),status,load,elapsed(s)
     for row in reader:
@@ -18,7 +18,7 @@ with open('data.csv') as f:
         if float(row[field]) > 0 and (not data[name].get(lang) or data[name][lang] > float(row[field])):
             data[name][row["lang"]] = float(row[field])
 
-print("C C++ Rust Ada Go")
+print("C Purkka C++ Rust Ada Go")
 
 for benchmark in data:
     for language in languages:

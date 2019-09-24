@@ -1,12 +1,61 @@
 \section{Uuden ohjelmointikielen vertaaminen muihin ohjelmointikieliin}
 
-\section{Vertailun tulokset}
+\subsection{Vertailun tulokset}
+
+Purkan referenssitoteutus \citep{purkka}
+
+Purkkaa verrataan samalla tavalla kuin muita ohjelmointikieliä luvussa xx.
+Kaavioissa on esitetty kaikki performanssitestit erikseen. Raakadata liitteeseen.
+
+\begin{figure}[ht!]
+    \begin{adjustbox}{center}
+        \begin{minipage}{1.2\textwidth}
+        \input{data_purkka/benchmarkscpu2.tex}
+        \end{minipage}
+    \end{adjustbox}
+
+    \begin{adjustbox}{center}
+        \begin{minipage}{1.2\textwidth}
+        \input{data_purkka/benchmarksmem2.tex}
+        \end{minipage}
+    \end{adjustbox}
+
+    \begin{adjustbox}{center}
+        \begin{minipage}{1.2\textwidth}
+        \input{data_purkka/benchmarkslines2.tex}
+        \end{minipage}
+    \end{adjustbox}
+    \caption{
+        Benchmarks Gamen ohjelmiin perustuvat kuvaajat Purkalla kirjoitettujen ohjelmien
+        suorituskyvystä, muistinkäytöstä ja ohjelmien koosta verrattuna C:llä
+        kirjoitettujen ohjelmien tuloksiin.}
+    \label{fig:benchmarksgame}
+\end{figure}
 
 \hl{Tässä luvussa uutta ohjelmointikieltä vertaillaan muihin tutkielmassa
 käsiteltyihin ohjelmointikieliin, ja kerrotaan, miksi tai miksei se päihitä
 C:tä vertailuehtojen mukaisesti.}
 
-\subsection{Vertailun arviointi ja johtopäätökset}
+Kuvass zx nähdään, että Purkka on yhtä tehokas kieli kuin C, eikä se vie
+enempää muistia. Purkka vie keskimäärin xx prosenttia vähemmän lähdekoodia.
+
+\subsection{Johtopäätökset ja vertailun arviointi}
+
+Tutkimuksessa verrattin useita ohjelmointikiiä C:hen, mutta yksikään ei
+pärjää kriteereistä johtuen. Purkka pärjää.
+
+Performanssitestaus ei vastaa todellista maailmaa, mutta koska Purkka käännetään
+vastaavaksi C:ksi, sen tulisi aina päästä identtiseen suorituskykyyn.
+
+Muiden kielten osalta: koska mittuksrt on mittauksia, ovat epätarkkoja.
+
+Purkkaa tuskin otetaan käyttöön, vaikka se tämän paperin mukaan olisi parempi, sillä
+kukaan ei tunne kieltä, ainoan kääntäjän toteuttaja ei ole suuri firma.
+
+Jatkotutkimus... tutkimus osoittaa, että C:tä on mahdollista parantaa syntaktisesti,
+jos joku firma hsluaisi niin parannettavaa löytyy. Tarkempi tyypitys C:hen voi
+paljastaa mahdollisia ohjelmointi irheitä ja mahdollistaa turvallisemman ja tehokkaamman
+optimoinnin.
 
 \hl{Jos tutkielmassa on mahdollisia puutteita, tai sen tulokset eivät
 välttämättä tutkielman rajoituksista johtuen päde tutkielman ulkopuolella,

@@ -19,7 +19,7 @@
 \usepackage{hyperref}
 \usepackage{multirow}
 \usepackage{tikz}
-\usetikzlibrary{shapes,positioning,arrows.meta,calc}
+\usetikzlibrary{shapes,positioning,arrows.meta,calc,shadows.blur}
 \usepackage{placeins}
 \usepackage{import}
 \usepackage{etoolbox}
@@ -130,6 +130,25 @@
 
 \renewcommand\listingscaption{Ohjelma}
 \renewcommand{\_}{\relax\ifmmode_\else \textscale{0.7}{\textunderscore}\fi}
+
+\newcounter{shadowblurcount}
+\tikzset{
+  /tikz/render blur shadow/.code={
+   \stepcounter{shadowblurcount}%
+    \pgfbs@savebb
+    \pgfsyssoftpath@getcurrentpath{\pgfbs@input@path}%
+    \pgfbs@compute@shadow@bbox
+    \pgfbs@process@rounding{\pgfbs@input@path}{\pgfbs@fadepath}%
+    \pgfbs@apply@canvas@transform
+    \colorlet{pstb@shadow@color}{white!\pgfbs@opacity!black}%
+    \pgfdeclarefading{shadowfading\the\c@shadowblurcount}{\pgfbs@paint@fading}%
+    \pgfsetfillcolor{black}%
+    \pgfsetfading{shadowfading\the\c@shadowblurcount}%
+       {\pgftransformshift{\pgfpoint{\pgfbs@midx}{\pgfbs@midy}}}%
+    \pgfbs@usebbox{fill}%
+    \pgfbs@restorebb
+  },
+  }
 \makeatother
 
 \counterwithin{figure}{section}

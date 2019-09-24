@@ -1,19 +1,22 @@
-all: benchmarkscpu.tex benchmarksmem.tex benchmarkslines.tex
+all: benchmarkscpu.tex benchmarksmem.tex benchmarkslines.tex benchmarkscpu2.tex benchmarksmem2.tex benchmarkslines2.tex
 
-data.csv:
-	curl https://salsa.debian.org/benchmarksgame-team/benchmarksgame/raw/master/public/data/data.csv > data.csv
+SUMMARY=../../bencher/parse3.py ../../bencher/summary/all_measurements.csv
 
-
-benchmarks_cpu.csv: data.csv scrape.py
-	python3 scrape.py "cpu(s)" > benchmarks_cpu.csv
-benchmarks_mem.csv: data.csv scrape.py
-	python3 scrape.py "mem(KB)" > benchmarks_mem.csv
-benchmarks_lines.csv: data.csv scrape.py
-	python3 scrape.py "size(B)" > benchmarks_lines.csv
-
-benchmarkscpu.tex: benchcpu.gp benchmarks_cpu.csv
+benchmarkscpu.tex: benchcpu.gp ${SUMMARY}
+	(cd ../../bencher && python3 parse3.py all "elapsed(s)" >/dev/null 2> ../gradu/data_purkka/benchmarks_cpu.csv)
 	gnuplot benchcpu.gp
-benchmarksmem.tex: benchmem.gp benchmarks_mem.csv
+benchmarksmem.tex: benchmem.gp ${SUMMARY}
+	(cd ../../bencher && python3 parse3.py all "mem(KB)" >/dev/null 2> ../gradu/data_purkka/benchmarks_mem.csv)
 	gnuplot benchmem.gp
-benchmarkslines.tex: benchlines.gp benchmarks_lines.csv
+benchmarkslines.tex: benchlines.gp ${SUMMARY}
+	(cd ../../bencher && python3 parse3.py all "size(B)" >/dev/null 2> ../gradu/data_purkka/benchmarks_lines.csv)
 	gnuplot benchlines.gp
+benchmarkscpu2.tex: benchcpu2.gp ${SUMMARY}
+	(cd ../../bencher && python3 parse3.py purkka "elapsed(s)" >/dev/null 2> ../gradu/data_purkka/benchmarks_cpu2.csv)
+	gnuplot benchcpu2.gp
+benchmarksmem2.tex: benchmem2.gp ${SUMMARY}
+	(cd ../../bencher && python3 parse3.py purkka "mem(KB)" >/dev/null 2> ../gradu/data_purkka/benchmarks_mem2.csv)
+	gnuplot benchmem2.gp
+benchmarkslines2.tex: benchlines2.gp ${SUMMARY}
+	(cd ../../bencher && python3 parse3.py purkka "size(B)" >/dev/null 2> ../gradu/data_purkka/benchmarks_lines2.csv)
+	gnuplot benchlines2.gp
