@@ -13,8 +13,8 @@ import "pcre2.h"
 
 struct string {
     data: &u8,
-    capacity: u64,
-    size: u64
+    capacity: size_t,
+    size: size_t
 }
 
 // Function for searching a src_String for a pattern, replacing it with some
@@ -24,8 +24,8 @@ fun replace(pattern: [char], replacement: [char],
         mcontext: &?pcre2_match_context_8, mdata: &?pcre2_match_data_8) {
 
     let errorcode;
-    let erroroffset: u64;
-    let pos: u64 = 0;
+    let erroroffset: size_t;
+    let pos: size_t = 0;
     let replacement_Size = strlen(replacement);
     let match = pcre2_get_ovector_pointer(mdata);
 
@@ -142,7 +142,7 @@ pub fun main() {
 
             // Iterate through all the replacement patterns and their
             // replacements in replace_Info[].
-            for(let i = 0; i < sizeof(replace_Info) / sizeof([char;2]); i++) {
+            for(let i = 0; i < sizeof(replace_Info) / sizeof([&char;2]); i++) {
                 replace(replace_Info[i][0], replace_Info[i][1], &prereplace_String,
                         &postreplace_String, mcontext, mdata);
 
@@ -171,8 +171,8 @@ pub fun main() {
         for(let i = 0; i < sizeof(count_Info) / sizeof(&char); i++) {
             let errorcode;
             let count = 0;
-            let erroroffset: u64;
-            let pos: u64 = 0;
+            let erroroffset: size_t;
+            let pos: size_t = 0;
             let match = pcre2_get_ovector_pointer(mdata);
 
             // Compile and study pattern.
