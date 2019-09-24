@@ -34,8 +34,7 @@ struct nucleotide_info {
 // Repeatedly print string_To_Repeat until it has printed
 // number_Of_Characters_To_Create. The output is also wrapped to
 // MAXIMUM_LINE_WIDTH columns.
-fun repeat_And_Wrap_String(string_To_Repeat: [char], number_Of_Characters_To_Create: i32)
-{
+fun repeat_And_Wrap_String(string_To_Repeat: [char], number_Of_Characters_To_Create: i32) {
     let string_To_Repeat_Length = strlen(string_To_Repeat) as i32;
 
     // Create an extended_String_To_Repeat which is a copy of string_To_Repeat
@@ -44,17 +43,16 @@ fun repeat_And_Wrap_String(string_To_Repeat: [char], number_Of_Characters_To_Cre
     // generate a line of output just by doing simple memory copies using an
     // appropriate offset into extended_String_To_Repeat.
     let extended_String_To_Repeat: [char;string_To_Repeat_Length+MAXIMUM_LINE_WIDTH];
-    for(let column=0; column<string_To_Repeat_Length+MAXIMUM_LINE_WIDTH; column++) {
-        extended_String_To_Repeat[column]= string_To_Repeat[column%string_To_Repeat_Length];
+    for (let column = 0; column < string_To_Repeat_Length + MAXIMUM_LINE_WIDTH; column++) {
+        extended_String_To_Repeat[column] = string_To_Repeat[column % string_To_Repeat_Length];
     }
     let offset=0;
 
-    let line: [char;MAXIMUM_LINE_WIDTH+1];
-    line[MAXIMUM_LINE_WIDTH]='\n';
+    let line: [char;MAXIMUM_LINE_WIDTH + 1];
+    line[MAXIMUM_LINE_WIDTH] = '\n';
 
     for(let current_Number_Of_Characters_To_Create: i32 = number_Of_Characters_To_Create;
-        current_Number_Of_Characters_To_Create>0;)
-    {
+        current_Number_Of_Characters_To_Create > 0;) {
         // Figure out the length of the line we need to write. If it's less than
         // MAXIMUM_LINE_WIDTH then we also need to add a line feed in the right
         // spot too.
@@ -120,9 +118,9 @@ fun rng_gen_blk(buf: [u32], len: i32, curr_tid: i32) -> i32 {
 
         while( 0 != len-- )
         {
-            seed=(seed*IA + IC)%IM;
+            seed = (seed*IA + IC)%IM;
             *buf = seed;//This is stupid actually!
-            buf = buf + 1;
+            buf++;
         }
     }
 
@@ -196,8 +194,7 @@ fun generate_And_Wrap_Pseudorandom_DNA_Sequence(nucl_info: [nucleotide_info], nu
         while(1) {
             do {
                 cnt = rng_gen_blk(rnd, CHARACTERS_PER_BLOCK, cur_tid);
-            }
-            while( -1 == cnt );
+            } while( -1 == cnt );
 
             if( 0 == cnt ) {
                 break;//Work finished!
@@ -209,39 +206,32 @@ fun generate_And_Wrap_Pseudorandom_DNA_Sequence(nucl_info: [nucleotide_info], nu
                 r = rnd[prid];
 
                 ncnt = 0;
-                for( nid = 0; nid < nucl_num; nid++ )
-                {
-                    if(cumul_p[nid]<=r)
-                    {
+                for(nid = 0; nid < nucl_num; nid++) {
+                    if(cumul_p[nid]<=r) {
                         ncnt++;
                     }
                 }
 
                 *line = nucl_info[ncnt].letter;
                 line = line + 1;
-                if( ++col >= MAXIMUM_LINE_WIDTH )
-                {
+                if(++col >= MAXIMUM_LINE_WIDTH) {
                     col = 0;
                     *line = '\n';
-                    line = line + 1;
+                    line++;
                 }
             }
             //Check if we need to end the line
-            if( 0 != col )
-            {
+            if( 0 != col ) {
                 //Last iteration didn't end the line, so finish the job.
                 *line = '\n';
-                line = line + 1;
+                line++;
             }
             //Print results
-            do
-            {
+            do {
                 cnt = out_write(block, (line - block) as u64, cur_tid);
-            }
-            while( -1 == cnt );
+            } while( -1 == cnt );
             //Check  fot IO error
-            if( 0  == cnt )
-            {
+            if( 0  == cnt ) {
                 exit(1);
             }
         }

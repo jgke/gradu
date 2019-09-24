@@ -1,0 +1,164 @@
+/* The Computer Language Benchmarks Game
+ * https://salsa.debian.org/benchmarksgame-team/benchmarksgame/
+ *
+ * contributed by Christoph Bauer
+ * slightly improved by Mark Hinds
+ * SIMDified by Stefan Krause
+ * translated in ANSI C by Francesco Massei
+ */
+
+import "math.h"
+import "stdio.h"
+import "stdlib.h"
+
+const pi = 3.141592653589793;
+const solar_mass = (4 * pi * pi);
+const days_per_year = 365.24;
+
+type v2df = __attribute__(double, vector_size(2*sizeof(double)));
+
+struct planet {
+    xy: v2df,
+    z0: v2df, /* z and zero */
+    vxvy: v2df,
+    vz00: v2df,	/* vz and zero */
+    massmass: v2df /* the mass in both components */
+};
+
+const NBODIES = 5;
+let bodies = [
+  planet {                               /* sun */
+      v2df {0, 0}, v2df {0,0}, v2df {0, 0}, v2df {0,0}, v2df {solar_mass,solar_mass}
+  },
+  planet {                               /* jupiter */
+      v2df {4.84143144246472090e+00,
+    -1.16032004402742839e+00},
+    v2df {-1.03622044471123109e-01, 0},
+    v2df {1.66007664274403694e-03 * days_per_year,
+    7.69901118419740425e-03 * days_per_year},
+    v2df {-6.90460016972063023e-05 * days_per_year,0},
+    v2df {9.54791938424326609e-04 * solar_mass,9.54791938424326609e-04 * solar_mass}
+  },
+  planet {                               /* saturn */
+      v2df {8.34336671824457987e+00,
+    4.12479856412430479e+00},
+    v2df {-4.03523417114321381e-01, 0},
+    v2df {-2.76742510726862411e-03 * days_per_year,
+    4.99852801234917238e-03 * days_per_year},
+    v2df {2.30417297573763929e-05 * days_per_year,0},
+    v2df {2.85885980666130812e-04 * solar_mass,2.85885980666130812e-04 * solar_mass}
+  },
+  planet {                               /* uranus */
+      v2df {1.28943695621391310e+01,
+    -1.51111514016986312e+01},
+    v2df {-2.23307578892655734e-01,0},
+    v2df {2.96460137564761618e-03 * days_per_year,
+    2.37847173959480950e-03 * days_per_year},
+    v2df {-2.96589568540237556e-05 * days_per_year,0},
+    v2df {4.36624404335156298e-05 * solar_mass,4.36624404335156298e-05 * solar_mass}
+  },
+  planet {                               /* neptune */
+      v2df {1.53796971148509165e+01,
+    -2.59193146099879641e+01},
+    v2df {1.79258772950371181e-01,0},
+    v2df {2.68067772490389322e-03 * days_per_year,
+    1.62824170038242295e-03 * days_per_year},
+    v2df {-9.51592254519715870e-05 * days_per_year,0},
+    v2df {5.15138902046611451e-05 * solar_mass,5.15138902046611451e-05 * solar_mass}
+  }
+];
+
+let dtdt = v2df {0.01, 0.01};
+
+fun advance(q: i32) {
+  let b: &planet;
+  let b2: &planet;
+  let dxdy: v2df;
+  let dz00: v2df;
+  let tsquare: v2df;
+  let distance2: v2df;
+  let magmag: v2df;
+  let i;
+  let j;
+  let k;
+  for (k=1; k<=q; ++k) {
+      for (i = 0; i < NBODIES; ++i) {
+        b = &(bodies[i]);
+        for (j = i + 1; j < NBODIES; j++) {
+          b2 = &(bodies[j]);
+          dxdy = b.xy - b2.xy;
+          dz00 = b.z0 - b2.z0;
+          /* dx*dx+dy*dy | dz*dz */
+          tsquare = __builtin_ia32_haddpd(dxdy*dxdy,dz00*dz00);
+          /* dx*dx+dy*dy+dz*dz | dx*dx+dy*dy+dz*dz */
+          distance2 = __builtin_ia32_haddpd(tsquare,tsquare);
+          magmag = dtdt / (__builtin_ia32_sqrtpd(distance2)*distance2);
+          dxdy *= magmag;
+          dz00 *= magmag;
+          b.vxvy -= dxdy * b2.massmass;
+          b.vz00 -= dz00 * b2.massmass;
+          b2.vxvy += dxdy * b.massmass;
+          b2.vz00 += dz00 * b.massmass;
+        }
+      }
+      for (i = 0; i < NBODIES; i++) {
+        bodies[i].xy += dtdt * bodies[i].vxvy;
+        bodies[i].z0 += dtdt * bodies[i].vz00;
+      }
+    }
+}
+
+fun energy() {
+  let e = v2df {0.0, 0.0};
+  let half = v2df {0.5, 0.5};
+  let sq: v2df;
+  let dxdy: v2df;
+  let dz00: v2df;
+  let distance: v2df;
+  let b: &planet;
+  let b2: &planet;
+  let i;
+  let j;
+
+  for (i = 0; i < NBODIES; i++) {
+    b = &(bodies[i]);
+    /* b->mass*(vx*vx + vy*vy) | b->mass*(vz*vz + 0*0) */
+    sq = b.massmass * __builtin_ia32_haddpd(b.vxvy*b.vxvy, b.vz00*b.vz00);
+    sq = __builtin_ia32_haddpd(sq, sq);
+    e += half * sq;
+    for (j = i + 1; j < NBODIES; j++) {
+      b2 = &(bodies[j]);
+      dxdy = b.xy - b2.xy;
+      dz00 = b.z0 - b2.z0;
+      /* b->mass*(vx*vx + vy*vy) | b->mass*(vz*vz + 0*0) */
+      distance = __builtin_ia32_haddpd(dxdy*dxdy, dz00*dz00);
+      distance = __builtin_ia32_sqrtpd(__builtin_ia32_haddpd(distance,distance));
+      e -= (b.massmass * b2.massmass) / distance;
+    }
+  }
+  return e[0];
+}
+
+fun offset_momentum() {
+  let pxpy = v2df {0.0, 0.0};
+  let pz00 = v2df {0.0, 0.0};
+  let solar_mass_inv = v2df { 1.0 / solar_mass, 1.0 / solar_mass};
+  let i;
+  for (i = 0; i < NBODIES; i++) {
+    pxpy += bodies[i].vxvy * bodies[i].massmass;
+    pz00 += bodies[i].vz00 * bodies[i].massmass;
+  }
+  bodies[0].vxvy = - pxpy * solar_mass_inv;
+  bodies[0].vz00 = - pz00 * solar_mass_inv;
+}
+
+pub fun main(argc: i32, argv: [[char]]) {
+  offset_momentum();
+  printf ("%.9f\n", energy());
+  advance(atoi(argv[1]));
+  printf ("%.9f\n", energy());
+  return 0;
+}
+                               
+                    
+ 

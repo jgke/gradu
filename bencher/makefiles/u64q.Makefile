@@ -101,3 +101,21 @@ COPTS := -O3 -fomit-frame-pointer -march=native
 %.purkka_run: %.prk
 	RUST_BACKTRACE=1 $(PURKKA) $< ${PURKKAOPTS} -o $(TEST).c && \
 	$(GCC) -pipe -Wall $(COPTS) $(GCCOPTS) $(TEST).c -o $@ $(GCCLOPTS)
+
+
+########################################
+# go
+########################################
+
+%.go_run: %.go
+	-$(GO) build -o $@
+
+
+########################################
+# gnat ADA 2005#########################
+########################################
+
+%.gnat_run: %.gnat
+	-$(GNATCHOP) -r -w $<
+	-$(GNATC) $(STD_COPTS) $(GNATOPTS) -f $(TEST).adb -o $@ $(GNATLDOPTS)
+
