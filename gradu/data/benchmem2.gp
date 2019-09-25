@@ -16,4 +16,4 @@ set arrow 1 from graph 0,first 100 to graph 1,first 100 nohead dt "-"
 
 #set yrange [80 : 110]
 
-plot for [i=1:5] "benchmarks_mem2.csv" using (i):i notitle lt rgb "white"
+plot for [i=1:9] "benchmarks_mem2.csv" using (i):i notitle lt rgb "white"
