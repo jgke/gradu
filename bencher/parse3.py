@@ -11,6 +11,10 @@ abbrv_benchmark = {
     "fannkuchredux": "fannkuch",
     "fasta": "fasta",
     "knucleotide": "knucleo",
+    "nbody": "nbody",
+    "pidigits": "pidigits",
+    "regexredux": "regex",
+    "spectralnorm": "spectrn",
 }
 
 fastest_gcc = {} 
