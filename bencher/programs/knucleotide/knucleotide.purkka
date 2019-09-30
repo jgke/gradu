@@ -117,7 +117,7 @@ fun generate_Frequencies_For_Desired_Length_Oligonucleotides(
             // Output the frequency for oligonucleotide to output.
             output_Position+=snprintf(output+output_Position
                     , MAXIMUM_OUTPUT_LENGTH-output_Position, "%s %.3f\n", oligonucleotide
-                    , 100.0f*elements_Array[i].value
+                    , 100.0*elements_Array[i].value
                     /(polynucleotide_Length-desired_Length_For_Oligonucleotides+1));
         }
 
