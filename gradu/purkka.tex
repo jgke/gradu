@@ -1,4 +1,5 @@
 \section{Purkka-ohjelmointikieli}
+\label{sec:purkka}
 
 Tässä luvussa määritellään Purkka-ohjelmointikieli.
 
@@ -9,38 +10,67 @@ muodostetaan mahdollisimman paljon C:n kaltaiseksi. C:n tyyppisyntaksi sisältä
 useita erilaisia tapoja ilmaista samaa pohjatyyppiä -- esimerkisi
 \texttt{long}, \texttt{signed~long}, \texttt{long~int} ja
 \texttt{signed~long~int} ilmaisevat kokonaislukutyyppiä, joka pystyy
-sisältämään ainakin luvut $[-(2^{31} - 1), 2^{31}-1]$.\citationneeded Nämä
-tyypit ovat kuitenkin standardien mukaisessa C:ssä keskenään täysin
-vaihdettavissa, eli kielen ei tarvitse pystyä kääntymään jokaiseen mahdolliseen
-vaihtoehtoon.
+sisältämään ainakin luvut $[-(2^{31} - 1), 2^{31}-1]$ \footnote{Käytännössä
+modernit implementaatiot käyttävät kahden komplementtia kokonaislukujen
+ilmaisemiseen, jolloin 32-bittinen kokonaislukumuuttuja voi sisältää luvut
+$[-2^{31}, 2^{31}]$.}\citationneeded. Nämä tyypit ovat kuitenkin standardien
+mukaisessa C:ssä keskenään täysin vaihdettavissa, eli kielen ei tarvitse pystyä
+kääntymään jokaiseen mahdolliseen vaihtoehtoon. Perustyypit ovat hyvin lähellä
+Rustin pohjatyyppejä\citationneeded. Purkka tarvitsee erikseen tyypit
+\texttt{char}, \texttt{i8} ja \texttt{u8}, sillä C:n \texttt{char}-tyyppiä ei
+ole määritelty tarkemmin joko kokonaisluvuksi tai 
+\texttt{signed char} ja \texttt{unsigned char} ovat erillisiä tyyppejä.
 
 Määritetään Purkkaan seuraavat alkeistyypit: \\[0.3cm]
-\begin{tabular}{@{}lp{10cm}@{}} \toprule
+\begin{tabular}{@{}p{5.8cm}p{8.7cm}@{}} \toprule
     Purkka-tyyppi & Purkka-tyyppiä vastaava C-tyyppi \\ \midrule
     \texttt{void} & \texttt{void} \\
     \texttt{char} & \texttt{char} \\
-    \texttt{i8, i16, i32, i64} & \texttt{signed char}, \texttt{short}, \texttt{int}, \texttt{long}, \texttt{long long} \\
-    \texttt{u8, u16, u32, u64} & \texttt{unsigned char}, \texttt{unsigned short}, \texttt{unsigned int}, \texttt{unsigned long}, \texttt{unsigned long long} \\
+    \texttt{i8}, \texttt{i16}, \texttt{i32}, \texttt{i64} &
+    \texttt{int8\_t}, \texttt{int16\_t}, \texttt{int32\_t}, \texttt{int64\_t} \\
+    \texttt{u8}, \texttt{u16}, \texttt{u32}, \texttt{u64} &
+    \texttt{uint8\_t}, \texttt{uint16\_t}, \texttt{uint32\_t}, \texttt{uint64\_t} \\
+    \texttt{float} & \texttt{float} \\
+    \texttt{double} & \texttt{double} \\
+    [0.3cm]
+
+    \texttt{cbyte}, \texttt{cshort}, \texttt{cint}, \texttt{clong}, \texttt{clonglong}
+    & \texttt{signed char}, \texttt{short}, \texttt{int}, \texttt{long}, \texttt{long long} \\
+    \noalign{\vspace{0.3cm}}%
+
+    \texttt{cubyte}, \texttt{cushort}, \texttt{cuint}, \texttt{culong}, \texttt{culonglong}
+    & \texttt{unsigned char}, \texttt{unsigned short}, \texttt{unsigned int},
+      \texttt{unsigned long}, \texttt{unsigned long long} \\
     \bottomrule
 \end{tabular} \\
 
 Määritetään näiden alkeistyyppien pohjalta osoitintyypit, taulukkotyypit sekä
-yhdistetyypit\defword{compound type}: \\[0.3cm]
+yhdistetyypit: \\[0.3cm]
 \begin{tabular}{@{}ll@{}} \toprule
     Purkka-tyyppi & Purkka-tyyppiä vastaava C-tyyppi \\ \midrule
-    \texttt{\&T, \&?T} & \texttt{T *} \\[0.2cm]
+    \texttt{\&T, \&?T} & \texttt{T *} \\
+    [0.2cm]
 
     \texttt{[T]} & \texttt{T\textsubscript{declaration specifiers}[]T\textsubscript{direct abstract declarator}} \\
-    \texttt{[T;expr]} & \texttt{T\textsubscript{declaration specifiers}[expr]T\textsubscript{direct abstract declarator}} \\[0.2cm]
+    \texttt{[T;expr]} & \texttt{T\textsubscript{declaration specifiers}[expr]T\textsubscript{direct abstract declarator}} \\
+    [0.2cm]
 
     \texttt{fun t: (T ..) -> R} & \texttt{R\textsubscript{declaration specifiers}~t(T ..)R\textsubscript{direct abstract declarator}} \\
-    \texttt{fun (T ..) -> R} & \texttt{R\textsubscript{declaration specifiers}~(*)(T ..)R\textsubscript{direct abstract declarator}} \\[0.2cm]
+    \texttt{fun (T ..) -> R} & \texttt{R\textsubscript{declaration specifiers}~(*)(T ..)R\textsubscript{direct abstract declarator}} \\
+    [0.2cm]
 
     \texttt{struct \{ k: T ..\}} & \texttt{struct \{ T k ..\}} \\
     \texttt{enum \{ A [= expr] ..\}} & \texttt{enum \{ A [= expr] ..\}} \\
-    \texttt{union \{ k: T ..\}} & \texttt{union \{ T k ..\}} \\[0.2cm]
+    \texttt{union \{ k: T ..\}} & \texttt{union \{ T k ..\}} \\
+    [0.2cm]
 
+    \texttt{(T1 ..)} & \texttt{struct \{ T1 e1; ..\}} \\
     \texttt{enum \{ T(T1 ..) .. \}} & \texttt{struct \{ union \{T1 t1 ..\} v; enum \{T ..\} e;\}} \\
+    [0.2cm]
+
+    GCC-laajennokset & \\
+    \texttt{attribute(T, ...))} & \texttt{T \_\_attribute\_\_((...))} \\
+
     \bottomrule
 \end{tabular} \\
 
@@ -55,6 +85,10 @@ kuinka tagged union käännetään C:ksi? Entä non-nullable ptr?
 tyyppi-inferenssi
 
 Mitä optimointeja non-null tarjoaa? Entä tagged union?
+
+\subsection{Tyyppi-inferenssi}
+
+
 
 \subsection{Syntaksi}
 
@@ -82,20 +116,18 @@ statementit:
 
 \subsection{Makrot}
 
-- C-yhteensopivuus tärkeää
-- C-yhteensopivuus toteutettu
+Koska Purkan tulee olla myös makrojen osalta C-yhteensopiva, Purkka osaa
+laajentaa C-makroja. Purkka-kääntäjä pystyy muuntamaan makrokutsun
+C-lähdekoodiksi, laajentamaan sen C-esikäsittelijällä ja muuntamaan makron
+laajennettu muoto takaisin Purkka-koodiksi.
 
-Konversio oma c
-- ei rekursiota
-- vain 1 käsi
+Purkassa on myös oma makrojärjestelmä, joka toimii hahmotunnistuksella ja
+rekursiolla.\footnote{Referenssikääntäjään (ks. luku \ref{sec:results}) ei ole
+toteutettu makroja.} Jos makrot eivät sisällä rekursiota tai hahmontunnistusta,
+ne voidaan muuntaa C-makroiksi.
 
-Oma:
-Rekursio + pattern match
-rajoitettu rekursiosyvyys
-
-...jos export härpäkkeeseen, rekursio?
-
-ei vielä implementoitu omaa
+\hl{Teoriassa myös hahmontunnistuksen ja rekursion voisi muuntaa C-makroiksi,
+käyttäen hyväksi C-makrojen detaileja.}
 
 \subsection{Suoritusaikaiset ominaisuudet ja laajennokset}
 
@@ -112,16 +144,21 @@ määritellä käyttäen \texttt{\_\_attribute\_\_(())} -\hl{määrettä}.
 Purkka-kääntäjä osaa tunnistaa useita GCC:n laajennoksia ja välittää ne
 eteenpäin.
 
-\hl{kuva tähän, jossa openmp ja simd + laajennettu muoto}
-
-Sulkeumien toteutus olettaa, että C-kääntäjä tukee sulkeumia.
+Sulkeumien toteutus olettaa, että C-kääntäjä tukee laajennoksena sulkeumia.
 
 \subsection{Ohjelmointikielen kääntäminen}
 
-Suurin osa ominaisuuksista kääntyy suoraan vastaaviksi C-ominaisuuksiksi. Muutamat vaatii työtä,
-kuten inferenssi, block expr, lambdat. Inferenssialgo johonkin nurkkaan.
+Purkan kääntäminen C-koodiksi on hieman normaalia kääntämistä monimutkaisempaa.
+Koska Purkan tulee pystyä muuntamaan Purkka-koodia C-koodiksi, mutta myös
+C-koodia purkka-koodiksi makrojen laajentamisen myötä, kääntäjän pitää ymmärtää
+kahta ohjelmointikieltä yhden sijaan.
 
-Lambdat käännetään siten, että funktion body nostetaan ulos lambdan paikalta, ja korvataan funktio-osoittimella.
+Suurin osa ominaisuuksista kääntyy suoraan vastaaviksi C-ominaisuuksiksi.
+Muutamat vaatii työtä, kuten inferenssi, block expr, lambdat. Inferenssialgo
+johonkin nurkkaan.
+
+Lambdat käännetään siten, että funktion body nostetaan ulos lambdan paikalta,
+ja korvataan funktio-osoittimella.
 
 \hl{Koska kieli ymmärtää C:tä ja Purkkaa, ja muuntaa näiden välillä,
 käännösprosessi on monimutkainen. Kuvassa} \ref{fig:compilerarch} \hl{näytetään

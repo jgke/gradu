@@ -14,18 +14,10 @@ import "stdio.h"
 import "stdlib.h"
 import "gmp.h"
 
-let n1: mpz_t;
-let n2: mpz_t;
-let d: mpz_t;
-let u: mpz_t;
-let v: mpz_t;
-let w: mpz_t;
+let n1, n2, d, u, v, w: mpz_t;
 
 pub fun main(argc: i32, argv: [[char]]) { 
-    let k = 1;
-    let k2;
-    let i = 0;
-    let n = atoi(argv[1]);
+    let k = 1, k2, i = 0, n = atoi(argv[1]);
 
     mpz_init(u);
     mpz_init(v);

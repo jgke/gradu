@@ -8,13 +8,22 @@ perustelut verrattavien kielten valinnoille sekä pohditaan erilaisia
 mahdollisia syitä kielten suosioon. Tämän luvun sisältö on hyvin samankaltainen
 tutkimussuunnitelman kirjallisuusosan toisen luvun kanssa.}
 
-\subsection{Ohjelmointikielten vertailun kriteerit}
+\subsection{C-ohjelmointikielen taustaa}
 \label{sec:ctaustaa}
 
 \hl{Tässä aliluvussa kerrotaan C-kielen taustasta, alkuperäisistä käyttökohteista,
 historiasta, suosion kehityksestä sekä nykytilanteesta. Erityisesti keskitytään
 C:n tämänhetkisiin käyttökohteisiin, joista selviää, mitä ohjelmointikielten
 ominaisuuksia tulisi käsitellä ohjelmointikielten vertailussa.}
+
+C-kielen taustaa:
+Milloin tehtiin, mihin tarkoitukseen? Kuka?
+
+Kehitys:
+
+Nykytilanne
+
+Käyttökohteet
 
 \subsection{Kehitettävissä olevat ominaisuudet C-ohjelmointikielessä}
 
@@ -25,6 +34,31 @@ ominaisuudet voisi jättää pois ja mitä uusia ominaisuuksia voisi tulla.}
 \hl{Näitä ominaisuuksia ovat ainakin tarkempi käännösaikainen tyypitys etenkin
 tyhjien osoittimien osalta, makrojärjestelmän uusiminen sekä syntaksin
 selkeyttäminen.}
+
+Tyyppisyntaksi (muuttujan nimi keskellä tyyppiä)
+
+Tyyppien nurkkatapaukset:
+\begin{itemize}
+    \item Array onkin pointer jos se on parametrina (paitsi jos structin sisällä)
+    \item char vs signed char vs unsigned char
+    \item assignment: uint = int == int = uint == "ok"
+\end{itemize}
+
+Modernit tyypit:
+\begin{itemize}
+    \item Non-nullable pointer
+    \item Tuple (shorthand structille)
+    \item Array parametrina (shorthand structiin)
+    \item Tagged union (shorthand struct, jossa union+enum)
+\end{itemize}
+
+Tyyppi-inferenssi
+
+Makrot
+
+Importit
+
+Tooling
 
 \subsection{Ohjelmointikielten vertailun kriteerit}
 \label{sec:abs}
@@ -86,6 +120,53 @@ muiden ohjelmointikielten C-rajapinnan läpi. Kielen tulee näiden lisäksi toim
 kaikissa ympäristöissä, joissa C toimii. Kielen olisi myös hyvä tukea C:n
 esikäsittelijää, jotta C:n käyttäminen verrattavan ohjelmointikielen kanssa
 olisi mahdollisimman saumatonta.
+
+\subsection{C:hen verrattavissa olevat ohjelmointikielet}
+
+\hl{Vertailtaviksi kieliksi valitaan Ada, C++, D, Go ja Rust. Kaikki
+vertailtavat kielet ovat kohtalaisen tehokkaita, jonka lisäksi kaikilla on
+yritetty korvata C:n tai C++:n käyttöä.}
+
+Historian saatossa on tehty useita C:n kilpailijoita, jotka ovat yrittäneet
+parantaa C:tä joidenkin C:n hyvien puolien kustannuksella. Muutamat näistä ovat
+päätyneet hyvin suosituiksi ohjelmointikieliksi, kuten esimerkiksi C++ ja Go.
+Kielten suosion mittaamiseen on tehty useita projekteja, jotka vertailevat
+kieliä esimerkiksi hakutulosten tai projektien mukaan. Näitä ovat esimerkiksi
+TIOBEn ohjelmointikielten suosion indeksi~\citep{tiobe} ja GitHub-palvelun
+julkaisema \mbox{Octoverse}~\citep{octoverse}.
+%Valitsemalla vertailuun suosittuja kieliä voidaan tutkia, miksi muuten
+%selkeästi täysin käyttökelpoinen kieli ei ole syrjäyttänyt C:tä.
+
+Koska tutkimuskysymyksessä vertaillaan ohjelmointikieliä suorituskyvyn ja
+muistinkäytön suhteen, vertailuun kannattaa ottaa mukaan vain tehokkaita kieliä
+-- korkeamman tason ohjelmointikielet on tarkoitettu ohjelmointinopeuden
+parantamiseen ja turvallisempien ohjelmistojen toteuttamiseen nopeiden
+ohjelmien sijaan. Tällöin kielen suorituskyky on heikompi. Yksi kattava
+suorituskykyä mittaava vertailu on Benchmarks Game~\citep{benchmarks}, jossa
+pyritään kirjoittamaan mahdollisimman nopea ohjelma pysyen silti kielelle
+idiomaattisessa lähdekoodissa\footnote{Hyvin monessa kielessä voi kirjoittaa
+C:hen verrattavissa olevaa matalan tason ohjelmointia, mutta Benchmarks Gamessa
+on tarkoituksena välttää tätä.}.
+
+TIOBEn listasta Ada, C++, D, Go ja Rust nousevat esiin verrattavina kielinä.
+Kaikki viisi kieltä ovat tehokkaita. Tämän lisäksi jokaisen kielten historiassa
+on ollut tavoitteena korvata C:n tai C++:n käyttö, kuten luvussa~\ref{sec:muut}
+kerrotaan.
+
+Viime vuosina on tehty myös useita C:hen käännettäviä ohjelmointikieliä, jotka
+ovat jääneet pitkälti ilman mitään näkyvyyttä, kuten LISP/c~\citep{clisp1},
+C-Mera~\citep{clisp2}, Carp~\citep{clisp3} ja Nymph~\citep{nymph}. LISP/c,
+C-Mera ja Carp ovat LISP-perheeseen kuuluvia C:ksi kääntyviä ohjelmointikieliä,
+jotka pyrkivät parantamaan C:n syntaksia korvaamalla sen LISP-perheen
+syntaksilla. Nymph taas on olio-ohjelmointikieli. Erityisesti Carp on tämän
+tutkielman kannalta kiintoisa ohjelmointikieli, sillä se on C:ksi kääntyvä
+ohjelmointikieli, joka on suunniteltu mahdollisimman suorituskykyiseksi.
+
+%\hl{Tässä voisi olla jotain pohdintaa, miksi nuo ovat jääneet huomiotta ja
+%miten tämän voisi välttää. Erityisesti Carp tuntuu tätä tutkielmaa vastaavalta
+%kieleltä, olisi ikävää jättää se täysin huomiotta. Tosin tällaiset pohdinnat
+%jäänee puhtaasti spekulaatioksi, sillä noista ei ole erityisen paljoa dataa
+%saatavilla.}
 
 \subsection{Kielten suosioon vaikuttavat tekijät}
 
@@ -198,53 +279,6 @@ uuteen ohjelmointikieleen siirtyvälle ohjelmoijalle.
 % ohjelmiston lähdekoodiin~\citep{apachetldr, gpl3tldr}. Apache2 siis antaa
 % ohjelmoijille enemmän vapauksia GPL3:een verrattuna, mutta käyttäjien vapaus
 % esimerkiksi muokata ohjelmistoa kärsii tästä.
-
-\subsection{C:hen verrattavissa olevat ohjelmointikielet}
-
-\hl{Vertailtaviksi kieliksi valitaan Ada, C++, D, Go ja Rust. Kaikki
-vertailtavat kielet ovat kohtalaisen tehokkaita, jonka lisäksi kaikilla on
-yritetty korvata C:n tai C++:n käyttöä.}
-
-Historian saatossa on tehty useita C:n kilpailijoita, jotka ovat yrittäneet
-parantaa C:tä joidenkin C:n hyvien puolien kustannuksella. Muutamat näistä ovat
-päätyneet hyvin suosituiksi ohjelmointikieliksi, kuten esimerkiksi C++ ja Go.
-Kielten suosion mittaamiseen on tehty useita projekteja, jotka vertailevat
-kieliä esimerkiksi hakutulosten tai projektien mukaan. Näitä ovat esimerkiksi
-TIOBEn ohjelmointikielten suosion indeksi~\citep{tiobe} ja GitHub-palvelun
-julkaisema \mbox{Octoverse}~\citep{octoverse}.
-%Valitsemalla vertailuun suosittuja kieliä voidaan tutkia, miksi muuten
-%selkeästi täysin käyttökelpoinen kieli ei ole syrjäyttänyt C:tä.
-
-Koska tutkimuskysymyksessä vertaillaan ohjelmointikieliä suorituskyvyn ja
-muistinkäytön suhteen, vertailuun kannattaa ottaa mukaan vain tehokkaita kieliä
--- korkeamman tason ohjelmointikielet on tarkoitettu ohjelmointinopeuden
-parantamiseen ja turvallisempien ohjelmistojen toteuttamiseen nopeiden
-ohjelmien sijaan. Tällöin kielen suorituskyky on heikompi. Yksi kattava
-suorituskykyä mittaava vertailu on Benchmarks Game~\citep{benchmarks}, jossa
-pyritään kirjoittamaan mahdollisimman nopea ohjelma pysyen silti kielelle
-idiomaattisessa lähdekoodissa\footnote{Hyvin monessa kielessä voi kirjoittaa
-C:hen verrattavissa olevaa matalan tason ohjelmointia, mutta Benchmarks Gamessa
-on tarkoituksena välttää tätä.}.
-
-TIOBEn listasta Ada, C++, D, Go ja Rust nousevat esiin verrattavina kielinä.
-Kaikki viisi kieltä ovat tehokkaita. Tämän lisäksi jokaisen kielten historiassa
-on ollut tavoitteena korvata C:n tai C++:n käyttö, kuten luvussa~\ref{sec:muut}
-kerrotaan.
-
-Viime vuosina on tehty myös useita C:hen käännettäviä ohjelmointikieliä, jotka
-ovat jääneet pitkälti ilman mitään näkyvyyttä, kuten LISP/c~\citep{clisp1},
-C-Mera~\citep{clisp2}, Carp~\citep{clisp3} ja Nymph~\citep{nymph}. LISP/c,
-C-Mera ja Carp ovat LISP-perheeseen kuuluvia C:ksi kääntyviä ohjelmointikieliä,
-jotka pyrkivät parantamaan C:n syntaksia korvaamalla sen LISP-perheen
-syntaksilla. Nymph taas on olio-ohjelmointikieli. Erityisesti Carp on tämän
-tutkielman kannalta kiintoisa ohjelmointikieli, sillä se on C:ksi kääntyvä
-ohjelmointikieli, joka on suunniteltu mahdollisimman suorituskykyiseksi.
-
-%\hl{Tässä voisi olla jotain pohdintaa, miksi nuo ovat jääneet huomiotta ja
-%miten tämän voisi välttää. Erityisesti Carp tuntuu tätä tutkielmaa vastaavalta
-%kieleltä, olisi ikävää jättää se täysin huomiotta. Tosin tällaiset pohdinnat
-%jäänee puhtaasti spekulaatioksi, sillä noista ei ole erityisen paljoa dataa
-%saatavilla.}
 
 \subsection{Makrojärjestelmät}
 

@@ -50,8 +50,8 @@ fun computeTreeChecksum(rootNode: &?TreeNode) -> i64 {
 pub fun main(argc: i32, argv) -> i32 {
     // Set minimumTreeDepth to 4 and maximumTreeDepth to the maximum of what
     // was specified as the argument to the program and minimumTreeDepth+2.
-    let minimumTreeDepth: i64 = 4;
-    let maximumTreeDepth: i64 = atol(argv[1]) < minimumTreeDepth+2
+    let minimumTreeDepth = 4,
+        maximumTreeDepth = atol(argv[1]) < minimumTreeDepth+2
         ? minimumTreeDepth+2
         : atol(argv[1]);
 

@@ -1,8 +1,8 @@
-set term tikz size 16,6
+set term tikz size 17,6
 set output "benchmarkslines2.tex"
 
 set ylabel "\\shortstack{Lähdekoodissa tavuja\\\\ C:hen verrattuna (\\%)}" offset -1.5
-set arrow front from -0.5,100 to 8.5,100 nohead dt "-"
+set arrow front from -0.5,100 to 9.5,100 nohead dt "-"
 set yrange [40 : 120]
 
 set boxwidth 0.5

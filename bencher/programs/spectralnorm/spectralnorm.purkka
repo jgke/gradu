@@ -15,8 +15,7 @@ import "sched.h"
 import "stdio.h"
 import "stdlib.h"
 
-let false = 0;
-let true = 1;
+let false = 0, true = 1;
 
 /* define SIMD data type. 2 doubles encapsulated in one XMM register */
 type v2dt = __attribute__(double,vector_size(16));
@@ -77,8 +76,7 @@ fun eval_A_j(i: i32, j: i32) -> v2dt {
 fun eval_A_times_u(p: &Param) -> v2dt {
     /* alias of source vector */
     let pU: &v2dt = p.u as &void;
-    let ie;
-    let i;
+    let ie, i;
 
     for ({i = p.r_begin; ie = p.r_end;}; i < ie; i++) {
         let sum = v2dt {0, 0};
@@ -105,8 +103,7 @@ fun eval_A_times_u(p: &Param) -> v2dt {
 
 fun eval_At_times_u(p: &Param) {
     let pT: &v2dt = p.tmp as &void;
-    let i;
-    let ie;
+    let i, ie;
 
     for ({i = p.r_begin; ie = p.r_end;}; i < ie; i++) {
         let sum = v2dt {0, 0};
@@ -149,8 +146,7 @@ fun eval_AtA_times_u(p: &Param) {
  */
 fun GetThreadCount() {
     let cs;
-    let i;
-    let count = 0;
+    let i, count = 0;
 
     @"CPU_ZERO(&cs);"
     sched_getaffinity(0, sizeof(cs), &cs);
@@ -165,12 +161,9 @@ fun GetThreadCount() {
 }
 
 fun spectral_game(N: i32) {
-    let u: [double;N];
-    let tmp: [double;N];
-    let v: [double;N];
+    let u, tmp, v: [double;N];
 
-    let vBv = 0.0;
-    let vv  = 0.0;
+    let vBv = 0.0, vv = 0.0;
 
 pragma "omp parallel default(shared) num_threads(GetThreadCount())"
     {

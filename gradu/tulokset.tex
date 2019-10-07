@@ -1,27 +1,51 @@
 \section{Uuden ohjelmointikielen vertaaminen muihin ohjelmointikieliin}
 
+\hl{Tässä luvussa uutta ohjelmointikieltä vertaillaan muihin tutkielmassa
+käsiteltyihin ohjelmointikieliin, ja kerrotaan, miksi tai miksei se päihitä
+C:tä vertailuehtojen mukaisesti.}
+
 \subsection{Vertailun tulokset}
+\label{sec:results}
 
-Purkan referenssitoteutus \citep{purkka}
+Tätä tutkielmaa varten on toteutettu kääntäjä, joka kääntää ohjelmat
+Purkka-kielestä C-kieleen \citep{purkka}. Nopeimmat Benchmarks Gamen
+C-toteutukset on käännetty Purkka-kielelle. Nämä ohjelmat on sitten käännetty
+Purkka-kääntäjällä takaisin C:ksi, ja käännetty sitten
+GCC-kääntäjällä\citationneeded vastaavilla asetuksilla kuin verrattavat
+C-ohjelmat. Kuvassa~\ref{fig:purkkabenchmarksgame} verrataan Purkka-toteutuksia
+nopeimpaan C-ohjelmaan. Koska Purkka-toteutukset on muunnettu nopeimmasta
+C-toteutuksesta ja käännetty takaisin lähes identtiseen muotoon, suoritusajan
+ja muistinkäytön tulisi olla täsmälleen samat kuin alkuperäisen C-toteutuksen.
 
-Purkkaa verrataan samalla tavalla kuin muita ohjelmointikieliä luvussa xx.
-Kaavioissa on esitetty kaikki performanssitestit erikseen. Raakadata liitteeseen.
+Suorituskykymittaukset mittaavat ainoastaan prosessoriin ja muistinkäyttöön
+liittyiviä mittauksia, eivätkä esimerkiksi näytönohjaimella suoritettua
+laskentaa.
+
+\hl{Täydennykset tähän kun on lopulliset mittaukset: } Suorituskykymittaukset
+on tehty \hl{ABC}-koneella \hl{Ubuntu/Arch}-käyttöjärjestelmällä Linux 4.x.x
+-kernelillä. Mittaustietokoneessa oli neliytiminen Intel \hl{i7 XXXX}
+-prosessori HyperThreading-tuella (3.x GHz) ja XX gigatavua DDR3-muistia. 
+
+Kuvaajista nähdään, että Purkka on täsmälleen yhtä tehokas kieli kuin C, eikä
+se vie enempää muistia. Pienet eroavaisuudet suuntaan ja toiseen on
+selitettävissä testauksen aihuttamalla luonnollisella vaihtelulla.
+Purkka-tiedostot ovat keskimäärin 6\% pienempiä kuin vastaavat C-tiedostot.
 
 \begin{figure}[ht!]
     \begin{adjustbox}{center}
-        \begin{minipage}{1.2\textwidth}
+        \begin{minipage}{1.25\textwidth}
         \input{data/benchmarkscpu2.tex}
         \end{minipage}
     \end{adjustbox}
 
     \begin{adjustbox}{center}
-        \begin{minipage}{1.2\textwidth}
+        \begin{minipage}{1.25\textwidth}
         \input{data/benchmarksmem2.tex}
         \end{minipage}
     \end{adjustbox}
 
     \begin{adjustbox}{center}
-        \begin{minipage}{1.2\textwidth}
+        \begin{minipage}{1.25\textwidth}
         \input{data/benchmarkslines2.tex}
         \end{minipage}
     \end{adjustbox}
@@ -29,33 +53,35 @@ Kaavioissa on esitetty kaikki performanssitestit erikseen. Raakadata liitteeseen
         Benchmarks Gamen ohjelmiin perustuvat kuvaajat Purkalla kirjoitettujen ohjelmien
         suorituskyvystä, muistinkäytöstä ja ohjelmien koosta verrattuna C:llä
         kirjoitettujen ohjelmien tuloksiin.}
-    \label{fig:benchmarksgame}
+    \label{fig:purkkabenchmarksgame}
 \end{figure}
 
-\hl{Tässä luvussa uutta ohjelmointikieltä vertaillaan muihin tutkielmassa
-käsiteltyihin ohjelmointikieliin, ja kerrotaan, miksi tai miksei se päihitä
-C:tä vertailuehtojen mukaisesti.}
-
-Kuvass zx nähdään, että Purkka on yhtä tehokas kieli kuin C, eikä se vie
-enempää muistia. Purkka vie keskimäärin xx prosenttia vähemmän lähdekoodia.
+\FloatBarrier
 
 \subsection{Johtopäätökset ja vertailun arviointi}
 
-Tutkimuksessa verrattin useita ohjelmointikiiä C:hen, mutta yksikään ei
-pärjää kriteereistä johtuen. Purkka pärjää.
+Purkka on vertailun ainoa kieli, joka on yhtä tehokas kuin C. Tämä johtunee
+pitkälti siitä, että Purkka käännetään lähes identtisenä C:ksi, eikä tarjoa
+ajoaikaisia ominaisuuksia, jotka hidastaisivat kieltä.
 
-Performanssitestaus ei vastaa todellista maailmaa, mutta koska Purkka käännetään
-vastaavaksi C:ksi, sen tulisi aina päästä identtiseen suorituskykyyn.
+Suorituskykymittaukset eivät kuitenkaan vastaa todellista maailmaa, sillä ne
+usein mittaavat vain yksittäistä pientä osa-aluetta, kuten yksittäisten
+operaatioiden nopeutta, monimutkaisten ohjelmistojen sijaan. Lisäksi
+suorituskykymittaukset ovat usein epätarkkoja, sillä monimutkaiset
+moniajoympäristöt eivät mahdollista deterministisiä mittauksia.
 
-Muiden kielten osalta: koska mittuksrt on mittauksia, ovat epätarkkoja.
+Purkkaa todennäköisesti ei oteta käyttöön, sillä se ei tarjoa merkittäviä
+parannuksia C:hen, vaan mahdollistaa lähinnä hieman siistimmän lähdekoodin.
+Tämän lisäksi Purkan toteuttaja on yksittäinen opiskelija, kun taas esimerkiksi
+Go-kielen ja Rustin toteuttajat ovat kokeneita ohjelmointikielten
+suunnittelijoita, jonka lisäksi kieliä ylläpidetään aktiivisesti tunnettujen
+organisaatioiden toimesta.
 
-Purkkaa tuskin otetaan käyttöön, vaikka se tämän paperin mukaan olisi parempi, sillä
-kukaan ei tunne kieltä, ainoan kääntäjän toteuttaja ei ole suuri firma.
-
-Jatkotutkimus... tutkimus osoittaa, että C:tä on mahdollista parantaa syntaktisesti,
-jos joku firma hsluaisi niin parannettavaa löytyy. Tarkempi tyypitys C:hen voi
-paljastaa mahdollisia ohjelmointi irheitä ja mahdollistaa turvallisemman ja tehokkaamman
-optimoinnin.
+Tutkimuksesta voidaan kuitenkin päätellä, että C:tä parempi kieli on
+todennäköisesti toteutettavissa. Käännösaikaista turvallisuutta voi parantaa
+tiukemmalla tyyppijärjestelmällä ilman ajoaikaisia haittoja. Tarkemmilla
+tyyppimäärittelyillä voi myös tehdä optimointeja (esimerkiksi vaatimalla
+osoitinargumentit aina ei-tyhjiksi osoittimiksi),.
 
 \hl{Jos tutkielmassa on mahdollisia puutteita, tai sen tulokset eivät
 välttämättä tutkielman rajoituksista johtuen päde tutkielman ulkopuolella,

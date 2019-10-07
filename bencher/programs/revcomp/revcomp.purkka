@@ -31,8 +31,7 @@ struct thread_data_t {
 
 fun set_offset(data: &void) -> &void {
    let td: &thread_data_t = data;
-   let from = td.from; 
-   let to = td.to;
+   let from = td.from, to = td.to;
    let off = td.off;
 
    for (let m = from + 60 - off; m < to; m += 61) {
@@ -45,8 +44,7 @@ fun set_offset(data: &void) -> &void {
 
 fun set_rc(data: &void) -> &void {
    let td: &thread_data_t = data;
-   let from = td.from;
-   let to = td.to;
+   let from = td.from, to = td.to;
 
    let i;
    for ({to--; i = td.off;}; i; {from++; to--; i--;}) {
@@ -60,8 +58,7 @@ fun set_rc(data: &void) -> &void {
 
 fun process(data: &void) -> &void {
    let td: &thread_data_t = data;
-   let from = td.from;
-   let to = td.to;
+   let from = td.from, to = td.to;
 
    from = memchr(from, '\n', to - from);
    from++;
@@ -138,8 +135,7 @@ fun process(data: &void) -> &void {
 
 fun get_markers(data: &void) -> &void {
    let td: &thread_data_t = data;
-   let from = td.from;
-   let to = td.to;
+   let from = td.from, to = td.to;
    let marker = 0;
 
    while (1) {
@@ -197,11 +193,8 @@ pub fun main() {
 
    let thread: [pthread_t;MAX_THREADS];
    let tdata: [thread_data_t;MAX_THREADS];
-   let t = 0;
-   let round = 0;
-   let markersno = 0;
+   let t = 0, round = 0, markersno = 0, i;
    let markers: [&char;32];
-   let i;
 
    t = WORKING_THREADS;
 

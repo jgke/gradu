@@ -47,8 +47,7 @@ pub fun main(argc: i32, argv: [[char]]) -> i32 {
      initial_Permutation_Index_For_Block<factorial_Lookup_Table[n];
      initial_Permutation_Index_For_Block+=block_Size) {
       let count: [i32;n];
-      let temp_Permutation: [i8;n];
-      let current_Permutation: [i8;n];
+      let temp_Permutation, current_Permutation: [i8;n];
 
       // Initialize count and current_Permutation.
       count[0]=0;
@@ -100,8 +99,7 @@ pub fun main(argc: i32, argv: [[char]]) -> i32 {
                // flip additional elements in the middle of the
                // temp_Permutation.
                if(first_Value>2) {
-                  let low_Index=1;
-                  let high_Index=first_Value-1;
+                  let low_Index=1, high_Index=first_Value-1;
                   // Note that this loop is written so that it will run at
                   // most 16 times so that compilers will be more willing
                   // to unroll it. Consequently this won't work right when

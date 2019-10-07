@@ -184,12 +184,7 @@ fun generate_And_Wrap_Pseudorandom_DNA_Sequence(nucl_info: [nucleotide_info], nu
         let line: &char;
         let rnd: [u32; CHARACTERS_PER_BLOCK];
         let r: u32;
-        let cnt: i32;
-        let col;
-        let prid;
-        let nid;
-        let ncnt;
-        let cur_tid: i32;
+        let cnt, col, prid, nid, ncnt, cur_tid;
         cur_tid = omp_get_thread_num();
         while(1) {
             do {

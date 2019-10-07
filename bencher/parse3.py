@@ -8,7 +8,7 @@ measurement = sys.argv[2]
 
 abbrv_benchmark = {
     "binarytrees": "binary",
-    "fannkuchredux": "fannkuch",
+    "fannkuchredux": "fannku",
     "fasta": "fasta",
     "knucleotide": "knucleo",
     "nbody": "nbody",
@@ -97,21 +97,43 @@ if action == "all":
             print(file=sys.stderr)
     print(file=sys.stderr)
 elif measurement != "size(B)":
-    print("# ", file=sys.stderr, end=' ')
+    all_results = []
+
+    for benchmark in benchmarks:
+        if action in best_data[benchmark]:
+            for data in best_data[benchmark][action]:
+                this = float(data[measurement])
+                reference = gcc_averages[benchmark][measurement]
+                all_results += [100.0*this/reference]
+
+    print("#", file=sys.stderr, end=' ')
+    print("kaikki", file=sys.stderr, end=' ')
     for benchmark in benchmarks:
         if action in best_data[benchmark]:
             print(abbrv_benchmark.get(benchmark, benchmark[0:6]), file=sys.stderr, end=' ')
     print(file=sys.stderr)
     
     for i in range(len(best_data['binarytrees'][action])):
+        print(all_results.pop(), file=sys.stderr, end=' ')
         for benchmark in benchmarks:
             if action in best_data[benchmark]:
                 this = float(best_data[benchmark][action][i][measurement])
                 reference = gcc_averages[benchmark][measurement]
                 print(100.0*this/reference, file=sys.stderr, end=' ')
         print(file=sys.stderr)
+    for result in all_results:
+        print(result, file=sys.stderr)
 elif action != "all":
-    i = 0
+    avg_sum = 0
+    avg_count = 0
+    for benchmark in benchmarks:
+        if action in best_data[benchmark]:
+            this = float(best_data[benchmark][action][0][measurement])
+            reference = gcc_averages[benchmark][measurement]
+            avg_sum += 100.0*this/reference
+            avg_count += 1
+    print(0, "keskiarvo", avg_sum/avg_count, file=sys.stderr)
+    i = 1
     for benchmark in benchmarks:
         if action in best_data[benchmark]:
             this = float(best_data[benchmark][action][0][measurement])
