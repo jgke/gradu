@@ -24,12 +24,49 @@ laskentaa.
 \hl{Täydennykset tähän kun on lopulliset mittaukset: } Suorituskykymittaukset
 on tehty \hl{ABC}-koneella \hl{Ubuntu/Arch}-käyttöjärjestelmällä Linux 4.x.x
 -kernelillä. Mittaustietokoneessa oli neliytiminen Intel \hl{i7 XXXX}
--prosessori HyperThreading-tuella (3.x GHz) ja XX gigatavua DDR3-muistia. 
+-prosessori HyperThreading-tuella (3.x GHz) ja XX gigatavua DDR3-muistia.
+Mittaukset on toteutettu suorittamalla ohjelma suurimmalla syötteellä \hl{x}
+kertaa \hl{(5? ehkä enemmän.)}, ja mittaamalla kunkin ajon viemä aika ja
+muistinkäyttö. Muistinkäyttö on mitattu 200 millisekunnin välein
+\texttt{libgtop2}-kirjastolla, ja kunkin ajon muistinkäytöksi on merkitty
+suurin mitattu muistikäyttö.
 
 Kuvaajista nähdään, että Purkka on täsmälleen yhtä tehokas kieli kuin C, eikä
 se vie enempää muistia. Pienet eroavaisuudet suuntaan ja toiseen on
-selitettävissä testauksen aihuttamalla luonnollisella vaihtelulla.
-Purkka-tiedostot ovat keskimäärin 6\% pienempiä kuin vastaavat C-tiedostot.
+selitettävissä testauksen aihuttamalla luonnollisella vaihtelulla. Kiintoisasti
+Purkalla toteutettu \texttt{fannkuchredux}-koe on kuitenkin noin 50\% nopeampi
+kuin C:llä toteutettu lähes identtinen versio, ja \texttt{nbody}-koe vie vie
+vain 80\% muistia verrattuna C-toteutukseen. Purkka-tiedostot ovat keskimäärin
+6\% pienempiä kuin vastaavat C-tiedostot. Suurimmat kokoerot tiedostoissa
+tulevat muuttujien määrittelyistä sekä tyyppi-inferenssistä.
+Kuvassa~\ref{fig:declarations} esitellään esimerkkejä Purkan
+yksinkertaisemmista määrittelyistä monimutkaisemmissa määrittelyissä.
+
+\begin{figure}[ht!]
+    \begin{adjustbox}{center}
+        \begin{tabular}{@{} m{0.55\textwidth} m{0.55\textwidth} @{}} \toprule
+            Purkka-määrittely ja C-määrittely & Selite \\ \midrule
+
+            \texttt{let a: u32; \newline unsigned int a;} & Epänegatiivinen 32-bittinen kokonaisluku \\
+            \noalign{\vspace{0.2cm}}
+
+            \texttt{let a, b: [\&i8;5]; \newline signed char *a[5], *b[5];} & Taulukko viidestä osoitinmuuttujasta \newline 8-bittiseen kokonaislukuun \\
+            \noalign{\vspace{0.2cm}}
+
+            \texttt{const a = ["1", "2", "3"]; \newline const char * const a[] = \{"1", "2", "3"\};} & Kolmen merkkijonon taulukon vakiomuuttuja \\
+            \noalign{\vspace{0.2cm}}
+
+            \texttt{let a = fun (a, b) => a + b; \newline int a(int a, int b) \{ return a + b; \}} & Funktio, joka laskee argumenttiensa summan \\
+            \noalign{\vspace{0.2cm}}
+
+            \bottomrule
+        \end{tabular}
+    \end{adjustbox}
+    \label{fig:declarations}
+    \caption{Purkan muuttujien määrittelyt verrattuna C:n vastaaviin
+    määrittelyihin.}
+\end{figure}
+
 
 \begin{figure}[ht!]
     \begin{adjustbox}{center}
@@ -62,11 +99,13 @@ Purkka-tiedostot ovat keskimäärin 6\% pienempiä kuin vastaavat C-tiedostot.
 
 Purkka on vertailun ainoa kieli, joka on yhtä tehokas kuin C. Tämä johtunee
 pitkälti siitä, että Purkka käännetään lähes identtisenä C:ksi, eikä tarjoa
-ajoaikaisia ominaisuuksia, jotka hidastaisivat kieltä.
+ajoaikaisia ominaisuuksia, jotka hidastaisivat kieltä. Purkka ei kuitenkaan
+päihitä C:tä tutkimuksen määrittelyn mukaisesti, vaan on suorituskyvyltään
+täsmälleen yhtä tehokas kuin C.
 
 Suorituskykymittaukset eivät kuitenkaan vastaa todellista maailmaa, sillä ne
 usein mittaavat vain yksittäistä pientä osa-aluetta, kuten yksittäisten
-operaatioiden nopeutta, monimutkaisten ohjelmistojen sijaan. Lisäksi
+operaatioiden nopeutta monimutkaisten ohjelmistojen sijaan. Lisäksi
 suorituskykymittaukset ovat usein epätarkkoja, sillä monimutkaiset
 moniajoympäristöt eivät mahdollista deterministisiä mittauksia.
 
@@ -75,7 +114,9 @@ parannuksia C:hen, vaan mahdollistaa lähinnä hieman siistimmän lähdekoodin.
 Tämän lisäksi Purkan toteuttaja on yksittäinen opiskelija, kun taas esimerkiksi
 Go-kielen ja Rustin toteuttajat ovat kokeneita ohjelmointikielten
 suunnittelijoita, jonka lisäksi kieliä ylläpidetään aktiivisesti tunnettujen
-organisaatioiden toimesta.
+organisaatioiden toimesta. Tämä on todennäköisesti myös syy sille, miksi
+esimerkiksi LISP/c~\citep{clisp1}, C-Mera~\citep{clisp2}, Carp~\citep{clisp3}
+ja Nymph~\citep{nymph} ovat jääneet ilman laajempaa huomiota.
 
 Tutkimuksesta voidaan kuitenkin päätellä, että C:tä parempi kieli on
 todennäköisesti toteutettavissa. Käännösaikaista turvallisuutta voi parantaa

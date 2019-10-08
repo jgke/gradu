@@ -1,0 +1,7 @@
+struct Wrapper { num: i32 };
+let a = Foo { 1 }; // a:n tyyppi päätellään Wrapperiksi, OK
+let b = a.num; // b:n tyyppi päätellään i32:ksi, OK
+
+let c;
+let d = c.num; // a:n tyyppiä ei vielä tiedetä, VIRHE
+c = Foo { 1 }; // a:n tyyppi tiedetään vasta tällä rivillä
