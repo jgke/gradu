@@ -110,21 +110,23 @@ tyyppi-inferenssi onnistuu, mutta toisessa ei.
 
 \FloatBarrier
 
-\hl{Tämä vaatii \textbf{paljon} lisää avaamista, selittämistä ym. tekstiä.}
+\hl{Tämä vaatii \textbf{paljon} lisää avaamista, selittämistä ym. tekstiä.
+Lisäksi pitää vahvistaa, että Purkka-kääntäjä oikeasti toimii näiden
+perusteella, eikä \emph{melkein} identtisten päättelysääntöjen avulla.}
 
-\newcommand{\hmtag}[1]{\tag*{[#1]}\hspace*{1cm}} 
+\newcommand{\hmtag}[1]{\tag*{[#1]\hspace*{1cm}}}
 
 \begin{gather}
     \frac
       {x: \sigma \in \Gamma}
       {\Gamma \vdash _{D}x:\sigma} \hmtag{Var} \\
-    \intertext{Var on yksinkertaisin päättelysääntö: jos ympäristössä on
+    \intertext{Var on yksinkertaisin päättelysääntö: jos ympäristössä $\Gamma$ on
     muuttuja $x$ tyyppiä $\sigma$, niin lausekkeissa muuttujan $x$ tyyppi on
     $\sigma$.}
 %
     \frac
       {\Gamma \vdash _{D}e_{0}:\tau \rightarrow \tau '\quad \quad \Gamma \vdash _{D}e_{1}:\tau }
-      {\Gamma \vdash _{D}e_{0}\ e_{1}:\tau '} \tag{App} \\
+      {\Gamma \vdash _{D}e_{0}\ e_{1}:\tau '} \hmtag{App} \\
     \intertext{App tunnetaan paremmin funktiokutsuna. Jos $e_0$ on funktio,
     joka ottaa argumenteikseen arvot tyyppiä $\tau$ ja palauttaa arvon tyyppiä
     $\tau'$, ja $e_1$ on jokin arvo tyyppiä $\tau$, niin funktio $e_0$
@@ -132,7 +134,7 @@ tyyppi-inferenssi onnistuu, mutta toisessa ei.
 %
     \frac
       {\Gamma ,\;x:\tau \vdash _{D}e:\tau '}
-      {\Gamma \vdash _{D}\lambda \ x\ .\ e:\tau \rightarrow \tau '} \tag{Abs}
+      {\Gamma \vdash _{D}\lambda \ x\ .\ e:\tau \rightarrow \tau '} \hmtag{Abs}
     \intertext{Abs on yleisemmin tunnettu funktion määrittelynä. Jos
     olettamalla, että $x$:n tyyppi on $\tau$ voidaan päätellä että $e$:n tyyppi
     on $\tau'$, niin $\lambda x . e$ on funktio, joka ottaa argumenteikseen
@@ -140,9 +142,9 @@ tyyppi-inferenssi onnistuu, mutta toisessa ei.
 %
     \frac
       {\Gamma \vdash _{D}e_{0}:\sigma \quad \quad \Gamma ,\,x:\sigma \vdash _{D}e_{1}:\tau }
-      {\Gamma \vdash _{D}{\mathrm {let}}\ x=e_{0}\ {\mathrm {in}}\ e_{1}:\tau } \tag{Let} \\
-    \intertext{Let tarkoittaa muuttujan luomista. Toisin sanoen, jos luodaan
-    muuttuja $x$, sitä voidaan käyttää myöhemmin.
+      {\Gamma \vdash _{D}{\mathrm {let}}\ x=e_{0}\ {\mathrm {in}}\ e_{1}:\tau } \hmtag{Let} \\
+    \intertext{Let mahdollistaa uuden muuttujan luomisen. Toisin sanoen, jos
+    luodaan muuttuja $x$, sitä voidaan käyttää myöhemmin.
     \newline \newline
     Jos voidaan päätellä, että $e_0$:n tyyppi on $\tau$ sekä olettamalla, että
     $x$:n tyyppi on $\sigma$ voidaan päätellä, että $e_1$:n tyyppi on $\tau'$,
@@ -151,7 +153,7 @@ tyyppi-inferenssi onnistuu, mutta toisessa ei.
 %
     \frac
       {\Gamma \vdash _{D}e:\sigma '\quad \sigma '\sqsubseteq \sigma }
-      {\Gamma \vdash _{D}e:\sigma } \tag{Inst} \\
+      {\Gamma \vdash _{D}e:\sigma } \hmtag{Inst} \\
     \intertext{Inst mahdollistaa arvojen asettamisen myös hieman toisenlaisiin
     tyyppeihin, kuten vaikka \texttt{i8}-tyyppisen arvon asettamisen
     \texttt{i16}-tyyppiseen arvoon. Huomioitavaa on, että \texttt{i8}-osoitin
@@ -162,7 +164,7 @@ tyyppi-inferenssi onnistuu, mutta toisessa ei.
 %
     \frac
       {\Gamma \vdash _{D}e:\sigma \quad \alpha \notin {\text{free}}(\Gamma )}
-      {\Gamma \vdash _{D}e:\forall \ \alpha \ .\ \sigma } \tag{Gen} \\
+      {\Gamma \vdash _{D}e:\forall \ \alpha \ .\ \sigma } \hmtag{Gen} \\
     \intertext{Jos voidaan päätellä, että $e$ on tyyppiä $\sigma$ ja $\alpha$
     ei ole nykyisessä kontekstissa vapaa tyyppi, niin $e$ on tyyppiä $\sigma$
     kaikille $\alpha$:n tyypeille.} \notag
@@ -175,11 +177,11 @@ tyyppi-inferenssi onnistuu, mutta toisessa ei.
 Purkan syntaksi on hyvin samankaltainen C:n syntaksiin verrattuna. Suurimmat
 erot C:hen liittyvät tyyppien kirjoittamiseen.
 
-Funktiomäärittelyt alkavat \texttt{fun}-avainsanalla. Tämä noudattaa
-usean muun modernin ohjelmointikielen tapaa aloittaa funktiomäärittely
-avainsanalla (Rust käyttää \texttt{fn}, Go käyttää \texttt{func}, Kotlin
-käyttää \texttt{fun}). Tämän lisäksi avainsanan käyttäminen yksinkertaistaa
-Purkka-kääntäjän jäsentäjän toteutusta.
+Funktiomäärittelyt alkavat \texttt{fun}-avainsanalla. Tämä noudattaa usean muun
+modernin ohjelmointikielen tapaa aloittaa funktiomäärittely avainsanalla.
+Vertailun vuoksi Rust käyttää avainsanaa \texttt{fn}, Go käyttää avainsanaa
+\texttt{func} ja Kotlin käyttää avainsanaa \texttt{fun}). Avainsanan
+käyttäminen yksinkertaistaa jäsentäjän toteutusta.
 
 Purkka tukee tyyppi-inferenssiä, joka helpottaa koodin kirjoittamista, kun
 kääntäjä pystyy päättelemään muuttujien tyypit. Tyyppisyntaksi itsessään
@@ -191,16 +193,29 @@ Funktiomäärittelyissä ja globaaleissa muuttujissa C:n
 julkinen), mutta käänteisellä merkityksellä: jos \texttt{pub}-avainsanaa ei ole
 käytetty, koodi käyttäytyy kuin siihen olisi lisätty C:n
 \texttt{static}-avainsana. Funktioiden sisällä Purkka tukee myös
-\texttt{static}-avainsanaa, joka toimii täsmälleen samalla tavalla kuin C:n
+\texttt{static}-avainsanaa, joka toimii samalla tavalla kuin C:n
 \texttt{static} käytettynä funktioiden sisällä.
 
-C:n käsittelee structien ja taulukoiden alustamista identtisellä syntaksilla.
-Purkka erottaa nämä kaksi syntaksia erikseen kuvan~\hl{ei esimekkiä} tavalla.
+C:n käsittelee tietueiden ja taulukoiden alustamista identtisellä syntaksilla.
+Purkka erottaa nämä kaksi syntaksia erikseen ohjelman~\ref{fig:structinit}
+tavalla, jotta alustaessa alustettavan datatyypin tyyppi olisi selkeästi
+näkyvissä myös tyyppi-inferenssiä käytettäessä.
+
+\begin{listing}[ht!]
+    \inputminted{Rust}{koodi/structinit.prk}
+    \inputminted{C}{koodi/structinit.c}
+    \caption{Tietueen ja taulukon alustaminen Purkassa ja C:ssä.}
+    \label{fig:structinit}
+\end{listing}
 
 Suurin osa C:n lauseista on Purkassa lausekkeita. Erityisesti \texttt{if/else}
-on C:ssä lause, mutta Purkassa lauseke.\hl{miten muunnetaan C:ksi?}
+on C:ssä lause, mutta Purkassa lauseke. \hl{Tähän tekstiä, miten tuo muunnetaan
+C:ksi turvallisesti}
 
 \subsection{Makrot}
+
+\hl{Todo: speksi makroista, tai ainakin lisää selitystä. Kääntäjässä ei ole
+toistaiseksi mitään tehtynä Purkka-makrojen eteen.}
 
 Koska Purkan tulee olla myös makrojen osalta C-yhteensopiva, Purkka osaa
 laajentaa C-makroja. Purkka-kääntäjä pystyy muuntamaan makrokutsun
@@ -213,7 +228,7 @@ toteutettu makroja.} Jos makrot eivät sisällä rekursiota tai hahmontunnistust
 ne voidaan muuntaa C-makroiksi.
 
 \hl{Teoriassa myös hahmontunnistuksen ja rekursion voisi muuntaa C-makroiksi,
-käyttäen hyväksi C-makrojen detaileja.}
+käyttäen hyväksi C-makrojen nurkkatapauksia.}
 
 \subsection{Suoritusaikaiset ominaisuudet ja laajennokset}
 
@@ -226,26 +241,27 @@ Useat C-toteutukset sisältävät erilaisia laajennoksia, joiden tarkoituksena o
 mahdollistaa eilaisten alustariippuvaisten ominaisuuksien käyttö. Benchmarks
 gamessa yksi käytetyimmistä laajennoksista on SIMD-tyypit, joita varten
 esimerkiksi GCC-kääntäjällä on oma syntaksinsa. GCC:llä SIMD-tyypit voidaan
-määritellä käyttäen \texttt{\_\_attribute\_\_(())} -\hl{määrettä}.
-Purkka-kääntäjä osaa tunnistaa useita GCC:n laajennoksia ja välittää ne
-eteenpäin.
+määritellä käyttämällä \texttt{\_\_attribute\_\_((vector\_size))} -määrettä.
+Purkka osaa käyttää useita GCC:n laajennoksia.
 
 Sulkeumien toteutus olettaa, että C-kääntäjä tukee laajennoksena sulkeumia.
+\hl{Tähän (tai muualle) lause lambdojen ja sulkeumien erosta?}
 
 \subsection{Ohjelmointikielen kääntäminen}
 
 Purkan kääntäminen C-koodiksi on hieman normaalia kääntämistä monimutkaisempaa.
 Koska Purkan tulee pystyä muuntamaan Purkka-koodia C-koodiksi, mutta myös
-C-koodia purkka-koodiksi makrojen laajentamisen myötä, kääntäjän pitää ymmärtää
-kahta ohjelmointikieltä yhden sijaan. Kuvassa~\ref{fig:compilerarch} on kaavio
-Purkan kääntämisestä.
+C-koodia Purkka-koodiksi makrojen laajentamisen myötä, kääntäjän pitää ymmärtää
+kahta ohjelmointikieltä yhden sijaan, sekä muuntamaan niitä toisikseen.
+Kuvassa~\ref{fig:compilerarch} on kaavio Purkan kääntämisestä.
 
-Suurin osa ominaisuuksista kääntyy suoraan vastaaviksi C-ominaisuuksiksi.
-Muutamat vaatii työtä, kuten inferenssi, block expr, lambdat. Inferenssialgo
-johonkin nurkkaan.
-
-Lambdat käännetään siten, että funktion body nostetaan ulos lambdan paikalta,
-ja korvataan funktio-osoittimella.
+Suurimman osan purkan syntaksipuista saa käännettyä lähes identtisiksi C:n
+syntaksipuiksi, mutta muutamat ominaisuudet vaativat enemmän työtä. Suurin
+näistä on tyyppi-inferenssi. Jotkut muut ominaisuudet vaativat myös
+monimutkaisempia muutoksia, kuten \texttt{if}-lausekkeet sekä lambdalausekkeet.
+Näistä \texttt{if}-lausekkeet käännetään käyttäen välimuuttujaa.
+Lambdalausekkeet taas käännetään nostamalla lambda erilliseksi funktioksi, ja
+korvaamalla lambda osoittimella tähän funktioon.
 
 \begin{figure}[ht!]
         \footnotesize

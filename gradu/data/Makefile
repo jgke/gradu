@@ -1,4 +1,4 @@
-all: benchmarkscpu.tex benchmarksmem.tex benchmarkslines.tex benchmarkscpu2.tex benchmarksmem2.tex benchmarkslines2.tex
+all: benchmarkscpu.tex benchmarksmem.tex benchmarkslines.tex benchmarkscpu2.tex benchmarksmem2.tex benchmarkslines2.tex data.tex
 
 SUMMARY=../../bencher/parse3.py ../../bencher/summary/all_measurements.csv
 
@@ -20,3 +20,6 @@ benchmarksmem2.tex: benchmem2.gp ${SUMMARY}
 benchmarkslines2.tex: benchlines2.gp ${SUMMARY}
 	(cd ../../bencher && python3 parse3.py purkka "size(B)" >/dev/null 2> ../gradu/data/benchmarks_lines2.csv)
 	gnuplot benchlines2.gp
+
+data.tex: ${SUMMARY} data_to_tex.py
+	python3 data_to_tex.py > data.tex

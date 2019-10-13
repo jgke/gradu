@@ -1,6 +1,6 @@
 \section{Uuden ohjelmointikielen vertaaminen muihin ohjelmointikieliin}
 
-\hl{Tässä luvussa uutta ohjelmointikieltä vertaillaan muihin tutkielmassa
+\hld{Tässä luvussa uutta ohjelmointikieltä vertaillaan muihin tutkielmassa
 käsiteltyihin ohjelmointikieliin, ja kerrotaan, miksi tai miksei se päihitä
 C:tä vertailuehtojen mukaisesti.}
 
@@ -10,12 +10,12 @@ C:tä vertailuehtojen mukaisesti.}
 Tätä tutkielmaa varten on toteutettu kääntäjä, joka kääntää ohjelmat
 Purkka-kielestä C-kieleen \citep{purkka}. Nopeimmat Benchmarks Gamen
 C-toteutukset on käännetty Purkka-kielelle. Nämä ohjelmat on sitten käännetty
-Purkka-kääntäjällä takaisin C:ksi, ja käännetty sitten
-GCC-kääntäjällä\citationneeded vastaavilla asetuksilla kuin verrattavat
-C-ohjelmat. Kuvassa~\ref{fig:purkkabenchmarksgame} verrataan Purkka-toteutuksia
-nopeimpaan C-ohjelmaan. Koska Purkka-toteutukset on muunnettu nopeimmasta
-C-toteutuksesta ja käännetty takaisin lähes identtiseen muotoon, suoritusajan
-ja muistinkäytön tulisi olla täsmälleen samat kuin alkuperäisen C-toteutuksen.
+Purkka-kääntäjällä takaisin C:ksi, ja käännetty sitten GCC-kääntäjällä
+vastaavilla asetuksilla kuin verrattavat C-ohjelmat.
+Kuvassa~\ref{fig:purkkabenchmarksgame} verrataan Purkka-toteutuksia nopeimpaan
+C-ohjelmaan. Koska Purkka-toteutukset on muunnettu nopeimmasta C-toteutuksesta
+ja käännetty takaisin lähes identtiseen muotoon, suoritusajan ja muistinkäytön
+tulisi olla täsmälleen samat kuin alkuperäisen C-toteutuksen.
 
 Suorituskykymittaukset mittaavat ainoastaan prosessoriin ja muistinkäyttöön
 liittyiviä mittauksia, eivätkä esimerkiksi näytönohjaimella suoritettua
@@ -36,9 +36,11 @@ se vie enempää muistia. Pienet eroavaisuudet suuntaan ja toiseen on
 selitettävissä testauksen aihuttamalla luonnollisella vaihtelulla. Kiintoisasti
 Purkalla toteutettu \texttt{fannkuchredux}-koe on kuitenkin noin 50\% nopeampi
 kuin C:llä toteutettu lähes identtinen versio, ja \texttt{nbody}-koe vie vie
-vain 80\% muistia verrattuna C-toteutukseen. Purkka-tiedostot ovat keskimäärin
-6\% pienempiä kuin vastaavat C-tiedostot. Suurimmat kokoerot tiedostoissa
-tulevat muuttujien määrittelyistä sekä tyyppi-inferenssistä.
+vain 80\% muistia verrattuna C-toteutukseen. \hl{todo: Johtuuko tuo
+mittausvirheistä, vaiko kääntäjän pienistä muutoksista esim.
+\texttt{static}-avainsanan lisäilyyn liittyen?} Purkka-tiedostot ovat
+keskimäärin 6\% pienempiä kuin vastaavat C-tiedostot. Suurimmat kokoerot
+tiedostoissa tulevat muuttujien määrittelyistä sekä tyyppi-inferenssistä.
 Kuvassa~\ref{fig:declarations} esitellään esimerkkejä Purkan
 yksinkertaisemmista määrittelyistä monimutkaisemmissa määrittelyissä.
 
@@ -110,7 +112,7 @@ suorituskykymittaukset ovat usein epätarkkoja, sillä monimutkaiset
 moniajoympäristöt eivät mahdollista deterministisiä mittauksia.
 
 Purkkaa todennäköisesti ei oteta käyttöön, sillä se ei tarjoa merkittäviä
-parannuksia C:hen, vaan mahdollistaa lähinnä hieman siistimmän lähdekoodin.
+parannuksia C:hen, vaan mahdollistaa lähinnä hieman lyhyemmän lähdekoodin.
 Tämän lisäksi Purkan toteuttaja on yksittäinen opiskelija, kun taas esimerkiksi
 Go-kielen ja Rustin toteuttajat ovat kokeneita ohjelmointikielten
 suunnittelijoita, jonka lisäksi kieliä ylläpidetään aktiivisesti tunnettujen
@@ -121,18 +123,18 @@ ja Nymph~\citep{nymph} ovat jääneet ilman laajempaa huomiota.
 Tutkimuksesta voidaan kuitenkin päätellä, että C:tä parempi kieli on
 todennäköisesti toteutettavissa. Käännösaikaista turvallisuutta voi parantaa
 tiukemmalla tyyppijärjestelmällä ilman ajoaikaisia haittoja. Tarkemmilla
-tyyppimäärittelyillä voi myös tehdä optimointeja (esimerkiksi vaatimalla
-osoitinargumentit aina ei-tyhjiksi osoittimiksi),.
+tyyppimäärittelyillä voi myös tehdä optimointeja, esimerkiksi vaatimalla
+osoitinargumentit aina ei-tyhjiksi osoittimiksi.
 
-\hl{Jos tutkielmassa on mahdollisia puutteita, tai sen tulokset eivät
+\hld{Jos tutkielmassa on mahdollisia puutteita, tai sen tulokset eivät
 välttämättä tutkielman rajoituksista johtuen päde tutkielman ulkopuolella,
 tässä aliluvussa perustellaan syitä tälle.}
 
-\hl{Erityisesti tutkimusaiheen rajaus ei välttämättä yleisty tutkimuksen
+\hld{Erityisesti tutkimusaiheen rajaus ei välttämättä yleisty tutkimuksen
 ulkopuolelle, sillä ohjelmointikielten valintaan liittyy usein monimutkaisia
 syitä, kuten aikaisempi kokemus tai ohjelmoijan henkilökohtainen mieltymys
 johonkin kieleen, eikä projekteissa käytettyjä ohjelmointikieliä valita
 pelkästään kielen ominaisuuksien perusteella.}
 
-\hl{Jos tutkielmassa ilmenee mahdollisia jatkotutkimuskohteita, niistä
+\hld{Jos tutkielmassa ilmenee mahdollisia jatkotutkimuskohteita, niistä
 kerrotaan tässä aliluvussa.}

@@ -36,6 +36,7 @@
 \usepackage{data/gnuplot-lua-tikz}
 \usepackage{chngcntr}
 \usepackage{array}
+\usepackage{csvsimple}
 
 \makesavenoteenv{tabular}
 \makesavenoteenv{table}
@@ -45,6 +46,7 @@
 \usepackage{soulutf8}
 \sethlcolor{yellow}
 %\renewcommand{\hl}[1]{}
+\newcommand{\hld}[1]{}
 %\usepackage{showframe}
 
 %\usepackage[top=2em]{geometry}
@@ -116,8 +118,8 @@
 \newcommand{\bnf}[3]{%
     \inputminted[firstline=#1,lastline=#2]{\bnflexer}{#3}}
 
-\newcommand{\defword}[2][]{~(engl. \emph{\foreignlanguage{english}{#2}#1})}
-\newcommand{\defwordin}[2][]{~(engl. \emph{#2}#1)}
+\newcommand{\defword}[2][]{~(engl.~\emph{\foreignlanguage{english}{#2}#1})}
+\newcommand{\defwordin}[2][]{~(engl.~\emph{#2}#1)}
 
 \newcommand{\bnfdescription}{%
     Tämä on hahmotelma kielen syntaksista ISO/IEC 14977

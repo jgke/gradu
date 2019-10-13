@@ -1,0 +1,4 @@
+struct Esimerkki { num: i32 };
+
+let a = Esimerkki { num: 1 };
+let b = [1, 2, 3];

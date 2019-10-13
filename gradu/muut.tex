@@ -1,7 +1,7 @@
 \section{Ohjelmointikielten vertailu}
 \label{sec:muut}
 
-\hl{Vertailuluku, jossa käydään läpi toisessa luvussa määriteltyjä kriteerejä
+\hld{Vertailuluku, jossa käydään läpi toisessa luvussa määriteltyjä kriteerejä
 kunkin kielen kohdalla, ja pohditaan, täyttääkö kukin kieli kriteerejä.
 Jokaiselle kielelle tulee yksi aliluku, jossa käydään kriteerejä läpi kyseisen
 kielen yksilöllisten ominaisuuksien kannalta. Tämän luvun sisältö on hyvin
@@ -10,7 +10,7 @@ samankaltainen tutkimussuunnitelman kirjallisuusosan kolmannen luvun kanssa.}
 \subsection{Yleisiä vertailtavien ohjelmointikielten ominaisuuksia}
 \label{sec:muut:common}
 
-\hl{Kooste verrattavien ohjelmointikielten yhteisistä ominaisuuksista. Koska
+\hld{Kooste verrattavien ohjelmointikielten yhteisistä ominaisuuksista. Koska
 verrattavissa ohjelmointikielissä on useita ominaisuuksia, joita C:ssä ei ole,
 mutta muissa verrattavissa kielissä on, tällä aliluvulla voidaan merkittävästi
 poistaa turhaa toistoa.}
@@ -128,6 +128,9 @@ sama kuin C:n makrojärjestelmä, se on hyvin rajoittunut \citep[luku~19]{CPP17}
 
 \subsection{D}
 
+\hl{Harkinnassa: D kokonaan pois tutkielman scopesta koska sitä ei ole
+Benchmarks Gamessa -> käsittely on hankalampaa}
+
 D on 2000-luvun alussa Digital Mars -yrityksen julkaisema ohjelmointikieli,
 jonka tarkoituksena on mahdollistaa tehokkaiden ohjelmien kirjoittaminen
 helposti ja turvallisesti~\citep{dhistory}. D on suunniteltu syntaksiltaan ja
@@ -143,7 +146,7 @@ kutsuttava funktio tulee määritellä erikseen -- D ei ymmärrä C:n
 otsikkotiedostoja. Tämä kuitenkin onnistuu yhdellä rivillä jokaista C:n
 funktiota kohden, sillä D:n tyyppijärjestelmä on hyvin lähellä C:tä. D:lle on
 myös olemassa useita työkaluja otsikkotiedostojen automaattiseen muuntamiseen,
-kuten \texttt{htod}-työkalu~\citep{htod}. Työkalut eivät kuitenkaan ole
+kuten \emph{Header to D}-työkalu~\citep{htod}. Työkalut eivät kuitenkaan ole
 täydellisiä, sillä useiden D:n ominaisuuksien semantiikka ei ole C:n kanssa
 yhteensopiva. D ei sisällä tukea C:n makrojärjestelmälle. D:ssä ei ole C:n
 kaltaista esikäsittelijää, sillä sitä ei pidetty tarpeellisena~\citep{pretod}.
@@ -151,21 +154,17 @@ D:ssä on kuitenkin käytettävissä C++:n kaltainen mallipohjainen
 makrojärjestelmä, jolla voidaan suorittaa koodia
 käännösaikaisesti~\citep{Dtemplate}.
 
-\hl{htod -> Header to D?}
-
 \hl{Suorittaa koodia käännösaikaisesti -> pidempi selitys}
 
 \subsection{Go}
 
-\hl{2000-luvun loppupuolella -> parempi muoto (epäselvä nyt)}
-
-Go on Googlen 2000-luvun loppupuolella kehittämä ohjelmointikieli, jonka
-tarkoituksena on yhdistää käännösaikaisesti tyypitetyn ohjelmointikielen
-turvallisuus ja tehokkuus suoritusaikaisesti tyypitettyjen ohjelmointikielten
-helppokäyttöisyyteen~\citep{gohistory}. Toisin kuin monissa moderneissa
-C-perheen kielissä, Go-kielessä ei ole luokkia, vaan pelkkiä tietueita ja
-rajapintoja. Go suunniteltiin erityisesti korvaamaan C++:n käyttö Googlella
-johtuen C++:n pitkistä käännösajoista.
+Go on Googlen kehittämä ja vuoden 2009 loppupuolella julkaisema
+ohjelmointikieli, jonka tarkoituksena on yhdistää käännösaikaisesti tyypitetyn
+ohjelmointikielen turvallisuus ja tehokkuus suoritusaikaisesti tyypitettyjen
+ohjelmointikielten helppokäyttöisyyteen~\citep{gohistory}. Toisin kuin monissa
+moderneissa C-perheen kielissä, Go-kielessä ei ole luokkia, vaan pelkkiä
+tietueita ja rajapintoja. Go suunniteltiin erityisesti korvaamaan C++:n käyttö
+Googlella johtuen C++:n pitkistä käännösajoista.
 
 Go-kielessä ei ole muista vertailtavista kielistä poiketen geneerisiä
 tyyppiparametreja. Tämä estää käännösaikaisesti tyyppitarkistetun geneerisen
@@ -208,9 +207,12 @@ funktioista palautetaan virheellisissä tilanteissa virheellinen arvo. Tämä
 tosin tehdään usein palauttamalla erillinen \texttt{Error}-tyyppiä oleva arvo
 -- Go mahdollistaa useamman kuin yhden paluuarvon. Go-kielessä on myös
 poikkeukset, joita suositellaan käytettävän vain poikkeuksellisissa
-tilanteissa~\citep{effectivego}.
-
-\hl{poikkeuksellisissa tilanteissa -> selvennä}
+tilanteissa, joita koodin kutsuja ei voi korjata
+ajoaikaisesti~\citep{effectivego}. Tällainen tilanne voisi olla esimerkiksi
+väärä parametrin tyyppi. Poikkeuksen heittäminen voi myös olla perusteltua,
+mikäli kirjastorutiinin suoritus halutaan lopettaa syvällä yksityisissä
+funktioissa ja arvon halutaan menevän useiden funktioiden läpi kirjaston
+rajapintaan asti, jossa se muutetaan virhearvoksi.
 
 C:n kutsuminen Go-kielestä ei ole aukotonta: koska Go on muistinkäytöltä
 turvallinen kieli, erityisesti muistin jakaminen C:n ja Go-kielen välillä on
@@ -280,7 +282,7 @@ makroprosessori on sekä Turing-täydellinen että hygieeninen~\citep{rustmacros
 
 \subsection{Yhteenveto}
 
-\hl{Tässä aliluvussa tehdään yhteenveto ohjelmointikielten vertailusta, ja
+\hld{Tässä aliluvussa tehdään yhteenveto ohjelmointikielten vertailusta, ja
 todetaan, miksi yksikään verrattavista kielistä ei täytä toisessa luvussa
 määriteltyjä vertailukriteerejä.}
 
@@ -288,12 +290,10 @@ Yksikään vertailtavista kielistä ei täytä kaikkia luvussa~\ref{sec:abs}
 määriteltyjä rajoitteita. Yksikään kielistä ei täytä muistinkäytön rajoitteita,
 jonka lisäksi saumaton C:n käyttö onnistuu vain C++:n kanssa.
 
-Taulukko~\ref{table:properties} sisältää yhteenvedon verrattavista
-ohjelmointikielistä, sisältäen kielen nimiruntelun, muistinhallinnan,
+Taulukkossa~\ref{table:properties} on yhteenveto verrattavista
+ohjelmointikielistä, sisältäen kunkin kielen nimiruntelun, muistinhallinnan,
 yhteensopivuuden C:n vierasfunktiorajapinnan kanssa sekä yhteensopivuuden
 muiden kielien vierasfunktiorajapintojen kanssa.
-
-\hl{kieli (sisältää + sisältäen)}
 
 C++, D ja Rust mahdollistavat yhteensopivuuden parantamiseksi nimiruntelun
 poistamisen käytöstä, mutta tämä ei toimi esimerkiksi C++:n luokkien
