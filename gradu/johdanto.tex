@@ -1,14 +1,73 @@
 \section{Johdanto}
 
-\hld{Johdantoluku, jossa avataan tutkielman aihe eli C-ohjelmointikielen
+\hl{Johdantoluku, jossa avataan tutkielman aihe eli C-ohjelmointikielen
 vertaaminen muihin ohjelmointikieliin sekä uuden ohjelmointikielen luominen
 tiettyjen kriteerien ohjaamana.}
 
+\hl{Kokonaisuutena esitys on luettelomainen ja jäsentymätön: selkeää yleistä
+teemaa tai tavoitetta ei ole tai sitä on vaikea hahmottaa kaikesta
+sillisalaatista. Tutkielma vaikuttaa myös melko suppealta (vain 30 tekstisivua)
+- ottaen huomioon käsitellyt lukuisat eri kielet ja niihin liittyvät teemat.}
+
+\hl{ (1) Aikoinaan Simula ja olio-ohjelmointi rakennettiin näkemykselle, että
+'ohjelmointi on simulointia'. Simula lisäsi Algol-60 -kieleen luokat ja
+oliomekanismit sekä välineet diskreettiaikasimulointiin.}
+
+\hl{(2) Pascal tyyppijärjestelmä oli staattinen ja kömpelö ja alun perin myös
+heikosti tyypitetty.  Ada tarjosi ilmaisuvoimaisen vahvasti tyypitetyn
+tyyppijärjestelmän sekä välineet modulaariseen ohjelmointiin eli pakkaukset
+(josta tulee alkuperäinen 'package'-termi). Lähtökohtana kielen kehittämiselle
+olivat ohjelmistotuotannon tarpeet ja vaatimukset.}
+
+\hl{(3) B. Stroustrup lisäsi C:hen Simulan luokat ja oliomekanismit tukemaan
+versiotaan 'käsitteellisestä' ohjelmoinnista.  Kielen rakenteet tukivat samalla
+sekä abstrakteja tietotyyppejä että olio-ohjelmointia. Yhteensopivuus C:hen
+pyrittiin säilyttämään eikä lisäpiirteistä saanut aiheutua osakielelle C
+yleisrasitetta.  Toisin sanoen jos uusia piirteitä ei käytetty, C++-kielen tuli
+vastata C-kielen käyttöä.  Vahva tyypitys ja luotettavuus tms.
+ohjelmistotuotantoaspektit eivät olleet erityisesti painotettuina tavoitteina.}
+
+\hl{ (4 ) Rust näyttää (minusta) ainakin yrittävän korjata joitakin C++:n
+heikkouksia oikeellisuuden ja luotettavuuden suhteen.}
+
+\hl{ Tämänkaltaista näkemyksellistä tavoitteita jää tutkielman sisällöstä
+kaipaamaan.   Seuraavassa vielä joitakin yleisluontoisia kommentteja.
+
+Erityisesti jäin kaipaamaan tekstissä viittauksia ohjelmistotuotannon
+asettamiin vaatimuksiin (oikeellisuus, luotettavuus, ylläpidettävyys)
+ohjelmointikielille. Tai sitten näiden tekijöiden ohittamista tulee aukaista
+sopivissa paikoissa (Johdanto ja Yhteenveto).
+
+C:n merkitys tälle tutkielmalle on niin olennainen, että sisällöstä sen
+käsittelylle olisi syytä omistaa yksi oma pääluku. Lukijalle jää nyt
+epäselväksi, ovatko kaikki olennaiset C:n piirteet ja heikkoudet  tulleet
+käsiteltyä. Tästä myös Antti-Pekka erikseen mainitsi.
+
+Tutkielmassa ei toisaalta saa olla mitään tarpeetonta täytetekstiä.
+Tällaisilta tuntuvat omaa kieltä ja sen toteutusta teknisesti dokumentoivat
+lyhyet irralliset kohdat.  Vaikuttaa siltä ettei niitä käytetä
+jatkokäsittelyssä mitenkään hyväksi, joten nämä kohdat voi hyvin siirtää
+tutkielman liitteiksi.  Kielen määrittelyyn ja toteutukseen (annettuna
+liitteissä) tulee kuitenkin viitata tekstissä, ja tietysti jos niistä on saanut
+irti olennaista tärkeää mainittavaa itse analyysiin, tämä nostetaan osaksi
+tekstiä. }
+
+\hrule
+
+\hl{ 1 Johdanto: tämä on edelleenkin sekavasti ja epämääräisesti kirjoitettu
+tutkielman tavoitteiden ja tutkimusmenetelmien osalta. Tavoitteita ja
+tutkimuskysymyksiä ei ole ylipäätään kunnolla eritelty (tästä olen jo riittävän
+montaa kertaa huomauttanut). Esimerkiksi väität, että 'selvitetetään mitkä
+ominaisuudet ovat voineet estää kielen käytön C:n sijaan...'  , mutta ei
+tämmöistä analyysiä tekstistä löydy. Toisaalta taas näiden tulosten pohjalta
+'suunniteltaan ohjelmointikieli' - siis minkä tulosten?? Minun mielestäni
+vertailun tuloksia ei käytetä mihinkään. } 
+
 C~\citep{C18} on ollut vallitseva ohjelmointikieli järjestelmäohjelmoinnissa
-C:n alkuajoista lähtien. Useita ohjelmointikieliä on luotu historian saatossa,
-joiden oli tarkoitus syrjäyttää C, mutta C on vieläkin johtavana kielenä
-varsinkin sulautetuissa järjestelmissä ja UNIX-pohjaisten käyttöjärjestelmien
-vallitsevana ohjelmointikielenä. C on myös käytössä
+kielen alkuajoista lähtien. Useita ohjelmointikieliä on luotu historian
+saatossa, joiden oli tarkoitus syrjäyttää C, mutta C on vieläkin johtavana
+kielenä varsinkin sulautetuissa järjestelmissä ja UNIX-pohjaisten
+käyttöjärjestelmien vallitsevana ohjelmointikielenä. C on myös käytössä
 Windows-käyttöjärjestelmäperheen ydinkomponenttien toteutuksessa.
 
 Tutkielmassa selvitetään C:n ominaisuuksia, joiden takia se on ollut
@@ -24,14 +83,15 @@ näiden tulosten pohjalta uusi ohjelmointikieli, Purkka.
 
 C:n vaihtoehdoiksi tutkitaan seuraavia tehokkaaseen ohjelmointiin tarkoitettuja
 kieliä: Ada~\citep{ADA12}, C++~\citep{CPP17}, D~\citep{D}, Go~\citep{golang}
-sekä Rust~\citep{rust}. Näistä kielistä tutkitaan, mikä tai mitkä ominaisuudet
-ovat estäneet C:n korvaamisen ja mitkä ominaisuudet ovat olleet parannuksia
-C:hen verrattuna. Lisäksi tutkitaan muista suosituista ohjelmointikielistä
-korkean tason ominaisuuksia, jotka ovat hyödyllisiä matalan tason
-ohjelmoinnissa ja jotka voi toteuttaa korvaavan kielen määrittelyssä luotujen
-rajoitusten puitteissa. Vertailun tuloksia käytetään uuden ohjelmointikielen
-suunnitteluun, jossa otetaan tavoitteeksi luoda C:tä parempi ohjelmointikieli
-tutkielman määrittelyjen puitteissa.
+sekä Rust~\citep{rust}. \hl{Miksi juuri nämä kielet? Satunnainen otanta?}
+Näistä kielistä tutkitaan, mikä tai mitkä ominaisuudet ovat estäneet C:n
+korvaamisen ja mitkä ominaisuudet ovat olleet parannuksia C:hen verrattuna.
+Lisäksi tutkitaan muista suosituista ohjelmointikielistä korkean tason
+ominaisuuksia, jotka ovat hyödyllisiä matalan tason ohjelmoinnissa ja jotka voi
+toteuttaa korvaavan kielen määrittelyssä luotujen rajoitusten puitteissa.
+Vertailun tuloksia käytetään uuden ohjelmointikielen suunnitteluun, jossa
+otetaan tavoitteeksi luoda C:tä parempi ohjelmointikieli tutkielman
+määrittelyjen puitteissa.
 
 %Tutkittavana on myös, mitä optimointeja C:ssä ei voi tehdä helposti johtuen
 %kielen rajoitteista ja miten tämän voisi korjata. Näitä ominaisuuksia ovat
@@ -61,7 +121,7 @@ tutkielman määrittelyjen puitteissa.
 %helppokäyttöisyyttä ja sosiaalisia aspekteja, kuten Googlen tarjoaman tuen
 %vaikutusta Go-kielen suosioon.%\hl{Vai tutkitaanko?}
 
-Tämän tutkielman toisessa luvussa esitetään tutkielman kannalta oleellinen
+Tutkielman toisessa luvussa esitetään tutkielman kannalta oleellinen
 teoria, eli määritetään tutkielman vertailussa käytetyt kielten ominaisuuksien
 vertailukohteet, pohditaan kielen suosioon vaikuttavia tekijöitä sekä kerrotaan
 lyhyesti muista tutkittavista kielistä. Kolmannessa luvussa kerrotaan, miksi
@@ -71,3 +131,7 @@ tutkielman määritelmien mukaisesti korvata C:n käytön. Viidennessä luvussa
 verrataan tätä ohjelmointikieltä C:hen ja muihin tutkielmassa käsitellyihin
 kieliin. Kuudennessa luvussa kerrataan tutkimuksen tulokset.
 
+\hl{Ohjelmistotuotannon näkökulma: oikeellisuus, luotettavuus, ylläpito?}
+
+\hl{C:stä hyvää tuntemista ei voi edellyttää lukijalta, mutta tutkielman
+sisältö edellyttää sitä}

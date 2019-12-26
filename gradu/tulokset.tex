@@ -1,11 +1,21 @@
-\section{Uuden ohjelmointikielen vertaaminen muihin ohjelmointikieliin}
+\section{Uuden ohjelmointikielen vertaaminen C:hen}
 
-\hld{Tässä luvussa uutta ohjelmointikieltä vertaillaan muihin tutkielmassa
+\hl{Tässä luvussa uutta ohjelmointikieltä vertaillaan muihin tutkielmassa
 käsiteltyihin ohjelmointikieliin, ja kerrotaan, miksi tai miksei se päihitä
 C:tä vertailuehtojen mukaisesti.}
 
+\hl{ Luku 5: Otsikko kertoo, että uutta kieltä verrataan muihin kieliin, mutta
+eihän sitä nähdäksen verrata kuin C:hen. Ja nythän vertailun tulokset koskevat
+vain suoritusaikaisia ominaisuuksia - entä kaikki muut parannukset C:hen
+verrattuna (luku 2.3)? }
+
 \subsection{Vertailun tulokset}
 \label{sec:results}
+
+\hl{Ovatko suorituskykymittaukset relevantteja?}
+
+\hl{Eikö tulokset riipu enemmän kielen toteutuksista, jotka voivat vaihdella
+(kääntäjän ratkaisut ja käytetyt optimointialgoritmit)}
 
 Tätä tutkielmaa varten on toteutettu kääntäjä, joka kääntää ohjelmat
 Purkka-kielestä C-kieleen \citep{purkka}. Nopeimmat Benchmarks Gamen
@@ -21,14 +31,16 @@ Suorituskykymittaukset mittaavat ainoastaan prosessoriin ja muistinkäyttöön
 liittyiviä mittauksia, eivätkä esimerkiksi näytönohjaimella suoritettua
 laskentaa.
 
+\hl{Mittauksia voisi tehdä useammalla kuin yhdellä laitteistolla}
+
 \hl{Täydennykset tähän kun on lopulliset mittaukset: } Suorituskykymittaukset
 on tehty \hl{ABC}-koneella \hl{Ubuntu/Arch}-käyttöjärjestelmällä Linux 4.x.x
 -kernelillä. Mittaustietokoneessa oli neliytiminen Intel \hl{i7 XXXX}
 -prosessori HyperThreading-tuella (3.x GHz) ja XX gigatavua DDR3-muistia.
 Mittaukset on toteutettu suorittamalla ohjelma suurimmalla syötteellä \hl{x}
-kertaa \hl{(5? ehkä enemmän.)}, ja mittaamalla kunkin ajon viemä aika ja
+kertaa \hl{(5? ehkä enemmän.)}, ja mittaamalla kunkin suorituksen viemä aika ja
 muistinkäyttö. Muistinkäyttö on mitattu 200 millisekunnin välein
-\texttt{libgtop2}-kirjastolla, ja kunkin ajon muistinkäytöksi on merkitty
+\texttt{libgtop2}-kirjastolla, ja kunkin suorituksen muistinkäytöksi on merkitty
 suurin mitattu muistikäyttö.
 
 Kuvaajista nähdään, että Purkka on täsmälleen yhtä tehokas kieli kuin C, eikä
@@ -101,7 +113,7 @@ yksinkertaisemmista määrittelyistä monimutkaisemmissa määrittelyissä.
 
 Purkka on vertailun ainoa kieli, joka on yhtä tehokas kuin C. Tämä johtunee
 pitkälti siitä, että Purkka käännetään lähes identtisenä C:ksi, eikä tarjoa
-ajoaikaisia ominaisuuksia, jotka hidastaisivat kieltä. Purkka ei kuitenkaan
+suoritusaikaisia ominaisuuksia, jotka hidastaisivat kieltä. Purkka ei kuitenkaan
 päihitä C:tä tutkimuksen määrittelyn mukaisesti, vaan on suorituskyvyltään
 täsmälleen yhtä tehokas kuin C.
 
@@ -110,6 +122,10 @@ usein mittaavat vain yksittäistä pientä osa-aluetta, kuten yksittäisten
 operaatioiden nopeutta monimutkaisten ohjelmistojen sijaan. Lisäksi
 suorituskykymittaukset ovat usein epätarkkoja, sillä monimutkaiset
 moniajoympäristöt eivät mahdollista deterministisiä mittauksia.
+
+\hl{Voisi myös todeta että mitttaukset koskevat toteutuksia. Kieli voidaan
+toteuttaa useilla tavoilla ja eri toteutukset voivat käyttää eri optimointeja
+ja algoritmeja.}
 
 Purkkaa todennäköisesti ei oteta käyttöön, sillä se ei tarjoa merkittäviä
 parannuksia C:hen, vaan mahdollistaa lähinnä hieman lyhyemmän lähdekoodin.
@@ -122,19 +138,26 @@ ja Nymph~\citep{nymph} ovat jääneet ilman laajempaa huomiota.
 
 Tutkimuksesta voidaan kuitenkin päätellä, että C:tä parempi kieli on
 todennäköisesti toteutettavissa. Käännösaikaista turvallisuutta voi parantaa
-tiukemmalla tyyppijärjestelmällä ilman ajoaikaisia haittoja. Tarkemmilla
+tiukemmalla tyyppijärjestelmällä ilman suoritusaikaisia haittoja. Tarkemmilla
 tyyppimäärittelyillä voi myös tehdä optimointeja, esimerkiksi vaatimalla
 osoitinargumentit aina ei-tyhjiksi osoittimiksi.
 
-\hld{Jos tutkielmassa on mahdollisia puutteita, tai sen tulokset eivät
+\hl{Tässä on tärkeä teema mutta jää tässä vain toteamukseksi, pidempi analyysi
+ja esimerkit syventäisivät käsittelyä}
+
+\hrule
+
+\hl{Jos tutkielmassa on mahdollisia puutteita, tai sen tulokset eivät
 välttämättä tutkielman rajoituksista johtuen päde tutkielman ulkopuolella,
 tässä aliluvussa perustellaan syitä tälle.}
 
-\hld{Erityisesti tutkimusaiheen rajaus ei välttämättä yleisty tutkimuksen
+\hl{Erityisesti tutkimusaiheen rajaus ei välttämättä yleisty tutkimuksen
 ulkopuolelle, sillä ohjelmointikielten valintaan liittyy usein monimutkaisia
 syitä, kuten aikaisempi kokemus tai ohjelmoijan henkilökohtainen mieltymys
 johonkin kieleen, eikä projekteissa käytettyjä ohjelmointikieliä valita
 pelkästään kielen ominaisuuksien perusteella.}
 
-\hld{Jos tutkielmassa ilmenee mahdollisia jatkotutkimuskohteita, niistä
+\hl{Jos tutkielmassa ilmenee mahdollisia jatkotutkimuskohteita, niistä
 kerrotaan tässä aliluvussa.}
+
+\hl{Tulevaisuus? Voiko tuloksia käyttää Purkan tai C:n parantamiseen?}

@@ -3,6 +3,14 @@
 
 Tässä luvussa määritellään Purkka-ohjelmointikieli.
 
+\hl{Uudelleenstrukturointi: Osoitetaan hyviin ja huonoihin puoliin tutkielman
+aiemman materiaalin kanssa, ja perustellaan siten valinnat}
+
+\hl{ Luku 4: Iso asia on se, että Purkka-kielen vaatimuksia ei selitetä
+kootusti missään. Asioita pitää nyt lukea rivien välistä. Luvun 4 alkuhan olisi
+loistava paikka esittää kielen vaatimukset. Sitten olisi helppo arvioida
+lopputulosta niitä vasten }
+
 \subsection{Tyypit}
 
 Jotta yhteensopivuus C:n kanssa olisi joustavaa, Purkan tyyppijärjestelmä
@@ -11,7 +19,7 @@ useita erilaisia tapoja ilmaista samaa pohjatyyppiä -- esimerkisi
 \texttt{long}, \texttt{signed~long}, \texttt{long~int} ja
 \texttt{signed~long~int} ilmaisevat kokonaislukutyyppiä, joka pystyy
 sisältämään ainakin luvut $[-(2^{31} - 1), 2^{31}-1]$\footnote{Käytännössä
-modernit implementaatiot käyttävät kahden komplementtia kokonaislukujen
+modernit toteutukset käyttävät kahden komplementtia kokonaislukujen
 ilmaisemiseen, jolloin 32-bittinen kokonaislukumuuttuja voi sisältää luvut
 $[-2^{31}, 2^{31}]$.}\citationneeded. Nämä tyypit ovat kuitenkin standardien
 mukaisessa C:ssä keskenään täysin vaihdettavissa, eli kielen ei tarvitse pystyä
@@ -21,7 +29,11 @@ Rustin pohjatyyppejä\citationneeded. Purkka tarvitsee erikseen tyypit
 ole määritelty tarkemmin joko kokonaisluvuksi tai 
 \texttt{signed char} ja \texttt{unsigned char} ovat erillisiä tyyppejä.
 
-Määritetään Purkkaan seuraavat alkeistyypit: \\[0.3cm]
+\hl{Nämä tyypit ovat... pidempi selitys}
+
+\hl{char-tyyppin sign -> sekava ja epäselvä }
+
+Määritetään Purkkaan seuraavat alkeistyypit. \\[0.3cm]
 \begin{tabular}{@{}p{5.8cm}p{8.7cm}@{}} \toprule
     Purkka-tyyppi & Purkka-tyyppiä vastaava C-tyyppi \\ \midrule
     \texttt{void} & \texttt{void} \\
@@ -82,16 +94,16 @@ Tyypit:
 
 kuinka tagged union käännetään C:ksi? Entä non-nullable ptr?
 
-tyyppi-inferenssi
+tyyppipäättely
 
 Mitä optimointeja non-null tarjoaa? Entä tagged union?
 
-\subsection{Tyyppi-inferenssi}
+\subsection{Tyyppipäättely}
 
-Purkka käyttää tyyppi-inferenssin toteuttamisen pohjana yleisesti käytettyä
-Damas-Hindley-Milner -algoritmia\citep{hindley, milner, damas}.
+Purkka käyttää tyyppipäättely toteuttamisen pohjana yleisesti käytettyä
+Damas-Hindley-Milner -algoritmia~\citep{hindley, milner, damas}.
 
-Jotta inferenssialgoritmi toimisi lineaariaikaisesti suhteessa syötteen kokoon,
+Jotta päättelyalgoritmi toimisi lineaariaikaisesti suhteessa syötteen kokoon,
 osassa lausekkeista muuttujien tyyppien tulee olla tiedossa sillä hetkellä, kun
 lausekkeen tyyppiä selvitetään. Yhteen- ja vähennyslasku voi vaatia myös
 tyyppimäärittelyt, jos yhteenlaskettavat parametrit ovat osoittimia\footnote{C
@@ -99,16 +111,18 @@ sallii osoitinmuuttujan ja kokonaisluvun yhteen- ja vähennyslaskun sekä kahden
 osoittimen vähennyslaskun.}. Näistä selkein esimerkki on struct-tyyppien kentän
 käyttäminen, jonka tyyppiä kääntäjä ei suostu päättelemään, jos muuttujan
 tyyppi ei ole tiedossa. Koodissa~\ref{fig:structinfer} on kaksi esimerkkiä
-tyyppi-inferenssistä struct-muuttujiin: ensimmäisessä esimerkissä
-tyyppi-inferenssi onnistuu, mutta toisessa ei.
+tyyppipäättelystä struct-muuttujiin: ensimmäisessä esimerkissä
+tyyppipäättely onnistuu, mutta toisessa ei.
 
 \begin{listing}[ht!]
     \inputminted{Rust}{koodi/infer.prk}
-    \caption{Esimerkki tyyppi-inferenssistä.}
+    \caption{Esimerkki tyyppipäättelystä.}
     \label{fig:structinfer}
 \end{listing}
 
 \FloatBarrier
+
+\hl {Esimerkissä kysymysmerkkejä. Selitys auki}
 
 \hl{Tämä vaatii \textbf{paljon} lisää avaamista, selittämistä ym. tekstiä.
 Lisäksi pitää vahvistaa, että Purkka-kääntäjä oikeasti toimii näiden
@@ -136,7 +150,7 @@ perusteella, eikä \emph{melkein} identtisten päättelysääntöjen avulla.}
       {\Gamma ,\;x:\tau \vdash _{D}e:\tau '}
       {\Gamma \vdash _{D}\lambda \ x\ .\ e:\tau \rightarrow \tau '} \hmtag{Abs}
     \intertext{Abs on yleisemmin tunnettu funktion määrittelynä. Jos
-    olettamalla, että $x$:n tyyppi on $\tau$ voidaan päätellä että $e$:n tyyppi
+    olettamalla, että $x$:n tyyppi on $\tau$, voidaan päätellä että $e$:n tyyppi
     on $\tau'$, niin $\lambda x . e$ on funktio, joka ottaa argumenteikseen
     arvon tyyppiä $\tau$ ja palauttaa arvon tyyppiä $\tau'$.}
 %
@@ -183,9 +197,11 @@ Vertailun vuoksi Rust käyttää avainsanaa \texttt{fn}, Go käyttää avainsana
 \texttt{func} ja Kotlin käyttää avainsanaa \texttt{fun}). Avainsanan
 käyttäminen yksinkertaistaa jäsentäjän toteutusta.
 
-Purkka tukee tyyppi-inferenssiä, joka helpottaa koodin kirjoittamista, kun
+Purkka tukee tyyppipäättelyä, joka helpottaa koodin kirjoittamista, kun
 kääntäjä pystyy päättelemään muuttujien tyypit. Tyyppisyntaksi itsessään
 muistuttaa paljon Rustin tyyppisyntaksia.
+
+\hl{tukee tyyppipäättelyä alleviivattu}
 
 C:n \texttt{static}-avainsana on jaettu käytön mukaisesti kahteen avainsanaan.
 Funktiomäärittelyissä ja globaaleissa muuttujissa C:n
@@ -213,6 +229,8 @@ on C:ssä lause, mutta Purkassa lauseke. \hl{Tähän tekstiä, miten tuo muunnet
 C:ksi turvallisesti}
 
 \subsection{Makrot}
+
+\hl{Liian lyhyt numeroiduksi aliluvuksi}
 
 \hl{Todo: speksi makroista, tai ainakin lisää selitystä. Kääntäjässä ei ole
 toistaiseksi mitään tehtynä Purkka-makrojen eteen.}
@@ -249,19 +267,22 @@ Sulkeumien toteutus olettaa, että C-kääntäjä tukee laajennoksena sulkeumia.
 
 \subsection{Ohjelmointikielen kääntäminen}
 
-Purkan kääntäminen C-koodiksi on hieman normaalia kääntämistä monimutkaisempaa.
-Koska Purkan tulee pystyä muuntamaan Purkka-koodia C-koodiksi, mutta myös
-C-koodia Purkka-koodiksi makrojen laajentamisen myötä, kääntäjän pitää ymmärtää
-kahta ohjelmointikieltä yhden sijaan, sekä muuntamaan niitä toisikseen.
-Kuvassa~\ref{fig:compilerarch} on kaavio Purkan kääntämisestä.
+Purkan kääntäminen C-koodiksi C-koodiksi on hieman normaalia kääntämistä
+monimutkaisempaa. Koska Purkan tulee pystyä muuntamaan Purkka-koodia C-koodiksi
+mutta myös C-koodia Purkka-koodiksi makrojen laajentamisen myötä, kääntäjän
+pitää ymmärtää kahta ohjelmointikieltä yhden sijaan, sekä muuntamaan niitä
+toisikseen. Kuvassa~\ref{fig:compilerarch} on kaavio Purkan kääntämisestä.
 
 Suurimman osan purkan syntaksipuista saa käännettyä lähes identtisiksi C:n
 syntaksipuiksi, mutta muutamat ominaisuudet vaativat enemmän työtä. Suurin
-näistä on tyyppi-inferenssi. Jotkut muut ominaisuudet vaativat myös
+näistä on tyyppipäättely. Jotkut muut ominaisuudet vaativat myös
 monimutkaisempia muutoksia, kuten \texttt{if}-lausekkeet sekä lambdalausekkeet.
 Näistä \texttt{if}-lausekkeet käännetään käyttäen välimuuttujaa.
-Lambdalausekkeet taas käännetään nostamalla lambda erilliseksi funktioksi, ja
+Lambdalausekkeet taas käännetään nostamalla lambda erilliseksi funktioksi ja
 korvaamalla lambda osoittimella tähän funktioon.
+
+\hl{2 viimeistä virkettä pois?}
+
 
 \begin{figure}[ht!]
         \footnotesize

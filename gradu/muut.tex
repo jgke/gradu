@@ -1,16 +1,19 @@
 \section{Ohjelmointikielten vertailu}
 \label{sec:muut}
 
-\hld{Vertailuluku, jossa käydään läpi toisessa luvussa määriteltyjä kriteerejä
+\hl{Vertailuluku, jossa käydään läpi toisessa luvussa määriteltyjä kriteerejä
 kunkin kielen kohdalla, ja pohditaan, täyttääkö kukin kieli kriteerejä.
 Jokaiselle kielelle tulee yksi aliluku, jossa käydään kriteerejä läpi kyseisen
 kielen yksilöllisten ominaisuuksien kannalta. Tämän luvun sisältö on hyvin
 samankaltainen tutkimussuunnitelman kirjallisuusosan kolmannen luvun kanssa.}
 
+\hl{ Luku 3: metatekstiä luvun alkuun - mitä asioita käsitellään ja miten ne
+liittyvät toisiinsa. }
+
 \subsection{Yleisiä vertailtavien ohjelmointikielten ominaisuuksia}
 \label{sec:muut:common}
 
-\hld{Kooste verrattavien ohjelmointikielten yhteisistä ominaisuuksista. Koska
+\hl{Kooste verrattavien ohjelmointikielten yhteisistä ominaisuuksista. Koska
 verrattavissa ohjelmointikielissä on useita ominaisuuksia, joita C:ssä ei ole,
 mutta muissa verrattavissa kielissä on, tällä aliluvulla voidaan merkittävästi
 poistaa turhaa toistoa.}
@@ -67,7 +70,7 @@ kanssa~\citep[s.~471]{ADA12}. Adan alustariippumaton C-tuki on kuitenkin
 kuvaile esimerkiksi kutsukonventioita\footnote{Esimerkiksi
 Windows-käyttöjärjestelmässä käytetään sekaisin kahta erilaista
 kutsukonventiota, sillä käyttöjärjestelmän rajapinnat käyttävät
-\texttt{stdcall}-kutsukonventiota, ja ohjelmat yleensä
+\texttt{stdcall}-kutsukonventiota ja ohjelmat yleensä
 \texttt{cdecl}-kutsukonventiota. Näin jokainen C-ohjelma joutuu käyttämään
 kunkin kääntäjän standardoimattomia ominaisuuksia.}, vaan ne on jätetty kunkin
 kääntäjätoteutuksen päätettäväksi). Ada on myös vertailun ainoa kieli, joka voi
@@ -98,7 +101,7 @@ C:llä kirjoitettujen kirjastojen funktioita, sillä C++-ohjelmat voivat käytt�
 C-kielen otsikkotiedostoja lähes aina ilman muita muokkauksia.
 
 C++:n standardikirjaston virheidenkäsittely on toteutettu poikkeuksilla, jotka
-aiheuttavat pienen ajoaikaisen hidastuksen. Monet vakiokirjaston funktioista ja
+aiheuttavat pienen suoritusaikaisen hidastuksen. Monet vakiokirjaston funktioista ja
 metodeista voivat heittää poikkeuksen virhetilanteissa.
 
 C++:ssa on mahdollista käyttää viitemäärälaskettua\defword{reference counted}
@@ -162,7 +165,7 @@ Go on Googlen kehittämä ja vuoden 2009 loppupuolella julkaisema
 ohjelmointikieli, jonka tarkoituksena on yhdistää käännösaikaisesti tyypitetyn
 ohjelmointikielen turvallisuus ja tehokkuus suoritusaikaisesti tyypitettyjen
 ohjelmointikielten helppokäyttöisyyteen~\citep{gohistory}. Toisin kuin monissa
-moderneissa C-perheen kielissä, Go-kielessä ei ole luokkia, vaan pelkkiä
+moderneissa C-perheen kielissä, Go-kielessä ei ole luokkia vaan pelkkiä
 tietueita ja rajapintoja. Go suunniteltiin erityisesti korvaamaan C++:n käyttö
 Googlella johtuen C++:n pitkistä käännösajoista.
 
@@ -185,10 +188,10 @@ lähdekoodin kirjoittamisen ilman käännösaikaisia geneerisiä malleja.
 
 Vaikka Go-kielessä ei itsessään ole makroja, se sisältää \texttt{go~generate}
 -työkalun, jota voidaan käyttää lähdekoodin generointiin~\citep{gogenerate}.
-\texttt{go~generate} mahdollistaa minkä tahansa komentorivikomennon ajamisen
-ja on enemmänkin standardoitu tapa ajaa tiettyjä komentorivikäskyjä osana
+\texttt{go~generate} mahdollistaa minkä tahansa komentorivikomennon suorittamisen
+ja on enemmänkin standardoitu tapa suorittaa tiettyjä komentorivikäskyjä osana
 ohjelman kääntämistä kuin tyypillinen makrojärjestelmä.
-\texttt{\mbox{go~generate}} ajetaan erillisenä komentona eikä esimerkiksi osana
+\texttt{\mbox{go~generate}} suoritetaan erillisenä komentona eikä esimerkiksi osana
 \texttt{\mbox{go~build}} -komentoa.
 
 %\begin{listing}[ht!]
@@ -208,7 +211,7 @@ tosin tehdään usein palauttamalla erillinen \texttt{Error}-tyyppiä oleva arvo
 -- Go mahdollistaa useamman kuin yhden paluuarvon. Go-kielessä on myös
 poikkeukset, joita suositellaan käytettävän vain poikkeuksellisissa
 tilanteissa, joita koodin kutsuja ei voi korjata
-ajoaikaisesti~\citep{effectivego}. Tällainen tilanne voisi olla esimerkiksi
+suoritusaikaisesti~\citep{effectivego}. Tällainen tilanne voisi olla esimerkiksi
 väärä parametrin tyyppi. Poikkeuksen heittäminen voi myös olla perusteltua,
 mikäli kirjastorutiinin suoritus halutaan lopettaa syvällä yksityisissä
 funktioissa ja arvon halutaan menevän useiden funktioiden läpi kirjaston
@@ -252,7 +255,9 @@ viitteet eivät voi elää arvoja kauempaa, sillä kääntäjän
 elinaikatarkistaja\defword{borrow checker} pystyy seuraamaan arvojen
 elinaikoja. Kullakin muuttujalla voi olla joko rajaton määrä muuttumattomia
 viitteitä\defword{immutable reference} tai yksi muuttuva viite\defword{mutable
-reference}, mutta molempia ei voi käyttää yhtä aikaa.
+reference}, mutta molempia ei voi käyttää yhtä aikaa. \hl{muuttuva -> muuttava?}
+
+\hl{Pidempi selitys Rustista}
 
 Turvallisuudella on kuitenkin hintansa -- Rust-ohjelmat vievät enemmän tilaa
 kuin vastaavat C-ohjelmat. Jos Rust-ohjelmista poistaa standardikirjaston ja
@@ -282,7 +287,7 @@ makroprosessori on sekä Turing-täydellinen että hygieeninen~\citep{rustmacros
 
 \subsection{Yhteenveto}
 
-\hld{Tässä aliluvussa tehdään yhteenveto ohjelmointikielten vertailusta, ja
+\hl{Tässä aliluvussa tehdään yhteenveto ohjelmointikielten vertailusta, ja
 todetaan, miksi yksikään verrattavista kielistä ei täytä toisessa luvussa
 määriteltyjä vertailukriteerejä.}
 
@@ -290,8 +295,8 @@ Yksikään vertailtavista kielistä ei täytä kaikkia luvussa~\ref{sec:abs}
 määriteltyjä rajoitteita. Yksikään kielistä ei täytä muistinkäytön rajoitteita,
 jonka lisäksi saumaton C:n käyttö onnistuu vain C++:n kanssa.
 
-Taulukkossa~\ref{table:properties} on yhteenveto verrattavista
-ohjelmointikielistä, sisältäen kunkin kielen nimiruntelun, muistinhallinnan,
+Taulukossa~\ref{table:properties} on yhteenveto verrattavista
+ohjelmointikielistä sisältäen kunkin kielen nimiruntelun, muistinhallinnan,
 yhteensopivuuden C:n vierasfunktiorajapinnan kanssa sekä yhteensopivuuden
 muiden kielien vierasfunktiorajapintojen kanssa.
 
@@ -318,6 +323,10 @@ parametreiksi vain tyyppejä.
 
 \newpage
 
+\hl{Voisiko tähän lisätä myös C:n?}
+
+\hl{Footnote: viitelaskurit}
+
 \begin{table}[ht!]
     \begin{adjustbox}{center}
         \kern-0.7cm
@@ -327,7 +336,7 @@ parametreiksi vain tyyppejä.
         C++   & saa osittain pois päältä & manuaalinen     & Sama esikäsittelijä kuin C:ssä, \mbox{erillinen} kattava malliohjelmointi \\
         D     & saa pois päältä          & molemmat        & Tyyppipohjainen malliohjelmointi \\
         Go    & täysin hallittavissa     & automaattinen   & Ei ole \\
-        Rust  & saa pois päältä & automaattinen\footnote{Borrow Checkerin hallitsemana, joka mahdollistaa automaattisen muistinhallinnan ilman sen aiheuttamaa hidastusta.} & Useita erilaisia makrojärjestelmiä \\ \bottomrule
+            Rust  & saa pois päältä & automaattinen\footnote{Borrow Checkerin hallitsemana, joka mahdollistaa automaattisen muistinhallinnan ilman sen aiheuttamaa hidastusta. Maininta viitelaskureista?} & Useita erilaisia makrojärjestelmiä \\ \bottomrule
     \end{tabular}
     \end{adjustbox} \\[0.5cm]
 
@@ -381,8 +390,8 @@ hitaampia. Kuvassa~\ref{fig:benchmarksgame} verrataan suorituskykyä,
 muistinkäyttöä ja ohjelmien lähdekoodin pituutta C:llä kirjoitettuun ohjelmaan.
 Lähdekoodimittauksessa mitataan ohjelman kokoa siten, että ohjelmasta
 poistetaan kommentit sekä ylimääräiset välimerkit. Tämän jälkeen ohjelma
-pakataan \texttt{gzip}-pakkausohjelmalla~\citep{howmeasured}. Kuvaajat
-perustuvat nopeimman kielellä kirjoitetun ohjelman tuloksiin -- lähes
+pakataan \texttt{gzip}-pakkausohjelmalla~\citep{howmeasured} \hl{Miksi?}.
+Kuvaajat perustuvat nopeimman kielellä kirjoitetun ohjelman tuloksiin -- lähes
 jokaisella verrattavalla kielellä on jokaisessa suorituskykymittauksissa
 useampi ohjelma.
 
@@ -394,7 +403,7 @@ käyttää noin puolet C:n käyttämästä muistista, mutta on samassa mittaukse
 kaksi kertaa hitaampi. Mielenkiintoisesti Rustilla, Adalla ja Go-kielellä
 kirjoitetut ohjelmat ovat C:llä kirjoitettuihin ohjelmiin verrattuna hitaampia
 ja vievät enemmän muistia, mutta eivät tarjoa merkittäviä säästöjä lähdekoodin
-määrään.
+määrään. \hl{Ymmärrettävyyden ja ylläpidettävyyden suhteen voi olla eroja}
 
 Benchmarks Game ei sisällä D:tä, eli Benchmarks Gamen tuloksia ei voi käyttää
 D:n vertaamiseen muiden kielten kanssa.

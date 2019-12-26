@@ -3,6 +3,7 @@ import csv
 print("\\newgeometry{left=1.5cm,right=1.5cm,bottom=2cm}")
 print("\\appendixsection{Mittaukset}")
 print("\\appendixlabel{app:data}")
+print("\\hl{Tänne lähdeviittaukset? Ehkä ainakin benchmarkkien selitteet?}")
 
 rev_abbrev = {
     "keskiarvo": "keskiarvo",

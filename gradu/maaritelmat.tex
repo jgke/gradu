@@ -1,227 +1,24 @@
-\section{Taustaa}
+\section{Ohjelmointikielten vertailun määritelmät}
 
-\hld{Tässä luvussa kerrotaan ohjelmointikielten taustoista ja yleisistä
+\hl{Tässä luvussa kerrotaan ohjelmointikielten taustoista ja yleisistä
 ominaisuuksista, luodaan määrittelyt vertailuun liittyville kriteereille,
 perustelut verrattavien kielten valinnoille sekä pohditaan erilaisia
 mahdollisia syitä kielten suosioon. Tämän luvun sisältö on hyvin samankaltainen
 tutkimussuunnitelman kirjallisuusosan toisen luvun kanssa.}
 
-\subsection{C-ohjelmointikielen taustaa}
-\label{sec:ctaustaa}
-
-\hld{Tässä aliluvussa kerrotaan C-kielen taustasta, alkuperäisistä
-käyttökohteista, historiasta, suosion kehityksestä sekä nykytilanteesta.
-Erityisesti keskitytään C:n tämänhetkisiin käyttökohteisiin, joista selviää,
-mitä ohjelmointikielten ominaisuuksia tulisi käsitellä ohjelmointikielten
-vertailussa.}
-
-Dennis Ritchie~(\citeyear{chistory}) käsittelee C-kielen historiaa ja hänen
-tekemiään suunnittelupäätöksiä artikkelissaan \emph{The Development of the C
-Language}. Artikkelin mukaan C kehitettiin pitkälti 70-luvulla B- ja
-BCPL-ohjelmointikielien pohjalta. Ritchie tavoitteili uudella
-ohjelmointikielellä B-ohjelmointikielen tehokkuuden parantamista tarkemmalla
-tyypityksellä. B-kielen ainoa primitiivityyppi oli sana\defword{word\emph{,
-B-kielen tyyppinä \texttt{cell}}}, sillä B oli suunniteltu ajettavaksi
-tietokoneilla, joissa muistiosoittimet osoittivat aina yksittäisiin sanoihin.
-Tämä kuitenkin käytännössä osoittautui haastavaksi esimerkiksi merkkijonojen
-käsittelyyn, sillä jokaiseen sanaan mahtuu useita tavun kokoisia
-merkkejä. Tämä tarkoittaa ohjelmoidessa sitä, että ohjelmoija joutuu purkamaan
-käsin yksittäisen sanan merkeiksi, käsittelemään näitä yksittäin, ja lopuksi
-yhdistämään merkit uudelleen sanaksiiksi. Epäkätevyyden lisäksi tämä oli
-tehotonta, kun B-kieli muutettiin tavupohjaiselle PDP-11 -tietokoneelle
-säilyttäen kuitenkin sanapohjaiset muistiosoittimet -- ohjelmoijan oli pakko
-käyttää sanarajoilla toimivia muistiosoittimia, vaikka tavupohjainen
-muistiosoitin olisi tehokkaampi ratkaisu.
-
-Tämän lisäksi Ritchien mukaan B-ohjelmointikielestä puuttui kokonaan
-liukulukujen käsittely. Vaikka PDP-11 ei tukenut liukuluvuilla laskentaa,
-valmistaja oli luvannut tuen tälle. BCPL-ohjelmointikieleen lisättiin
-liukulukulaskenta olettaen, että liukuluku mahtuisi yhteen sanaan, mikä ei
-pitänyt paikkaansa 16-bittisellä PDP-11 -tietokoneella.
-
-Artikkelin mukaan C-ohjelmointikielen kehitys alkoi vahvemmalla tyypityksellä:
-C-kielen ensimmäiseen varsinaiseen esiasteeseen oli lisätty \texttt{char}- ja
-\texttt{int}-tyypit, sekä muistiosoittimet näihin tyyppeihin. Tässä vaiheessa
-C-tyylisten taulukoiden sijaan taulukot toimivat kuin B-kielen taulukot --
-jokaisen taulukon kohdalla taulukkomuuttuja muunnettiin muistiosoittimeksi
-määrittelyhetkellä. Kun C:hen lisättiin tietuetyypit, tämä muistimalli ei
-toiminut enää, vaan taulukoiden käsittelyä muutettiin. Nyt taulukot muunnettiin
-muistiosoittimiksi vasta kun taulukkoa käytettiin lausekkeissa ja taulukon
-määrittelyssä osoittimen sijaan varattiin muistia vain taulukon alkioille.
-Tästä tavasta käsitellä taulukoita seurasi kuitenkin ominaisuus, joka on myös
-nykypäivän C:ssä: jos funktio ottaa parametrikseen taulukon, kääntäjä muuttaa
-parametrin tyypin muistiosoittimeksi\footnote{Jos funktio ottaa esimerkiksi
-\texttt{char[2]} -tyyppisen parametrin, funktio saakin parametrikseen
-muistiosoittimen taulukon sijaan. Tässä tapauksessa funktio saa siis
-moderneilla tietokoneilla kahden tavun sijaan kahdeksan tavun kokoisen
-parametrin. Tämän ominaisuuden voi kiertää säilömällä taulukon tietueen
-sisään.}. Tämän voi kiertää säilömällä parametrin tietueen sisään.
-
-Tämän lisäksi C-kieleen lisättiin tyyppi funktio-osoittimille.
-Määrittelysyntaksin logiikan perusteena toimi lausekkeiden syntaksi. Jos
-jostain muuttujasta saa \texttt{int}-arvon, kun lausekkeessa lukee
-\texttt{(*muuttuja)()}, niin \texttt{muuttuja} määritellään kirjoittamalla
-\texttt{int~(*muuttuja)();}. Monimutkaisissa tapauksissa on kuitenkin hankala
-erottaa tyyppejä toisistaan, kuten erot tyyppien ''osoitin taulukkoon
-kokonaislukuja'', eli \texttt{int~(*muuttuja)[]} ja ''taulukko osoittimia
-kokonaislukuihin'', eli \texttt{int~*muuttuja[]}.
-
-B-yhteensopivuuden tavoittelu ohjasi kielen suunnittelua syntaksin osalta,
-erityisesti lausekkeiden laskutoimitusjarjestyksessä. B-lause
-\texttt{if(a~\&~b)} vastaa C-lausetta \texttt{if(a~\&\&~b)}, mutta B-kielessä
-\& -operaattori pystyi käyttämään myös bittioperaatioihin loogisten
-operaatioiden lisäksi. Koska B-ohjelmien haluttiin toimivan C-ohjelmien tavoin
-mahdollisimman pienillä muutoksilla, C-ohjelmissa käytetyssä idiomissa
-\texttt{(a\&mask)~==~b} ja-bittioperaation ympärille joutuu lisäämään sulut.
-Tämä johtuu B-kielen \texttt{a == b \& c == d} -tyylisistä lausekkeista, joiden
-haluttiin toimivan mahdollisimman samalla tavalla C:ssä.
-
-Seuraavaksi alkoi C-kielen esikäsittelijän kehitys. Aluksi esikäsittelijässä
-oli vain toiminnot tiedostojen sisällyttämiseen (\texttt{\#include}) ja
-yksinkertaiseen korvaamiseen (\texttt{\#define}), mutta hyvin nopeasti
-kieleen lisättiin funktiomakrot sekä \texttt{\#if}-lauseet. Aluksi
-esikäsittelijää pidettiin vain vapaaehtoisena laajennoksena C:hen, mikä
-selittää myös nykypäivänä esikäsittelijän huomattavat erot muuhun C-kieleen
-verrattuna.
-
-Myöhemmin, kun C oli levinnyt usealle eri alustalle, alkoi olla selkeää, että C
-tarvitsi standardin. Brian Kernighan, jonka kanssa Ritchie oli kirjoittanut
-\emph{The C Programming Language} -kirjan~\citep{krfirst}, kirjoitti Ritchien
-kanssa C:n ensimmäisen standardin ANSIn X3J11 -työryhmässä. Kuuden vuoden
-jälkeen työryhmä sai valmiiksi nk. C89 -standardin, joka tunnetaan myös ANSI
-C:nä\footnote{ISO-järjestö hyväksyi standardin pienillä muutoksilla vuonna
-1990, jonka vuoksi standardi tunnetaan myös C90-standardina.}~\citep{C89}.
-Samoihin aikoihin valmistui myös toinen painos \emph{The C Programming
-Language} -kirjasta, jossa korjattiin lukuisia eroja ensimmäisen version ja
-C-standardin välillä~\citep{krsecond}.
-
-\subsection{C-ohjelmointikieli nykypäivänä}
-
-C on hyvin yksinkertainen kieli ja se on selviytynyt nykypäivään asti lähes
-identtisenä ANSI C:hen. Uudemmat standardit~\citep{C99, C11, C18} ovat lähinnä
-tehneet pieniä parannuksia kielen tehokkuuteen esimerkiksi lisäämällä
-\texttt{restrict}-avainsanan. Erilaiset kääntäjät ovat kuitenkin tuottaneet
-omia laajennoksiaan kieleen, mahdollistaen tehokkaampien, mutta
-kääntäjäriippuvaisten C-ohjelmien kirjoituksen. Moderni esimerkki
-kääntäjäriippuvaisesta syntaksia muokkaavasta laajennoksista on vektorityypit,
-joita esimerkiksi GCC-kääntäjä tukee omalla \texttt{\_\_attribute\_\_(())}
--syntaksillaan. GCC-kääntäjä tukee myös lukuisia muita laajennoksia, kuten
-tietueliteraaleja. C:stä löytyy myös standardien mukainen tapa käyttää
-kääntäjäriippuvaisia ominaisuuksia, \texttt{\#pragma}. Pragmoja käytetään
-erityisesti OpenMP-kirjaston~\citep{openmp} yhteydessä.
-
-Nykypäivänä käytännössä jokainen alusta tukee C:tä. C:tä käytetään alustoilla
-muun muassa ohjelmointikielten väliseen kommunikaatioon -- jos C\#-ohjelma
-haluaa käyttää Java-ohjelman kirjastorutiineja, C\#-ohjelman on helpointa
-käyttää Java-ohjelman C-rajapintaa.
-
-C on nykyään käytössä erityisesti matalan tason ohjelmoinnissa, kuten
-käyttöjärjestelmien ytimissä, sulautetuissa järjestelmissä, UNIX-työkaluissa,
-vapaan lähdekoodin ohjelmistoissa, tietokannoissa ja muissa tehokkuutta
-vaativissa ohjelmistoissa.
-
-\subsection{Kehitettävissä olevat ominaisuudet C-ohjelmointikielessä}
-
-\hld{Tässä aliluvussa pohditaan, miksi C pitäisi korvata uudella
-ohjelmointikielellä, mitä ominaisuuksia C:stä voisi kehittää, mitkä C:n
-ominaisuudet voisi jättää pois ja mitä uusia ominaisuuksia voisi tulla.}
-
-\hld{Näitä ominaisuuksia ovat ainakin tarkempi käännösaikainen tyypitys etenkin
-tyhjien osoittimien osalta, makrojärjestelmän uusiminen sekä syntaksin
-selkeyttäminen.}
-
-\citeauthor{chistory} (\citeyear{chistory}) nostaa esiin kaksi usein
-keskustelua herättänyttä C:n ominaisuutta. Toinen näistä on C:n tyyppisyntaksi,
-ja toinen on C:n tapa käsitellä taulukoita ja osoittimia keskenään.
-Ensimmäiselle näistä voi tehdä verrattaen helposti jotain, sillä syntaksin
-muuntaminen käännösaikaisesti on triviaalia. Taulukoiden ja osoittimien välistä
-käytöstä on paljon hankalampi muuntaa, sillä olemassaolevat C-ohjelmat
-käyttävät osoittimia ja taulukoita hyvin sekalaisesti. Yksi C:stä puuttuva
-ominaisuus on taulukon antaminen funktion parametrina. Tämän voi tehdä
-käärimällä taulukko tietueen sisään, ja tämän muutoksen voi tehdä
-automaattisesti kääntäessä. Tämä tosin vaatii koko funktion tyyppianalyysin
-muuttujan käytöstä.
-
-Muita syntaktisia parannuksia lausekkeisiin voi tehdä tietueiden kohdalla. Jos
-lausekkeessa käyttää tietuetta, niin tietueen \texttt{foo} jäsenen \texttt{bar}
-saa lausekkeella \texttt{foo.bar}, mutta jos \texttt{foo} onkin osoitin,
-lausekkeen tulee olla \texttt{foo->bar}. Jos \texttt{foo} olisi osoitin
-osoittimeen, lauseke olisi \texttt{(*foo)->bar}. Yksinkertaisempi syntaksi
-olisi käyttää jokaisessa tapauksessa lauseketta \texttt{foo.bar}, ja jättää
-tarvittava muoto kääntäjän pääteltäväksi. Esimerkiksi Rust-ohjelmointikielen
-syntaksi tietueiden käsittelyyn on tällainen.
-
-C:n makrojärjestelmässä on paljon parantamisen varaa. C:n esikäsittelijä toimii
-hyvin yksinkertaisissa tapauksissa, mutta sen rajoitteet tulevat nopeasti
-esille monimutkaisempia makroja kirjoittaessa. Voimakkaampi makrojärjestelmä
-mahdollistaa lyhyempien ja selkeämpien makrojen kirjoittamisen
-monimutkaisemmissa tapauksissa. Uutta makrojärjestelmää kirjoittaessa tulee
-kuitenkin pitää mielessä C-yhteensopivuus. \citeauthor{cabuse}
-(\citeyear{cabuse}) esittelee artikkelissaan tapoja hyväksikäyttää C:n
-esikäsittelijää esimerkiksi iteraation toteuttamiseen. Monimutkaisempi
-makrojärjestelmä voisi muuntaa voimakkaampaa kieltä C:n esikäsittelijän
-makroiksi käyttäen artikkelin mukaisia C-makroja, jolloin C-ohjelmat voisivat
-käyttää näitä yksinkertaisemmalla kielellä kirjoitettuja makroja. C:n standardi
-on kuitenkin hyvin avoin makrojen käytöksestä nurkkatapauksissa, joten
-monimutkaiset makrot eivät välttämättä toimi kääntäjäriippumattomasti, vaikka
-ne olisivatkin standardin mukaisia.
-
-C:n tyypitys sallii monia ilmaisuja, jotka voivat johtaa salakavaliin
-ongelmiin ajoaikaisesti. Koska C sallii suurempien kokonaislukutyyppien
-asettamisen pienempiin kokonaislukutyyppeihin, nämä arvot voivat ajoaikaisesti
-muuttua ilman käännösaikaisia varoituksia. Mainittavasti lauseet \texttt{int a
-= 256; unsigned char b = a;} eivät aiheuta käännösaikaisesti edes varoituksia
-GCC-kääntäjällä käyttäen kaikkia varoituksia \texttt{-Wall} -komentolippua
-kautta. Kääntäjästä pitää laittaa erikseen päälle \texttt{-Wconversion}
--komentolippu, jotta kääntäjä edes varoittaisi mahdollisesta yllättävästä
-käytöksestä. Tämän käytöksen muuttaminen uuteen ohjelmointikieleen ei ole
-triviaalia, sillä C-makrojen tuottama koodi voi olettaa tällaisten lausekkeiden
-toimivan.
-
-C:hen voisi myös lisätä useita uusia tyyppejä, erityisesti tyypin ei-tyhjälle
-osoittimelle. Tätä tyyppiä voisi käyttää turvallisempien ja nopeampien
-ohjelmien kirjoittamiseen. GCC- ja Clang-kääntäjät tukevat ei-tyhjiä osoittimia
-\texttt{\_\_attribute\_\_((nonnull))} -määreellä. Kääntäjä voi käyttää määrettä
-optimoidessa funktioita -- erityisesti turhat tarkistukset tyhjien muuttujien
-varalta optimoidaan pois. Muita hyödyllisiä tyyppejä ohjelmoinnin
-helpottamiseen olisivat monikot\defword{tuple} ja summatyypit\defword{tagged
-union, sum type}. Nämä molemmat tyypit löytyvät esimerkiksi Rustista.
-Ensimmäisen saa käännettyä triviaalisti tietueeksi, ja toisen saa käännettyä
-tietueeksi, jossa on sisällä vaihtoehdoista luetelman\defword{enumeration} ja
-yhdisteen\defword{union} yhdistelmä.\hl{esimerkki?}
-
-C:n kaltaisiin kieliin saa toteutettua helposti tyyppi-inferenssin, sillä C:n
-tyypit ovat tyyppitasolla yksinkertaisia. Koska C:ssä tyypit eivät ole
-geneerisiä, lausekkeiden tyyppipäättely on lähes triviaalia paria operaatiota
-lukuun ottamatta. Tyyppi-inferenssi helpottaa ohjelmointia, sillä ohjelmoija
-voi keskittyä ohjelmien logiikkaan muuttujien tyyppien kirjoittamisen sijaan.
-
-C:ssä ei ole erillistä moduulijärjestelmää, jonka lisääminen voisi nopeuttaa
-kääntämistä ja tehdä ohjelmien ymmärtämisestä yksinkertaisempaa. C-ohjelmat
-voivat käyttää kirjastojen funktioita kirjoittamalla kirjastofunktioista
-prototyypit, jotka yleisesti ottaen ovat kirjastojen otsikkotiedostoissa. Koska
-otsikkotiedostojen sisältö käytännössä ottaen kopioidaan
-\texttt{\#include}-kutsun tilalle, kääntäjä joutuu teoriassa lukemaan etenkin
-useimpien ohjelmien käyttämiä otsikkotiedostoja lukuisia kertoja
-käännösprosessin aikana\footnote{Käytännössä kääntäjät pystyvät optimoimaan
-tietyllä yleisellä tavalla kirjoitettuja otsikkotiedostoja, ja jättämään jo
-kertaalleen luetut tiedostot kokonaan pois.}. Erillisen moduulijärjestelmän
-lisääminen voisi yksinkertaistaa kirjastojen toteuttamista, sillä ohjelmoijien
-ei tarvitsisi kirjoittaa kirjastoilleen otsikkotiedostoja. 
-
-C:n makrojärjestelmä myös hankaloittaa työkalujen kirjoittamista. Koska
-jokainen pieni muutos lähdekoodiin voi vaikuttaa radikaalisti saatavilla
-oleviin symboleihin, esimerkiksi automaattitäydennyksen tarjoavien työkalujen
-kirjoittaminen on hankalaa. Myös standardoitu moduulijärjelmä voisi
-yksinkertaistaa kääntämistyökalujen kirjoittamista.\hl{relevanssi?}
+\hl{ 2 Taustaa: luvun alussa pitää selostaa, mitä asioita luvussa käsitellään.
+Varsinkin, kun luku on vähän sillisalaatti sisällöltään muutenkin. }
 
 \subsection{Ohjelmointikielten vertailun kriteerit}
 \label{sec:abs}
 
-\hld{Jotta kielten vertailun voi tehdä objektiivisesti, valitaan vertailua
+\hl{Jotta kielten vertailun voi tehdä objektiivisesti, valitaan vertailua
 varten jotkin kriteerit. Kriteereiksi valitaan suorituskyky, muistinkäyttö ja
 yhteensopivuus C:n ja muiden ohjelmointikielten kanssa. Vertailtavat kielet
 eivät saa olla C:tä huonompia millään osa-alueella.}
+
+\hl{ Luvussa 2.4 voisi noita vertailukriteereitä tuoda selvemmin esiin
+esimerkiksi taulukoimalla ne. }
 
 Verrattavissa ohjelmointikielissä on pyritty parantamaan C:n huonoja puolia
 hyvien puolien kustannuksella, usein lisäämällä kieleen turvallisuutta
@@ -233,11 +30,13 @@ puitteissa objektiivisesti. Jos yksikin näistä kriteereistä ei pidä, verratt
 kieli ei ole aidosti C:tä parempi, vaan se häviää C:lle joissain osa-alueissa
 ja vastaavasti voi olla parempi joissakin toisissa.
 
+\hl{tehden -> toisto}
+
 Tutkielmassa vertaillaan kolmea osa-aluetta ohjelmointikielistä: suorituskykyä,
-muistinkäyttöä sekä yhteensopivuutta C:n ja muiden ohjelmointikielten kanssa.
-Tutkielmassa käsitellään myös subjektiivisia kielten ominaisuuksia, kuten
-kielen tiiviyttä\defword{terseness, expressiveness}, mutta näitä
-ominaisuuksia ei huomioida kielten paremmuusvertailussa.
+muistinkäyttöä sekä yhteensopivuutta C:n ja muiden ohjelmointikielten kanssa
+\hl{Miksi juuri nämä?}. Tutkielmassa käsitellään myös subjektiivisia kielten
+ominaisuuksia, kuten kielen tiiviyttä\defword{terseness, expressiveness}, mutta
+näitä ominaisuuksia ei huomioida kielten paremmuusvertailussa.
 
 Ohjelmointikielellä kirjoitetun ohjelman tulee olla suoritusaikaisesti
 vähintään yhtä nopea kuin vastaava C:llä kirjoitettu ohjelma. Kieli siis ei saa
@@ -276,7 +75,7 @@ olisi mahdollisimman saumatonta.
 
 \subsection{C:hen verrattavissa olevat ohjelmointikielet}
 
-\hld{Vertailtaviksi kieliksi valitaan Ada, C++, D, Go ja Rust. Kaikki
+\hl{Vertailtaviksi kieliksi valitaan Ada, C++, D, Go ja Rust. Kaikki
 vertailtavat kielet ovat kohtalaisen tehokkaita, jonka lisäksi kaikilla on
 yritetty korvata C:n tai C++:n käyttöä.}
 
@@ -286,7 +85,8 @@ päätyneet hyvin suosituiksi ohjelmointikieliksi, kuten esimerkiksi C++ ja Go.
 Kielten suosion mittaamiseen on tehty useita projekteja, jotka vertailevat
 kieliä esimerkiksi hakutulosten tai projektien mukaan. Näitä ovat esimerkiksi
 TIOBEn ohjelmointikielten suosion indeksi~\citep{tiobe} ja GitHub-palvelun
-julkaisema \mbox{Octoverse}~\citep{octoverse}.
+julkaisema \mbox{Octoverse}~\citep{octoverse}.\hl{Voisi verrata muitakin
+suosiolistoja?}
 %Valitsemalla vertailuun suosittuja kieliä voidaan tutkia, miksi muuten
 %selkeästi täysin käyttökelpoinen kieli ei ole syrjäyttänyt C:tä.
 
@@ -323,12 +123,13 @@ ohjelmointikieli, joka on suunniteltu mahdollisimman suorituskykyiseksi.
 
 \subsection{Kielten suosioon vaikuttavat tekijät}
 
-\hld{Analyysiä muista syistä kielen suosioon, erityisesti Meyerovichin ja
+\hl{Analyysiä muista syistä kielen suosioon, erityisesti Meyerovichin ja
 Rabkinin tekemän tutkimuksen perusteella. Tämä antaa tietoa ominaisuuksista,
 jotka ohjelmointikielessä olisi hyvä olla.}
 
 Eräässä tutkimuksessa~\citep{empiricalpopularity} tutkittiin syitä
-ohjelmointikielten valintaan. Yhden tutkimuksen järjestämän kyselyn (s. 8,
+ohjelmointikielten valintaan. \hl{Olisi hyvä olla ainakin 1 muu tutkielma
+viittauksessa.} Yhden tutkimuksen järjestämän kyselyn (s. 8,
 \mbox{Slashdotissa} julkaistu kysely, n=1679) perusteella kielen valintaan
 vaikuttaa avoimen lähdekoodin kirjastojen saatavuus, olemassa olevien ohjelmien
 jatkokehitys sekä kielen tunnettavuus ohjelmoijien keskuudessa -- tutkimuksen
@@ -436,9 +237,12 @@ uuteen ohjelmointikieleen siirtyvälle ohjelmoijalle.
 
 \subsection{Makrojärjestelmät}
 
-\hld{Tässä aliluvussa selitetään makrojärjestelmien käsite, kerrotaan
+\hl{Tässä aliluvussa selitetään makrojärjestelmien käsite, kerrotaan
 makrojärjestelmien tarpeellisuudesta ja käyttökohteista sekä verrataan
 vaihtoehtoisia toteutuksia makrojärjestelmiin.}
+
+\hl{ Luku 2.7: Tämä on jotenkin orpo aliluku. Ohjelmaesimerkit on selostettu
+huonosti tai ei ollenkaan. }
 
 Ohjelmointikielten makrojärjestelmillä tarkoitetaan ohjelmointikielen
 ominaisuuksia, joita voidaan käyttää käännösaikaiseen lähdekoodin luomiseen ja
@@ -460,7 +264,7 @@ Ohjelmassa~\ref{fig:ruststdnum} on kaksi tällaista funktiota, jotka toteuttavat
 taataan paras mahdollinen suorituskyky, pitäen kuitenkin lähdekoodin selkeänä
 ja ylläpidettävänä. Makrojärjestelmän käyttäminen määrittelyihin pakottaa
 yhtenäiset määrittelyt kaikille alkeistyypeille, jolloin ohjelmointivirheiden
-määrä pysyy mahdollisimman pienenä.
+määrä pysyy mahdollisimman pienenä. \hl{Ehkä parempi: saattaa vähentää virheitä}
 
 \begin{listing}[ht!]
     \inputminted{Rust}{koodi/ruststdnum.rs}
@@ -490,11 +294,11 @@ makrojärjestelmäksi.
 
 \begin{listing}[ht!]
     \inputminted{C}{koodi/cmacrofail.c}
-    \caption{C-makrot voivat aiheuttaa laajennetusa muodossa yllättäviä
+    \caption{C-makrot voivat aiheuttaa laajennetussa muodossa yllättäviä
     tuloksia muuttujanimien törmäyksien ja syntaksivirheiden vuoksi. Ohjelmoija
-    odottaa tulokseksi ohjelmaa, joka tulostaisi 2, mutta lopullisen ohjelman
-    tulostama viesti on määrittelemätöntä toimintaa alustamattoman muuttujan
-    käytön vuoksi.}
+    odottaa tulokseksi ohjelmaa, joka tulostaisi arvon 2, mutta lopullisen
+    ohjelman tulostama viesti on määrittelemätöntä toimintaa alustamattoman
+    muuttujan käytön vuoksi.}
     \label{fig:cmacrofail}
 \end{listing}
 
@@ -537,8 +341,8 @@ makrojärjestelmä voisi esimerkiksi lukea tiedostoja käännösaikaisesti ja
 vaikuttaa lopulliseen lähdekoodiin tiedoston sisällöstä riippuen.
 
 Mikään makrojärjestelmä ei ole täydellinen, vaan jokaisessa makrojärjestelmässä
-on sekä hyviä että huonoja puolia. Kun makrojärjestelmän tehokkuutta
-kasvatetaan, sen käyttäminen muuttuu monimutkaisemmaksi.
+on sekä hyviä että huonoja puolia. Kun makrojärjestelmän ilmaisuvoimaa
+kasvatetaan, sen käyttäminen muuttuu monimutkaisemmaksi. \hl{Missä mielessä?}
 
 %\hl{Osa tästä seuraavaan lukuun?}
 %
