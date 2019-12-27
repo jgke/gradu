@@ -2,57 +2,58 @@
 
 \usepackage[utf8]{inputenc}
 \usepackage[T1]{fontenc}
-%\usepackage{fontspec}
-%\setmainfont{Comic Sans MS}
+
+% Fonts and symbols
 \usepackage{lmodern}
-\usepackage[final]{microtype}
-\usepackage{amsfonts,amsmath,amssymb,amsthm,booktabs,color,enumitem,graphicx}
-%\usepackage[pdftex,hidelinks]{hyperref}
-\usepackage[hidelinks]{hyperref}
+\usepackage{inconsolata}
+\usepackage{amsmath,amssymb,amsthm}
 \usepackage{textcomp}
-\usepackage{bookmark}
+
+% Typesetting
+\usepackage[final]{microtype}
+\usepackage{array}
+\usepackage{booktabs}
+\usepackage{color}
+\usepackage{multirow}
+%\usepackage{fontspec} \setmainfont{Comic Sans MS}
+
+% Hyperlinks, ToC
+\usepackage[hidelinks]{hyperref}
 \usepackage{appendix}
+
+% References
 \usepackage[natbibapa,sectionbib]{apacite}
 \usepackage[finnish]{babel}
-\usepackage{calc}
+
+% Figures
+\usepackage{graphicx}
 \usepackage{minted}
-\usepackage{hyperref}
-\usepackage{multirow}
 \usepackage{tikz}
 \usetikzlibrary{shapes,positioning,arrows.meta,calc,shadows.blur}
-\usepackage{placeins}
-\usepackage{import}
-\usepackage{etoolbox}
-\usepackage{refcount}
-\usepackage{tocloft}
-\usepackage[nottoc]{tocbibind}
-\usepackage{totcount}
-\usepackage{inconsolata}
-\usepackage[normalem]{ulem}
-\usepackage{footnote}
-\usepackage{adjustbox}
-\usepackage{hyphenat}
-\usepackage{relsize}
+
+% Utilities
+\usepackage{calc}
+\usepackage[nottoc]{tocbibind} % Add references to ToC
+\usepackage{adjustbox} % Provides \adjustbox
+\usepackage{chngcntr} % Provides \counterwithin
+\usepackage{footnote} % Provides \footnote
+\usepackage{hyphenat} % Provides \hyp{}
+\usepackage{placeins} % Provides \FloatBarrier
+\usepackage{relsize} % Provides \textscale
+\usepackage{soulutf8} % Provides \hl
+\usepackage{tocloft} % Provides \cftaddtitleline
+\usepackage{totcount} % Provides \newtotcounter et al.
+%\usepackage{showframe} % Show frame
+
 \usepackage{data/gnuplot-lua-tikz}
-\usepackage{chngcntr}
-\usepackage{array}
-\usepackage{csvsimple}
 
 \makesavenoteenv{tabular}
 \makesavenoteenv{table}
 
-\renewcommand{\underline}[1]{\uline{#1}}
-
-\usepackage{soulutf8}
 \sethlcolor{yellow}
 %\renewcommand{\hl}[1]{}
-%\usepackage{showframe}
 
-%\usepackage[top=2em]{geometry}
-%\usepackage{showframe}
-
-%\usepackage[style=apa]{biblatex}
-%\DeclareLanguageMapping{finnish}{finnish-apa}
+\linespread{1.25}
 
 \bibliographystyle{apacite}
 
@@ -112,22 +113,8 @@
 % rainbow_dash
 \usemintedstyle{emacs}
 
-\def\bnflexer{grammar_notation.py:AbnfLexer -x}
-
-\newcommand{\bnf}[3]{%
-    \inputminted[firstline=#1,lastline=#2]{\bnflexer}{#3}}
-
 \newcommand{\defword}[2][]{~(engl.~\emph{\foreignlanguage{english}{#2}#1})}
 \newcommand{\defwordin}[2][]{~(engl.~\emph{#2}#1)}
-
-\newcommand{\bnfdescription}{%
-    Tämä on hahmotelma kielen syntaksista ISO/IEC 14977
-    -standardin~\citep{iso14977} kuvaamassa Backus-Naur -muodossa, jossa ''\#''
-    aloittaa säännöllisen lausekkeen ja ''!'' aloittaa kielteisen
-    etukurkistuksen\defword{negative lookahead}}
-
-\linespread{1.1}
-%\linespread{1.25}
 
 \renewcommand\listingscaption{Ohjelma}
 \renewcommand{\_}{\relax\ifmmode_\else \textscale{0.7}{\textunderscore}\fi}
@@ -155,3 +142,7 @@
 \counterwithin{figure}{section}
 \counterwithin{table}{section}
 \counterwithin{listing}{section}
+
+\newcommand{\grayrule}{
+    \textcolor{lightgray}{\raisebox{0.5ex}{\rule{\textwidth}{0.4pt}}}
+}
