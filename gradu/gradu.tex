@@ -4,9 +4,12 @@
 
 \makeatletter
 \AtBeginDocument{%
+    \renewcommand{\bibname}{Lähteet}
+    \renewcommand{\BRetrievedFrom}{Saatavilla\ }
     \renewcommand{\BEd}{painos\hbox{}}
     \renewcommand{\BOthers}[1]{ja muut\hbox{}}%
     \renewcommand{\BOthersPeriod}[1]{ja muut\hbox{}}%
+    \renewcommand*{\bibfont}{\interlinepenalty 10000\relax}
 }
 \makeatother
 
@@ -71,16 +74,11 @@ $\rightarrow$ Embedded software \\
 \input{yhteenveto.tex}
 \newpage
 
-\renewcommand{\bibname}{Lähteet}
-\renewcommand{\BRetrievedFrom}{Saatavilla\ }
-\renewcommand{\BOthers}[1]{ja muut\hbox{}}
-\renewcommand{\BOthersPeriod}[1]{ja muut\hbox{}}
-\renewcommand*{\bibfont}{\interlinepenalty 10000\relax}
-
 \bibliography{references}
 
 \appendixbeginhere
 \inputappendix{data/data.tex}
+\addtocontents{toc}{\protect\enlargethispage{2\baselineskip}}
 \inputappendix{dokumentaatio.tex}
 \appendixendhere
 

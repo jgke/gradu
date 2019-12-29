@@ -1,6 +1,8 @@
 \section{Purkka-ohjelmointikieli}
 \label{sec:purkka}
 
+\hl{Mitä valintoja voi tehdä ilman hidastusta? Mitä ei saa tehdä?}
+
 Tässä luvussa määritellään Purkka-ohjelmointikieli.
 
 \hl{Uudelleenstrukturointi: Osoitetaan hyviin ja huonoihin puoliin tutkielman
@@ -32,59 +34,6 @@ ole määritelty tarkemmin joko kokonaisluvuksi tai
 \hl{Nämä tyypit ovat... pidempi selitys}
 
 \hl{char-tyyppin sign -> sekava ja epäselvä }
-
-Määritetään Purkkaan seuraavat alkeistyypit. \\[0.3cm]
-\begin{tabular}{@{}p{5.8cm}p{8.7cm}@{}} \toprule
-    Purkka-tyyppi & Purkka-tyyppiä vastaava C-tyyppi \\ \midrule
-    \texttt{void} & \texttt{void} \\
-    \texttt{char} & \texttt{char} \\
-    \texttt{i8}, \texttt{i16}, \texttt{i32}, \texttt{i64} &
-    \texttt{int8\_t}, \texttt{int16\_t}, \texttt{int32\_t}, \texttt{int64\_t} \\
-    \texttt{u8}, \texttt{u16}, \texttt{u32}, \texttt{u64} &
-    \texttt{uint8\_t}, \texttt{uint16\_t}, \texttt{uint32\_t}, \texttt{uint64\_t} \\
-    \texttt{float} & \texttt{float} \\
-    \texttt{double} & \texttt{double} \\
-    [0.3cm]
-
-    \texttt{cbyte}, \texttt{cshort}, \texttt{cint}, \texttt{clong}, \texttt{clonglong}
-    & \texttt{signed char}, \texttt{short}, \texttt{int}, \texttt{long}, \texttt{long long} \\
-    \noalign{\vspace{0.3cm}}
-
-    \texttt{cubyte}, \texttt{cushort}, \texttt{cuint}, \texttt{culong}, \texttt{culonglong}
-    & \texttt{unsigned char}, \texttt{unsigned short}, \texttt{unsigned int},
-      \texttt{unsigned long}, \texttt{unsigned long long} \\
-    \bottomrule
-\end{tabular} \\
-
-Määritetään näiden alkeistyyppien pohjalta osoitintyypit, taulukkotyypit sekä
-yhdistetyypit: \\[0.3cm]
-\begin{tabular}{@{}ll@{}} \toprule
-    Purkka-tyyppi & Purkka-tyyppiä vastaava C-tyyppi \\ \midrule
-    \texttt{\&T, \&?T} & \texttt{T *} \\
-    [0.2cm]
-
-    \texttt{[T]} & \texttt{T\textsubscript{declaration specifiers}[]T\textsubscript{direct abstract declarator}} \\
-    \texttt{[T;expr]} & \texttt{T\textsubscript{declaration specifiers}[expr]T\textsubscript{direct abstract declarator}} \\
-    [0.2cm]
-
-    \texttt{fun t: (T ..) -> R} & \texttt{R\textsubscript{declaration specifiers}~t(T ..)R\textsubscript{direct abstract declarator}} \\
-    \texttt{fun (T ..) -> R} & \texttt{R\textsubscript{declaration specifiers}~(*)(T ..)R\textsubscript{direct abstract declarator}} \\
-    [0.2cm]
-
-    \texttt{struct \{ k: T ..\}} & \texttt{struct \{ T k ..\}} \\
-    \texttt{enum \{ A [= expr] ..\}} & \texttt{enum \{ A [= expr] ..\}} \\
-    \texttt{union \{ k: T ..\}} & \texttt{union \{ T k ..\}} \\
-    [0.2cm]
-
-    \texttt{(T1 ..)} & \texttt{struct \{ T1 e1; ..\}} \\
-    \texttt{enum \{ T(T1 ..) .. \}} & \texttt{struct \{ union \{T1 t1 ..\} v; enum \{T ..\} e;\}} \\
-    [0.2cm]
-
-    GCC-laajennokset & \\
-    \texttt{attribute(T, ...))} & \texttt{T \_\_attribute\_\_((...))} \\
-
-    \bottomrule
-\end{tabular} \\
 
 Koska kieli ei voi erota C:stä suoritusaikaisesti, tyypitys on hyvin lähellä
 C:n tyypitystä.
@@ -127,62 +76,6 @@ tyyppipäättely onnistuu, mutta toisessa ei.
 \hl{Tämä vaatii \textbf{paljon} lisää avaamista, selittämistä ym. tekstiä.
 Lisäksi pitää vahvistaa, että Purkka-kääntäjä oikeasti toimii näiden
 perusteella, eikä \emph{melkein} identtisten päättelysääntöjen avulla.}
-
-\newcommand{\hmtag}[1]{\tag*{[#1]\hspace*{1cm}}}
-
-\begin{gather}
-    \frac
-      {x: \sigma \in \Gamma}
-      {\Gamma \vdash _{D}x:\sigma} \hmtag{Var} \\
-    \intertext{Var on yksinkertaisin päättelysääntö: jos ympäristössä $\Gamma$ on
-    muuttuja $x$ tyyppiä $\sigma$, niin lausekkeissa muuttujan $x$ tyyppi on
-    $\sigma$.}
-%
-    \frac
-      {\Gamma \vdash _{D}e_{0}:\tau \rightarrow \tau '\quad \quad \Gamma \vdash _{D}e_{1}:\tau }
-      {\Gamma \vdash _{D}e_{0}\ e_{1}:\tau '} \hmtag{App} \\
-    \intertext{App tunnetaan paremmin funktiokutsuna. Jos $e_0$ on funktio,
-    joka ottaa argumenteikseen arvot tyyppiä $\tau$ ja palauttaa arvon tyyppiä
-    $\tau'$, ja $e_1$ on jokin arvo tyyppiä $\tau$, niin funktio $e_0$
-    kutsuttuna $e_1$:llä palauttaa arvon tyyppiä $\tau'$.}
-%
-    \frac
-      {\Gamma ,\;x:\tau \vdash _{D}e:\tau '}
-      {\Gamma \vdash _{D}\lambda \ x\ .\ e:\tau \rightarrow \tau '} \hmtag{Abs}
-    \intertext{Abs on yleisemmin tunnettu funktion määrittelynä. Jos
-    olettamalla, että $x$:n tyyppi on $\tau$, voidaan päätellä että $e$:n tyyppi
-    on $\tau'$, niin $\lambda x . e$ on funktio, joka ottaa argumenteikseen
-    arvon tyyppiä $\tau$ ja palauttaa arvon tyyppiä $\tau'$.}
-%
-    \frac
-      {\Gamma \vdash _{D}e_{0}:\sigma \quad \quad \Gamma ,\,x:\sigma \vdash _{D}e_{1}:\tau }
-      {\Gamma \vdash _{D}{\mathrm {let}}\ x=e_{0}\ {\mathrm {in}}\ e_{1}:\tau } \hmtag{Let} \\
-    \intertext{Let mahdollistaa uuden muuttujan luomisen. Toisin sanoen, jos
-    luodaan muuttuja $x$, sitä voidaan käyttää myöhemmin.
-    \newline \newline
-    Jos voidaan päätellä, että $e_0$:n tyyppi on $\tau$ sekä olettamalla, että
-    $x$:n tyyppi on $\sigma$ voidaan päätellä, että $e_1$:n tyyppi on $\tau'$,
-    niin kaikki $e_1$:n sisältämät $x$:t voi korvata $e_0$:lla ja saada
-    tulokseksi arvon tyyppiä $\tau'$.}
-%
-    \frac
-      {\Gamma \vdash _{D}e:\sigma '\quad \sigma '\sqsubseteq \sigma }
-      {\Gamma \vdash _{D}e:\sigma } \hmtag{Inst} \\
-    \intertext{Inst mahdollistaa arvojen asettamisen myös hieman toisenlaisiin
-    tyyppeihin, kuten vaikka \texttt{i8}-tyyppisen arvon asettamisen
-    \texttt{i16}-tyyppiseen arvoon. Huomioitavaa on, että \texttt{i8}-osoitin
-    ei ole yhteensopiva \texttt{i16}-osoittimen kanssa.
-    \newline \newline
-    Jos voidaan päätellä, että $e$ on tyyppiä $\sigma'$ ja $\sigma'$ on
-    $\sigma$:n alityyppi, niin voidaan päätellä, että $e$ on tyyppiä $\sigma$.}
-%
-    \frac
-      {\Gamma \vdash _{D}e:\sigma \quad \alpha \notin {\text{free}}(\Gamma )}
-      {\Gamma \vdash _{D}e:\forall \ \alpha \ .\ \sigma } \hmtag{Gen} \\
-    \intertext{Jos voidaan päätellä, että $e$ on tyyppiä $\sigma$ ja $\alpha$
-    ei ole nykyisessä kontekstissa vapaa tyyppi, niin $e$ on tyyppiä $\sigma$
-    kaikille $\alpha$:n tyypeille.} \notag
-\end{gather}
 
 \subsection{Syntaksi}
 
@@ -282,64 +175,3 @@ Lambdalausekkeet taas käännetään nostamalla lambda erilliseksi funktioksi ja
 korvaamalla lambda osoittimella tähän funktioon.
 
 \hl{2 viimeistä virkettä pois?}
-
-
-\begin{figure}[ht!]
-        \footnotesize
-        \begin{adjustbox}{center}
-        \begin{tikzpicture}[-{Latex[length=2mm,width=3mm]},auto, main node/.style={draw,fill=white},align=center]
-            \tikzstyle{ann} = [rounded corners,fill=black!4,draw=black]
-            \tikzset{
-                -|/.style={to path={-| (\tikztotarget)}},
-                |-/.style={to path={|- (\tikztotarget)}},
-            }
-
-            \node[main node,text width=3cm,fill=black!10] (core) {Tiedosto syötetään kääntäjälle};
-
-            \node[main node,text width=3.3cm] (purkkaparser) [right = of core] {Purkka-jäsentäjä};
-
-            \node[main node] (cpurkka) [right = of purkkaparser,text width=3.5cm] {Muuntaja C-syntaksipuusta Purkka-syntaksipuuksi};
-            \node[main node] (coremacro) [above = of cpurkka,text width=3.5cm] {Muuntaja Purkka-lausekkeista C-syntaksipuiksi};
-            \node[main node,text width=3.5cm] (purkkac) [below = of cpurkka] {Muuntaja Purkka-syntaksipuusta C-syntaksipuuksi};
-            \coordinate[above left = of coremacro] (phantom);
-
-            \node[draw = none] (phantom1) [above = of coremacro, text width=3.5cm] {};
-            \node[draw = none] (phantom3) [left = of phantom1, text width=3.3cm] {};
-            \node[draw = none] (phantom2) [right = of phantom1, text width=2.3cm] {};
-
-            \node[main node] (preprocessor) [right = of coremacro,text width=2.3cm] {C-esikäsittelijä};
-            \node[main node] (cparser) [right = of cpurkka,text width=2.3cm] {C-jäsentäjä};
-
-            \node[main node,text width=3.3cm] (cformat) [left = of purkkac] {C-syntaksipuun muuntaminen lähdekoodiksi};
-            \node[main node,fill=black!10] (done) [left = of cformat] {Tiedosto on käännetty};
-
-            \coordinate (phantom4) at ($(purkkaparser)!0.5!(purkkac)$);
-
-            \draw (purkkaparser.170) |- (phantom) node[blur shadow={shadow blur steps=5},ann,above right = 0.2cm and 0cm]  {Purkka-koodi sisällyttää C-tiedoston} -| (preprocessor); 
-            \draw (purkkaparser.130) |- node[blur shadow={shadow blur steps=5},ann,text width=2.7cm,above right = 0.2cm and -0.4cm] {Purkka-koodi kutsuu C-makroa} (coremacro);
-            \draw (purkkaparser) |- (phantom4) -| (purkkac);
-
-            \path[every node/.style={font=\sffamily\small},-{Latex[length=2mm,width=3mm]}]
-            (core) edge (purkkaparser)
-            (coremacro) edge (preprocessor)
-            (preprocessor) edge (cparser)
-            (cparser) edge (cpurkka)
-            (cpurkka) edge (purkkaparser)
-            (purkkac) edge (cformat)
-            (cformat) edge (done)
-            ;
-
-            \draw node[above = of phantom1] {\textbf{AST-muuntaja}};
-            \draw node[above = of phantom2] {\textbf{C-kääntäjä}};
-            \draw node[above = of phantom3] {\textbf{Purkka-kääntäjä}};
-            \begin{scope}[on background layer]
-                \draw[thick,dotted,fill=black!5] ($(phantom1.north west)+(-0.3,2)$)  rectangle ($(purkkac.south east)+(0.3,-0.4)$);
-                \draw[thick,dotted,fill=black!5] ($(phantom2.north west)+(-0.3,2)$)  rectangle ($(cparser.south east)+(0.3,-0.4)$);
-                \draw[thick,dotted,fill=black!5] ($(phantom3.north west)+(-0.3,2)$)  rectangle ($(purkkaparser.south east)+(0.3,-0.4)$);
-            \end{scope}
-        \end{tikzpicture}
-        \end{adjustbox}
-
-        \caption{Kaavio Purkan kääntämisestä C:ksi.}
-        \label{fig:compilerarch}
-\end{figure}

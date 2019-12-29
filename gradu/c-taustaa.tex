@@ -1,15 +1,70 @@
 \section{C-ohjelmointikielen taustaa}
 
-\hl{Tässä luvussa kerrotaan ohjelmointikielten taustoista ja yleisistä
-ominaisuuksista, luodaan määrittelyt vertailuun liittyville kriteereille,
-perustelut verrattavien kielten valinnoille sekä pohditaan erilaisia
-mahdollisia syitä kielten suosioon. Tämän luvun sisältö on hyvin samankaltainen
-tutkimussuunnitelman kirjallisuusosan toisen luvun kanssa.}
+\hl{Miten C on siirtynyt tähän päivään? Miten C:tä voisi parantaa?}
 
-\hl{ 2 Taustaa: luvun alussa pitää selostaa, mitä asioita luvussa käsitellään.
-Varsinkin, kun luku on vähän sillisalaatti sisällöltään muutenkin. }
+\subsection{C-ohjelmointikieli lyhyesti}
 
-\subsection{C-ohjelmointikielen taustaa}
+\hl{Lähteitä lisää.}
+
+\begin{listing}[ht!]
+    \inputminted{C}{koodi/hello.c}
+    \caption{Yksinkertainen hello world -ohjelma toteutettuna C:llä.}
+    \label{fig:helloc}
+\end{listing}
+
+C on Dennis Ritchien 1970-luvun taitteessa kehittämä yksinkertainen matalan
+tason ohjelmointikieli~\citep{chistory}, jota käytetään nykypäivänä erityisesti
+järjestelmäohjelmoinnissa sekä sulautetuissa järjestelmissä. C ei aseta
+ohjelmoijalle rajoituksia muistinkäsittelyyn, mikä mahdollistaa tehokkaan mutta
+turvattoman ohjelmoinnin. C on \citeauthor{tiobe}:n (\citeyear{tiobe}) mukaan
+yksi tällä hetkellä käytetyimmistä ohjelmointikielistä. C ei ole vuoden 1989
+ANSI-standardin jälkeen muuttunut mainittavasti~\citep{chistory, C18}, vaan
+ohjelma~\ref{fig:helloc} näyttää samalta kuin vuonna 1988 julkaistussa
+\emph{The C Programming Language} -kirjassa~\citep{krsecond}. Ohjelma tulostaa
+näytölle merkkijonon \emph{Hello,~World}.
+
+Toisin kuin muissa suosituissa kielissä, C ei tarjoa automaattista
+muistinhallintaa, vaan ohjelmoijan täytyy itse hallita sekä muistin varaaminen
+että sen vapauttaminen. Tämä on pitänyt kielen toteutuksen hyvin tehokkaana ja
+yksinkertaisena, mikä on mahdollistanut C:n leviämisen järjestelmästä toiseen.
+Kääntöpuolena muistinhallinta jätetään ohjelmoijan vastuulle, monimutkaistaen
+ohjelmien toteutusta.
+
+C:n mahdollistama suorituskyky on johtanut kielen suosioon tehokkuutta
+vaativissa sovelluksissa, kuten verkkopalvelimissa ja tietokannoissa.
+Toisaalta C:n yksinkertainen lähestymistapa muistinkäsittelyyn on
+mahdollistanut tarkkaa muistinhallintaa vaativien ohjelmistojen toteutuksen,
+kuten käyttöjärjestelmien ytimien tai sulautettujen järjestelmien ohjelmien.
+Tämä yhdistelmä on johtanut C:n laajaan käyttöön käyttötarkoituksesta
+riippumatta.
+
+Koska C:llä on helppoa saada aikaan erilaisia tietoturvaongelmia, useita
+työkaluja on kehitetty havaitsemaan ja estämään
+näitä~(mm.~\citet{valgrind,asan}). Myös lukuisia ohjelmointikieliä on luotu
+toteuttamaan ''turvallinen C'', usein lisäämällä jokaisen osoittimen käytön
+yhteyteen tarkistuksen, osoittaako osoitin ohjelman omistamaan muistiin.
+
+\hl{Kieliperheistä liittyvään juttuun ei löydy yhtään järkevää lähdettä. Tästä
+bulkkipaperi-idea?}
+
+C on vaikuttanut lukuisien kielten kehitykseen, ja useiden kielien sanotaankin
+olevan osa C-kieliperhettä. C-kieliperheeseen kuuluviin kieliin liittyy usein
+muun muassa imperatiivinen ohjelmointityyli, perinteinen (eli
+infix-merkintätapa) lausekkeiden muodostamiseen, muuttujien näkyvyysalueiden
+rajoittaminen kaarisuluilla sekä staattinen tyypitys. Näitä piirteitä näkyy
+ohjelmassa~\ref{fig:helloc}: kaarisuluilla rajoitettu \texttt{main}-funktio
+kutsuu \texttt{printf}-funktiota, joka tulostaa käyttäjälle merkkijonon
+\emph{Hello,~World}. Funktio ottaa parametriksi kokonaisluvun \texttt{argc} ja
+osoittimen merkkijonolistaan \texttt{argv}.
+
+Suurin osa nykypäivänä käytetyimmistä ohjelmointikielistä on osa
+C-kieliperhettä, kuten TIOBEn indeksissä~(\citeyear{tiobe}) kärkiviisikosta
+löytyvät C:n lisäksi Java, C++ ja C\#. Python on ainoa kärkiviisikossa oleva
+ohjelmointikieli, joka ei suoraan ole osa C-kieliperhettä, mutta Pythonin
+referenssi-implementaatio CPython on nimensä mukaisesti toteutettu
+C:llä ja Pythonilla~\citep{cpython}.
+
+\subsection{C-ohjelmointikielen historiaa ja nykypäivää}
 \label{sec:ctaustaa}
 
 \hl{Tässä aliluvussa kerrotaan C-kielen taustasta, alkuperäisistä
@@ -18,10 +73,10 @@ Erityisesti keskitytään C:n tämänhetkisiin käyttökohteisiin, joista selvi�
 mitä ohjelmointikielten ominaisuuksia tulisi käsitellä ohjelmointikielten
 vertailussa.}
 
-\hl{ Luvussa 2.1 ihmetyttää, että ovatko nämä asiat nyt keskeisimmän piirteet
+\hl{ Luvussa 2.2 ihmetyttää, että ovatko nämä asiat nyt keskeisimmän piirteet
 C-kielessä? Miksei muita kielen ominaisuuksia selosteta? }
 
-Dennis Ritchie~(\citeyear{chistory}) käsittelee C-kielen historiaa ja
+Dennis~\citet{chistory} käsittelee C-kielen historiaa ja
 tekemiään suunnittelupäätöksiä artikkelissaan \emph{The Development of the C
 Language}. Artikkelin mukaan C kehitettiin pitkälti 70-luvulla B- ja
 BCPL-ohjelmointikielien pohjalta. Ritchie tavoitteli uudella
@@ -108,7 +163,21 @@ Samoihin aikoihin valmistui myös toinen painos \emph{The C Programming
 Language} -kirjasta, jossa korjattiin lukuisia eroja ensimmäisen version ja
 C-standardin välillä~\citep{krsecond}.
 
-\subsection{C-ohjelmointikieli nykypäivänä}
+\grayrule
+
+Nykypäivänä C:tä käytetään käytännössä jokaisessa tietokoneessa
+käyttöjärjestelmästä riippuen joko pelkästään ydinkomponenttien toteutukseen
+tai koko käyttöjärjestelmän toteutukseen. Sulautetuissa järjestelmissä C on
+yksi suosituimmista kielistä johtuen kielen yksinkertaisuudesta ja
+suorituskyvystä. C:n suosion myötä myös kielen huonot puolet nousevat esiin
+erilaisissa tietoturvaongelmissa, jotka johtuvat kielen sallimasta
+rajoittamattomasta muistinkäsittelystä yhdistettynä ohjelmoijan tekemiin
+virheisiin. Esimerkiksi puskuriylivuodoissa C:llä kirjoitettu ohjelma tallentaa
+tietoa muualle tai lukee muistia muualta kuin mitä ohjelmoija on tarkoittanut,
+kun ohjelmoinja jättää tekemättä kriittisen syötteen oikeellisuustarkistuksen.
+C-kääntäjä voi optimoidessa poistaa tällaisia tarkistuksia ja aiheuttaa
+tietoturvaongelmia, jos kääntäjä päättelee tarkistusten olevan
+turhia~\citep{redhatsecurity}.
 
 C on hyvin yksinkertainen kieli, ja se on selviytynyt nykypäivään asti lähes
 identtisenä ANSI C:hen. Uudemmat standardit~\citep{C99, C11, C18} ovat lähinnä
@@ -139,9 +208,17 @@ vaativissa ohjelmistoissa.
 ohjelmointikielellä, mitä ominaisuuksia C:stä voisi kehittää, mitkä C:n
 ominaisuudet voisi jättää pois ja mitä uusia ominaisuuksia voisi tulla.}
 
+\hl{Rakenne: 1. mitä voi kehittää, 2. mitä ei saa muuttaa?}
+
+\hl{Esimerkki ilman prepro: errno on makro, eli vaatii purkkaa jos FFI}
+
 \hl{Näitä ominaisuuksia ovat ainakin tarkempi käännösaikainen tyypitys etenkin
 tyhjien osoittimien osalta, makrojärjestelmän uusiminen sekä syntaksin
 selkeyttäminen.}
+
+\hl{Lisätään bodyyn next 7000 languages} \citep{next7000}
+
+\hl{Lisätään bodyyn Some were meant for C} \citep{somemeantforc}
 
 \citeauthor{chistory} (\citeyear{chistory}) nostaa esiin kaksi usein
 keskustelua herättänyttä C:n ominaisuutta. Toinen näistä on C:n tyyppisyntaksi,
