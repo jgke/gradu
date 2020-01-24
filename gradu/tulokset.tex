@@ -16,9 +16,6 @@ verrattuna (luku 2.3)? }
 
 \hl{Ovatko suorituskykymittaukset relevantteja?}
 
-\hl{Eikö tulokset riipu enemmän kielen toteutuksista, jotka voivat vaihdella
-(kääntäjän ratkaisut ja käytetyt optimointialgoritmit)}
-
 Tätä tutkielmaa varten on toteutettu kääntäjä, joka kääntää ohjelmat
 Purkka-kielestä C-kieleen \citep{purkka}. Nopeimmat Benchmarks Gamen
 C-toteutukset on käännetty Purkka-kielelle. Nämä ohjelmat on sitten käännetty
@@ -31,19 +28,20 @@ tulisi olla täsmälleen samat kuin alkuperäisen C-toteutuksen.
 
 Suorituskykymittaukset mittaavat ainoastaan prosessoriin ja muistinkäyttöön
 liittyiviä mittauksia, eivätkä esimerkiksi näytönohjaimella suoritettua
-laskentaa.
-
-\hl{Mittauksia voisi tehdä useammalla kuin yhdellä laitteistolla}
+laskentaa. Mittaukset tehdään vain yksittäisillä kääntäjäversioilla, joten
+mittaukset eivät välttämättä päde muilla saman ohjelmointikielen kääntäjillä.
 
 \hl{Täydennykset tähän kun on lopulliset mittaukset: } Suorituskykymittaukset
 on tehty \hl{ABC}-koneella \hl{Ubuntu/Arch}-käyttöjärjestelmällä Linux 4.x.x
 -kernelillä. Mittaustietokoneessa oli neliytiminen Intel \hl{i7 XXXX}
 -prosessori HyperThreading-tuella (3.x GHz) ja XX gigatavua DDR3-muistia.
+\hl{Kääntäjäversiot ym}
+
 Mittaukset on toteutettu suorittamalla ohjelma suurimmalla syötteellä \hl{x}
-kertaa \hl{(5? ehkä enemmän.)}, ja mittaamalla kunkin suorituksen viemä aika ja
-muistinkäyttö. Muistinkäyttö on mitattu 200 millisekunnin välein
-\texttt{libgtop2}-kirjastolla, ja kunkin suorituksen muistinkäytöksi on merkitty
-suurin mitattu muistikäyttö.
+kertaa, ja mittaamalla kunkin suorituksen viemä aika ja muistinkäyttö.
+Muistinkäyttö on mitattu 200 millisekunnin välein
+\texttt{libgtop2}-kirjastolla, ja kunkin suorituksen muistinkäytöksi on
+merkitty suurin mitattu muistikäyttö.
 
 Kuvaajista nähdään, että Purkka on täsmälleen yhtä tehokas kieli kuin C, eikä
 se vie enempää muistia. Pienet eroavaisuudet suuntaan ja toiseen on
@@ -64,18 +62,15 @@ yksinkertaisemmista määrittelyistä monimutkaisemmissa määrittelyissä.
             Purkka-määrittely ja C-määrittely & Selite \\ \midrule
 
             \texttt{let a: u32; \newline unsigned int a;} & Epänegatiivinen 32-bittinen kokonaisluku \\
-            \noalign{\vspace{0.2cm}}
+            \noalign{\vspace{0.3cm}}
 
             \texttt{let a, b: [\&i8;5]; \newline signed char *a[5], *b[5];} & Taulukko viidestä osoitinmuuttujasta \newline 8-bittiseen kokonaislukuun \\
-            \noalign{\vspace{0.2cm}}
+            \noalign{\vspace{0.3cm}}
 
             \texttt{const a = ["1", "2", "3"]; \newline const char * const a[] = \{"1", "2", "3"\};} & Kolmen merkkijonon taulukon vakiomuuttuja \\
-            \noalign{\vspace{0.2cm}}
+            \noalign{\vspace{0.3cm}}
 
-            \texttt{let a = fun (a, b) => a + b; \newline int a(int a, int b) \{ return a + b; \}} & Funktio, joka laskee argumenttiensa summan \\
-            \noalign{\vspace{0.2cm}}
-
-            \bottomrule
+            \texttt{let a = fun (a, b) => a + b; \newline int a(int a, int b) \{ return a + b; \}} & Funktio, joka laskee argumenttiensa summan \\ \bottomrule
         \end{tabular}
     \end{adjustbox}
     \label{fig:declarations}
@@ -125,9 +120,14 @@ operaatioiden nopeutta monimutkaisten ohjelmistojen sijaan. Lisäksi
 suorituskykymittaukset ovat usein epätarkkoja, sillä monimutkaiset
 moniajoympäristöt eivät mahdollista deterministisiä mittauksia.
 
-\hl{Voisi myös todeta että mitttaukset koskevat toteutuksia. Kieli voidaan
-toteuttaa useilla tavoilla ja eri toteutukset voivat käyttää eri optimointeja
-ja algoritmeja.}
+Mittaukset koskevat vain yksittäisiä ohjelmia ajettuna tietyssä ympäristössä
+tietyllä kääntäjällä. Ne eivät siis anna kattavaa kuvaa ohjelmointikielistä,
+vaan mittaustuloksia yksittäisen kääntäjätoteutuksen kääntämistä ohjelmista.
+Kääntäjät voivat käyttää jopa yksittäisten versioiden välillä erilaisia
+optimointeja, jotka voivat nopeuttaa tai hidastaa ohjelmaa juuri mitatulla
+syötteellä, mikä pienentää tulosten vertailukelpoisuutta. Kääntäjät voivat
+myös toimia paremmin tai huonommin erilaisilla tietokonearkkitehtuureilla,
+jolloin esimerkiksi prosessorin valinta vaikuttaa mittaustuloksiin.
 
 Purkkaa todennäköisesti ei oteta käyttöön, sillä se ei tarjoa merkittäviä
 parannuksia C:hen, vaan mahdollistaa lähinnä hieman lyhyemmän lähdekoodin.
@@ -143,6 +143,18 @@ todennäköisesti toteutettavissa. Käännösaikaista turvallisuutta voi paranta
 tiukemmalla tyyppijärjestelmällä ilman suoritusaikaisia haittoja. Tarkemmilla
 tyyppimäärittelyillä voi myös tehdä optimointeja, esimerkiksi vaatimalla
 osoitinargumentit aina ei-tyhjiksi osoittimiksi.
+
+Osaa Purkassa olevista ominaisuuksista voisi ottaa käyttöön jopa uusissa C:n
+versioissa. Tyyppipäättelyn lisääminen esimerkiksi korvaamalla käyttämättömän
+\texttt{auto}-avainsanan tarkoittamaan pääteltyä tyyppiä voisi auttaa
+moderneja C-kääntäjiä käyttävien projektien kirjoittamista.
+\texttt{gcc}-käyttäjä tukee tyyppi-inferenssiä
+\texttt{\_\_auto\_type}-määreellä. Summatyyppien lisääminen laajennoksena
+\texttt{enum}- tai \texttt{union}-tyyppisyntaksiin ei vaikuta tämänhetkisiin
+standardien mukaisiin ohjelmiin, mutta mahdollistaisi kehittäessä summatyyppien
+käytön. Suurempia syntaktisia muutoksia, kuten tyyppisyntaksin
+uudelleenkirjoitusta tuskin pystyy toteuttamaan säilyttäen yhä tuen nykyiselle
+C:lle.
 
 \hl{Tässä on tärkeä teema mutta jää tässä vain toteamukseksi, pidempi analyysi
 ja esimerkit syventäisivät käsittelyä}
@@ -161,5 +173,3 @@ pelkästään kielen ominaisuuksien perusteella.}
 
 \hl{Jos tutkielmassa ilmenee mahdollisia jatkotutkimuskohteita, niistä
 kerrotaan tässä aliluvussa.}
-
-\hl{Tulevaisuus? Voiko tuloksia käyttää Purkan tai C:n parantamiseen?}

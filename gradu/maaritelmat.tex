@@ -26,19 +26,25 @@ Verrattavissa ohjelmointikielissä on pyritty parantamaan C:n huonoja puolia
 hyvien puolien kustannuksella, usein lisäämällä kieleen turvallisuutta
 parantavia ominaisuuksia tai tehden kielestä helppokäyttöisemmän esimerkiksi
 automaattisella muistinhallinnalla. Tämä kuitenkin heikentää kielen tehokkuutta
-tai alustariippumattomuutta tehden kielten suorasta vertailusta hankalaa.
+tai alustariippumattomuutta, mikä hankaloittaa kielten suoraa vertailua.
 Määrittelemällä absoluuttiset reunaehdot voidaan vertailla kieliä ehtojen
 puitteissa objektiivisesti. Jos yksikin näistä kriteereistä ei pidä, verrattava
 kieli ei ole aidosti C:tä parempi, vaan se häviää C:lle joissain osa-alueissa
 ja vastaavasti voi olla parempi joissakin toisissa.
 
-\hl{tehden -> toisto}
-
 Tutkielmassa vertaillaan kolmea osa-aluetta ohjelmointikielistä: suorituskykyä,
-muistinkäyttöä sekä yhteensopivuutta C:n ja muiden ohjelmointikielten kanssa
-\hl{Miksi juuri nämä?}. Tutkielmassa käsitellään myös subjektiivisia kielten
-ominaisuuksia, kuten kielen tiiviyttä\defword{terseness, expressiveness}, mutta
-näitä ominaisuuksia ei huomioida kielten paremmuusvertailussa.
+muistinkäyttöä sekä yhteensopivuutta C:n ja muiden ohjelmointikielten kanssa,
+sillä nämä ominaisuudet nousevat esiin Kellin~(\citeyear{somemeantforc}) ja
+Chatleyn, Donaldsonin ja Mycroftin~(\citeyear{next7000}) tutkimuksissa.
+Tutkielmassa käsitellään myös subjektiivisempia kielten ominaisuuksia, kuten
+kielen tiiviyttä\defword{terseness, expressiveness}, oikeellisuutta ja
+ylläpidettävyyttä, mutta näitä ominaisuuksia ei huomioida kielten
+paremmuusvertailussa. Nämä ovat kuitenkin olleet tärkeitä kriteerejä
+ohjelmointikielten valitsemisessa~\citep{empiricalpopularity}, joten aiheiden
+käsitteleminen selittää, miksi näennäisesti tehottomammat ohjelmointikielet
+ovat suosittuja.
+
+\grayrule
 
 Ohjelmointikielellä kirjoitetun ohjelman tulee olla suoritusaikaisesti
 vähintään yhtä nopea kuin vastaava C:llä kirjoitettu ohjelma. Kieli siis ei saa
@@ -87,8 +93,7 @@ päätyneet hyvin suosituiksi ohjelmointikieliksi, kuten esimerkiksi C++ ja Go.
 Kielten suosion mittaamiseen on tehty useita projekteja, jotka vertailevat
 kieliä esimerkiksi hakutulosten tai projektien mukaan. Näitä ovat esimerkiksi
 TIOBEn ohjelmointikielten suosion indeksi~\citep{tiobe} ja GitHub-palvelun
-julkaisema \mbox{Octoverse}~\citep{octoverse}.\hl{Voisi verrata muitakin
-suosiolistoja?}
+julkaisema \mbox{Octoverse}~\citep{octoverse}.
 %Valitsemalla vertailuun suosittuja kieliä voidaan tutkia, miksi muuten
 %selkeästi täysin käyttökelpoinen kieli ei ole syrjäyttänyt C:tä.
 
@@ -124,6 +129,9 @@ ohjelmointikieli, joka on suunniteltu mahdollisimman suorituskykyiseksi.
 %saatavilla.}
 
 \subsection{Kielten suosioon vaikuttavat tekijät}
+\label{sec:suosio}
+
+\hl{Tämä kiinni C-taustaan?}
 
 \hl{Analyysiä muista syistä kielen suosioon, erityisesti Meyerovichin ja
 Rabkinin tekemän tutkimuksen perusteella. Tämä antaa tietoa ominaisuuksista,
@@ -243,8 +251,10 @@ uuteen ohjelmointikieleen siirtyvälle ohjelmoijalle.
 makrojärjestelmien tarpeellisuudesta ja käyttökohteista sekä verrataan
 vaihtoehtoisia toteutuksia makrojärjestelmiin.}
 
-\hl{ Luku 2.7: Tämä on jotenkin orpo aliluku. Ohjelmaesimerkit on selostettu
+\hl{ Luku 3.4: Tämä on jotenkin orpo aliluku. Ohjelmaesimerkit on selostettu
 huonosti tai ei ollenkaan. }
+
+\hl{Tänne errno-esimerkki yhteensopivuuteen liittyen?}
 
 Ohjelmointikielten makrojärjestelmillä tarkoitetaan ohjelmointikielen
 ominaisuuksia, joita voidaan käyttää käännösaikaiseen lähdekoodin luomiseen ja
@@ -265,8 +275,8 @@ Ohjelmassa~\ref{fig:ruststdnum} on kaksi tällaista funktiota, jotka toteuttavat
 \texttt{From}-piirteen eri tyyppiparametreille). Käyttämällä makrojärjestelmää
 taataan paras mahdollinen suorituskyky, pitäen kuitenkin lähdekoodin selkeänä
 ja ylläpidettävänä. Makrojärjestelmän käyttäminen määrittelyihin pakottaa
-yhtenäiset määrittelyt kaikille alkeistyypeille, jolloin ohjelmointivirheiden
-määrä pysyy mahdollisimman pienenä. \hl{Ehkä parempi: saattaa vähentää virheitä}
+yhtenäiset määrittelyt kaikille alkeistyypeille, mikä voi vähentää
+ohjelmointivirheiden määrää.
 
 \begin{listing}[ht!]
     \inputminted{Rust}{koodi/ruststdnum.rs}
@@ -343,8 +353,13 @@ makrojärjestelmä voisi esimerkiksi lukea tiedostoja käännösaikaisesti ja
 vaikuttaa lopulliseen lähdekoodiin tiedoston sisällöstä riippuen.
 
 Mikään makrojärjestelmä ei ole täydellinen, vaan jokaisessa makrojärjestelmässä
-on sekä hyviä että huonoja puolia. Kun makrojärjestelmän ilmaisuvoimaa
-kasvatetaan, sen käyttäminen muuttuu monimutkaisemmaksi. \hl{Missä mielessä?}
+on sekä hyviä että huonoja puolia. C:n makrojen kaltaiset yksinkertaiset
+järjestelmät ovat helposti ylläpidettäviä, sillä makroja voi käyttää vain
+tietyillä tavoilla, jotka ovat samat ohjelmistosta riippumatta. Tällöin yhdestä
+ohjelmistosta toiseen siirryttäessä makrot eivät aiheuta vaikeuksia koodipohjaa
+opetellessa. Kun makrojärjestelmän ilmaisuvoimaa kasvatetaan, myös sen
+käyttäminen muuttuu monimuotoisemmaksi. Toisaalta monimutkaisemmat
+makrojärjestelmät myös mahdollistavat enemmän ratkaisuja kuin yksinkertaiset.
 
 %\hl{Osa tästä seuraavaan lukuun?}
 %

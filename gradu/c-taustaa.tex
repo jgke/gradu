@@ -3,6 +3,7 @@
 \hl{Miten C on siirtynyt tähän päivään? Miten C:tä voisi parantaa?}
 
 \subsection{C-ohjelmointikieli lyhyesti}
+\label{sec:clyhyesti}
 
 \hl{Lähteitä lisää.}
 
@@ -23,7 +24,13 @@ ohjelma~\ref{fig:helloc} näyttää samalta kuin vuonna 1988 julkaistussa
 \emph{The C Programming Language} -kirjassa~\citep{krsecond}. Ohjelma tulostaa
 näytölle merkkijonon \emph{Hello,~World}.
 
-Toisin kuin muissa suosituissa kielissä, C ei tarjoa automaattista
+C kehitettiin B- ja BCPL-ohjelmointikielten pohjalta näiden osoittautuessa
+kömpelöiksi vaihtaessa laitteistoarkkitehtuuria, kuten
+luvussa~\ref{sec:ctaustaa} kerrotaan. Uudella ohjelmointikielellä tavoiteltiin
+B:tä nopeampaa, mutta BCPL:ää yksinkertaisempaa kieltä Unix-käyttöjärjestelmän
+kehitykseen~\citep{chistory}.
+
+Toisin kuin monissa nykypäivänä suosituissa kielissä, C ei tarjoa automaattista
 muistinhallintaa, vaan ohjelmoijan täytyy itse hallita sekä muistin varaaminen
 että sen vapauttaminen. Tämä on pitänyt kielen toteutuksen hyvin tehokkaana ja
 yksinkertaisena, mikä on mahdollistanut C:n leviämisen järjestelmästä toiseen.
@@ -38,8 +45,8 @@ kuten käyttöjärjestelmien ytimien tai sulautettujen järjestelmien ohjelmien.
 Tämä yhdistelmä on johtanut C:n laajaan käyttöön käyttötarkoituksesta
 riippumatta.
 
-Koska C:llä on helppoa saada aikaan erilaisia tietoturvaongelmia, useita
-työkaluja on kehitetty havaitsemaan ja estämään
+Koska C:llä on helppoa saada aikaan erilaisia muistinkäsittelyyn liittyviä
+tietoturvaongelmia, useita työkaluja on kehitetty havaitsemaan ja estämään
 näitä~(mm.~\citet{valgrind,asan}). Myös lukuisia ohjelmointikieliä on luotu
 toteuttamaan ''turvallinen C'', usein lisäämällä jokaisen osoittimen käytön
 yhteyteen tarkistuksen, osoittaako osoitin ohjelman omistamaan muistiin.
@@ -47,11 +54,17 @@ yhteyteen tarkistuksen, osoittaako osoitin ohjelman omistamaan muistiin.
 \hl{Kieliperheistä liittyvään juttuun ei löydy yhtään järkevää lähdettä. Tästä
 bulkkipaperi-idea?}
 
+Koska C on suunniteltu mahdollisimman yksinkertaiseksi kieleksi, siitä ei löydy
+omaa moduulijärjestelmää. Mikäli ohjelmoija haluaa käyttää jonkun toisen
+tiedostojen sisältämää funktiota, hänen pitää joko kirjoittaa
+funktioprototyypit tai sisällyttää ohjelmaan erityinen otsikkotiedosto käyttäen
+C:n makrojärjestelmää.
+
 C on vaikuttanut lukuisien kielten kehitykseen, ja useiden kielien sanotaankin
 olevan osa C-kieliperhettä. C-kieliperheeseen kuuluviin kieliin liittyy usein
-muun muassa imperatiivinen ohjelmointityyli, perinteinen (eli
-infix-merkintätapa) lausekkeiden muodostamiseen, muuttujien näkyvyysalueiden
-rajoittaminen kaarisuluilla sekä staattinen tyypitys. Näitä piirteitä näkyy
+muun muassa imperatiivinen ohjelmointityyli, perinteinen merkintätapa (eli
+infix) lausekkeiden muodostamiseen, muuttujien näkyvyysalueiden rajoittaminen
+kaarisuluilla sekä staattinen tyypitys. Näitä piirteitä näkyy
 ohjelmassa~\ref{fig:helloc}: kaarisuluilla rajoitettu \texttt{main}-funktio
 kutsuu \texttt{printf}-funktiota, joka tulostaa käyttäjälle merkkijonon
 \emph{Hello,~World}. Funktio ottaa parametriksi kokonaisluvun \texttt{argc} ja
@@ -76,24 +89,30 @@ vertailussa.}
 \hl{ Luvussa 2.2 ihmetyttää, että ovatko nämä asiat nyt keskeisimmän piirteet
 C-kielessä? Miksei muita kielen ominaisuuksia selosteta? }
 
-Dennis~\citet{chistory} käsittelee C-kielen historiaa ja
-tekemiään suunnittelupäätöksiä artikkelissaan \emph{The Development of the C
-Language}. Artikkelin mukaan C kehitettiin pitkälti 70-luvulla B- ja
+Dennis~\citet{chistory} käsittelee C-kielen historiaa ja tekemiään
+suunnittelupäätöksiä artikkelissaan \emph{The Development of the C Language}.
+Artikkelin mukaan C kehitettiin pitkälti 70-luvulla B- ja
 BCPL-ohjelmointikielien pohjalta. Ritchie tavoitteli uudella
 ohjelmointikielellä B-ohjelmointikielen tehokkuuden parantamista tarkemmalla
 tyypityksellä. B-kielen ainoa primitiivityyppi oli sana\defword{word\emph{,
 B-kielen tyyppinä \texttt{cell}}}, sillä B oli suunniteltu ajettavaksi
 tietokoneilla, joissa muistiosoittimet osoittivat aina yksittäisiin sanoihin.
 Tämä kuitenkin käytännössä osoittautui haastavaksi esimerkiksi merkkijonojen
-käsittelyyn, sillä jokaiseen sanaan mahtuu useita tavun kokoisia
-merkkejä. Tämä tarkoittaa ohjelmoidessa sitä, että ohjelmoija joutuu purkamaan
-käsin yksittäisen sanan merkeiksi, käsittelemään näitä yksittäin ja lopuksi
-yhdistämään merkit uudelleen sanoiksi. Epäkätevyyden lisäksi tämä oli
+käsittelyyn, sillä jokaiseen sanaan mahtuu useita tavun kokoisia merkkejä. Tämä
+tarkoittaa ohjelmoidessa sitä, että ohjelmoija joutuu purkamaan käsin
+yksittäisen sanan merkeiksi, käsittelemään näitä yksittäin ja lopuksi
+yhdistämään merkit uudelleen sanoiksi. Epäkäytännöllisyyden lisäksi tämä oli
 tehotonta, kun B-kieli muutettiin tavupohjaiselle PDP-11 -tietokoneelle
 säilyttäen kuitenkin sanapohjaiset muistiosoittimet -- ohjelmoijan oli pakko
 käyttää sanarajoilla toimivia muistiosoittimia, vaikka tavupohjainen
 muistiosoitin olisi tehokkaampi ratkaisu.
-\hl{Epäkätevyys -> kömpelyys tjsp}
+
+B-kielen taulukot poikkesivat huomattavasti nykyisistä C:n taulukoista. Jos
+B-koodissa luodaan kymmenen alkion taulukko \texttt{A}, niin ohjelmaa
+ajettaessa varattaisiin kymmenen sanan kokoinen taulukko ja \texttt{A}:han
+asetettaisiin tämän taulukon osoitin. C:ssä \texttt{A} muutettaisiin
+osoittimeksi määrittelyhetken sijaan vasta, kun muuttujaa käytettäisiin
+lausekkeessa.
 
 Tämän lisäksi Ritchien mukaan B-ohjelmointikielestä puuttui kokonaan
 liukulukujen käsittely. Vaikka PDP-11 ei tukenut liukuluvuilla laskentaa,
@@ -101,27 +120,26 @@ valmistaja oli luvannut tuen tälle. BCPL-ohjelmointikieleen lisättiin
 liukulukulaskenta olettaen, että liukuluku mahtuisi yhteen sanaan, mikä ei
 pitänyt paikkaansa 16-bittisellä PDP-11 -tietokoneella.
 
-\hl{muunnettiin muistiosoittimeksi määrittelyhetkellä => ?}
+\grayrule
 
 Artikkelin mukaan C-ohjelmointikielen kehitys alkoi vahvemmalla tyypityksellä:
 C-kielen ensimmäiseen varsinaiseen esiasteeseen oli lisätty \texttt{char}- ja
 \texttt{int}-tyypit sekä muistiosoittimet näihin tyyppeihin. Tässä vaiheessa
-C-tyylisten taulukoiden sijaan taulukot toimivat kuin B-kielen taulukot --
-jokaisen taulukon kohdalla taulukkomuuttuja muunnettiin muistiosoittimeksi
-määrittelyhetkellä. Kun C:hen lisättiin tietuetyypit, tämä muistimalli ei
-toiminut enää, vaan taulukoiden käsittelyä muutettiin. Nyt taulukot muunnettiin
-muistiosoittimiksi vasta, kun taulukkoa käytettiin lausekkeissa, ja taulukon
-määrittelyssä osoittimen sijaan varattiin muistia vain taulukon alkioille.
+C-tyylisten taulukoiden sijaan taulukot toimivat kuin B-kielen taulukot. Kun
+C:hen lisättiin tietuetyypit, tämä muistimalli ei toiminut enää, vaan
+taulukoiden käsittelyä muutettiin vastaamaan nykystä C:n mallia. Nyt taulukot
+muunnettiin muistiosoittimiksi vasta, kun taulukkoa käytettiin lausekkeissa, ja
+taulukon määrittelyssä alkioiden ja osoittimen sijaan varattiin muistia vain
+taulukon alkioille.
+
 Tästä tavasta käsitellä taulukoita seurasi kuitenkin ominaisuus, joka on myös
 nykypäivän C:ssä: jos funktio ottaa parametrikseen taulukon, kääntäjä muuttaa
-parametrin tyypin muistiosoittimeksi\footnote{Jos funktio ottaa esimerkiksi
-\texttt{char[2]} -tyyppisen parametrin, funktio saakin parametrikseen
-muistiosoittimen taulukon sijaan. Tässä tapauksessa funktio saa siis
-moderneilla tietokoneilla kahden tavun sijaan kahdeksan tavun kokoisen
-parametrin. Tämän ominaisuuden voi kiertää säilömällä taulukon tietueen
-sisään.}. Tämän voi kiertää säilömällä parametrin tietueen sisään.
-
-\hl{vasta + lausekkeissa viivat}
+parametrin tyypin muistiosoittimeksi, sillä funktiokutsut ovat
+lausekkeita\footnote{Jos funktio ottaa esimerkiksi \texttt{char[2]} -tyyppisen
+parametrin, funktio saakin parametrikseen muistiosoittimen taulukon sijaan.
+Tässä tapauksessa funktio saa siis moderneilla tietokoneilla kahden tavun
+sijaan kahdeksan tavun kokoisen parametrin. Tämän ominaisuuden voi kiertää
+säilömällä taulukon tietueen sisään.}.
 
 Tämän lisäksi C-kieleen lisättiin tyyppi funktio-osoittimille.
 Määrittelysyntaksin logiikan perusteena toimi lausekkeiden syntaksi. Jos
@@ -132,17 +150,15 @@ erottaa tyyppejä toisistaan, kuten erot tyyppien ''osoitin taulukkoon
 kokonaislukuja'' eli \texttt{int~(*muuttuja)[]} ja ''taulukko osoittimia
 kokonaislukuihin'' eli \texttt{int~*muuttuja[]}.
 
-B-yhteensopivuuden tavoittelu ohjasi kielen suunnittelua syntaksin osalta,
-erityisesti lausekkeiden laskutoimitusjarjestyksessä. B-lause
-\texttt{if(a~\&~b)} vastaa C-lausetta \texttt{if(a~\&\&~b)}, mutta B-kielessä
-\texttt{\&}:tä käyttämään myös bittioperaatioihin loogisten
-operaatioiden lisäksi. Koska B-ohjelmien haluttiin toimivan C-ohjelmien tavoin
-mahdollisimman pienillä muutoksilla, C-ohjelmissa käytetyssä idiomissa
-\texttt{(a\&mask)~==~b} ja-bittioperaation ympärille joutuu lisäämään sulut.
-Tämä johtuu B-kielen \texttt{a == b \& c == d} -tyylisistä lausekkeista, joiden
-haluttiin toimivan mahdollisimman samalla tavalla C:ssä.
-
-\hl{Merkattu \&:tä}
+B-yhteensopivuuden tavoittelu ohjasi kielen suunnittelua syntaksin osalta
+mahdollisimman B:n kaltaiseksi. B-lause \texttt{if(a~\&~b)} vastaa C-lausetta
+\texttt{if(a~\&\&~b)}, mutta B-kielessä \texttt{\&}:tä käytettiin myös
+bittioperaatioihin loogisten operaatioiden lisäksi. Koska B-ohjelmien haluttiin
+toimivan C-ohjelmien tavoin mahdollisimman pienillä muutoksilla, C-idiomissa
+\texttt{(a\&mask)~==~b} lausekkeessa käytetyn \texttt{\&}-bittioperaattorin
+ympärille joutuu lisäämään sulut. Tämä johtuu B-kielen \texttt{if(a == b \& c)}
+-tyylisistä lausekkeista, joiden haluttiin toimivan ilman muutoksia C:ssä
+kielen vaihtamisen helpottamiseksi.
 
 Seuraavaksi alkoi C-kielen esikäsittelijän kehitys. Aluksi esikäsittelijässä
 oli vain toiminnot tiedostojen sisällyttämiseen (\texttt{\#include}) ja
@@ -150,7 +166,11 @@ yksinkertaiseen korvaamiseen (\texttt{\#define}), mutta hyvin nopeasti
 kieleen lisättiin funktiomakrot sekä \texttt{\#if}-lauseet. Aluksi
 esikäsittelijää pidettiin vain vapaaehtoisena laajennoksena C:hen, mikä
 selittää myös nykypäivänä esikäsittelijän huomattavat erot muuhun C-kieleen
-verrattuna.
+verrattuna. Ensimmäisen C-standardin jälkeen esikäsittelijä on pysynyt lähes
+koskemattomana. Ainoa lisätty ominaisuus oli C99-standardin mukana tulleet
+funktiomakrot, jotka voivat ottaa mielivaltaisen määrän argumentteja.
+
+\grayrule
 
 Myöhemmin, kun C oli levinnyt usealle eri alustalle, alkoi olla selkeää, että C
 tarvitsi standardin. Brian Kernighan, jonka kanssa Ritchie oli kirjoittanut
@@ -202,23 +222,69 @@ käyttöjärjestelmien ytimissä, sulautetuissa järjestelmissä, UNIX-työkalui
 vapaan lähdekoodin ohjelmistoissa, tietokannoissa ja muissa tehokkuutta
 vaativissa ohjelmistoissa.
 
+\subsection{Tärkeimmät C-ohjelmointikielen ominaisuudet}
+\label{sec:cominaisuudet}
+
+Artikkelissa \emph{The Next 7000 Programming Languages}~\citep{next7000}
+käsitellään ohjelmointikielten kehitystä ja pohditaan mahdollisia ominaisuuksia
+tulevissa ohjelmointikielissä, joita nykyiset ohjelmointikielet eivät sisällä.
+Artikkelissa selitetään C:n nykyistä suosiota kielen yksinkertaisuudella ja
+tehokkuudella. Nämä ominaisuudet ovat mahdollistaneet C:n laajan käytön
+käyttöjärjestelmistä työkaluihin huolimatta C:n turvattomuudesta.
+
+Artikkelin mukaan C:n (ja C++:n) korvaaminen lyhyellä tähtäimellä on mahdotonta
+johtuen kielen suosiosta. Koska lukuisat työkalut kääntäjistä
+virheenjäljittäjiin\defword{debugger} on kirjoitettu yksinomaan C:tä varten,
+vastaavien työkalujen luominen muita ohjelmointikieliä varten on huomattava
+investointi. C:n yleisyydestä myös seuraa suuri määrä ohjelmoijia, kirjastoja
+ja työkaluja, mikä tekee C:stä luonnollisen valinnan myös uusiin projekteihin.
+Artikkelissa kuitenkin todetaan, että useat ohjelmointikielet ovat vhentäneet
+C:n suosiota tarjoten yksittäisillä osa-alueilla parannuksia. Yksi mainituista
+ohjelmointikielistä on Rust, joka mahdollistaa paremman ohjelmien
+käännösaikaisen oikeellisuustarkistamisen heikentämättä tehokkuutta C:hen
+verrattuna. Toiseksi vaihtoehdoksi tarjotaan ajoaikaisia tarkistuksia
+turvallisuuden parantamiseksi.
+
+Artikkelissa puhutaan myös mahdollisuudesta oikeelisuuden tasaiseen
+parantamiseen\defword{gradual verification}, joka mahdollistaisi ohjelmien
+ensimmäisten versioiden toteuttamisen ilman kattavaa käännösaikaista
+oikeellisuustarkistusta, mutta antaen kehityksen jatkuessa työkalut ohjelmiston
+oikeellisuuden varmistamiseen. Esimerkiksi
+TypeScript~\citep{typescript}-ohjelmointikieli mahdollistaa tyypittämättömien
+JavaScript-ohjelmien vaillinaisen tyypityken\defword{gradual typing}, jolloin
+ohjelmien oikeellisuutta voi käännösaikaisesti tarkistaa funktio kerrallaan. 
+
+Artikkelissa \emph{Some Were Meant For C} \citet{somemeantforc} myös nostaa
+esiin tarpeen yksittäisten funktioiden kerrallaan muuntamisesta. Useissa
+kielissä ei ole saumatonta C-yhteensopivuutta, jolloin kielestä toiseen
+siirtyminen vaatii joko koko ohjelman uudelleenkirjoituksen tai erillisen
+yhteensopivuuskerroksen alkuperäisen ja uuden kielen väliin. Koska lukuisat
+työkalut ja kirjastot on toteutettu C:tä varten, C tulee pysymään jatkossakin
+tärkeänä osana tietokoneita.
+
+Yhteensopivuuden sijaan \citeauthor{somemeantforc} kuitenkin painottaa C:n
+alusta-agnostisuutta kielen tärkeimpänä ominaisuutena. Useilla alustoilla
+voi normaalin välimuistin lisäksi käyttää laitteistoa tai tiedostojärjestelmää
+suoraan muistiosoitteina, minkä C:n yksinkertainen lähestymistapa
+muistinhallintaan mahdollistaa. Artikkelissa esitetään tästä esimerkkinä
+iteraation ohjelman omien konekielisen käskyjen yli, mikä muissa kielissä olisi
+kohtuuttoman hankalaa, mutta C:ssä triviaalia.
+
+Molemmissa artikkeleissa käsitellään C:n määrittelemätöntä toimintaa kielen
+sekä hyvänä että huonona puolena. Lukuisat tietoturvaongelmat ovat johtuneet
+C:n turvattomuudesta, mutta toisaalta kielen turvattomuutta voi käyttää hyväksi
+mahdollisimman tehokkaiden ohjelmien toteutuksessa.
+
 \subsection{Kehitettävissä olevat ominaisuudet C-ohjelmointikielessä}
+\label{sec:ckehitettavat}
 
 \hl{Tässä aliluvussa pohditaan, miksi C pitäisi korvata uudella
 ohjelmointikielellä, mitä ominaisuuksia C:stä voisi kehittää, mitkä C:n
 ominaisuudet voisi jättää pois ja mitä uusia ominaisuuksia voisi tulla.}
 
-\hl{Rakenne: 1. mitä voi kehittää, 2. mitä ei saa muuttaa?}
-
-\hl{Esimerkki ilman prepro: errno on makro, eli vaatii purkkaa jos FFI}
-
 \hl{Näitä ominaisuuksia ovat ainakin tarkempi käännösaikainen tyypitys etenkin
 tyhjien osoittimien osalta, makrojärjestelmän uusiminen sekä syntaksin
 selkeyttäminen.}
-
-\hl{Lisätään bodyyn next 7000 languages} \citep{next7000}
-
-\hl{Lisätään bodyyn Some were meant for C} \citep{somemeantforc}
 
 \citeauthor{chistory} (\citeyear{chistory}) nostaa esiin kaksi usein
 keskustelua herättänyttä C:n ominaisuutta. Toinen näistä on C:n tyyppisyntaksi,
@@ -227,10 +293,8 @@ Ensimmäiselle näistä voi tehdä verrattaen helposti jotain, sillä syntaksin
 muuntaminen käännösaikaisesti on triviaalia. Taulukoiden ja osoittimien välistä
 käytöstä on paljon hankalampi muuntaa, sillä olemassa olevat C-ohjelmat
 käyttävät osoittimia ja taulukoita hyvin sekalaisesti. Yksi C:stä puuttuva
-ominaisuus on taulukon antaminen funktion parametrina. Tämän voi tehdä
-käärimällä taulukko tietueen sisään, ja tämän muutoksen voi tehdä
-automaattisesti kääntäessä. Tämä tosin vaatii koko funktion tyyppianalyysin
-muuttujan käytöstä. \hl{Selitys?}
+ominaisuus on taulukon antaminen funktion parametrina, jonka voi kuitenkin
+tehdä käärimällä taulukko tietueen sisään.
 
 Muita syntaktisia parannuksia lausekkeisiin voi tehdä tietueiden kohdalla. Jos
 lausekkeessa käyttää tietuetta, niin tietueen \texttt{foo} jäsenen \texttt{bar}
@@ -241,68 +305,104 @@ olisi käyttää jokaisessa tapauksessa lauseketta \texttt{foo.bar}, ja jättä�
 tarvittava muoto kääntäjän pääteltäväksi. Esimerkiksi Rust-ohjelmointikielen
 syntaksi tietueiden käsittelyyn on tällainen.
 
-C:n makrojärjestelmässä on paljon parantamisen varaa. C:n esikäsittelijä toimii
-hyvin yksinkertaisissa tapauksissa, mutta sen rajoitteet tulevat nopeasti
-esille monimutkaisempia makroja kirjoittaessa. Voimakkaampi makrojärjestelmä
-mahdollistaa lyhyempien ja selkeämpien makrojen kirjoittamisen
-monimutkaisemmissa tapauksissa. Uutta makrojärjestelmää kirjoittaessa tulee
-kuitenkin pitää mielessä C-yhteensopivuus. \citeauthor{cabuse}
-(\citeyear{cabuse}) esittelee artikkelissaan tapoja hyväksikäyttää C:n
-esikäsittelijää esimerkiksi iteraation toteuttamiseen. Monimutkaisempi
-makrojärjestelmä voisi muuntaa voimakkaampaa kieltä C:n esikäsittelijän
-makroiksi käyttäen artikkelin mukaisia C-makroja, jolloin C-ohjelmat voisivat
-käyttää näitä yksinkertaisemmalla kielellä kirjoitettuja makroja. C:n standardi
-on kuitenkin hyvin avoin makrojen käytöksestä rajatapauksissa, joten
-monimutkaiset makrot eivät välttämättä toimi kääntäjäriippumattomasti, vaikka
-ne olisivatkin standardin mukaisia.
+C:n \texttt{static}-avainsana on jaettu käytön mukaisesti kahteen avainsanaan.
+Funktiomäärittelyissä ja globaaleissa muuttujissa C:n
+\texttt{static}-avainsana vastaa muiden kielten avainsanaa yksityiselle
+funktiolle. Globaaleja \texttt{static}-määreellä määritettyjä funktioita ja
+muuttujia ei voi käyttää muusta kuin samasta tiedostosta, jossa kyseinen
+symboli on määritelty.
+
+Toinen \texttt{static}-määreen käyttö on funktioiden sisällä muuttujien
+määrittelyyn. Staattiset muuttujat alustetaan vain kerran, vaikka funktiota
+kutsuttaisiin useita kertoja. Ohjelmassa~\ref{fig:cstatic} käytetään tällaista
+muuttujaa. Ohjelma tulostaa ensin numeron 0, jonka jälkeen ohjelma tulostaa
+numeron 1.
+
+\begin{listing}[ht!]
+    \inputminted{C}{koodi/static.c}
+    \caption{Staattinen muuttuja C:ssä}
+    \label{fig:cstatic}
+\end{listing}
+
+\grayrule
 
 C:n tyypitys sallii monia ilmaisuja, jotka voivat johtaa salakavaliin ongelmiin
 suoritusaikaisesti. Koska C sallii suurempien kokonaislukutyyppien asettamisen
 pienempiin kokonaislukutyyppeihin, nämä arvot voivat suoritusaikaisesti muuttua
 ilman käännösaikaisia varoituksia. Mainittavasti lauseet \texttt{int a = 256;
 unsigned char b = a;} eivät aiheuta käännösaikaisesti edes varoituksia
-GCC-kääntäjällä käyttäen kaikkia varoituksia \texttt{-Wall} -komentolipun
-kautta. Kääntäjästä pitää laittaa erikseen päälle \texttt{-Wconversion}
--komentolippu, jotta kääntäjä edes varoittaisi mahdollisesta yllättävästä
-käytöksestä. Tämän käytöksen muuttaminen uuteen ohjelmointikieleen ei ole
-triviaalia, sillä C-makrojen tuottama koodi voi olettaa tällaisten lausekkeiden
-toimivan.
-
-\hl{Komentolippusäätö epäselkeä lauserakenteelta}
+GCC-kääntäjällä, vaikka ''kaikki'' kääntäjän varoitukset olisivat päällä
+\texttt{-Wall} -komentolipun avulla. Kääntäjälle pitää antaa erillinen
+\texttt{-Wconversion} -komentolippu, jotta kääntäjä edes varoittaisi
+mahdollisesti yllättävästä käytöksestä. Tämän ominaisuuden muuttaminen
+virheeksi tai edes varoitukseksi ei ole ongelmatonta, sillä esimerkiksi
+C-makrojen tuottama koodi voi olettaa tällaisten lausekkeiden toimivan.
 
 C:hen voisi myös lisätä useita uusia tyyppejä, erityisesti tyypin ei-tyhjälle
 osoittimelle. Tätä tyyppiä voisi käyttää turvallisempien ja nopeampien
 ohjelmien kirjoittamiseen. GCC- ja Clang-kääntäjät tukevat ei-tyhjiä osoittimia
 \texttt{\_\_attribute\_\_((nonnull))} -määreellä. Kääntäjä voi käyttää määrettä
 optimoidessa funktioita -- erityisesti turhat tarkistukset tyhjien muuttujien
-varalta optimoidaan pois. Muita hyödyllisiä tyyppejä ohjelmoinnin
-helpottamiseen olisivat monikot\defword{tuple} ja summatyypit\defword{tagged
-union, sum type}. Nämä molemmat tyypit löytyvät esimerkiksi Rustista.
-Ensimmäisen saa käännettyä triviaalisti tietueeksi, ja toisen saa käännettyä
-tietueeksi, jossa on sisällä vaihtoehdoista luetelman\defword{enumeration} ja
-yhdisteen\defword{union} yhdistelmä.\hl{esimerkki?}
+varalta optimoidaan pois.
 
-C:n kaltaisiin kieliin saa toteutettua helposti tyyppipäättelyn, sillä C:n
-tyypit ovat tyyppitasolla yksinkertaisia. Koska C:ssä tyypit eivät ole
-geneerisiä, lausekkeiden tyyppipäättely on lähes triviaalia paria operaatiota
-lukuun ottamatta. Tyyppipäättely helpottaa ohjelmointia, sillä ohjelmoija
-voi keskittyä ohjelmien logiikkaan muuttujien tyyppien kirjoittamisen sijaan.
-\hl{Viittaus C:n dokseihin?}
+Muita hyödyllisiä tyyppejä ohjelmoinnin helpottamiseen olisivat
+monikot\defword{tuple} ja summatyypit\defword{tagged union, sum type}. Nämä
+molemmat tyypit löytyvät esimerkiksi Rustista. Ensimmäisen saa käännettyä
+triviaalisti tietueeksi, ja toisen saa käännettyä tietueeksi, jossa on sisällä
+vaihtoehdoista luetelman\defword{enumeration} ja yhdisteen\defword{union}
+yhdistelmä. Ohjelmassa~\ref{fig:csumtype} on Rustin ja C:n syntaksien mukaiset
+summatyypit tyypille, jossa on joko operaation onnistuessa jokin kokonaisluku
+tai epäonnistumisen yhteydessä epäonnistumisen syy merkkijonona. Erillisen
+summatyypin määritteleminen mahdollistaa yhtä aikaa sekä paremman
+oikeellisuustarkistuksen että tehokkaampien ohjelmien tuottamisen.
+C-esimerkissä \texttt{failure}-kentässä voisi olla arvo, vaikka
+\texttt{type}-kentän arvo olisi \texttt{\_SUCCESS}. Tämä voi johtaa
+määrittelemättömään toimintaan, jos \texttt{success}-kentän arvoa yritetään
+käyttää ja sillä hetkellä alustettu kenttä on \texttt{failure}.
+
+\begin{listing}[ht!]
+    \inputminted{Rust}{koodi/rustenum.rs}
+    \inputminted[firstline=3]{C}{koodi/csumtype.c}
+    \caption{Summatyyppi Rustissa ja C:ssä.}
+    \label{fig:csumtype}
+\end{listing}
+
+%C:n kaltaisiin kieliin saa toteutettua helposti tyyppipäättelyn, sillä C:n
+%tyypit ovat tyyppitasolla yksinkertaisia. Koska C:ssä tyypit eivät ole
+%geneerisiä, lausekkeiden tyyppipäättely on lähes triviaalia paria operaatiota
+%lukuun ottamatta. Tyyppipäättely helpottaa ohjelmointia, sillä ohjelmoija
+%voi keskittyä ohjelmien logiikkaan muuttujien tyyppien kirjoittamisen sijaan.
+%\hl{Viittaus C:n dokseihin?}
 
 C:ssä ei ole erillistä moduulijärjestelmää, jonka lisääminen voisi nopeuttaa
 kääntämistä ja tehdä ohjelmien ymmärtämisestä yksinkertaisempaa. C-ohjelmat
 voivat käyttää kirjastojen funktioita kirjoittamalla kirjastofunktioista
 prototyypit, jotka yleisesti ottaen ovat kirjastojen otsikkotiedostoissa. Koska
 otsikkotiedostojen sisältö käytännössä ottaen kopioidaan
-\texttt{\#include}-kutsun tilalle, kääntäjä joutuu teoriassa lukemaan etenkin
-useimpien ohjelmien käyttämiä otsikkotiedostoja lukuisia kertoja
-käännösprosessin aikana\footnote{Käytännössä kääntäjät pystyvät optimoimaan
-tietyllä yleisellä tavalla kirjoitettuja otsikkotiedostoja ja jättämään jo
-kertaalleen luetut tiedostot kokonaan pois.}. Erillisen moduulijärjestelmän
-lisääminen voisi yksinkertaistaa kirjastojen toteuttamista, sillä ohjelmoijien
-ei tarvitsisi kirjoittaa kirjastoilleen otsikkotiedostoja. 
+\texttt{\#include}-kutsun tilalle, kääntäjä joutuu käsittelemään samoja
+otsikkotiedostoja lukuisia kertoja käännösprosessin aikana\footnote{Käytännössä
+kääntäjät pystyvät optimoimaan tietyllä yleisellä tavalla kirjoitettuja
+otsikkotiedostoja ja jättämään jo kertaalleen luetut tiedostot kokonaan pois.}.
+Erillisen moduulijärjestelmän lisääminen voisi kääntämisen nopeuttamisen
+lisäksi yksinkertaistaa kirjastojen toteuttamista, sillä ohjelmoijien ei
+tarvitsisi kirjoittaa kirjastoilleen otsikkotiedostoja. 
 
-\hl{etenkin useimpien ohjelmien alleviivattu}
+C:n makrojärjestelmässä on paljon parantamisen varaa. C:n esikäsittelijä toimii
+hyvin yksinkertaisissa tapauksissa, mutta sen rajoitteet tulevat nopeasti
+esille monimutkaisempia makroja kirjoittaessa. Voimakkaampi makrojärjestelmä
+mahdollistaa lyhyempien ja selkeämpien makrojen kirjoittamisen
+monimutkaisemmissa tapauksissa.
+%Uutta makrojärjestelmää kirjoittaessa tulee
+%kuitenkin pitää mielessä C-yhteensopivuus. \citeauthor{cabuse}
+%(\citeyear{cabuse}) esittelee artikkelissaan tapoja hyväksikäyttää C:n
+%esikäsittelijää esimerkiksi iteraation toteuttamiseen. Monimutkaisempi
+%makrojärjestelmä voisi muuntaa voimakkaampaa kieltä C:n esikäsittelijän
+%makroiksi käyttäen artikkelin mukaisia C-makroja, jolloin C-ohjelmat voisivat
+%käyttää näitä yksinkertaisemmalla kielellä kirjoitettuja makroja. C:n standardi
+%on kuitenkin hyvin avoin makrojen käytöksestä rajatapauksissa, joten
+%monimutkaiset makrot eivät välttämättä toimi kääntäjäriippumattomasti, vaikka
+%ne olisivatkin standardin mukaisia.
+
 
 C:n makrojärjestelmä myös hankaloittaa työkalujen kirjoittamista. Koska
 jokainen pieni muutos lähdekoodiin voi vaikuttaa radikaalisti saatavilla

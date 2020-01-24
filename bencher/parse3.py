@@ -30,15 +30,16 @@ with open('summary/all_measurements.csv') as f:
 
 benchmarks = sorted(list(set(row["name"] for row in raw_data)))
 
+
 max_n = {}
-data = {}
+all_data = {}
 best_data = {}
 
 for benchmark in benchmarks:
     max_n[benchmark] = max(int(row["n"]) for row in raw_data if row["name"] == benchmark)
 
 for benchmark in benchmarks:
-    data[benchmark] = { row["lang"]: [] for row in raw_data if row["name"] == benchmark and row["lang"] in languages}
+    all_data[benchmark] = { row["lang"]: [] for row in raw_data if row["name"] == benchmark and row["lang"] in languages}
     best_data[benchmark] = { row["lang"]: [] for row in raw_data if row["name"] == benchmark and row["lang"] in languages}
 
 for row in raw_data:
@@ -47,16 +48,16 @@ for row in raw_data:
     lang = row["lang"]
 
     if int(n) == max_n[benchmark] and lang in languages:
-        data[benchmark][lang].append(row)
+        all_data[benchmark][lang].append(row)
 
 elapsed = "elapsed(s)"
 mem = "mem(KB)"
 size = "size(B)"
 
-for benchmark in data:
-    for lang in data[benchmark]:
-        best_id = min(data[benchmark][lang], key=lambda x: x[elapsed])["id"]
-        best_data[benchmark][lang] = list(row for row in data[benchmark][lang] if row["id"] == best_id)
+for benchmark in all_data:
+    for lang in all_data[benchmark]:
+        best_id = min(all_data[benchmark][lang], key=lambda x: x[elapsed])["id"]
+        best_data[benchmark][lang] = list(row for row in all_data[benchmark][lang] if row["id"] == best_id)
 
 data = None
 

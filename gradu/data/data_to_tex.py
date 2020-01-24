@@ -1,9 +1,47 @@
 import csv
 
-print("\\newgeometry{left=1.5cm,right=1.5cm,bottom=2cm}")
 print("\\appendixsection{Mittaukset}")
 print("\\appendixlabel{app:data}")
-print("\\hl{Tänne lähdeviittaukset? Ehkä ainakin benchmarkkien selitteet?}")
+print("\\begingroup")
+
+print("{\large \\textbf{Ohjelmien selitteet}} \\\\")
+
+print()
+print("\\noindent\\textbf{binarytrees} \\\\[0.3cm]", sep="")
+print("Ohjelma on moniosainen: ensin luodaan binääripuu ja poistetaan se. Tämän jälkeen luodaan binääripuu, joka poistetaan vasta ohjelman loputtua. Tämän jälkeen luodaan useita binääripuita, joista lasketaan solmujen määrä.")
+
+print()
+print("\\noindent\\textbf{fannkuchredux} \\\\[0.3cm]", sep="")
+print("Ohjelma laskee jokaiselle joukon ${1,...,n}$ permutaatioista tarkistussumman, joka lasketaan seuraavalla kaavalla: permutaatiosta otetaan ensimmäinen luku $x$. Permutaation ensimmäisen $x$ alkion järjestys muutetaan päinvastaiseksi. Näitä kahta operaatiota toistetaan, kunnes ensimmäinen alkio on 1. Jos permutaatio on pariton, tarkistussumma on kierrosten määrä, muuten tämän negaatio. Tarkistussummat lasketaan yhteen.")
+
+print()
+print("\\noindent\\textbf{fasta} \\\\[0.3cm]", sep="")
+print("Ohjelmassa luodaan suuri määrä DNA-sekvenssejä joko kopioiden annettua sekvenssiä tai painotetulla satunnaisella valinnalla kahdesta aakkostosta.")
+
+print()
+print("\\noindent\\textbf{knucleotide} \\\\[0.3cm]", sep="")
+print("Ohjelma lukee \emph{fasta}-ohjelman luoman tiedoston, ja laskee siinä esiintyvien nukleotidisarjojen määrän 1, 2, 3, 4, 6, 12 ja 18 nukleotidin pituisille sarjoille.")
+
+print()
+print("\\noindent\\textbf{nbody} \\\\[0.3cm]", sep="")
+print("Ohjelmassa simuloidaan symplektisellä integroinnilla planeettojen sijaintia.")
+
+print()
+print("\\noindent\\textbf{pidigits} \\\\[0.3cm]", sep="")
+print("Ohjelmassa lasketaan $\pi$:n desimaaleja tietyllä algoritmilla.")
+
+print()
+print("\\noindent\\textbf{regexredux} \\\\[0.3cm]", sep="")
+print("Ohjelma lukee \emph{fasta}-ohjelman muodostaman tiedoston ja ajaa ennalta määritettyjä säännöllisiä lausekkeita tiedoston sisältöön.")
+
+
+print()
+print("\\noindent\\textbf{spectralnorm} \\\\[0.3cm]", sep="")
+print("Ohjelma laskee annetun matriisin spektraalisäteen.")
+
+print()
+print("\\noindent\\textbf{revcomp} \\\\[0.3cm]", sep="")
+print("Ohjelma lukee \emph{fasta}-ohjelman muodostaman tiedoston ja muodostaa tiedoston DNA-sekvenssien komplementin.")
 
 rev_abbrev = {
     "keskiarvo": "keskiarvo",
@@ -66,42 +104,62 @@ for benchmark in data:
 def fint(num):
     l = list(num)[::-1]
     res = map(lambda x: "".join(x), [ l[i:i+3] for i in range(0, len(l), 3) ])
-    return ",\\".join(res)[::-1]
+    return "\\verythinspace "[::-1].join(res)[::-1]
 
+print()
 print("{\large \\textbf{Suoritusaika(s)}} \\\\")
-print("\\small")
+print("\\footnotesize")
 print()
 newline = False
+#print("\\begin{adjustbox}{center}")
 for benchmark in benchmarks:
     print("\\begin{minipage}{0.49\\textwidth}")
-    print("\\noindent\\textbf{", benchmark, "} \\\\[0.3cm]", sep="")
-    print("\\begin{tabular}{@{} l l @{}} \\toprule")
+    print("\\noindent\\textbf{", benchmark, "} \\\\[0.1cm]", sep="")
+    print("\\begin{tabularx}{\linewidth}{@{} l l @{}} \\toprule")
     print("Kieli & Mittaukset \\\\ \\midrule")
     for lang in languages:
         print(f"{rev_lang[lang]} & {', '.join(map(lambda x: x['elapsed(s)'], best_data[benchmark][lang]))}\\\\")
     print("\\bottomrule")
-    print("\\end{tabular}")
+    print("\\end{tabularx}")
     print("\\end{minipage}")
     if newline:
-        print()
+        print("\\\\[0.3cm]")
+        #print("\\end{adjustbox}")
+        #print("")
+        #print("\\begin{adjustbox}{center}")
         newline = False
     else:
         print("\\hfill")
         newline = True
 
+#print("\\end{adjustbox}")
+print("\hspace{1cm}")
+
 print("\\\\[1cm] {\large \\textbf{Muistinkäyttö(KB)}} \\\\")
-print("\\small")
+print("Muistinkäyttö on mitattu 200 millisekunnin välein \\texttt{libgtop2}-kirjastolla, ja kunkin suorituksen muistinkäytöksi on merkitty suurin mitattu muistikäyttö.")
+print("\\footnotesize")
 print()
 newline = False
 for benchmark in benchmarks:
-    print("\\begin{minipage}{0.49\\textwidth}")
+    width = {
+            "binarytrees": 0.54,
+            "fannkuchredux": 0.44,
+            "fasta": 0.46,
+            "knucleotide": 0.52,
+            "nbody": 0.46,
+            "pidigits": 0.46,
+            "regexredux": 0.54,
+            "spectralnorm": 0.44,
+            "revcomp": 0.60
+    }
+    print(f"\\begin{{minipage}}{{{width[benchmark]}\\textwidth}}")
     print("\\noindent\\textbf{", benchmark, "} \\\\[0.3cm]", sep='')
-    print("\\begin{tabular}{@{} l l @{}} \\toprule")
+    print("\\begin{tabularx}{\\linewidth}{@{} l l @{}} \\toprule")
     print("Kieli & Mittaukset \\\\ \\midrule")
     for lang in languages:
         print(f"{rev_lang[lang]} & {', '.join(map(lambda x: fint(x['mem(KB)']), best_data[benchmark][lang]))}\\\\")
     print("\\bottomrule")
-    print("\\end{tabular}")
+    print("\\end{tabularx}")
     print("\\end{minipage}")
     if newline:
         print()
@@ -111,13 +169,13 @@ for benchmark in benchmarks:
         newline = True
 
 print("\\\\[1cm] {\large \\textbf{Lähdekoodin koko (B)}} \\\\")
-print("Lähdekoodin koko on mitattu poistamalla lähdekoodista kaikki kommentit sekä tyhjemerkit. Tämän jälkeen ohjelma ajetaan \\texttt{gzip}-pakkausohjelman läpi, ja mitataan pakatun lähdekoodin koko.")
-print("\\small")
+print("Lähdekoodin koko on mitattu poistamalla lähdekoodista kaikki kommentit sekä tyhjemerkit, jotta lähdekoodin asettelu ei vaikuta mittauksiin. Tämän jälkeen ohjelma ajetaan \\texttt{gzip}-pakkausohjelman läpi, ja mitataan pakatun lähdekoodin koko.")
+print("\\footnotesize")
 print()
 newline = 1
 for benchmark in benchmarks:
     print("\\begin{minipage}{0.19\\textwidth}")
-    print("\\noindent\\textbf{", benchmark, "} \\\\[0.3cm]", sep='')
+    print("\\noindent\\textbf{", benchmark, "} \\\\[0.1cm]", sep='')
     print("\\begin{tabular}{@{} l l @{}} \\toprule")
     print("Kieli & Koko \\\\ \\midrule")
     for lang in languages:
@@ -126,7 +184,7 @@ for benchmark in benchmarks:
     print("\\end{tabular}")
     print("\\end{minipage}")
     if newline % 5 == 0:
-        print()
+        print("\\\\[0.1cm]")
     else:
         print("\\hfill")
     newline += 1
@@ -134,3 +192,4 @@ for benchmark in benchmarks:
 print("\\begin{minipage}{0.19\\textwidth}")
 print("\\hfill")
 print("\\end{minipage}")
+print("\\endgroup")

@@ -1,5 +1,4 @@
-\restoregeometry
-\appendixsection{Oman kielen ja sen toteutuksen dokumentointia}
+\appendixsection{Liitteen nimi tähän}
 \appendixlabel{app:purkka}
 
 %\makeatletter
@@ -9,9 +8,10 @@
 
 \renewcommand{\subsection}[1]{\vspace{1.7ex}{\large\textbf{#1}\vspace{1.7ex}}}
 
-\subsection{Tyypit}
+\subsection{Alkeistyypit}
 
-Määritetään Purkkaan seuraavat alkeistyypit. \\[0.3cm]
+Taulukko ei sisällä keskenään identtisiä C-tyyppejä, kuten \texttt{int} ja
+\texttt{signed int}. \\[0.3cm]
 \begin{tabular}{@{}p{5.8cm}p{8.7cm}@{}} \toprule
     Purkka-tyyppi & Purkka-tyyppiä vastaava C-tyyppi \\ \midrule
     \texttt{void} & \texttt{void} \\
@@ -34,8 +34,8 @@ Määritetään Purkkaan seuraavat alkeistyypit. \\[0.3cm]
     \bottomrule
 \end{tabular} \\
 
-Määritetään näiden alkeistyyppien pohjalta osoitintyypit, taulukkotyypit sekä
-yhdistetyypit: \\[0.3cm]
+\subsection{Osoitintyypit, taulukkotyypit sekä yhdistetyypit}
+
 \begin{tabular}{@{}ll@{}} \toprule
     Purkka-tyyppi & Purkka-tyyppiä vastaava C-tyyppi \\ \midrule
     \texttt{\&T, \&?T} & \texttt{T *} \\

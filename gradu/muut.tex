@@ -2,7 +2,7 @@
 \label{sec:muut}
 
 \hl{Vertaillaan muihin kieliin: parantavatko ne C:tä ilman että hidastuu?
-Benchmarkit: todistus että toteutukset hidastuu}
+Benchmarkit: todistus että toteutukset + ohjelmat hidastuu}
 
 \hl{Vertailuluku, jossa käydään läpi toisessa luvussa määriteltyjä kriteerejä
 kunkin kielen kohdalla, ja pohditaan, täyttääkö kukin kieli kriteerejä.
@@ -163,6 +163,7 @@ käännösaikaisesti~\citep{Dtemplate}.
 \hl{Suorittaa koodia käännösaikaisesti -> pidempi selitys}
 
 \subsection{Go}
+\label{sec:go}
 
 Go on Googlen kehittämä ja vuoden 2009 loppupuolella julkaisema
 ohjelmointikieli, jonka tarkoituksena on yhdistää käännösaikaisesti tyypitetyn
@@ -227,6 +228,7 @@ puolelta~\citep{cgo}. Go mahdollistaa C-otsikkotiedostojen suoran käytön
 lähdekoodista, mikä helpottaa C-koodin kutsumista.
 
 \subsection{Rust}
+\label{sec:rust}
 
 Rust on Mozilla Foundationin kehittämä ohjelmointikieli, joka on suunniteltu
 turvalliseksi, rinnakkaiseksi ja käytännölliseksi
@@ -257,10 +259,37 @@ näkyvyysalueesta\defword{scope}. Muuttujiin voidaan tehdä viitteitä, mutta
 viitteet eivät voi elää arvoja kauempaa, sillä kääntäjän
 elinaikatarkistaja\defword{borrow checker} pystyy seuraamaan arvojen
 elinaikoja. Kullakin muuttujalla voi olla joko rajaton määrä muuttumattomia
-viitteitä\defword{immutable reference} tai yksi muuttuva viite\defword{mutable
-reference}, mutta molempia ei voi käyttää yhtä aikaa. \hl{muuttuva -> muuttava?}
+viitteitä\defword{immutable reference} tai yksi muuttava viite\defword{mutable
+reference}, mutta molempia ei voi käyttää yhtä aikaa.
 
-\hl{Pidempi selitys Rustista}
+\begin{listing}[ht!]
+    \inputminted{Rust}{koodi/hello.rs}
+    \caption{Tämä Rust-ohjelma aiheuttaa käännösvirheen rivillä neljä, sillä
+    \texttt{s1}-muuttujan sisältö siirrettiin \texttt{s2}-muuttujaan rivillä
+    3.}
+    \label{fig:hellors}
+\end{listing}
+
+Ohjelmassa~\ref{fig:hellors} on yksinkertainen esimerkki tällaisesta
+käännösvirheestä. Muuttujaan \texttt{s1} asetetaan \emph{omistettu merkkijono}
+'Hello', jonka jälkeen muuttujan \texttt{s1} omistama merkkijono siirretään
+muuttujalle \texttt{s2}. Neljännellä rivillä yritetään käyttää
+\texttt{s1}-muuttujaa, mikä aiheuttaa käännösvirheen, sillä
+\texttt{s1}-muuttujan sisältö on siirretty, eikä \texttt{String}-tyyppisistä
+muuttujista voi luoda implisiittistä kopiota.
+
+\begin{listing}[ht!]
+    \inputminted{Rust}{koodi/mutable.rs}
+    \caption{Tämäkin Rust-ohjelma aiheuttaa käännösvirheen, sillä muuttujan
+    \texttt{a} arvoa yritetään muuttujaa, kun muuttuja \texttt{b} sisältää
+    osoittimen muuttujan \texttt{a} arvoon.}
+    \label{fig:mutablers}
+\end{listing}
+
+Ohjelmassa~\ref{fig:mutablers} on toinen vain Rustista löytyvä käännösvirhe:
+koska kolmannella rivillä otetaan muuttujaan \texttt{b} viite muuttujan
+\texttt{a} arvoon, muuttujan \texttt{a} arvon muokkaaminen estetään neljännellä
+rivillä.
 
 Turvallisuudella on kuitenkin hintansa -- Rust-ohjelmat vievät enemmän tilaa
 kuin vastaavat C-ohjelmat. Jos Rust-ohjelmista poistaa standardikirjaston ja
@@ -326,10 +355,6 @@ parametreiksi vain tyyppejä.
 
 \newpage
 
-\hl{Voisiko tähän lisätä myös C:n?}
-
-\hl{Footnote: viitelaskurit}
-
 \begin{table}[ht!]
     \begin{adjustbox}{center}
         \kern-0.7cm
@@ -339,8 +364,11 @@ parametreiksi vain tyyppejä.
         C++   & saa osittain pois päältä & manuaalinen     & Sama esikäsittelijä kuin C:ssä, \mbox{erillinen} kattava malliohjelmointi \\
         D     & saa pois päältä          & molemmat        & Tyyppipohjainen malliohjelmointi \\
         Go    & täysin hallittavissa     & automaattinen   & Ei ole \\
-            Rust  & saa pois päältä & automaattinen\footnote{Borrow Checkerin hallitsemana, joka mahdollistaa automaattisen muistinhallinnan ilman sen aiheuttamaa hidastusta. Maininta viitelaskureista?} & Useita erilaisia makrojärjestelmiä \\ \bottomrule
-    \end{tabular}
+            Rust  & saa pois päältä & automaattinen\footnote{Borrow Checkerin
+        hallitsemana, joka mahdollistaa automaattisen muistinhallinnan ilman
+        sen aiheuttamaa hidastusta. Rust sisältää myös viitemäärälasketun
+        säiliön.} & Useita erilaisia makrojärjestelmiä \\ \bottomrule
+        \end{tabular}
     \end{adjustbox} \\[0.5cm]
 
     \begin{adjustbox}{center}
@@ -373,10 +401,13 @@ parametreiksi vain tyyppejä.
     \end{minipage}
     \end{adjustbox}
     \begin{adjustbox}{center}
-    \begin{minipage}{1.15\textwidth}\makebox[\textwidth][c]{%
+    \begin{minipage}{1.15\textwidth}
+    \begin{adjustbox}{center}
     \begin{minipage}{0.5\textwidth}
         \input{data/benchmarkslines.tex}
-    \end{minipage}}
+        \vspace*{-0.8cm}
+    \end{minipage}
+    \end{adjustbox}
     \end{minipage}
     \end{adjustbox}
     \caption{
@@ -393,8 +424,10 @@ hitaampia. Kuvassa~\ref{fig:benchmarksgame} verrataan suorituskykyä,
 muistinkäyttöä ja ohjelmien lähdekoodin pituutta C:llä kirjoitettuun ohjelmaan.
 Lähdekoodimittauksessa mitataan ohjelman kokoa siten, että ohjelmasta
 poistetaan kommentit sekä ylimääräiset välimerkit. Tämän jälkeen ohjelma
-pakataan \texttt{gzip}-pakkausohjelmalla~\citep{howmeasured} \hl{Miksi?}.
-Kuvaajat perustuvat nopeimman kielellä kirjoitetun ohjelman tuloksiin -- lähes
+pakataan \texttt{gzip}-pakkausohjelmalla~\citep{howmeasured}. Toisin kuin
+Benchmarks Gamessa, ennen lähdekoodin pakkaamista lähdekoodista on poistettu
+kaikki tyhjemerkit, jotta lähdekoodin asettelu ei vaikuta mittauksiin. Kuvaajat
+perustuvat nopeimman kielellä kirjoitetun ohjelman tuloksiin -- lähes
 jokaisella verrattavalla kielellä on jokaisessa suorituskykymittauksissa
 useampi ohjelma.
 
@@ -406,13 +439,22 @@ käyttää noin puolet C:n käyttämästä muistista, mutta on samassa mittaukse
 kaksi kertaa hitaampi. Mielenkiintoisesti Rustilla, Adalla ja Go-kielellä
 kirjoitetut ohjelmat ovat C:llä kirjoitettuihin ohjelmiin verrattuna hitaampia
 ja vievät enemmän muistia, mutta eivät tarjoa merkittäviä säästöjä lähdekoodin
-määrään. \hl{Ymmärrettävyyden ja ylläpidettävyyden suhteen voi olla eroja}
+määrään.
 
 Benchmarks Game ei sisällä D:tä, eli Benchmarks Gamen tuloksia ei voi käyttää
-D:n vertaamiseen muiden kielten kanssa.
+D:n vertaamiseen muiden kielten kanssa. Muissa Benchmarks Gamen kaltaisissa
+suorituskykymittauksissa~\citep[kuten][D on merkitty toteutuksesta riippuen
+joko DMD, LDC tai GDC]{kostya} D on ollut suorituskyvyltään C:n ja Go-kielen
+välissä.
+
+Nopeimpien ohjelmien lähdekoodeja lukiessa paljastuu, että useat ohjelmat ovat
+pyrkineet nopeampiin ohjelmiin luettavuuden kustannuksella. Tämä ilmenee
+kaikissa vertailtavissa kielissä: C-, C++- ja Ada-ohjelmissa käytetään
+GCC-laajennoksia, joita ei käytettäisi kääntäjäriippumattomuuteen,
+luettavuuteen ja ylläpidettävyyteen pyrkiessä. Go-ohjelmissa taas käytetään
+säännöllisten lausekkeiden käyttämiseen standardikirjaston toteutuksen sijaan
+C:llä kirjoitettua pcre-kirjastoa~\citep{pcre}.
 
 \FloatBarrier
 
 \null
-
-\newpage

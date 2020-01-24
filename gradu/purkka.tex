@@ -3,8 +3,6 @@
 
 \hl{Mitä valintoja voi tehdä ilman hidastusta? Mitä ei saa tehdä?}
 
-Tässä luvussa määritellään Purkka-ohjelmointikieli.
-
 \hl{Uudelleenstrukturointi: Osoitetaan hyviin ja huonoihin puoliin tutkielman
 aiemman materiaalin kanssa, ja perustellaan siten valinnat}
 
@@ -12,6 +10,43 @@ aiemman materiaalin kanssa, ja perustellaan siten valinnat}
 kootusti missään. Asioita pitää nyt lukea rivien välistä. Luvun 4 alkuhan olisi
 loistava paikka esittää kielen vaatimukset. Sitten olisi helppo arvioida
 lopputulosta niitä vasten }
+
+\subsection{Purkan suunnitteluperiaatteet}
+
+Luvut~\ref{sec:clyhyesti},~\ref{sec:ctaustaa}~ja~\ref{sec:cominaisuudet}
+nostavat tärkeinä C:n ominaisuuksina kielen yksinkertaisuuden ja tehokkuuden,
+jotka ovat mahdollistaneet kielen leviämisen järjestelmästä toiseen.
+Luvussa~\ref{sec:cominaisuudet} nostetaan tämän lisäksi esiin mahdollisuus
+kirjoittaa C-ohjelmia funktio kerrallaan uudella kielellä, jotta kielestä
+toiseen siirtyminen olisi ylipäätään mahdollista ilman kohtuutonta
+investointia. Luvussa~\ref{sec:ckehitettavat} esitellään lukuisia C:n
+syntaktisia ongelmia, jotka voi muuttaa tehden kielestä helppolukuisemman,
+kuten tyyppipäättelyn lisääminen ohjelmointikieleen. Myös käännösaikaista
+varmennettavuutta voi parantaa lisäämällä esimerkiksi kieleen summatyypit.
+Yhteensopivuus nousee myös esiin luvussa~\ref{sec:suosio}, jossa kirjastojen
+saatavuus näytetään tärkeäksi ohjelmointikielen valintakriteeriksi.
+
+Uuden kielen määrittelyssä tulee pitää luvun~\ref{sec:abs} kriteerit, jotta
+ominaisuuksia päättäessä ei muodostu esimerkiksi yhteensopivuusongelmia C:n
+kanssa. Tämä rajoittaakin suurta osaa luvussa~\ref{sec:muut} esiteltyjä
+ominaisuuksia, kuten automaattista muistinhallintaa ja poikkeuksia. Monet
+ominaisuudet myös monimutkaistaisivat kieltä tarjoamatta kuitenkaan
+tehokkuusparannuksia. Yksittäisiä ominaisuuksia kuitenkin pystyy lisäämään,
+kuten luvuissa~\ref{sec:go}~ja~\ref{sec:rust} esiintyvät useat paluuarvot sekä
+luvussa~\ref{sec:rust} esitellyt summatyypit, sillä näiden sisällyttäminen
+kieleen mahdollistaa paremman käännösaikaisen todentamisen ilman
+suoritusaikaisia haittoja. Summatyypit voivat myös parantaa ohjelman
+tehokkuutta.
+
+Uusi kieli tulisi kääntää C:ksi, jotta sen käyttäminen on mahdollista kaikissa
+järjestelmissä, joissa C:tä käytetään. C:ksi kääntäminen myös mahdollistaa
+C-yhteensopivien kirjastojen käyttämisen ilman erillistä
+yhteensopivuuskerrosta. Kielen tulee myös ymmärtää C:llä kirjoitettuja ohjelmia
+sisältäen myös C:llä kirjoitetut otsikkotiedostot. Esimerkiksi POSIX-C:n
+\texttt{errno}-muuttuja voi olla määritelty makrona ja \texttt{errno}-muuttujan
+käyttäminen ilman esikäsittelijää esimerkiksi viittaamalla suoraan
+\texttt{errno}-nimiseen muuttujaan on määrittelemätöntä toimintaa~\citep[s.
+234]{POSIX}.
 
 \subsection{Tyypit}
 
@@ -23,66 +58,50 @@ useita erilaisia tapoja ilmaista samaa pohjatyyppiä -- esimerkisi
 sisältämään ainakin luvut $[-(2^{31} - 1), 2^{31}-1]$\footnote{Käytännössä
 modernit toteutukset käyttävät kahden komplementtia kokonaislukujen
 ilmaisemiseen, jolloin 32-bittinen kokonaislukumuuttuja voi sisältää luvut
-$[-2^{31}, 2^{31}]$.}\citationneeded. Nämä tyypit ovat kuitenkin standardien
-mukaisessa C:ssä keskenään täysin vaihdettavissa, eli kielen ei tarvitse pystyä
-kääntymään jokaiseen mahdolliseen vaihtoehtoon. Perustyypit ovat hyvin lähellä
-Rustin pohjatyyppejä\citationneeded. Purkka tarvitsee erikseen tyypit
-\texttt{char}, \texttt{i8} ja \texttt{u8}, sillä C:n \texttt{char}-tyyppiä ei
-ole määritelty tarkemmin joko kokonaisluvuksi tai 
-\texttt{signed char} ja \texttt{unsigned char} ovat erillisiä tyyppejä.
+$[-2^{31}, 2^{31} - 1]$.}~\citep{C18}. Tyypit kuten \texttt{long} ja
+\texttt{signed long} ovat kuitenkin standardien mukaisessa C:ssä keskenään
+täysin vaihdettavissa, eli Purkan ei tarvitse pystyä kääntymään jokaiseen
+mahdolliseen vaihtoehtoon, vaan tyyppijärjestelmässä voi olla yksi tyyppi joka
+vastaa kaikkia \texttt{long}-tyypin vaihtoehtoisia kirjoitusasuja.
 
-\hl{Nämä tyypit ovat... pidempi selitys}
+C:n \texttt{char}-tyyppi on poikkeus tästä, sillä \texttt{char}, \texttt{signed
+char} ja \texttt{unsigned char} ovat kolme erillistä tyyppiä~\citep{C18}.
+Merkkijonot koostuvat \texttt{char}-tyyppisistä alkoista, kun taas
+\texttt{signed char} ja \texttt{unsigned char} vastaavat tavun kokoista
+kokonaislukua ja epänegatiivista kokonaislukua.
 
-\hl{char-tyyppin sign -> sekava ja epäselvä }
+Tyyppien kääntäminen C:stä Purkaksi ja takaisin on yksinkertaista: jokaista
+C-tyyppiä vastaa täsmälleen yksi Purkka-tyyppi. Jokaiselle Purkan
+alkeistyypille taas on määritelty yksi C-tyyppi, johon kyseinen Purkka-tyyppi
+käännetään. Liitteessä~\ref{app:purkka} on taulukko C:n ja Purkan tyypeistä. 
 
-Koska kieli ei voi erota C:stä suoritusaikaisesti, tyypitys on hyvin lähellä
-C:n tyypitystä.
+C:n alkeistyyppien, osoittimien, taulukoiden ja yhdistetyyppien lisäksi
+määritellään ohjelmoinnin tehostamiseksi sekä käännösaikaisen optimoinnin ja
+oikeellisuuden parantamiseksi yksittäisiä lisätyyppejä. Nämä tyypit ovat
+epätyhjät osoittimet sekä summatyypit.
 
-Tyypit:
- C + tagged union + non-nullable pointer
+Ensimmäiseksi määritellään epätyhjä osoitin, joka on osoitin, joka ei salli
+arvokseen C:n \texttt{NULL}-arvoa. Tyyppi kääntyy Purkasta C:ksi
+yksinkertaisesti vastaavaan osoitintyyppiin. Epätyhjä osoitin mahdollistaa
+kääntäjäoptimointeja, jotka eivät muuten olisi mahdollisia. GCC-kääntäjä
+mahdollistaa epätyhjät osoittimet
+\texttt{\_\_attribute\_\_((nonnull))}-määreellä.
 
-kuinka tagged union käännetään C:ksi? Entä non-nullable ptr?
-
-tyyppipäättely
-
-Mitä optimointeja non-null tarjoaa? Entä tagged union?
-
-\subsection{Tyyppipäättely}
-
-Purkka käyttää tyyppipäättely toteuttamisen pohjana yleisesti käytettyä
-Damas-Hindley-Milner -algoritmia~\citep{hindley, milner, damas}.
-
-Jotta päättelyalgoritmi toimisi lineaariaikaisesti suhteessa syötteen kokoon,
-osassa lausekkeista muuttujien tyyppien tulee olla tiedossa sillä hetkellä, kun
-lausekkeen tyyppiä selvitetään. Yhteen- ja vähennyslasku voi vaatia myös
-tyyppimäärittelyt, jos yhteenlaskettavat parametrit ovat osoittimia\footnote{C
-sallii osoitinmuuttujan ja kokonaisluvun yhteen- ja vähennyslaskun sekä kahden
-osoittimen vähennyslaskun.}. Näistä selkein esimerkki on struct-tyyppien kentän
-käyttäminen, jonka tyyppiä kääntäjä ei suostu päättelemään, jos muuttujan
-tyyppi ei ole tiedossa. Koodissa~\ref{fig:structinfer} on kaksi esimerkkiä
-tyyppipäättelystä struct-muuttujiin: ensimmäisessä esimerkissä
-tyyppipäättely onnistuu, mutta toisessa ei.
-
-\begin{listing}[ht!]
-    \inputminted{Rust}{koodi/infer.prk}
-    \caption{Esimerkki tyyppipäättelystä.}
-    \label{fig:structinfer}
-\end{listing}
-
-\FloatBarrier
-
-\hl {Esimerkissä kysymysmerkkejä. Selitys auki}
-
-\hl{Tämä vaatii \textbf{paljon} lisää avaamista, selittämistä ym. tekstiä.
-Lisäksi pitää vahvistaa, että Purkka-kääntäjä oikeasti toimii näiden
-perusteella, eikä \emph{melkein} identtisten päättelysääntöjen avulla.}
+Toiseksi määritellään summatyyppi. Summatyyppi on yhdistelmä C:n
+\texttt{struct}, \texttt{union} ja \texttt{enum} -tyypeistä, ja se mahdollistaa
+käännösaikaisesti varmennetun \texttt{union}-tyyppien käytön. Summatyypit
+mahollistavat lukuisia käännösaikaisesti varmennettuja optimointeja, jotka
+eivät olisi mahdollisia ilman kielessä määriteltyjä
+summatyyppejä.\citationneeded
 
 \subsection{Syntaksi}
 
 \hl{Tähän osioon voisi tehdä enemmän esimerkkejä.}
 
-Purkan syntaksi on hyvin samankaltainen C:n syntaksiin verrattuna. Suurimmat
-erot C:hen liittyvät tyyppien kirjoittamiseen.
+Purkan syntaksi on hyvin samankaltainen C:n syntaksiin verrattuna. Tämä helpottaa
+kielen oppimista aikaisemman tutkimuksen mukaisesti~\citep{languagelearning}.
+Suurimmat erot C:hen liittyvät tyyppien kirjoittamiseen, jossa syntaksia on
+muutettu modernien ohjelmointikielten syntaksin mukaiseksi.
 
 Funktiomäärittelyt alkavat \texttt{fun}-avainsanalla. Tämä noudattaa usean muun
 modernin ohjelmointikielen tapaa aloittaa funktiomäärittely avainsanalla.
@@ -90,11 +109,9 @@ Vertailun vuoksi Rust käyttää avainsanaa \texttt{fn}, Go käyttää avainsana
 \texttt{func} ja Kotlin käyttää avainsanaa \texttt{fun}). Avainsanan
 käyttäminen yksinkertaistaa jäsentäjän toteutusta.
 
-Purkka tukee tyyppipäättelyä, joka helpottaa koodin kirjoittamista, kun
-kääntäjä pystyy päättelemään muuttujien tyypit. Tyyppisyntaksi itsessään
+Purkka-kieli sisältää tyyppipäättelyn, joka helpottaa koodin kirjoittamista,
+kun kääntäjä pystyy päättelemään muuttujien tyypit. Tyyppisyntaksi itsessään
 muistuttaa paljon Rustin tyyppisyntaksia.
-
-\hl{tukee tyyppipäättelyä alleviivattu}
 
 C:n \texttt{static}-avainsana on jaettu käytön mukaisesti kahteen avainsanaan.
 Funktiomäärittelyissä ja globaaleissa muuttujissa C:n
@@ -120,6 +137,30 @@ näkyvissä myös tyyppi-inferenssiä käytettäessä.
 Suurin osa C:n lauseista on Purkassa lausekkeita. Erityisesti \texttt{if/else}
 on C:ssä lause, mutta Purkassa lauseke. \hl{Tähän tekstiä, miten tuo muunnetaan
 C:ksi turvallisesti}
+
+Purkka käyttää tyyppipäättely toteuttamisen pohjana yleisesti käytettyä
+Damas-Hindley-Milner -algoritmia~\citep{hindley, milner, damas}.
+
+Jotta päättelyalgoritmi toimisi lineaariaikaisesti suhteessa syötteen kokoon,
+osassa lausekkeista muuttujien tyyppien tulee olla tiedossa sillä hetkellä, kun
+lausekkeen tyyppiä selvitetään. Yhteen- ja vähennyslasku voi vaatia myös
+tyyppimäärittelyt, jos yhteenlaskettavat parametrit ovat osoittimia\footnote{C
+sallii osoitinmuuttujan ja kokonaisluvun yhteen- ja vähennyslaskun sekä kahden
+osoittimen vähennyslaskun.}. Näistä selkein esimerkki on struct-tyyppien kentän
+käyttäminen, jonka tyyppiä kääntäjä ei suostu päättelemään, jos muuttujan
+tyyppi ei ole tiedossa. Koodissa~\ref{fig:structinfer} on kaksi esimerkkiä
+tyyppipäättelystä struct-muuttujiin: ensimmäisessä esimerkissä
+tyyppipäättely onnistuu, mutta toisessa ei.
+
+\begin{listing}[ht!]
+    \inputminted{Rust}{koodi/infer.prk}
+    \caption{Esimerkki tyyppipäättelystä.}
+    \label{fig:structinfer}
+\end{listing}
+
+\FloatBarrier
+
+\hl {Esimerkissä kysymysmerkkejä. Selitys auki}
 
 \subsection{Makrot}
 

@@ -31,6 +31,7 @@
 \usepackage{graphicx}
 \usepackage{minted}
 \usepackage{tikz}
+\usepackage{tabularx}
 \usetikzlibrary{shapes,positioning,arrows.meta,calc,shadows.blur}
 
 % Utilities
@@ -147,4 +148,14 @@
 
 \newcommand{\grayrule}{
     \textcolor{lightgray}{\raisebox{0.5ex}{\rule{\textwidth}{0.4pt}}}
+}
+
+\protected\def\verythinspace{%
+  \ifmmode
+    \mskip0.5\thinmuskip
+  \else
+    \ifhmode
+      \kern0.08334em
+    \fi
+  \fi
 }
