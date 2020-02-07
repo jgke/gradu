@@ -1,6 +1,6 @@
 \section{Yhteenveto}
 
-Tutkielmassa tutkittiin mahdollisuuksia parantaa C-ohjelmointikieltä. Tätä
+Tutkielmassa selvitettiin mahdollisuuksia parantaa C-ohjelmointikieltä. Tätä
 tarkoitusta varten luotiin uusi ohjelmointikieli, Purkka. Tutkimuksessa
 verrattiin useita erilaisia ohjelmointikieliä C:hen suorituskyvyn sekä
 muistinkäytön perusteella, mutta yksikään verrattavista ohjelmointikielistä ei
@@ -8,14 +8,27 @@ ollut C:tä nopeampi kuin yksittäisissä mittauksissa. Purkka tarjoaa pienen
 syntaktisen parannuksen C:hen ilman ajoaikaisia haittoja. C:n parantaminen on
 siis mahdollista ainakin syntaksin osalta.
 
-\hl{Yhteenveto liian suppea}
+Tutkielmassa selvitettiin tärkeimpiä C:n ominaisuuksia, joiden takia C on yhä
+käytössä. Ominaisuuksista nousi esiin kielen yksinkertaisuus, tehokkuus
+ja alustariippumattomuus. Mahdollisten korvaavien kielten tulisi ymmärtää
+C:n esikäsittelijää varten kirjoitettuja otsikkotiedostoja, jotta kielestä
+toiseen siirtyminen olisi mahdollisimman yksinkertaista. Kielen tulisi myös
+mahdollistaa yksittäisten funktioiden muuntaminen kerrallaan uuden
+ohjelmointikielen mukaisiksi, jotta kielestä toiseen siirtyminen ei vaadi
+huomattavia investointeja.
 
-\hl{Tässä voisi uudestaan käsitellä kielten kehittämistä ohjelmistotuotannon näkökulmasta }
+Jotta kielestä toiseen siirtyminen olisi kannattavaa, uuden kielen tulisi
+tarjota huomattavia parannuksia C:hen verrattuna. Tutkielmassa löydettiin
+mahdollisiksi ominaisuuksiksi makrojärjestelmän ja syntaksin parantaminen sekä
+summatyypit. Nämä eivät kuitenkaan välttämättä ole yksinään tarpeeksi suuri
+tekijä, jotta C:stä luopuminen olisi järkevää.
 
-\hl{Myös lähdekoodin koko?}
+Verrattavat ohjelmointikielet häviävät C:lle eniten yhteensopivuuden osalta.
+Vain C++ osaa käsitellä C:n otsikkotiedostoja, kun muissa verrattavissa
+kielissä on epäkäytännöllistä kutsua jopa yksittäisiä C-funktioita.
 
-\hl{Tänne vähän lisää hyviä ja huonoja puolia?}
-
-\hl{Tässä aliluvussa kerrataan tutkimuksen tulokset, eli kerrotaan lyhyesti
-uuden ohjelmointikielen ja muiden verrattavien kielten suhteesta C:hen, sekä
-muut olennaiset tutkielman asiat.}
+Tutkielmassa määritellystä ohjelmointikielestä voisi ottaa yksittäisiä
+ominaisuuksia uusiin C-standardeihin vaikuttamatta yhteensopivuuteen vanhempien
+standardien mukaisiin ohjelmiin. Tämä onnistuu ainakin summatyypeille, jotka
+voisi lisätä C-standardiin tavallisen \texttt{enum}- tai
+\texttt{union}-tyyppien yhteyteen.

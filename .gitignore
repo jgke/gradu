@@ -4,5 +4,6 @@
 *.bbl
 *.blg
 *.toc
+*.out
 *_minted*
 .DS_STORE

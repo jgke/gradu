@@ -21,5 +21,11 @@ benchmarkslines2.tex: benchlines2.gp ${SUMMARY}
 	(cd ../../bencher && python3 parse3.py purkka "size(B)" >/dev/null 2> ../gradu/data/benchmarks_lines2.csv)
 	gnuplot benchlines2.gp
 
+benchmarkcpu3.tex: benchmarkscpu.tex
+	gnuplot benchcpu3.gp
+
+benchmarkmem3.tex: benchmarksmem.tex
+	gnuplot benchmem3.gp
+
 data.tex: ${SUMMARY} data_to_tex.py
 	python3 data_to_tex.py > data.tex

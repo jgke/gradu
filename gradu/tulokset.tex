@@ -1,60 +1,51 @@
 \section{Uuden ohjelmointikielen vertaaminen C:hen}
 
 \hl{Benchmarkit: todistus ettei toteutus hidastu}
-
-\hl{Tässä luvussa uutta ohjelmointikieltä vertaillaan muihin tutkielmassa
-käsiteltyihin ohjelmointikieliin, ja kerrotaan, miksi tai miksei se päihitä
-C:tä vertailuehtojen mukaisesti.}
-
-\hl{ Luku 5: Otsikko kertoo, että uutta kieltä verrataan muihin kieliin, mutta
-eihän sitä nähdäksen verrata kuin C:hen. Ja nythän vertailun tulokset koskevat
-vain suoritusaikaisia ominaisuuksia - entä kaikki muut parannukset C:hen
-verrattuna (luku 2.3)? }
+\hl{Ovatko suorituskykymittaukset relevantteja?}
 
 \subsection{Vertailun tulokset}
 \label{sec:results}
-
-\hl{Ovatko suorituskykymittaukset relevantteja?}
 
 Tätä tutkielmaa varten on toteutettu kääntäjä, joka kääntää ohjelmat
 Purkka-kielestä C-kieleen \citep{purkka}. Nopeimmat Benchmarks Gamen
 C-toteutukset on käännetty Purkka-kielelle. Nämä ohjelmat on sitten käännetty
 Purkka-kääntäjällä takaisin C:ksi, ja käännetty sitten GCC-kääntäjällä
 vastaavilla asetuksilla kuin verrattavat C-ohjelmat.
-Kuvassa~\ref{fig:purkkabenchmarksgame} verrataan Purkka-toteutuksia nopeimpaan
-C-ohjelmaan. Koska Purkka-toteutukset on muunnettu nopeimmasta C-toteutuksesta
-ja käännetty takaisin lähes identtiseen muotoon, suoritusajan ja muistinkäytön
-tulisi olla täsmälleen samat kuin alkuperäisen C-toteutuksen.
+Kuvassa~\ref{fig:purkkabenchmarksgame} verrataan Purkka-toteutuksia muihin
+verrattaviin kieliin, ja kuvassa~\ref{fig:purkkabenchmarksgame2} verrataan
+Purkka-toteutuksia nopeimpaan C-ohjelmaan. Koska Purkka-toteutukset on
+muunnettu nopeimmasta C-toteutuksesta ja käännetty takaisin lähes identtiseen
+muotoon, suoritusajan ja muistinkäytön tulisi olla täsmälleen samat kuin
+alkuperäisen C-toteutuksen.
 
 Suorituskykymittaukset mittaavat ainoastaan prosessoriin ja muistinkäyttöön
 liittyiviä mittauksia, eivätkä esimerkiksi näytönohjaimella suoritettua
 laskentaa. Mittaukset tehdään vain yksittäisillä kääntäjäversioilla, joten
 mittaukset eivät välttämättä päde muilla saman ohjelmointikielen kääntäjillä.
 
-\hl{Täydennykset tähän kun on lopulliset mittaukset: } Suorituskykymittaukset
-on tehty \hl{ABC}-koneella \hl{Ubuntu/Arch}-käyttöjärjestelmällä Linux 4.x.x
--kernelillä. Mittaustietokoneessa oli neliytiminen Intel \hl{i7 XXXX}
--prosessori HyperThreading-tuella (3.x GHz) ja XX gigatavua DDR3-muistia.
-\hl{Kääntäjäversiot ym}
+Suorituskykymittaukset on suoritettu Ubuntu 19.10 -käyttöjärjestelmällä Linux
+5.3.0 -kernelillä. Mittaustietokoneessa oli neliytiminen Intel i7-8550U
+-prosessori Hy\-per\-Thread\-ing-tuella (4.0 GHz) ja 32 gigatavua DDR3-muistia.
+C- ja C++-ohjelmat on käännetty GCC-kääntäjän versiolla 9.2.1, Ada-ohjelmat
+GNAT-kääntäjän versiolla 8.3.0 ja Go-ohjelmat go-kääntäjän versiolla 1.12.10.
 
-Mittaukset on toteutettu suorittamalla ohjelma suurimmalla syötteellä \hl{x}
-kertaa, ja mittaamalla kunkin suorituksen viemä aika ja muistinkäyttö.
-Muistinkäyttö on mitattu 200 millisekunnin välein
-\texttt{libgtop2}-kirjastolla, ja kunkin suorituksen muistinkäytöksi on
-merkitty suurin mitattu muistikäyttö.
+Mittaukset on toteutettu suorittamalla ohjelma suurimmalla syötteellä viisi
+kertaa ja mittaamalla kunkin suorituksen viemä aika ja muistinkäyttö.
+Muistinkäyttö on mitattu 200 millisekunnin välein \texttt{libgtop2}-kirjastolla
+ja kunkin suorituksen muistinkäytöksi on merkitty suurin mitattu muistikäyttö.
 
-Kuvaajista nähdään, että Purkka on täsmälleen yhtä tehokas kieli kuin C, eikä
-se vie enempää muistia. Pienet eroavaisuudet suuntaan ja toiseen on
-selitettävissä testauksen aihuttamalla luonnollisella vaihtelulla. Kiintoisasti
-Purkalla toteutettu \texttt{fannkuchredux}-koe on kuitenkin noin 50\% nopeampi
-kuin C:llä toteutettu lähes identtinen versio, ja \texttt{nbody}-koe vie vie
-vain 80\% muistia verrattuna C-toteutukseen. \hl{todo: Johtuuko tuo
-mittausvirheistä, vaiko kääntäjän pienistä muutoksista esim.
-\texttt{static}-avainsanan lisäilyyn liittyen?} Purkka-tiedostot ovat
-keskimäärin 6\% pienempiä kuin vastaavat C-tiedostot. Suurimmat kokoerot
-tiedostoissa tulevat muuttujien määrittelyistä sekä tyyppi-inferenssistä.
-Kuvassa~\ref{fig:declarations} esitellään esimerkkejä Purkan
-yksinkertaisemmista määrittelyistä monimutkaisemmissa määrittelyissä.
+Kuvaajista nähdään, että Benchmarks Gamen tarjoamissa esimerkeissä Purkka on
+täsmälleen yhtä tehokas kieli kuin C, eikä se vie enempää muistia. Pienet
+eroavaisuudet suuntaan ja toiseen on selitettävissä testauksen aihuttamalla
+luonnollisella vaihtelulla. Purkalla toteutettu \texttt{fannkuchredux}-koe on
+kuitenkin noin 50\% nopeampi kuin C:llä toteutettu lähes identtinen versio, ja
+\texttt{nbody}-koe vie vie vain 80\% muistia verrattuna C-toteutukseen.
+
+Purkka-tiedostot ovat keskimäärin 6\% pienempiä kuin vastaavat C-tiedostot.
+Suurimmat kokoerot tiedostoissa tulevat muuttujien määrittelyistä sekä
+tyyppi\hyp{}inferenssistä. Kuvassa~\ref{fig:declarations} on yksittäisiä
+tyyppimäärittelyjä, jotka ovat Purkassa hieman yksinkertaisempia kuin vastaavat
+C-määrittelyt.
 
 \begin{figure}[ht!]
     \begin{adjustbox}{center}
@@ -78,6 +69,26 @@ yksinkertaisemmista määrittelyistä monimutkaisemmissa määrittelyissä.
     määrittelyihin.}
 \end{figure}
 
+\begin{figure}[ht!]
+    \begin{adjustbox}{center}
+    \begin{minipage}{1.15\textwidth}
+    \begin{minipage}{0.5\textwidth}
+        \input{data/benchmarkscpu3.tex}
+        \vspace*{-0.8cm}
+    \end{minipage}
+    \begin{minipage}{0.5\textwidth}
+        \input{data/benchmarksmem3.tex}
+        \vspace*{-0.9cm}
+    \end{minipage}
+    \end{minipage}
+    \end{adjustbox}
+
+    \caption{
+        Benchmarks Gamen ohjelmiin perustuvat kuvaajat Purkalla kirjoitettujen
+        ohjelmien suorituskyvystä, muistinkäytöstä ja ohjelmien koosta
+        verrattuna muilla kielillä kirjoitettujen ohjelmien tuloksiin.}
+    \label{fig:purkkabenchmarksgame}
+\end{figure}
 
 \begin{figure}[ht!]
     \begin{adjustbox}{center}
@@ -101,7 +112,7 @@ yksinkertaisemmista määrittelyistä monimutkaisemmissa määrittelyissä.
         Benchmarks Gamen ohjelmiin perustuvat kuvaajat Purkalla kirjoitettujen ohjelmien
         suorituskyvystä, muistinkäytöstä ja ohjelmien koosta verrattuna C:llä
         kirjoitettujen ohjelmien tuloksiin.}
-    \label{fig:purkkabenchmarksgame}
+    \label{fig:purkkabenchmarksgame2}
 \end{figure}
 
 \FloatBarrier
@@ -113,6 +124,13 @@ pitkälti siitä, että Purkka käännetään lähes identtisenä C:ksi, eikä t
 suoritusaikaisia ominaisuuksia, jotka hidastaisivat kieltä. Purkka ei kuitenkaan
 päihitä C:tä tutkimuksen määrittelyn mukaisesti, vaan on suorituskyvyltään
 täsmälleen yhtä tehokas kuin C.
+
+Kaikkien vertailtavien kielten suunnittelutavoitteissa on mainittu C:n lisäksi
+myös C++:n käytön korvaaminen. Tämä on todennäköisesti vaikuttanut kielen
+suunnitteluun monimutkaistaen kieliä, jotta kieli pystyisi korvaamaan C++:n
+monimutkaiset malliohjelmointirakenteet. Muista kielistä poiketen Purkan
+tavoitteena on korvata ainoastaan C, mikä on ohjannut suunnittelua tutkielman
+määrittelyjen mukaisesti.
 
 Suorituskykymittaukset eivät kuitenkaan vastaa todellista maailmaa, sillä ne
 usein mittaavat vain yksittäistä pientä osa-aluetta, kuten yksittäisten
@@ -129,14 +147,18 @@ syötteellä, mikä pienentää tulosten vertailukelpoisuutta. Kääntäjät voi
 myös toimia paremmin tai huonommin erilaisilla tietokonearkkitehtuureilla,
 jolloin esimerkiksi prosessorin valinta vaikuttaa mittaustuloksiin.
 
-Purkkaa todennäköisesti ei oteta käyttöön, sillä se ei tarjoa merkittäviä
-parannuksia C:hen, vaan mahdollistaa lähinnä hieman lyhyemmän lähdekoodin.
-Tämän lisäksi Purkan toteuttaja on yksittäinen opiskelija, kun taas esimerkiksi
-Go-kielen ja Rustin toteuttajat ovat kokeneita ohjelmointikielten
-suunnittelijoita, jonka lisäksi kieliä ylläpidetään aktiivisesti tunnettujen
-organisaatioiden toimesta. Tämä on todennäköisesti myös syy sille, miksi
-esimerkiksi LISP/c~\citep{clisp1}, C-Mera~\citep{clisp2}, Carp~\citep{clisp3}
-ja Nymph~\citep{nymph} ovat jääneet ilman laajempaa huomiota.
+Purkkaa ei todennäköisesti oteta laajaan käyttöön, sillä se ei tarjoa
+merkittäviä parannuksia C:hen, vaan mahdollistaa lähinnä hieman lyhyemmän
+lähdekoodin. Ohjelmointikielten valintaan liittyy usein monimutkaisia syitä,
+kuten aikaisempi kokemus tai ohjelmoijan henkilökohtainen mieltymys johonkin
+kieleen, eikä projekteissa käytettyjä ohjelmointikieliä valita pelkästään
+kielen ominaisuuksien perusteella. Tämän lisäksi Purkan toteuttaja on
+yksittäinen opiskelija, kun taas esimerkiksi Go-kielen ja Rustin toteuttajat
+ovat kokeneita ohjelmointikielten suunnittelijoita, jonka lisäksi kieliä
+ylläpidetään aktiivisesti tunnettujen organisaatioiden toimesta. Tämä on
+todennäköisesti myös syy sille, miksi esimerkiksi LISP/c~\citep{clisp1},
+C-Mera~\citep{clisp2}, Carp~\citep{clisp3} ja Nymph~\citep{nymph} ovat jääneet
+ilman laajempaa huomiota.
 
 Tutkimuksesta voidaan kuitenkin päätellä, että C:tä parempi kieli on
 todennäköisesti toteutettavissa. Käännösaikaista turvallisuutta voi parantaa
@@ -144,32 +166,29 @@ tiukemmalla tyyppijärjestelmällä ilman suoritusaikaisia haittoja. Tarkemmilla
 tyyppimäärittelyillä voi myös tehdä optimointeja, esimerkiksi vaatimalla
 osoitinargumentit aina ei-tyhjiksi osoittimiksi.
 
-Osaa Purkassa olevista ominaisuuksista voisi ottaa käyttöön jopa uusissa C:n
-versioissa. Tyyppipäättelyn lisääminen esimerkiksi korvaamalla käyttämättömän
-\texttt{auto}-avainsanan tarkoittamaan pääteltyä tyyppiä voisi auttaa
-moderneja C-kääntäjiä käyttävien projektien kirjoittamista.
-\texttt{gcc}-käyttäjä tukee tyyppi-inferenssiä
+Osan Purkan ominaisuuksista voisi ottaa käyttöön jopa uusissa C:n versioissa.
+Tyyppipäättelyn lisääminen esimerkiksi korvaamalla käyttämättömän
+\texttt{auto}-avainsanan\footnote{Avainsanaa käytetään tarkkaan ottaen
+\texttt{static}-avainsanan vastinparina, eli ei-staattisten muuttujien
+luomiseen. Koska kaikki muuttujat ilman \texttt{static}-määrettä ovat
+ei-staattisia, \texttt{auto}-avainsana on turha.} tarkoittamaan pääteltyä
+tyyppiä voisi auttaa moderneja C-kääntäjiä käyttävien projektien
+kirjoittamista. \texttt{gcc}-käyttäjä tukee tyyppi-inferenssiä
 \texttt{\_\_auto\_type}-määreellä. Summatyyppien lisääminen laajennoksena
 \texttt{enum}- tai \texttt{union}-tyyppisyntaksiin ei vaikuta tämänhetkisiin
-standardien mukaisiin ohjelmiin, mutta mahdollistaisi kehittäessä summatyyppien
-käytön. Suurempia syntaktisia muutoksia, kuten tyyppisyntaksin
-uudelleenkirjoitusta tuskin pystyy toteuttamaan säilyttäen yhä tuen nykyiselle
-C:lle.
+standardien mukaisiin ohjelmiin, mutta mahdollistaisi summatyyppien käytön.
+Suurempia syntaktisia muutoksia, kuten tyyppisyntaksin uudelleenkirjoitusta
+tuskin pystyy toteuttamaan säilyttäen yhä tuen nykyiselle C:lle.
 
-\hl{Tässä on tärkeä teema mutta jää tässä vain toteamukseksi, pidempi analyysi
-ja esimerkit syventäisivät käsittelyä}
+Purkan jatkokehityksen voisi aloittaa omalla makrojärjestelmällä, sillä
+Purkassa ei ole määriteltynä omaa makrojärjestelmää. Purkka tukee C:n
+makrojärjestelmää, mutta C:n makrojärjestelmää kattavamman makrojärjestelmä
+voisi helpottaa monimutkaisten käännösaikaisten laskujen laskelmista.
 
-\hrule
-
-\hl{Jos tutkielmassa on mahdollisia puutteita, tai sen tulokset eivät
-välttämättä tutkielman rajoituksista johtuen päde tutkielman ulkopuolella,
-tässä aliluvussa perustellaan syitä tälle.}
-
-\hl{Erityisesti tutkimusaiheen rajaus ei välttämättä yleisty tutkimuksen
-ulkopuolelle, sillä ohjelmointikielten valintaan liittyy usein monimutkaisia
-syitä, kuten aikaisempi kokemus tai ohjelmoijan henkilökohtainen mieltymys
-johonkin kieleen, eikä projekteissa käytettyjä ohjelmointikieliä valita
-pelkästään kielen ominaisuuksien perusteella.}
-
-\hl{Jos tutkielmassa ilmenee mahdollisia jatkotutkimuskohteita, niistä
-kerrotaan tässä aliluvussa.}
+Purkkaa varten ei ole kääntäjän lisäksi kehitetty yhtään kehitystyökalua,
+vaikka luvussa~\ref{sec:suosio} valmiit työkalut nostetaan tärkeäksi
+ominaisuudeksi. Esimerkiksi hyvälaatuinen automaattinen käännösjärjestelmä
+helpottaisi kielen käyttämissä uusissa ohjelmissa. Tämän voisi nimetä
+ohjelmointikielen nimen mukaisella teemalla Jesariksi, sillä se sitoo
+käännettävät ohjelman palaset toisiinsa yhdistettynä mahdollisiin
+riippuvuuksiin.

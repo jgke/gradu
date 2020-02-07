@@ -1,30 +1,22 @@
 \section{Purkka-ohjelmointikieli}
 \label{sec:purkka}
 
-\hl{Mitä valintoja voi tehdä ilman hidastusta? Mitä ei saa tehdä?}
-
-\hl{Uudelleenstrukturointi: Osoitetaan hyviin ja huonoihin puoliin tutkielman
-aiemman materiaalin kanssa, ja perustellaan siten valinnat}
-
-\hl{ Luku 4: Iso asia on se, että Purkka-kielen vaatimuksia ei selitetä
-kootusti missään. Asioita pitää nyt lukea rivien välistä. Luvun 4 alkuhan olisi
-loistava paikka esittää kielen vaatimukset. Sitten olisi helppo arvioida
-lopputulosta niitä vasten }
-
 \subsection{Purkan suunnitteluperiaatteet}
 
 Luvut~\ref{sec:clyhyesti},~\ref{sec:ctaustaa}~ja~\ref{sec:cominaisuudet}
 nostavat tärkeinä C:n ominaisuuksina kielen yksinkertaisuuden ja tehokkuuden,
 jotka ovat mahdollistaneet kielen leviämisen järjestelmästä toiseen.
-Luvussa~\ref{sec:cominaisuudet} nostetaan tämän lisäksi esiin mahdollisuus
-kirjoittaa C-ohjelmia funktio kerrallaan uudella kielellä, jotta kielestä
-toiseen siirtyminen olisi ylipäätään mahdollista ilman kohtuutonta
+Luvussa~\ref{sec:cominaisuudet} nostetaan tämän lisäksi esiin vaatimus
+C-ohjelmien kirjoittamisesta funktio kerrallaan uudella kielellä, jotta
+kielestä toiseen siirtyminen olisi ylipäätään mahdollista ilman kohtuutonta
 investointia. Luvussa~\ref{sec:ckehitettavat} esitellään lukuisia C:n
 syntaktisia ongelmia, jotka voi muuttaa tehden kielestä helppolukuisemman,
-kuten tyyppipäättelyn lisääminen ohjelmointikieleen. Myös käännösaikaista
-varmennettavuutta voi parantaa lisäämällä esimerkiksi kieleen summatyypit.
-Yhteensopivuus nousee myös esiin luvussa~\ref{sec:suosio}, jossa kirjastojen
-saatavuus näytetään tärkeäksi ohjelmointikielen valintakriteeriksi.
+kuten tyyppipäättelyn lisääminen ohjelmointikieleen.
+
+Käännösaikaista varmennettavuutta voi parantaa lisäämällä esimerkiksi
+kieleen summatyypit, jotka löytyvät esimerkiksi Rustista. Yhteensopivuus nousee
+myös esiin luvussa~\ref{sec:suosio}, jossa kirjastojen saatavuus näytetään
+tärkeäksi ohjelmointikielen valintakriteeriksi.
 
 Uuden kielen määrittelyssä tulee pitää luvun~\ref{sec:abs} kriteerit, jotta
 ominaisuuksia päättäessä ei muodostu esimerkiksi yhteensopivuusongelmia C:n
@@ -35,18 +27,20 @@ tehokkuusparannuksia. Yksittäisiä ominaisuuksia kuitenkin pystyy lisäämään
 kuten luvuissa~\ref{sec:go}~ja~\ref{sec:rust} esiintyvät useat paluuarvot sekä
 luvussa~\ref{sec:rust} esitellyt summatyypit, sillä näiden sisällyttäminen
 kieleen mahdollistaa paremman käännösaikaisen todentamisen ilman
-suoritusaikaisia haittoja. Summatyypit voivat myös parantaa ohjelman
-tehokkuutta.
+suoritusaikaisia haittoja. Summatyypit voivat myös parantaa
+kääntäjäoptimointia, jos kääntäjä pystyy poistamaan ohjelmakoodia päättelemällä
+tietyt summatyypin arvot mahdottomiksi.
 
 Uusi kieli tulisi kääntää C:ksi, jotta sen käyttäminen on mahdollista kaikissa
 järjestelmissä, joissa C:tä käytetään. C:ksi kääntäminen myös mahdollistaa
 C-yhteensopivien kirjastojen käyttämisen ilman erillistä
 yhteensopivuuskerrosta. Kielen tulee myös ymmärtää C:llä kirjoitettuja ohjelmia
-sisältäen myös C:llä kirjoitetut otsikkotiedostot. Esimerkiksi POSIX-C:n
-\texttt{errno}-muuttuja voi olla määritelty makrona ja \texttt{errno}-muuttujan
-käyttäminen ilman esikäsittelijää esimerkiksi viittaamalla suoraan
-\texttt{errno}-nimiseen muuttujaan on määrittelemätöntä toimintaa~\citep[s.
-234]{POSIX}.
+sisältäen myös C:llä kirjoitetut makrot ja otsikkotiedostot. Esimerkiksi
+POSIX-C:n \texttt{errno}-muuttuja voi olla määritelty makrona ja
+\texttt{errno}-muuttujan käyttäminen ilman esikäsittelijää esimerkiksi
+viittaamalla suoraan \texttt{errno}-nimiseen muuttujaan on määrittelemätöntä
+toimintaa~\citep[s. 234]{POSIX}, joten \texttt{errno}-arvon lukeminen vaatii
+tuen C:n esikäsittelijälle.
 
 \subsection{Tyypit}
 
@@ -64,11 +58,16 @@ täysin vaihdettavissa, eli Purkan ei tarvitse pystyä kääntymään jokaiseen
 mahdolliseen vaihtoehtoon, vaan tyyppijärjestelmässä voi olla yksi tyyppi joka
 vastaa kaikkia \texttt{long}-tyypin vaihtoehtoisia kirjoitusasuja.
 
-C:n \texttt{char}-tyyppi on poikkeus tästä, sillä \texttt{char}, \texttt{signed
-char} ja \texttt{unsigned char} ovat kolme erillistä tyyppiä~\citep{C18}.
-Merkkijonot koostuvat \texttt{char}-tyyppisistä alkoista, kun taas
-\texttt{signed char} ja \texttt{unsigned char} vastaavat tavun kokoista
-kokonaislukua ja epänegatiivista kokonaislukua.
+C:n kokonaislukutyypeistä (\texttt{char}, \texttt{short}, \texttt{int},
+\texttt{long}) \texttt{char}-tyyppi on ainoa, jolla \texttt{char},
+\texttt{signed char} ja \texttt{unsigned char} ovat kolme erillistä
+tyyppiä~\citep{C18}, kun muilla alkeistyypillä esimerkiksi \texttt{signed int}
+on sama tyyppi kuin \texttt{int}. Merkkijonot koostuvat
+\texttt{char}-tyyppisistä alkoista, kun taas \texttt{signed char} ja
+\texttt{unsigned char} vastaavat tavun kokoista kokonaislukua ja
+epänegatiivista kokonaislukua. Purkka-kielessä C:n \texttt{char}-tyyppiä
+vastaa \texttt{char}, kun taas \texttt{signed char} ja \texttt{unsigned char}
+ovat \texttt{i8} ja \texttt{u8}.
 
 Tyyppien kääntäminen C:stä Purkaksi ja takaisin on yksinkertaista: jokaista
 C-tyyppiä vastaa täsmälleen yksi Purkka-tyyppi. Jokaiselle Purkan
@@ -81,37 +80,60 @@ oikeellisuuden parantamiseksi yksittäisiä lisätyyppejä. Nämä tyypit ovat
 epätyhjät osoittimet sekä summatyypit.
 
 Ensimmäiseksi määritellään epätyhjä osoitin, joka on osoitin, joka ei salli
-arvokseen C:n \texttt{NULL}-arvoa. Tyyppi kääntyy Purkasta C:ksi
-yksinkertaisesti vastaavaan osoitintyyppiin. Epätyhjä osoitin mahdollistaa
-kääntäjäoptimointeja, jotka eivät muuten olisi mahdollisia. GCC-kääntäjä
-mahdollistaa epätyhjät osoittimet
-\texttt{\_\_attribute\_\_((nonnull))}-määreellä.
+arvokseen C:n \texttt{NULL}-arvoa. Tyyppi kääntyy Purkasta standardien
+mukaiseksi C:ksi yksinkertaisesti vastaavaan C:n osoitintyyppiin. Epätyhjä
+osoitin mahdollistaa kääntäjäoptimointeja, jotka eivät muuten olisi
+mahdollisia. GCC-kääntäjä mahdollistaa epätyhjät osoittimet
+\texttt{\_\_attribute\_\_((nonnull))}-määreellä, jota Purkka-kääntäjä voi
+käyttää ohjelmoijan niin pyytäessä.
+
+\begin{listing}[ht!]
+    \inputminted{Rust}{koodi/sumtype.prk}
+    \caption{Summatyyppi Purkka-kielessä ja sama summatyyppi käännettynä C-kielelle.}
+    \label{fig:purkkatree}
+\end{listing}
 
 Toiseksi määritellään summatyyppi. Summatyyppi on yhdistelmä C:n
 \texttt{struct}, \texttt{union} ja \texttt{enum} -tyypeistä, ja se mahdollistaa
-käännösaikaisesti varmennetun \texttt{union}-tyyppien käytön. Summatyypit
-mahollistavat lukuisia käännösaikaisesti varmennettuja optimointeja, jotka
-eivät olisi mahdollisia ilman kielessä määriteltyjä
-summatyyppejä.\citationneeded
+käännösaikaisesti varmennetun \texttt{union}-tyyppien käytön. Summatyyppi kääntyy
+\texttt{struct}-tyypiksi, jossa on \texttt{enum}-tyyppinen muuttuja summatyypin
+diskriminanttina ja \texttt{union}-tyyppi, joka sisältää kaikki summatyypin
+variantit.
+
+Ohjelmassa~\ref{fig:purkkatree} on Purkka-kielellä kirjoitettu summatyyppi
+\texttt{Puu}, jossa on \texttt{Lehti}- ja \texttt{Haara}-variantit.
+\texttt{Lehti}-variantti sisältää 32-bittisen kokonaisluvun, kun taas
+\texttt{Haara}-variantti sisältää osoittimet kahteen alipuuhun. Kääntäessä
+tietorakenne muutetaan liitteen~\ref{app:purkka}
+ohjelman~\ref{fig:purkkatreecompile} kaltaiseksi lähdekoodiksi. Tässä
+erikoistapauksessa kääntäjä voisi optimoida tietorakennetta
+liitteen~\ref{app:purkka} ohjelman~\ref{fig:purkkatreecompile2} mukaisesti
+säilömällä \texttt{\_Puu\_d} -tyypin tiedon \texttt{\_Puu\_Lehti}- ja
+\texttt{\_Puu\_Haara}-tyyppien ensimmäiseen alkioon: jos osoitin on tyhjä, on
+kyseessä \texttt{Lehti}-variantti, muulloin \texttt{Haara}-variantti.
 
 \subsection{Syntaksi}
 
-\hl{Tähän osioon voisi tehdä enemmän esimerkkejä.}
-
-Purkan syntaksi on hyvin samankaltainen C:n syntaksiin verrattuna. Tämä helpottaa
-kielen oppimista aikaisemman tutkimuksen mukaisesti~\citep{languagelearning}.
-Suurimmat erot C:hen liittyvät tyyppien kirjoittamiseen, jossa syntaksia on
-muutettu modernien ohjelmointikielten syntaksin mukaiseksi.
+Purkan syntaksi on hyvin samankaltainen C:n syntaksiin verrattuna. Tämä
+helpottaa kielen oppimista aikaisemman tutkimuksen
+mukaisesti~\citep{languagelearning}. Samankaltainen syntaksi myös helpottaa
+nykyisten ohjelmien uudelleenkirjoitusta, silla ohjelmien rakennetta ei
+tarvitse muuntaa. Suurimmat erot C:hen liittyvät tyyppien kirjoittamiseen,
+jossa syntaksia on muutettu modernien ohjelmointikielten syntaksin mukaiseksi.
 
 Funktiomäärittelyt alkavat \texttt{fun}-avainsanalla. Tämä noudattaa usean muun
 modernin ohjelmointikielen tapaa aloittaa funktiomäärittely avainsanalla.
 Vertailun vuoksi Rust käyttää avainsanaa \texttt{fn}, Go käyttää avainsanaa
 \texttt{func} ja Kotlin käyttää avainsanaa \texttt{fun}). Avainsanan
-käyttäminen yksinkertaistaa jäsentäjän toteutusta.
+käyttäminen yksinkertaistaa kielen kielioppia ja jäsentäjän toteutusta.
 
 Purkka-kieli sisältää tyyppipäättelyn, joka helpottaa koodin kirjoittamista,
-kun kääntäjä pystyy päättelemään muuttujien tyypit. Tyyppisyntaksi itsessään
-muistuttaa paljon Rustin tyyppisyntaksia.
+kun kääntäjä pystyy päättelemään muuttujien tyypit. Tyyppipäättely käyttää
+tunnettua Damas-Hindley-Milner -algoritmia~\citep{hindley, milner, damas}.
+Tyyppipäättelyn yksityiskohtia käsitellään liittessä~\ref{app:purkka}.
+Koska tyyppipäättely toteutetaan puhtaasti käännösaikaisesti, se ei voi
+aiheuttaa suoritusaikaisia haittoja. Tyyppisyntaksi itsessään muistuttaa paljon
+Rustin tyyppisyntaksia.
 
 C:n \texttt{static}-avainsana on jaettu käytön mukaisesti kahteen avainsanaan.
 Funktiomäärittelyissä ja globaaleissa muuttujissa C:n
@@ -122,10 +144,14 @@ käytetty, koodi käyttäytyy kuin siihen olisi lisätty C:n
 \texttt{static}-avainsanaa, joka toimii samalla tavalla kuin C:n
 \texttt{static} käytettynä funktioiden sisällä.
 
-C:n käsittelee tietueiden ja taulukoiden alustamista identtisellä syntaksilla.
+C käsittelee tietueiden ja taulukoiden alustamista identtisellä syntaksilla.
 Purkka erottaa nämä kaksi syntaksia erikseen ohjelman~\ref{fig:structinit}
-tavalla, jotta alustaessa alustettavan datatyypin tyyppi olisi selkeästi
-näkyvissä myös tyyppi-inferenssiä käytettäessä.
+tavalla. Ohjelmassa alustetaan \texttt{Esimerkki}-tietue sekä kolmen
+kokonaisluvun taulukko. Tietueen tyypin nimen pitäminen mukana
+tietueliteraaleissa pitää tyypin selkeästi näkyvissä myös tyyppi-inferenssiä
+käytettäessä. Yksinkertaisemmissa tapauksissa tämä ei vaikuta lähdekoodin
+pituuteen, mutta monimutkaisten tietueiden alustuksessa Purkka-koodi on
+hieman pidempää on vastaava C-koodi.
 
 \begin{listing}[ht!]
     \inputminted{Rust}{koodi/structinit.prk}
@@ -134,85 +160,52 @@ näkyvissä myös tyyppi-inferenssiä käytettäessä.
     \label{fig:structinit}
 \end{listing}
 
-Suurin osa C:n lauseista on Purkassa lausekkeita. Erityisesti \texttt{if/else}
-on C:ssä lause, mutta Purkassa lauseke. \hl{Tähän tekstiä, miten tuo muunnetaan
-C:ksi turvallisesti}
+Suurin osa C:n lauseista on Purkassa lausekkeita. Esimerkiksi \texttt{if-else}
+lausepari on Purkassa lauseke, joka mahdollistaa selkeämmän koodin
+kirjoittamisen. C:ssä vastaavia lausekkeita voi kirjoittaa käyttämällä
+välimuuttujaa tai yksinkertaisissa tapauksissa \texttt{?:}-operaattorilla.
 
-Purkka käyttää tyyppipäättely toteuttamisen pohjana yleisesti käytettyä
-Damas-Hindley-Milner -algoritmia~\citep{hindley, milner, damas}.
-
-Jotta päättelyalgoritmi toimisi lineaariaikaisesti suhteessa syötteen kokoon,
-osassa lausekkeista muuttujien tyyppien tulee olla tiedossa sillä hetkellä, kun
-lausekkeen tyyppiä selvitetään. Yhteen- ja vähennyslasku voi vaatia myös
-tyyppimäärittelyt, jos yhteenlaskettavat parametrit ovat osoittimia\footnote{C
-sallii osoitinmuuttujan ja kokonaisluvun yhteen- ja vähennyslaskun sekä kahden
-osoittimen vähennyslaskun.}. Näistä selkein esimerkki on struct-tyyppien kentän
-käyttäminen, jonka tyyppiä kääntäjä ei suostu päättelemään, jos muuttujan
-tyyppi ei ole tiedossa. Koodissa~\ref{fig:structinfer} on kaksi esimerkkiä
-tyyppipäättelystä struct-muuttujiin: ensimmäisessä esimerkissä
-tyyppipäättely onnistuu, mutta toisessa ei.
-
-\begin{listing}[ht!]
-    \inputminted{Rust}{koodi/infer.prk}
-    \caption{Esimerkki tyyppipäättelystä.}
-    \label{fig:structinfer}
-\end{listing}
-
-\FloatBarrier
-
-\hl {Esimerkissä kysymysmerkkejä. Selitys auki}
-
-\subsection{Makrot}
-
-\hl{Liian lyhyt numeroiduksi aliluvuksi}
-
-\hl{Todo: speksi makroista, tai ainakin lisää selitystä. Kääntäjässä ei ole
-toistaiseksi mitään tehtynä Purkka-makrojen eteen.}
+\subsection{C-yhteensopivuus}
 
 Koska Purkan tulee olla myös makrojen osalta C-yhteensopiva, Purkka osaa
 laajentaa C-makroja. Purkka-kääntäjä pystyy muuntamaan makrokutsun
 C-lähdekoodiksi, laajentamaan sen C-esikäsittelijällä ja muuntamaan makron
-laajennettu muoto takaisin Purkka-koodiksi.
+laajennetun muodon takaisin Purkka-koodiksi.
 
-Purkassa on myös oma makrojärjestelmä, joka toimii hahmotunnistuksella ja
-rekursiolla.\footnote{Referenssikääntäjään (ks. luku \ref{sec:results}) ei ole
-toteutettu makroja.} Jos makrot eivät sisällä rekursiota tai hahmontunnistusta,
-ne voidaan muuntaa C-makroiksi.
-
-\hl{Teoriassa myös hahmontunnistuksen ja rekursion voisi muuntaa C-makroiksi,
-käyttäen hyväksi C-makrojen nurkkatapauksia.}
-
-\subsection{Suoritusaikaiset ominaisuudet ja laajennokset}
+%Purkassa on myös oma makrojärjestelmä, joka toimii hahmotunnistuksella ja
+%rekursiolla.\footnote{Referenssikääntäjään (ks. luku \ref{sec:results}) ei ole
+%toteutettu makroja.} Jos makrot eivät sisällä rekursiota tai hahmontunnistusta,
+%ne voidaan muuntaa C-makroiksi.
 
 Purkka ei sisällä yhtään suoritusaikaista ominaisuutta, joita ei ole C:ssä.
-Syntaksi kuitenkin sisältää \texttt{pragma}-avainsanan, jota voidaan käyttää
-vastaavasti kuin C:n esikäsittelijän pragmaa erilaisten laajennosten
-käyttämiseen. Esimerkiksi OpenMP-laajennosta käytetään pragmojen läpi.
+Tämä pitää kielen yksinkertaisena ja C-yhteensopivana. Tämä toisaalta tekee
+kielellä ohjelmoinnista työläämpää verrattuna muihin moderneihin
+ohjelmointikieliin.
 
 Useat C-toteutukset sisältävät erilaisia laajennoksia, joiden tarkoituksena on
 mahdollistaa eilaisten alustariippuvaisten ominaisuuksien käyttö. Benchmarks
 gamessa yksi käytetyimmistä laajennoksista on SIMD-tyypit, joita varten
 esimerkiksi GCC-kääntäjällä on oma syntaksinsa. GCC:llä SIMD-tyypit voidaan
 määritellä käyttämällä \texttt{\_\_attribute\_\_((vector\_size))} -määrettä.
-Purkka osaa käyttää useita GCC:n laajennoksia.
+Purkka tukee useita GCC:n laajennoksia, muun muassa vektorityyppejä.
 
-Sulkeumien toteutus olettaa, että C-kääntäjä tukee laajennoksena sulkeumia.
-\hl{Tähän (tai muualle) lause lambdojen ja sulkeumien erosta?}
+Syntaksi sisältää myös \texttt{pragma}-avainsanan, jota voidaan käyttää
+vastaavasti kuin C:n esikäsittelijän \texttt{pragma}-direktiiviä erilaisten
+laajennosten käyttämiseen. Esimerkiksi OpenMP-laajennosta käytetään pragmojen
+läpi.
 
-\subsection{Ohjelmointikielen kääntäminen}
+Jotta Purkkaa voisi käyttää mahdollisimman helposti nykyisten järjestelmien
+kanssa, Purkka käännetään C-koodiksi. Tämä mahdollistaa olemassa olevien
+C-kääntäjien käyttöä Purkan kääntämiseen kaikille mahdollisille alustoille,
+joille on olemassa standardien mukainen C-kääntäjä. Esimerkiksi
+\texttt{make}-työkalua käyttäville projekteille riittää yksi Makefile-sääntö
+Purkka-ohjelmien kääntäminen C-ohjelmiksi. Tämä sääntö on esitetty
+ohjelmassa~\ref{fig:makefile}. Muissa käännösautomaatiosovelluksissa Purkan
+integrointi osa kääntämistä on luultavasti yhtä helppoa.
 
-Purkan kääntäminen C-koodiksi C-koodiksi on hieman normaalia kääntämistä
-monimutkaisempaa. Koska Purkan tulee pystyä muuntamaan Purkka-koodia C-koodiksi
-mutta myös C-koodia Purkka-koodiksi makrojen laajentamisen myötä, kääntäjän
-pitää ymmärtää kahta ohjelmointikieltä yhden sijaan, sekä muuntamaan niitä
-toisikseen. Kuvassa~\ref{fig:compilerarch} on kaavio Purkan kääntämisestä.
-
-Suurimman osan purkan syntaksipuista saa käännettyä lähes identtisiksi C:n
-syntaksipuiksi, mutta muutamat ominaisuudet vaativat enemmän työtä. Suurin
-näistä on tyyppipäättely. Jotkut muut ominaisuudet vaativat myös
-monimutkaisempia muutoksia, kuten \texttt{if}-lausekkeet sekä lambdalausekkeet.
-Näistä \texttt{if}-lausekkeet käännetään käyttäen välimuuttujaa.
-Lambdalausekkeet taas käännetään nostamalla lambda erilliseksi funktioksi ja
-korvaamalla lambda osoittimella tähän funktioon.
-
-\hl{2 viimeistä virkettä pois?}
+\begin{listing}[ht!]
+    \inputminted{Makefile}{koodi/Makefile.kieli}
+    \caption{Kaksi riviä Makefile-syntaksia riittää Purkan integroimiseen
+    Make-ohjelmaa käyttäviin projekteihin.}
+    \label{fig:makefile}
+\end{listing}

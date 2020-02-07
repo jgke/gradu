@@ -1,0 +1,4 @@
+enum Puu {
+    Lehti(i32),
+    Haara(&Puu, &Puu)
+}

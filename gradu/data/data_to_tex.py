@@ -20,7 +20,7 @@ print("Ohjelmassa luodaan suuri määrä DNA-sekvenssejä joko kopioiden annettu
 
 print()
 print("\\noindent\\textbf{knucleotide} \\\\[0.3cm]", sep="")
-print("Ohjelma lukee \emph{fasta}-ohjelman luoman tiedoston, ja laskee siinä esiintyvien nukleotidisarjojen määrän 1, 2, 3, 4, 6, 12 ja 18 nukleotidin pituisille sarjoille.")
+print("Ohjelma lukee \emph{fasta}-ohjelman luoman tiedoston ja laskee siinä esiintyvien nukleotidisarjojen määrän 1, 2, 3, 4, 6, 12 ja 18 nukleotidin pituisille sarjoille.")
 
 print()
 print("\\noindent\\textbf{nbody} \\\\[0.3cm]", sep="")
@@ -136,7 +136,7 @@ for benchmark in benchmarks:
 print("\hspace{1cm}")
 
 print("\\\\[1cm] {\large \\textbf{Muistinkäyttö(KB)}} \\\\")
-print("Muistinkäyttö on mitattu 200 millisekunnin välein \\texttt{libgtop2}-kirjastolla, ja kunkin suorituksen muistinkäytöksi on merkitty suurin mitattu muistikäyttö.")
+print("Muistinkäyttö on mitattu 200 millisekunnin välein \\texttt{libgtop2}-kirjastolla ja kunkin suorituksen muistinkäytöksi on merkitty suurin mitattu muistikäyttö.")
 print("\\footnotesize")
 print()
 newline = False
@@ -169,7 +169,7 @@ for benchmark in benchmarks:
         newline = True
 
 print("\\\\[1cm] {\large \\textbf{Lähdekoodin koko (B)}} \\\\")
-print("Lähdekoodin koko on mitattu poistamalla lähdekoodista kaikki kommentit sekä tyhjemerkit, jotta lähdekoodin asettelu ei vaikuta mittauksiin. Tämän jälkeen ohjelma ajetaan \\texttt{gzip}-pakkausohjelman läpi, ja mitataan pakatun lähdekoodin koko.")
+print("Lähdekoodin koko on mitattu poistamalla lähdekoodista kaikki kommentit sekä tyhjemerkit, jotta lähdekoodin asettelu ei vaikuta mittauksiin. Tämän jälkeen ohjelma ajetaan \\texttt{gzip}-pakkausohjelman läpi ja mitataan pakatun lähdekoodin koko.")
 print("\\footnotesize")
 print()
 newline = 1

@@ -1,6 +1,21 @@
 \appendixsection{Liitteen nimi tähän}
 \appendixlabel{app:purkka}
 
+\counterwithout{listing}{section}
+
+\begin{listing}[ht!]
+    \inputminted{Rust}{koodi/sumtype.prk}
+    \inputminted{Rust}{koodi/sumtype.c}
+    \caption{Summatyyppi Purkka-kielessä ja sama summatyyppi käännettynä C-kielelle.}
+    \label{fig:purkkatreecompile}
+\end{listing}
+
+\begin{listing}[ht!]
+    \inputminted{Rust}{koodi/sumtype2.c}
+    \caption{Ohjelman~\ref{fig:purkkatreecompile} optimoitu C-versio.}
+    \label{fig:purkkatreecompile2}
+\end{listing}
+
 %\makeatletter
 %\show\@startsection
 %\makeatother
@@ -80,6 +95,25 @@ Mitä optimointeja non-null tarjoaa? Entä tagged union?
 
 Purkka käyttää tyyppipäättely toteuttamisen pohjana yleisesti käytettyä
 Damas-Hindley-Milner -algoritmia~\citep{hindley, milner, damas}.
+
+Jotta päättelyalgoritmi toimisi lineaariaikaisesti suhteessa syötteen kokoon,
+osassa lausekkeista muuttujien tyyppien tulee olla tiedossa sillä hetkellä, kun
+lausekkeen tyyppiä selvitetään. Yhteen- ja vähennyslasku voi vaatia myös
+tyyppimäärittelyt, jos yhteenlaskettavat parametrit ovat osoittimia\footnote{C
+sallii osoitinmuuttujan ja kokonaisluvun yhteen- ja vähennyslaskun sekä kahden
+osoittimen vähennyslaskun.}. Näistä selkein esimerkki on struct-tyyppien kentän
+käyttäminen, jonka tyyppiä kääntäjä ei suostu päättelemään, jos muuttujan
+tyyppi ei ole tiedossa. Koodissa~\ref{fig:structinfer} on kaksi esimerkkiä
+tyyppipäättelystä struct-muuttujiin: ensimmäisessä esimerkissä
+tyyppipäättely onnistuu, mutta toisessa ei.
+
+\begin{listing}[ht!]
+    \inputminted{Rust}{koodi/infer.prk}
+    \caption{Esimerkki tyyppipäättelystä.}
+    \label{fig:structinfer}
+\end{listing}
+
+
 
 \FloatBarrier
 

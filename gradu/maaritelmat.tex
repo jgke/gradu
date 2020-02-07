@@ -1,26 +1,7 @@
 \section{Ohjelmointikielten vertailun määritelmät}
 
-\hl{Mihin verrataan? Miten?}
-
-\hl{Tässä luvussa kerrotaan ohjelmointikielten taustoista ja yleisistä
-ominaisuuksista, luodaan määrittelyt vertailuun liittyville kriteereille,
-perustelut verrattavien kielten valinnoille sekä pohditaan erilaisia
-mahdollisia syitä kielten suosioon. Tämän luvun sisältö on hyvin samankaltainen
-tutkimussuunnitelman kirjallisuusosan toisen luvun kanssa.}
-
-\hl{ 2 Taustaa: luvun alussa pitää selostaa, mitä asioita luvussa käsitellään.
-Varsinkin, kun luku on vähän sillisalaatti sisällöltään muutenkin. }
-
 \subsection{Ohjelmointikielten vertailun kriteerit}
 \label{sec:abs}
-
-\hl{Jotta kielten vertailun voi tehdä objektiivisesti, valitaan vertailua
-varten jotkin kriteerit. Kriteereiksi valitaan suorituskyky, muistinkäyttö ja
-yhteensopivuus C:n ja muiden ohjelmointikielten kanssa. Vertailtavat kielet
-eivät saa olla C:tä huonompia millään osa-alueella.}
-
-\hl{ Luvussa 2.4 voisi noita vertailukriteereitä tuoda selvemmin esiin
-esimerkiksi taulukoimalla ne. }
 
 Verrattavissa ohjelmointikielissä on pyritty parantamaan C:n huonoja puolia
 hyvien puolien kustannuksella, usein lisäämällä kieleen turvallisuutta
@@ -74,18 +55,13 @@ kopiona kiintolevyltä, ja se on valmiina ladattuna välimuistiin.
 
 Ohjelmointikielen tulee olla täysin yhteensopiva C:n suoritusympäristön kanssa.
 Tämä koskee C-koodin kutsumista C:n vierasfunktiorajapinnan
-läpi\defword{Foreign function interface, FFI, \emph{käännös
-\citealt[s.~8]{vierasfunktiorajapinta}}} sekä kielen funktioiden kutsumista
+läpi\defword{Foreign function interface, FFI} sekä kielen funktioiden kutsumista
 muiden ohjelmointikielten C-rajapinnan läpi. Kielen tulee näiden lisäksi toimia
-kaikissa ympäristöissä, joissa C toimii. Kielen olisi myös hyvä tukea C:n
+kaikissa ympäristöissä, joissa C toimii. Kielen pitää myös tukea C:n
 esikäsittelijää, jotta C:n käyttäminen verrattavan ohjelmointikielen kanssa
 olisi mahdollisimman saumatonta.
 
 \subsection{C:hen verrattavissa olevat ohjelmointikielet}
-
-\hl{Vertailtaviksi kieliksi valitaan Ada, C++, D, Go ja Rust. Kaikki
-vertailtavat kielet ovat kohtalaisen tehokkaita, jonka lisäksi kaikilla on
-yritetty korvata C:n tai C++:n käyttöä.}
 
 Historian saatossa on tehty useita C:n kilpailijoita, jotka ovat yrittäneet
 parantaa C:tä joidenkin C:n hyvien puolien kustannuksella. Muutamat näistä ovat
@@ -131,15 +107,8 @@ ohjelmointikieli, joka on suunniteltu mahdollisimman suorituskykyiseksi.
 \subsection{Kielten suosioon vaikuttavat tekijät}
 \label{sec:suosio}
 
-\hl{Tämä kiinni C-taustaan?}
-
-\hl{Analyysiä muista syistä kielen suosioon, erityisesti Meyerovichin ja
-Rabkinin tekemän tutkimuksen perusteella. Tämä antaa tietoa ominaisuuksista,
-jotka ohjelmointikielessä olisi hyvä olla.}
-
 Eräässä tutkimuksessa~\citep{empiricalpopularity} tutkittiin syitä
-ohjelmointikielten valintaan. \hl{Olisi hyvä olla ainakin 1 muu tutkielma
-viittauksessa.} Yhden tutkimuksen järjestämän kyselyn (s. 8,
+ohjelmointikielten valintaan. Yhden tutkimuksen järjestämän kyselyn (s. 8,
 \mbox{Slashdotissa} julkaistu kysely, n=1679) perusteella kielen valintaan
 vaikuttaa avoimen lähdekoodin kirjastojen saatavuus, olemassa olevien ohjelmien
 jatkokehitys sekä kielen tunnettavuus ohjelmoijien keskuudessa -- tutkimuksen
@@ -150,8 +119,7 @@ tärkeämmäksi.
 Saman tutkimuksen järjestämässä Slashdot-sivustolla julkaistussa kyselyssä noin
 40\% vastaajista arvioi tärkeäksi kriteeriksi työkalut. Kyselyn perusteella
 kielen olisi siis hyvä tarjota toimivat työkalut, kuten
-ohjelmistopakettien~\defword{software package, \emph{käännös
-\citealt[s.~18]{ohjelmistopaketti}}} hakemiseen
+ohjelmistopakettien~\defword{software package} hakemiseen
 paketinhallintajärjestelmän\defword{package manager}, nopean ja
 käyttäjäystävällisen käännöstyökalun sekä valmiudet olemassa oleviin
 kehitysympäristöihin integroitumiselle. Olemassa olevien C-ohjelmistojen
@@ -245,121 +213,103 @@ uuteen ohjelmointikieleen siirtyvälle ohjelmoijalle.
 % ohjelmoijille enemmän vapauksia GPL3:een verrattuna, mutta käyttäjien vapaus
 % esimerkiksi muokata ohjelmistoa kärsii tästä.
 
-\subsection{Makrojärjestelmät}
-
-\hl{Tässä aliluvussa selitetään makrojärjestelmien käsite, kerrotaan
-makrojärjestelmien tarpeellisuudesta ja käyttökohteista sekä verrataan
-vaihtoehtoisia toteutuksia makrojärjestelmiin.}
-
-\hl{ Luku 3.4: Tämä on jotenkin orpo aliluku. Ohjelmaesimerkit on selostettu
-huonosti tai ei ollenkaan. }
-
-\hl{Tänne errno-esimerkki yhteensopivuuteen liittyen?}
-
-Ohjelmointikielten makrojärjestelmillä tarkoitetaan ohjelmointikielen
-ominaisuuksia, joita voidaan käyttää käännösaikaiseen lähdekoodin luomiseen ja
-muuntamiseen. Lähdekoodin luonti käännösaikaisesti voi pienentää huomattavasti
-tarvittavaa lähdekoodin määrää tietyissä tilanteissa aiheuttamatta
-suoritusaikaisia haittoja. Ensimmäiset makrojärjestelmät rakennettiin
-symbolisen konekielen käsittelyyn, jolloin makrojärjestelmiä käytettiin
-poistamaan turhaa toistoa ohjelmien lähdekoodista.
-
-Rust käyttää vakiokirjastonsa lähdekoodissa paljon makroja erityisesti
-alkeistyyppien liittyvien määrittelyjen kohdalla. Rustin vakiokirjaston
-kokonaislukutyyppejä määrittelevässä moduulissa \texttt{std::num} on käytetty
-makroja huomattavan paljon lähdekoodin määrän vähentämiseen -- tiedoston
-\texttt{mod.rs} lähdekoodin koko kasvaa noin 5\,000 rivistä yli 20\,000 riviin,
-kun makrot laajennetaan. Kaikki makroilla määritellyt funktiot ovat käytännössä
-identtisiä tyyppejä tai tiettyjä vakioita lukuun ottamatta.
-Ohjelmassa~\ref{fig:ruststdnum} on kaksi tällaista funktiota, jotka toteuttavat
-\texttt{From}-piirteen eri tyyppiparametreille). Käyttämällä makrojärjestelmää
-taataan paras mahdollinen suorituskyky, pitäen kuitenkin lähdekoodin selkeänä
-ja ylläpidettävänä. Makrojärjestelmän käyttäminen määrittelyihin pakottaa
-yhtenäiset määrittelyt kaikille alkeistyypeille, mikä voi vähentää
-ohjelmointivirheiden määrää.
-
-\begin{listing}[ht!]
-    \inputminted{Rust}{koodi/ruststdnum.rs}
-    \caption{Esimerkissä olevat Rust-funktiot ovat esimerkin
-    \texttt{impl\_from} -makrolla generoituja. Esimerkki on hieman
-    yksinkertaistettu Rustin standardikirjastosta löytyvästä esimerkistä.}
-    \label{fig:ruststdnum}
-\end{listing}
-
-Lähdekoodin luominen käännösaikaisesti voi kasvattaa lopullisen ohjelman kokoa,
-sillä makron sisältö kopioidaan makrokutsun paikalle. Toisaalta ohjelmakoodin
-luonti voi myös mahdollistaa optimointeja, joita kääntäjä ei olisi pystynyt
-tekemään tavalliselle funktiolle. Kääntäjästä riippuen lähdekoodin
-sijoittaminen funktiokutsun paikalle voi esimerkiksi mahdollistaa paremman
-silmukoiden vektorisoinnin tai kuolleen koodin poistamisen~\citep{cinlining}.
-Ohjelmoijalle tulisi siis antaa mahdollisuus päättää, haluaako hän
-ohjelmoidessaan käyttää ohjelmointikielen makrojärjestelmää vai perinteisiä
-funktioita.
-
-Makroja käyttäessä voi tapahtua ristiriitoja esimerkiksi luodessa väliaikaisia
-muuttujia, joilla on sama tunniste kuin aikaisemmin lähdekoodissa
-määritellyillä muuttujilla~\citep{macrohygiene}. Esimerkiksi C:n makrojen
-tulokset voivat symbolien törmäyksien lisäksi aiheuttaa syntaksivirheitä, kuten
-ohjelmassa~\ref{fig:cmacrofail} näytetään. Jos ohjelmointikielen
-makrojärjestelmä estää tällaiset ristiriidat, sitä kutsutaan hygieeniseksi
-makrojärjestelmäksi.
-
-\begin{listing}[ht!]
-    \inputminted{C}{koodi/cmacrofail.c}
-    \caption{C-makrot voivat aiheuttaa laajennetussa muodossa yllättäviä
-    tuloksia muuttujanimien törmäyksien ja syntaksivirheiden vuoksi. Ohjelmoija
-    odottaa tulokseksi ohjelmaa, joka tulostaisi arvon 2, mutta lopullisen
-    ohjelman tulostama viesti on määrittelemätöntä toimintaa alustamattoman
-    muuttujan käytön vuoksi.}
-    \label{fig:cmacrofail}
-\end{listing}
-
-Makrojärjestelmiin on runsaasti vaihtoehtoisia toteutustapoja. Yksinkertaisin
-vaihtoehto on jättää makrot kokonaan pois ohjelmointikielestä, mikä tosin
-rajoittaa ohjelmointikielen mahdollisuuksia käännösaikaiseen
-laajennettavuuteen.
-
-Tekstialkioiden korvaamiseen perustuvat makrojärjestelmät ovat erittäin
-yksinkertainen ja joustava tapa toteuttaa käännösaikainen makrojärjestelmä.
-Tekstialkioiden korvaamisessa makroprosessori etsii syötteestä tiettyjä
-tekstialkioita ja korvaa niitä joukoilla tekstialkioita. Tekstialkioiden
-korvaaminen toimii yleensä erillisenä osana kääntämistä, eikä makroilla ole
-tällöin tietoa varsinaisen ohjelmointikielen tyypeistä tai tunnisteista.
-
-Mallipohjaisissa makrojärjestelmissä asetetaan tyyppejä tai arvoja ennalta
-määritettyyn malliin, yleensä luokkiin tai funktioihin. Mallipohjaiset
-makrojärjestelmät eivät voi tehdä kaikkea, mitä tekstialkioiden korvaamiseen
-perustuvat makroprosessorit voivat tehdä. Mallipohjaiset järjestelmät voivat
-käyttää hyväksi ohjelmointikielen tyyppijärjestelmää ja asettaa käännösaikaisia
-rajoitteita mallin parametreille, mikä mahdollistaa paremmat käännösaikaiset
-tarkistukset ohjelmien oikeellisuudesta. Monet mallipohjaisen ohjelmoinnin
-käyttökohteista ovat suunnattu geneeristen funktioiden tai luokkien luomiseen
-eikä syntaksin muuttamiseen.
-
-Syntaksipuupohjaiset makrojärjestelmät käsittelevät ohjelmointikielten
-syntaksipuita. Syntaksipuiden käsittely pelkkien tekstialkioiden sijaan
-mahdollistaa uusien kontrollirakenteiden määrittämisen yksinkertaisesti ja
-turvallisesti. Puhtaassa syntaksipuiden käsittelyssä sekä syötteen että makron
-laajennetun version on oltava ohjelmointikielen syntaksin mukaisia, eli
-syntaksipuita käsittelevä makro ei voi käsitellä mitä tahansa syötettä.
-
-Monikäyttöisimmät makrojärjestelmät ovat proseduraalisia makrojärjestelmiä.
-Proseduraalisissa makrojärjestelmissä ohjelmoija voi käyttää samaa
-ohjelmointikieltä sekä tavalliseen ohjelmointiin että makrojen toteutukseen.
-Proseduraaliset makrojärjestelmät vaativat yleensä enemmän koodia makrojen
-toteutukseen verrattuna muihin makrojärjestelmiin, mutta toisaalta
-mahdollistavat kaiken, mitä ohjelmointikielellä voisi tehdä. Proseduraalinen
-makrojärjestelmä voisi esimerkiksi lukea tiedostoja käännösaikaisesti ja
-vaikuttaa lopulliseen lähdekoodiin tiedoston sisällöstä riippuen.
-
-Mikään makrojärjestelmä ei ole täydellinen, vaan jokaisessa makrojärjestelmässä
-on sekä hyviä että huonoja puolia. C:n makrojen kaltaiset yksinkertaiset
-järjestelmät ovat helposti ylläpidettäviä, sillä makroja voi käyttää vain
-tietyillä tavoilla, jotka ovat samat ohjelmistosta riippumatta. Tällöin yhdestä
-ohjelmistosta toiseen siirryttäessä makrot eivät aiheuta vaikeuksia koodipohjaa
-opetellessa. Kun makrojärjestelmän ilmaisuvoimaa kasvatetaan, myös sen
-käyttäminen muuttuu monimuotoisemmaksi. Toisaalta monimutkaisemmat
-makrojärjestelmät myös mahdollistavat enemmän ratkaisuja kuin yksinkertaiset.
+%\subsection{Makrojärjestelmät}
+%
+%\hl{Tätä lyhyemmäksi?}
+%
+%Ohjelmointikielten makrojärjestelmillä tarkoitetaan ohjelmointikielen
+%ominaisuuksia, joita voidaan käyttää käännösaikaiseen lähdekoodin luomiseen ja
+%muuntamiseen. Lähdekoodin luonti käännösaikaisesti voi pienentää huomattavasti
+%tarvittavaa lähdekoodin määrää tietyissä tilanteissa aiheuttamatta
+%suoritusaikaisia haittoja. Ensimmäiset makrojärjestelmät rakennettiin
+%symbolisen konekielen käsittelyyn, jolloin makrojärjestelmiä käytettiin
+%poistamaan turhaa toistoa ohjelmien lähdekoodista.
+%
+%Jos C:n makrojärjestelmä korvataan ilmaisuvoimaisemmalla makrojärjestelmällä,
+%sen tulee säilyttää C-yhteensopivuus. Käytännössä jokainen C-kirjasto
+%mahdollistaa kirjaston käyttämisen otsikkotiedostojen kautta, joissa voi olla
+%esimerkiksi alustakohtaisia määrittelyjä. Yhteensopimaton makrojärjestelmä ei
+%pysty käyttämään näitä tiedostoja hankaloittaen kielten välistä yhteistyötä.
+%
+%Lähdekoodin luominen käännösaikaisesti voi kasvattaa lopullisen ohjelman kokoa,
+%sillä makron sisältö kopioidaan makrokutsun paikalle. Toisaalta ohjelmakoodin
+%luonti voi myös mahdollistaa optimointeja, joita kääntäjä ei olisi pystynyt
+%tekemään tavalliselle funktiolle. Kääntäjästä riippuen lähdekoodin
+%sijoittaminen funktiokutsun paikalle voi esimerkiksi mahdollistaa paremman
+%silmukoiden vektorisoinnin tai kuolleen koodin poistamisen~\citep{cinlining}.
+%Ohjelmoijalle tulisi siis antaa mahdollisuus päättää, haluaako hän
+%ohjelmoidessaan käyttää ohjelmointikielen makrojärjestelmää vai perinteisiä
+%funktioita. Oikeaoppisella makrojärjestelmien käytöllä taataan paras
+%mahdollinen suorituskyky säilyttäen lähdekoodin selkeys ja ylläpidettävyys. 
+%
+%Makroja käyttäessä voi tapahtua ristiriitoja esimerkiksi luodessa väliaikaisia
+%muuttujia, joilla on sama tunniste kuin aikaisemmin lähdekoodissa
+%määritellyillä muuttujilla~\citep{macrohygiene}. Esimerkiksi C:n makrojen
+%tulokset voivat symbolien törmäyksien lisäksi aiheuttaa syntaksivirheitä, kuten
+%ohjelmassa~\ref{fig:cmacrofail} näytetään. Ohjelman tulostama viesti on
+%määrittelemätöntä toimintaa alustamattoman muuttujan käytön vuoksi. Jos
+%ohjelmointikielen makrojärjestelmä estää tällaiset ristiriidat, sitä kutsutaan
+%hygieeniseksi makrojärjestelmäksi.
+%
+%\begin{listing}[ht!]
+%    \inputminted{C}{koodi/cmacrofail1.c}
+%    \inputminted{C}{koodi/cmacrofail2.c}
+%    \caption{C-makrot voivat aiheuttaa laajennetussa muodossa yllättäviä
+%    tuloksia muuttujanimien törmäyksien ja syntaksivirheiden vuoksi. Ohjelmoija
+%    odottaa tulokseksi ohjelmaa, joka tulostaisi arvon 2, mutta lopullisen
+%    ohjelman tulostama viesti on määrittelemätöntä toimintaa alustamattoman
+%    muuttujan käytön vuoksi.}
+%    \label{fig:cmacrofail}
+%\end{listing}
+%
+%\grayrule
+%
+%Makrojärjestelmiin on runsaasti vaihtoehtoisia toteutustapoja. Yksinkertaisin
+%vaihtoehto on jättää makrot kokonaan pois ohjelmointikielestä, mikä tosin
+%rajoittaa ohjelmointikielen mahdollisuuksia käännösaikaiseen
+%laajennettavuuteen.
+%
+%Tekstialkioiden korvaamiseen perustuvat makrojärjestelmät ovat erittäin
+%yksinkertainen ja joustava tapa toteuttaa käännösaikainen makrojärjestelmä.
+%Tekstialkioiden korvaamisessa makroprosessori etsii syötteestä tiettyjä
+%tekstialkioita ja korvaa niitä joukoilla tekstialkioita. Tekstialkioiden
+%korvaaminen toimii yleensä erillisenä osana kääntämistä, eikä makroilla ole
+%tällöin tietoa varsinaisen ohjelmointikielen tyypeistä tai tunnisteista.
+%
+%Mallipohjaisissa makrojärjestelmissä asetetaan tyyppejä tai arvoja ennalta
+%määritettyyn malliin, yleensä luokkiin tai funktioihin. Mallipohjaiset
+%makrojärjestelmät eivät voi tehdä kaikkea, mitä tekstialkioiden korvaamiseen
+%perustuvat makroprosessorit voivat tehdä. Mallipohjaiset järjestelmät voivat
+%käyttää hyväksi ohjelmointikielen tyyppijärjestelmää ja asettaa käännösaikaisia
+%rajoitteita mallin parametreille, mikä mahdollistaa paremmat käännösaikaiset
+%tarkistukset ohjelmien oikeellisuudesta. Monet mallipohjaisen ohjelmoinnin
+%käyttökohteista ovat suunnattu geneeristen funktioiden tai luokkien luomiseen
+%eikä syntaksin muuttamiseen.
+%
+%Syntaksipuupohjaiset makrojärjestelmät käsittelevät ohjelmointikielten
+%syntaksipuita. Syntaksipuiden käsittely pelkkien tekstialkioiden sijaan
+%mahdollistaa uusien kontrollirakenteiden määrittämisen yksinkertaisesti ja
+%turvallisesti. Puhtaassa syntaksipuiden käsittelyssä sekä syötteen että makron
+%laajennetun version on oltava ohjelmointikielen syntaksin mukaisia, eli
+%syntaksipuita käsittelevä makro ei voi käsitellä mitä tahansa syötettä.
+%
+%Monikäyttöisimmät makrojärjestelmät ovat proseduraalisia makrojärjestelmiä.
+%Proseduraalisissa makrojärjestelmissä ohjelmoija voi käyttää samaa
+%ohjelmointikieltä sekä tavalliseen ohjelmointiin että makrojen toteutukseen.
+%Proseduraaliset makrojärjestelmät vaativat yleensä enemmän koodia makrojen
+%toteutukseen verrattuna muihin makrojärjestelmiin, mutta toisaalta
+%mahdollistavat kaiken, mitä ohjelmointikielellä voisi tehdä. Proseduraalinen
+%makrojärjestelmä voisi esimerkiksi lukea tiedostoja käännösaikaisesti ja
+%vaikuttaa lopulliseen lähdekoodiin tiedoston sisällöstä riippuen.
+%
+%Mikään makrojärjestelmä ei ole täydellinen, vaan jokaisessa makrojärjestelmässä
+%on sekä hyviä että huonoja puolia. C:n makrojen kaltaiset yksinkertaiset
+%järjestelmät ovat helposti ylläpidettäviä, sillä makroja voi käyttää vain
+%tietyillä tavoilla, jotka ovat samat ohjelmistosta riippumatta. Tällöin yhdestä
+%ohjelmistosta toiseen siirryttäessä makrot eivät aiheuta vaikeuksia koodipohjaa
+%opetellessa. Kun makrojärjestelmän ilmaisuvoimaa kasvatetaan, myös sen
+%käyttäminen muuttuu monimuotoisemmaksi. Toisaalta monimutkaisemmat
+%makrojärjestelmät myös mahdollistavat enemmän ratkaisuja kuin yksinkertaiset.
 
 %\hl{Osa tästä seuraavaan lukuun?}
 %
