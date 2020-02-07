@@ -1,6 +1,15 @@
 \section{Purkka-ohjelmointikieli}
 \label{sec:purkka}
 
+Jotta uudesta ohjelmointikielestä saisi tutkielman vertailukriteerien
+mukaisesti C:tä paremman kielen, uuden kielen suunnittelussa tulee seurata
+tarkasti vertailukriteerejä. Erityisesti C-yhteensopivuus on tärkeä ominaisuus,
+jota muissa ohjelmointikielissä ei ole pidetty tärkeänä ohjelmointikielen
+suunnittelussa. Tässä luvussa ensin käsitellään periaatteet, joilla Purkasta
+voisi tulla C:tä parempi ohjelmointikieli tutkielman kontekstissa, jonka
+jälkeen käsitellään tarkemmin Purkan tyypitystä, syntaksia sekä
+C-yhteensopivuutta.
+
 \subsection{Purkan suunnitteluperiaatteet}
 
 Luvut~\ref{sec:clyhyesti},~\ref{sec:ctaustaa}~ja~\ref{sec:cominaisuudet}
@@ -128,9 +137,15 @@ Vertailun vuoksi Rust käyttää avainsanaa \texttt{fn}, Go käyttää avainsana
 käyttäminen yksinkertaistaa kielen kielioppia ja jäsentäjän toteutusta.
 
 Purkka-kieli sisältää tyyppipäättelyn, joka helpottaa koodin kirjoittamista,
-kun kääntäjä pystyy päättelemään muuttujien tyypit. Tyyppipäättely käyttää
-tunnettua Damas-Hindley-Milner -algoritmia~\citep{hindley, milner, damas}.
-Tyyppipäättelyn yksityiskohtia käsitellään liittessä~\ref{app:purkka}.
+kun kääntäjä pystyy päättelemään muuttujien tyypit. C-kielen mahdollisuuksia
+automaattiseen tyyppipäättelyä on tutkittu
+aikaisemminkin~\citep[mm.][]{ctypeinference}. Koska Purkan syntaksi on
+yksiselitteinen, monet artikkelissa esitetyt C:n ongelmat eivät ole Purkassa
+haittana. Toisaalta esimerkiksi yhteenlasku toimii samoin kuin C:ssä, joten sen
+tyyppipäättely ei ole trivaalia: jos C:ssä tai Purkassa toinen
+yhteenlaskettavista on osoitin, summan tyyppi on osoitin, muutoin tyyppi
+muodostuu C:n ''tavallisten'' lukujen muunnossääntöjen mukaisesti.
+
 Koska tyyppipäättely toteutetaan puhtaasti käännösaikaisesti, se ei voi
 aiheuttaa suoritusaikaisia haittoja. Tyyppisyntaksi itsessään muistuttaa paljon
 Rustin tyyppisyntaksia.

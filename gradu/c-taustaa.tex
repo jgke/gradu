@@ -1,7 +1,15 @@
 \section{C-ohjelmointikielen taustaa}
 
+C on matalan tason ohjelmointikieli, jossa yhdistyy yksinkertaisuus, tehokkuus
+ja alustariippumattomuus. C on yksi maailman käytetyimmistä
+ohjelmointikielistä~\citep{tiobe} johtuen kielen ominaisuuksista sekä
+historiallisista syistä. Tässä luvussa kerrotaan C-ohjelmointikielestä, sen
+historiasta ja nykypäivästä sekä käsitellään mahdollisia muutoksia, joilla C:tä
+voisi parantaa.
+
 \subsection{C-ohjelmointikieli lyhyesti}
 \label{sec:clyhyesti}
+
 
 \hl{Lähteitä lisää.}
 
@@ -108,8 +116,6 @@ valmistaja oli luvannut tuen tälle. BCPL-ohjelmointikieleen lisättiin
 liukulukulaskenta olettaen, että liukuluku mahtuisi yhteen sanaan, mikä ei
 pitänyt paikkaansa 16-bittisellä PDP-11 -tietokoneella.
 
-\grayrule
-
 Artikkelin mukaan C-ohjelmointikielen kehitys alkoi vahvemmalla tyypityksellä:
 C-kielen ensimmäiseen varsinaiseen esiasteeseen oli lisätty \texttt{char}- ja
 \texttt{int}-tyypit sekä muistiosoittimet näihin tyyppeihin. Tässä vaiheessa
@@ -168,8 +174,6 @@ C:nä\footnote{ISO-järjestö hyväksyi standardin pienillä muutoksilla vuonna
 Samoihin aikoihin valmistui myös toinen painos \emph{The C Programming
 Language} -kirjasta, jossa korjattiin lukuisia eroja ensimmäisen version ja
 C-standardin välillä~\citep{krsecond}.
-
-\grayrule
 
 Nykypäivänä C:tä käytetään käytännössä jokaisessa tietokoneessa
 käyttöjärjestelmästä riippuen joko pelkästään ydinkomponenttien toteutukseen
@@ -301,8 +305,6 @@ numeron 1.
     \label{fig:cstatic}
 \end{listing}
 
-\grayrule
-
 C:n tyypitys sallii monia ilmaisuja, jotka voivat johtaa salakavaliin ongelmiin
 suoritusaikaisesti. Koska C sallii suurempien kokonaislukutyyppien asettamisen
 pienempiin kokonaislukutyyppeihin, nämä arvot voivat suoritusaikaisesti muuttua
@@ -368,11 +370,14 @@ C:n makrojärjestelmässä on paljon parantamisen varaa. C:n esikäsittelijä to
 hyvin yksinkertaisissa tapauksissa, mutta sen rajoitteet tulevat nopeasti
 esille monimutkaisempia makroja kirjoittaessa. Voimakkaampi makrojärjestelmä
 mahdollistaa lyhyempien ja selkeämpien makrojen kirjoittamisen
-monimutkaisemmissa tapauksissa.
+monimutkaisemmissa tapauksissa. \citeauthor{cabuse} (\citeyear{cabuse})
+esittelee artikkelissaan tapoja hyväksikäyttää C:n esikäsittelijää esimerkiksi
+iteraation toteuttamiseen. Moderneissa makroprosessoreissa muun muassa
+iteraation toteuttaminen makroilla on suoraviivaisempaa.
+
 %Uutta makrojärjestelmää kirjoittaessa tulee
-%kuitenkin pitää mielessä C-yhteensopivuus. \citeauthor{cabuse}
-%(\citeyear{cabuse}) esittelee artikkelissaan tapoja hyväksikäyttää C:n
-%esikäsittelijää esimerkiksi iteraation toteuttamiseen. Monimutkaisempi
+%kuitenkin pitää mielessä C-yhteensopivuus.
+%Monimutkaisempi
 %makrojärjestelmä voisi muuntaa voimakkaampaa kieltä C:n esikäsittelijän
 %makroiksi käyttäen artikkelin mukaisia C-makroja, jolloin C-ohjelmat voisivat
 %käyttää näitä yksinkertaisemmalla kielellä kirjoitettuja makroja. C:n standardi
@@ -380,9 +385,8 @@ monimutkaisemmissa tapauksissa.
 %monimutkaiset makrot eivät välttämättä toimi kääntäjäriippumattomasti, vaikka
 %ne olisivatkin standardin mukaisia.
 
-
-C:n makrojärjestelmä myös hankaloittaa työkalujen kirjoittamista. Koska
-jokainen pieni muutos lähdekoodiin voi vaikuttaa radikaalisti saatavilla
-oleviin symboleihin, esimerkiksi automaattitäydennyksen tarjoavien työkalujen
-kirjoittaminen on hankalaa. Standardoitu moduulijärjelmä voisi myös
-yksinkertaistaa kääntämistyökalujen kirjoittamista.\hl{relevanssi?}
+%C:n makrojärjestelmä myös hankaloittaa työkalujen kirjoittamista. Koska
+%jokainen pieni muutos lähdekoodiin voi vaikuttaa radikaalisti saatavilla
+%oleviin symboleihin, esimerkiksi automaattitäydennyksen tarjoavien työkalujen
+%kirjoittaminen on hankalaa. Standardoitu moduulijärjelmä voisi myös
+%yksinkertaistaa kääntämistyökalujen kirjoittamista.\hl{relevanssi?}

@@ -1,9 +1,5 @@
 \section{Johdanto}
 
-\hl{Lukujen alussa voisi olla metatekstiä lukujen sisällöstä.}
-
-\grayrule
-
 C~\citep{C18} on nykypäivänä yksi eniten käytetyimmistä ohjelmointikielistä. C
 on ollut vallitseva ohjelmointikieli järjestelmäohjelmoinnissa kielen
 alkuajoista lähtien. Useita ohjelmointikieliä on luotu historian saatossa,
@@ -58,16 +54,23 @@ valintaprosessia käsitellään artikkelin \emph{Empirical Analysis of Programmi
 Language Adoption}~\citep{empiricalpopularity} avulla, jossa tutkitaan
 kyselyillä erilaisia syitä ohjelmointikielen valintaan.
 
-%\citetitle{empiricalpopularity}
+Neljännessä luvussa esitellään vertailtavat kielet ja käsitellään näiden
+kielten ominaisuuksien tehokkuutta ja yhteensopivuutta C:n kanssa. Kaikki
+vertailtavat kielet sisältävät ominaisuuksia, jotka haittaavat yhteensopivuutta
+C:n kanssa. Tämän lisäksi suorituskykymittauksista ilmenee, kuinka kaikkien
+kielten toteutukset käyttävät enemmän muistia Benchmarks Gamen vertailuissa.
 
-esitetään tutkielman kannalta oleellinen
-teoria, eli määritetään tutkielman vertailussa käytetyt kielten ominaisuuksien
-vertailukohteet, pohditaan kielen suosioon vaikuttavia tekijöitä sekä kerrotaan
-lyhyesti muista tutkittavista kielistä. Kolmannessa luvussa kerrotaan, miksi
-muut tutkitut kielet eivät täytä näitä ominaisuuksia. Neljännessä luvussa
-määritellään näiden tulosten pohjalta uusi ohjelmointikieli, Purkka, joka voisi
-tutkielman määritelmien mukaisesti korvata C:n käytön. Viidennessä luvussa
-verrataan tätä ohjelmointikieltä C:hen ja muihin tutkielmassa käsitellyihin
-kieliin. Kuudennessa luvussa kerrataan tutkimuksen tulokset.
+Viidennessä luvussa määritellään uusi ohjelmointikieli, Purkka. Kielen
+suunnittelussa painotetaan erityisesti C-yhteensopivuutta esimerkiksi C-kielen
+esikäsittelijätuen kautta. Suunnittelussa pyritään parantamaan C:tä erityisesti
+syntaksin osalta, mutta myös tarjoamalla vahvempaa tyypitystä. Purkka-kieli
+käännetään C-kieleksi, jotta kielen yhteensopivuus olisi mahdollisimman hyvä
+nykyisten ohjelmistojen yhteydessä.
 
-%\hl{Ohjelmistotuotannon näkökulma: oikeellisuus, luotettavuus, ylläpito?}
+Kuudennessa luvussa verrataan Purkka-kielellä toteutettuja Benchmarks Gamen
+ohjelmia muihin kieliin. Suorituskykymittauksissa Purkka pysyy yhtä tehokkaana
+kuin C, mutta Purkan lähdekooditiedostot ovat noin kuusi prosenttia pienempiä
+verrattuna vastaaviin C-tiedostoihin. Kuudennessa luvussa myös arvioidaan
+tutkielman oikeellisuutta ja pohditaan jatkotutkimuskohteita.
+
+Seitsemännessä luvussa kerrataan tutkielman tulokset.

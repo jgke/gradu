@@ -4,43 +4,43 @@ print("\\appendixsection{Mittaukset}")
 print("\\appendixlabel{app:data}")
 print("\\begingroup")
 
-print("{\large \\textbf{Ohjelmien selitteet}} \\\\")
+print("{\large \\textbf{Ohjelmien selitteet}}")
 
 print()
-print("\\noindent\\textbf{binarytrees} \\\\[0.3cm]", sep="")
+print("\\noindent\\textbf{binarytrees} \\\\[0.1cm]", sep="")
 print("Ohjelma on moniosainen: ensin luodaan binääripuu ja poistetaan se. Tämän jälkeen luodaan binääripuu, joka poistetaan vasta ohjelman loputtua. Tämän jälkeen luodaan useita binääripuita, joista lasketaan solmujen määrä.")
 
 print()
-print("\\noindent\\textbf{fannkuchredux} \\\\[0.3cm]", sep="")
+print("\\noindent\\textbf{fannkuchredux} \\\\[0.1cm]", sep="")
 print("Ohjelma laskee jokaiselle joukon ${1,...,n}$ permutaatioista tarkistussumman, joka lasketaan seuraavalla kaavalla: permutaatiosta otetaan ensimmäinen luku $x$. Permutaation ensimmäisen $x$ alkion järjestys muutetaan päinvastaiseksi. Näitä kahta operaatiota toistetaan, kunnes ensimmäinen alkio on 1. Jos permutaatio on pariton, tarkistussumma on kierrosten määrä, muuten tämän negaatio. Tarkistussummat lasketaan yhteen.")
 
 print()
-print("\\noindent\\textbf{fasta} \\\\[0.3cm]", sep="")
+print("\\noindent\\textbf{fasta} \\\\[0.1cm]", sep="")
 print("Ohjelmassa luodaan suuri määrä DNA-sekvenssejä joko kopioiden annettua sekvenssiä tai painotetulla satunnaisella valinnalla kahdesta aakkostosta.")
 
 print()
-print("\\noindent\\textbf{knucleotide} \\\\[0.3cm]", sep="")
+print("\\noindent\\textbf{knucleotide} \\\\[0.1cm]", sep="")
 print("Ohjelma lukee \emph{fasta}-ohjelman luoman tiedoston ja laskee siinä esiintyvien nukleotidisarjojen määrän 1, 2, 3, 4, 6, 12 ja 18 nukleotidin pituisille sarjoille.")
 
 print()
-print("\\noindent\\textbf{nbody} \\\\[0.3cm]", sep="")
+print("\\noindent\\textbf{nbody} \\\\[0.1cm]", sep="")
 print("Ohjelmassa simuloidaan symplektisellä integroinnilla planeettojen sijaintia.")
 
 print()
-print("\\noindent\\textbf{pidigits} \\\\[0.3cm]", sep="")
+print("\\noindent\\textbf{pidigits} \\\\[0.1cm]", sep="")
 print("Ohjelmassa lasketaan $\pi$:n desimaaleja tietyllä algoritmilla.")
 
 print()
-print("\\noindent\\textbf{regexredux} \\\\[0.3cm]", sep="")
+print("\\noindent\\textbf{regexredux} \\\\[0.1cm]", sep="")
 print("Ohjelma lukee \emph{fasta}-ohjelman muodostaman tiedoston ja ajaa ennalta määritettyjä säännöllisiä lausekkeita tiedoston sisältöön.")
 
 
 print()
-print("\\noindent\\textbf{spectralnorm} \\\\[0.3cm]", sep="")
+print("\\noindent\\textbf{spectralnorm} \\\\[0.1cm]", sep="")
 print("Ohjelma laskee annetun matriisin spektraalisäteen.")
 
 print()
-print("\\noindent\\textbf{revcomp} \\\\[0.3cm]", sep="")
+print("\\noindent\\textbf{revcomp} \\\\[0.1cm]", sep="")
 print("Ohjelma lukee \emph{fasta}-ohjelman muodostaman tiedoston ja muodostaa tiedoston DNA-sekvenssien komplementin.")
 
 rev_abbrev = {
@@ -135,8 +135,8 @@ for benchmark in benchmarks:
 #print("\\end{adjustbox}")
 print("\hspace{1cm}")
 
-print("\\\\[1cm] {\large \\textbf{Muistinkäyttö(KB)}} \\\\")
-print("Muistinkäyttö on mitattu 200 millisekunnin välein \\texttt{libgtop2}-kirjastolla ja kunkin suorituksen muistinkäytöksi on merkitty suurin mitattu muistikäyttö.")
+print("\\\\[1cm] {\large \\textbf{Muistinkäyttö(KB)}} \\\\[0.3cm]")
+print("{\\normalsize Muistinkäyttö on mitattu 200 millisekunnin välein \\texttt{libgtop2}-kirjastolla ja kunkin suorituksen muistinkäytöksi on merkitty suurin mitattu muistikäyttö.}")
 print("\\footnotesize")
 print()
 newline = False

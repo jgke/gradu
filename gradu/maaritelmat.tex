@@ -1,5 +1,12 @@
 \section{Ohjelmointikielten vertailun määritelmät}
 
+Ohjelmointikielten vertailemiseen on useita erilaisia tapoja, kuten kielten
+suosio, ominaisuudet, tehokkuus ja työkalujen määrä. Jotta tässä tutkielmassa
+voitaisiin verrata ohjelmointikieliä analyyttisesti, tässä luvussa määritellään
+vertailukriteerit ohjelmointikielille, valitaan C:hen verrattavissa olevat
+ohjelmointikielet sekä käsitellään muita mahdollisia syitä ohjelmointikielen
+valintaan.
+
 \subsection{Ohjelmointikielten vertailun kriteerit}
 \label{sec:abs}
 
@@ -24,8 +31,6 @@ paremmuusvertailussa. Nämä ovat kuitenkin olleet tärkeitä kriteerejä
 ohjelmointikielten valitsemisessa~\citep{empiricalpopularity}, joten aiheiden
 käsitteleminen selittää, miksi näennäisesti tehottomammat ohjelmointikielet
 ovat suosittuja.
-
-\grayrule
 
 Ohjelmointikielellä kirjoitetun ohjelman tulee olla suoritusaikaisesti
 vähintään yhtä nopea kuin vastaava C:llä kirjoitettu ohjelma. Kieli siis ei saa
@@ -97,12 +102,6 @@ jotka pyrkivät parantamaan C:n syntaksia korvaamalla sen LISP-perheen
 syntaksilla. Nymph taas on olio-ohjelmointikieli. Erityisesti Carp on tämän
 tutkielman kannalta kiintoisa ohjelmointikieli, sillä se on C:ksi kääntyvä
 ohjelmointikieli, joka on suunniteltu mahdollisimman suorituskykyiseksi.
-
-%\hl{Tässä voisi olla jotain pohdintaa, miksi nuo ovat jääneet huomiotta ja
-%miten tämän voisi välttää. Erityisesti Carp tuntuu tätä tutkielmaa vastaavalta
-%kieleltä, olisi ikävää jättää se täysin huomiotta. Tosin tällaiset pohdinnat
-%jäänee puhtaasti spekulaatioksi, sillä noista ei ole erityisen paljoa dataa
-%saatavilla.}
 
 \subsection{Kielten suosioon vaikuttavat tekijät}
 \label{sec:suosio}
@@ -215,8 +214,6 @@ uuteen ohjelmointikieleen siirtyvälle ohjelmoijalle.
 
 %\subsection{Makrojärjestelmät}
 %
-%\hl{Tätä lyhyemmäksi?}
-%
 %Ohjelmointikielten makrojärjestelmillä tarkoitetaan ohjelmointikielen
 %ominaisuuksia, joita voidaan käyttää käännösaikaiseen lähdekoodin luomiseen ja
 %muuntamiseen. Lähdekoodin luonti käännösaikaisesti voi pienentää huomattavasti
@@ -311,8 +308,6 @@ uuteen ohjelmointikieleen siirtyvälle ohjelmoijalle.
 %käyttäminen muuttuu monimuotoisemmaksi. Toisaalta monimutkaisemmat
 %makrojärjestelmät myös mahdollistavat enemmän ratkaisuja kuin yksinkertaiset.
 
-%\hl{Osa tästä seuraavaan lukuun?}
-%
 %C:n ja C++:n tekstin korvaamiseen perustuvassa makrojärjestelmissä korvataan
 %tekstialkioita ja funktion kaltaisia makroja uusilla sekvensseillä alkioita. Ei
 %rekursiota yleisessä tapauksessa, ei turing-täydellinen. Yksinkertainen
@@ -341,8 +336,6 @@ uuteen ohjelmointikieleen siirtyvälle ohjelmoijalle.
 %
 
 %\subsection{Vertailtavien kielten makrojärjestelmät}
-%
-%\hl{Tarkista kieli}
 
 %Ada, D ja Go eivät sisällä mahdollisuutta käännösaikaisille makroille. C ja C++
 %käyttävät samaa makrojärjestelmää, joka on kuitenkin hyvin
