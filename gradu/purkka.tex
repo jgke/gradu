@@ -55,7 +55,7 @@ tuen C:n esikäsittelijälle.
 
 Jotta yhteensopivuus C:n kanssa olisi joustavaa, Purkan tyyppijärjestelmä
 muodostetaan mahdollisimman paljon C:n kaltaiseksi. C:n tyyppisyntaksi sisältää
-useita erilaisia tapoja ilmaista samaa pohjatyyppiä -- esimerkisi
+useita erilaisia tapoja ilmaista samaa pohjatyyppiä -- esimerkiksi
 \texttt{long}, \texttt{signed~long}, \texttt{long~int} ja
 \texttt{signed~long~int} ilmaisevat kokonaislukutyyppiä, joka pystyy
 sisältämään ainakin luvut $[-(2^{31} - 1), 2^{31}-1]$\footnote{Käytännössä
@@ -72,7 +72,7 @@ C:n kokonaislukutyypeistä (\texttt{char}, \texttt{short}, \texttt{int},
 \texttt{signed char} ja \texttt{unsigned char} ovat kolme erillistä
 tyyppiä~\citep{C18}, kun muilla alkeistyypillä esimerkiksi \texttt{signed int}
 on sama tyyppi kuin \texttt{int}. Merkkijonot koostuvat
-\texttt{char}-tyyppisistä alkoista, kun taas \texttt{signed char} ja
+\texttt{char}-tyyppisistä alkioista, kun taas \texttt{signed char} ja
 \texttt{unsigned char} vastaavat tavun kokoista kokonaislukua ja
 epänegatiivista kokonaislukua. Purkka-kielessä C:n \texttt{char}-tyyppiä
 vastaa \texttt{char}, kun taas \texttt{signed char} ja \texttt{unsigned char}
@@ -126,14 +126,14 @@ kyseessä \texttt{Lehti}-variantti, muulloin \texttt{Haara}-variantti.
 Purkan syntaksi on hyvin samankaltainen C:n syntaksiin verrattuna. Tämä
 helpottaa kielen oppimista aikaisemman tutkimuksen
 mukaisesti~\citep{languagelearning}. Samankaltainen syntaksi myös helpottaa
-nykyisten ohjelmien uudelleenkirjoitusta, silla ohjelmien rakennetta ei
+nykyisten ohjelmien uudelleenkirjoitusta, sillä ohjelmien rakennetta ei
 tarvitse muuntaa. Suurimmat erot C:hen liittyvät tyyppien kirjoittamiseen,
 jossa syntaksia on muutettu modernien ohjelmointikielten syntaksin mukaiseksi.
 
 Funktiomäärittelyt alkavat \texttt{fun}-avainsanalla. Tämä noudattaa usean muun
 modernin ohjelmointikielen tapaa aloittaa funktiomäärittely avainsanalla.
 Vertailun vuoksi Rust käyttää avainsanaa \texttt{fn}, Go käyttää avainsanaa
-\texttt{func} ja Kotlin käyttää avainsanaa \texttt{fun}). Avainsanan
+\texttt{func} ja Kotlin käyttää avainsanaa \texttt{fun}. Avainsanan
 käyttäminen yksinkertaistaa kielen kielioppia ja jäsentäjän toteutusta.
 
 Purkka-kieli sisältää tyyppipäättelyn, joka helpottaa koodin kirjoittamista,
@@ -142,7 +142,7 @@ automaattiseen tyyppipäättelyä on tutkittu
 aikaisemminkin~\citep[mm.][]{ctypeinference}. Koska Purkan syntaksi on
 yksiselitteinen, monet artikkelissa esitetyt C:n ongelmat eivät ole Purkassa
 haittana. Toisaalta esimerkiksi yhteenlasku toimii samoin kuin C:ssä, joten sen
-tyyppipäättely ei ole trivaalia: jos C:ssä tai Purkassa toinen
+tyyppipäättely ei ole triviaalia: jos C:ssä tai Purkassa toinen
 yhteenlaskettavista on osoitin, summan tyyppi on osoitin, muutoin tyyppi
 muodostuu C:n ''tavallisten'' lukujen muunnossääntöjen mukaisesti.
 
@@ -163,10 +163,10 @@ C käsittelee tietueiden ja taulukoiden alustamista identtisellä syntaksilla.
 Purkka erottaa nämä kaksi syntaksia erikseen ohjelman~\ref{fig:structinit}
 tavalla. Ohjelmassa alustetaan \texttt{Esimerkki}-tietue sekä kolmen
 kokonaisluvun taulukko. Tietueen tyypin nimen pitäminen mukana
-tietueliteraaleissa pitää tyypin selkeästi näkyvissä myös tyyppi-inferenssiä
+tietueliteraaleissa pitää tyypin selkeästi näkyvissä myös tyyppipäättelyä
 käytettäessä. Yksinkertaisemmissa tapauksissa tämä ei vaikuta lähdekoodin
-pituuteen, mutta monimutkaisten tietueiden alustuksessa Purkka-koodi on
-hieman pidempää on vastaava C-koodi.
+pituuteen, mutta monimutkaisten tietueiden alustuksessa Purkka-koodi on hieman
+pidempää kuin vastaava C-koodi.
 
 \begin{listing}[ht!]
     \inputminted{Rust}{koodi/structinit.prk}
@@ -198,8 +198,8 @@ kielellä ohjelmoinnista työläämpää verrattuna muihin moderneihin
 ohjelmointikieliin.
 
 Useat C-toteutukset sisältävät erilaisia laajennoksia, joiden tarkoituksena on
-mahdollistaa eilaisten alustariippuvaisten ominaisuuksien käyttö. Benchmarks
-gamessa yksi käytetyimmistä laajennoksista on SIMD-tyypit, joita varten
+mahdollistaa erilaisten alustariippuvaisten ominaisuuksien käyttö. Benchmarks
+Gamessa yksi käytetyimmistä laajennoksista on SIMD-tyypit, joita varten
 esimerkiksi GCC-kääntäjällä on oma syntaksinsa. GCC:llä SIMD-tyypit voidaan
 määritellä käyttämällä \texttt{\_\_attribute\_\_((vector\_size))} -määrettä.
 Purkka tukee useita GCC:n laajennoksia, muun muassa vektorityyppejä.

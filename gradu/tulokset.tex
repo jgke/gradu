@@ -22,7 +22,7 @@ muotoon, suoritusajan ja muistinkäytön tulisi olla täsmälleen samat kuin
 alkuperäisen C-toteutuksen.
 
 Suorituskykymittaukset mittaavat ainoastaan prosessoriin ja muistinkäyttöön
-liittyiviä mittauksia, eivätkä esimerkiksi näytönohjaimella suoritettua
+liittyviä mittauksia, eivätkä esimerkiksi näytönohjaimella suoritettua
 laskentaa. Mittaukset tehdään vain yksittäisillä kääntäjäversioilla, joten
 mittaukset eivät välttämättä päde muilla saman ohjelmointikielen kääntäjillä.
 
@@ -30,7 +30,7 @@ Suorituskykymittaukset on suoritettu Ubuntu 19.10 -käyttöjärjestelmällä Lin
 5.3.0 -kernelillä. Mittaustietokoneessa oli neliytiminen Intel i7-8550U
 -prosessori Hy\-per\-Thread\-ing-tuella (4.0 GHz) ja 32 gigatavua DDR3-muistia.
 C- ja C++-ohjelmat on käännetty GCC-kääntäjän versiolla 9.2.1, Ada-ohjelmat
-GNAT-kääntäjän versiolla 8.3.0 ja Go-ohjelmat go-kääntäjän versiolla 1.12.10.
+GNAT-kääntäjän versiolla 8.3.0 ja Go-ohjelmat Go-kääntäjän versiolla 1.12.10.
 
 Mittaukset on toteutettu suorittamalla ohjelma suurimmalla syötteellä viisi
 kertaa ja mittaamalla kunkin suorituksen viemä aika ja muistinkäyttö.
@@ -39,14 +39,14 @@ ja kunkin suorituksen muistinkäytöksi on merkitty suurin mitattu muistikäytt�
 
 Kuvaajista nähdään, että Benchmarks Gamen tarjoamissa esimerkeissä Purkka on
 täsmälleen yhtä tehokas kieli kuin C, eikä se vie enempää muistia. Pienet
-eroavaisuudet suuntaan ja toiseen on selitettävissä testauksen aihuttamalla
-luonnollisella vaihtelulla. Purkalla toteutettu \texttt{fannkuchredux}-koe on
-kuitenkin noin 50\% nopeampi kuin C:llä toteutettu lähes identtinen versio, ja
-\texttt{nbody}-koe vie vie vain 80\% muistia verrattuna C-toteutukseen.
+eroavaisuudet suuntaan ja toiseen on selitettävissä testauksen aiheuttamalla
+luonnollisella vaihtelulla. Purkalla toteutettu \texttt{fannkuchredux}-ohjelma
+on kuitenkin noin 50\% nopeampi kuin C:llä toteutettu lähes identtinen versio,
+ja \texttt{nbody}-ohjelma vie vain 80\% muistia verrattuna C-toteutukseen.
 
 Purkka-tiedostot ovat keskimäärin 6\% pienempiä kuin vastaavat C-tiedostot.
 Suurimmat kokoerot tiedostoissa tulevat muuttujien määrittelyistä sekä
-tyyppi\hyp{}inferenssistä. Kuvassa~\ref{fig:declarations} on yksittäisiä
+tyyppipäättelystä. Kuvassa~\ref{fig:declarations} on yksittäisiä
 tyyppimäärittelyjä, jotka ovat Purkassa hieman yksinkertaisempia kuin vastaavat
 C-määrittelyt.
 
@@ -176,7 +176,7 @@ Tyyppipäättelyn lisääminen esimerkiksi korvaamalla käyttämättömän
 luomiseen. Koska kaikki muuttujat ilman \texttt{static}-määrettä ovat
 ei-staattisia, \texttt{auto}-avainsana on turha.} tarkoittamaan pääteltyä
 tyyppiä voisi auttaa moderneja C-kääntäjiä käyttävien projektien
-kirjoittamista. \texttt{gcc}-käyttäjä tukee tyyppi-inferenssiä
+kirjoittamista. GCC-kääntäjä tukee tyyppipäättelyä
 \texttt{\_\_auto\_type}-määreellä. Summatyyppien lisääminen laajennoksena
 \texttt{enum}- tai \texttt{union}-tyyppisyntaksiin ei vaikuta tämänhetkisiin
 standardien mukaisiin ohjelmiin, mutta mahdollistaisi summatyyppien käytön.

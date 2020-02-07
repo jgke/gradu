@@ -27,7 +27,7 @@ aiheuttaa ohjelmointikielten välille yhteensopivuusongelmia, sillä toisesta
 kielestä kutsuttaessa pitää tietää kutsuttavan funktion todellinen nimi.
 Esimerkiksi \texttt{int}-tyyppisen arvon palauttava funktion \texttt{foo()}
 oikeaksi nimeksi voisi tulla \texttt{\_Z3foov}, kuten
-\texttt{g++}-kääntäjä~\citep{gcc} tekee.
+G++-kääntäjä~\citep{gcc} tekee.
 
 Ohjelmointikielen ominaisuudet vaikuttavat siihen, minkälaisia
 ohjelmistoarkkitehtuureja kielellä tehdään~\citep{designpatternsdesign}.
@@ -85,7 +85,7 @@ C++ on kehitetty C:n pohjalta, ja C++:ssa onkin hyvä C-yhteensopivuus. Koska
 C++\hyp{}funktiot nimirunnellaan eikä nimiruntelua ole määritelty tarkasti
 kielen standardissa, C++-koodia on hankalaa kutsua jopa samalla alustalla eri
 kääntäjien välillä -- luvussa~\ref{sec:muut:common} on annettu esimerkki
-\texttt{g++}-kääntäjän nimiruntelemasta funktiosta. C-koodin
+G++-kääntäjän nimiruntelemasta funktiosta. C-koodin
 otsikkotiedostoissa\defword{header file} on usein alussa C++-koodia, joka
 laittaa nimiruntelun pois päältä. Näin C++-ohjelmat voivat helposti kutsua
 C:llä kirjoitettujen kirjastojen funktioita, sillä C++-ohjelmat voivat käyttää
@@ -413,7 +413,7 @@ poistetaan kommentit sekä ylimääräiset välimerkit. Tämän jälkeen ohjelma
 pakataan \texttt{gzip}-pakkausohjelmalla~\citep{howmeasured}.
 Luvussa~\ref{sec:results} kerrotaan tarkemmin mittauksista. Toisin kuin
 Benchmarks Gamessa, ennen lähdekoodin pakkaamista lähdekoodista on poistettu
-kaikki tyhjemerkit, jotta lähdekoodin asettelu ei vaikuta mittauksiin. Kuvaajat
+kaikki tyhjämerkit, jotta lähdekoodin asettelu ei vaikuta mittauksiin. Kuvaajat
 perustuvat nopeimman kielellä kirjoitetun ohjelman tuloksiin -- lähes
 jokaisella verrattavalla kielellä on jokaisessa suorituskykymittauksissa
 useampi ohjelma.
