@@ -395,14 +395,12 @@ parametreiksi vain tyyppejä.
     \end{minipage}
     \end{adjustbox}
     \caption{
-        Benchmarks Gamen~\citep[tiedot haettu 10.1.2019]{benchmarks} tuloksiin
-        perustuvat kuvaajat ohjelmointikielten suorituskyvystä, muistinkäytöstä
-        ja ohjelmien koosta verrattuna C:llä kirjoitettujen ohjelmien
-        tuloksiin. Benchmarks Game ei sisällä verrattavista kielistä D:tä.}
+        Benchmarks Gamen~\citep{benchmarks} tuloksiin perustuvat kuvaajat
+        ohjelmointikielten suorituskyvystä, muistinkäytöstä ja ohjelmien koosta
+        verrattuna C:llä kirjoitettujen ohjelmien tuloksiin. Benchmarks Game ei
+        sisällä verrattavista kielistä D:tä.}
     \label{fig:benchmarksgame}
 \end{figure}
-
-\hl{Tarkistus lopullisiin mittauksiin}
 
 Benchmarks Gamen tulokset myös heijastavat näitä tuloksia -- C++ ja Rust ovat
 nopeudeltaan hyvin lähellä C:tä, kun taas Ada ja Go ovat huomattavasti
@@ -411,21 +409,19 @@ muistinkäyttöä ja ohjelmien lähdekoodin pituutta C:llä kirjoitettuun ohjelm
 Lähdekoodimittauksessa mitataan ohjelman kokoa siten, että ohjelmasta
 poistetaan kommentit sekä ylimääräiset välimerkit. Tämän jälkeen ohjelma
 pakataan \texttt{gzip}-pakkausohjelmalla~\citep{howmeasured}.
-Luvussa~\ref{sec:results} kerrotaan tarkemmin mittauksista. Toisin kuin
-Benchmarks Gamessa, ennen lähdekoodin pakkaamista lähdekoodista on poistettu
-kaikki tyhjämerkit, jotta lähdekoodin asettelu ei vaikuta mittauksiin. Kuvaajat
-perustuvat nopeimman kielellä kirjoitetun ohjelman tuloksiin -- lähes
-jokaisella verrattavalla kielellä on jokaisessa suorituskykymittauksissa
-useampi ohjelma.
+Luvussa~\ref{sec:results} kerrotaan tarkemmin mittauksista. Tarkat mittausarvot
+löytyvät liitteestä~\ref{app:data}. Toisin kuin Benchmarks Gamessa, ennen
+lähdekoodin pakkaamista lähdekoodista on poistettu kaikki tyhjämerkit, jotta
+lähdekoodin asettelu ei vaikuta mittauksiin. Kuvaajat perustuvat nopeimman
+kielellä kirjoitetun ohjelman tuloksiin -- lähes jokaisella verrattavalla
+kielellä on jokaisessa suorituskykymittauksissa useampi ohjelma.
 
 C ja C++ ovat hyvin lähellä toisiaan suoritusnopeudessa. Rust on jonkin verran
 hitaampi, ja Ada ja Go huomattavasti hitaampia. Kaikki verrattavat kielet
 käyttävät enemmän muistia kuin C. C++ ja Rust ovat yksittäisissä
-suorituskykymittauksissa C:tä nopeampia. Yhdessä suorituskykymittauksista Go
-käyttää noin puolet C:n käyttämästä muistista, mutta on samassa mittauksessa
-kaksi kertaa hitaampi. Mielenkiintoisesti Rustilla, Adalla ja Go-kielellä
-kirjoitetut ohjelmat ovat C:llä kirjoitettuihin ohjelmiin verrattuna hitaampia
-ja vievät enemmän muistia, mutta eivät tarjoa merkittäviä säästöjä lähdekoodin
+suorituskykymittauksissa C:tä nopeampia. Vertailtavilla kielillä kirjoitetut
+ohjelmat ovat C:llä kirjoitettuihin ohjelmiin keskimäärin hieman hitaampia ja
+vievät enemmän muistia, mutta eivät tarjoa merkittäviä säästöjä lähdekoodin
 määrään.
 
 Benchmarks Game ei sisällä D:tä, eli Benchmarks Gamen tuloksia ei voi käyttää

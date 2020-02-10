@@ -7,7 +7,7 @@ cd "$(dirname "$0")"
 
 mkdir -p tmp
 
-python2 bin/bencher.py
+#python2 bin/bencher.py
 
 ./tmp/fasta/tmp/fasta.*_run 250000 > tmp/knucleotide/knucleotide-input250000.txt 
 ./tmp/fasta/tmp/fasta.*_run 2500000 > tmp/knucleotide/knucleotide-input2500000.txt 

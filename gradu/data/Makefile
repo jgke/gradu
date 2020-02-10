@@ -1,4 +1,4 @@
-all: benchmarkscpu.tex benchmarksmem.tex benchmarkslines.tex benchmarkscpu2.tex benchmarksmem2.tex benchmarkslines2.tex data.tex
+all: benchmarkscpu.tex benchmarksmem.tex benchmarkslines.tex benchmarkscpu2.tex benchmarksmem2.tex benchmarkslines2.tex benchmarkcpu3.tex benchmarkmem3.tex data.tex
 
 SUMMARY=../../bencher/parse3.py ../../bencher/summary/all_measurements.csv
 
