@@ -21,8 +21,8 @@ Kuvassa~\ref{fig:purkkabenchmarksgame} verrataan Purkka-toteutuksia muihin
 verrattaviin kieliin ja kuvassa~\ref{fig:purkkabenchmarksgame2} verrataan
 Purkka-toteutuksia nopeimpaan C-ohjelmaan. Koska Purkka-toteutukset on
 muunnettu nopeimmasta C-toteutuksesta ja käännetty takaisin lähes identtiseen
-muotoon, suoritusajan ja muistinkäytön tulisi olla täsmälleen samat kuin
-alkuperäisen C-toteutuksen.
+muotoon, suoritusajan ja muistinkäytön tulisi olla samat verrattuna
+C-toteutukseen.
 
 Suorituskykymittaukset mittaavat ainoastaan prosessoriin ja muistinkäyttöön
 liittyviä mittauksia, eivätkä esimerkiksi näytönohjaimella suoritettua
@@ -30,11 +30,11 @@ laskentaa. Mittaukset tehdään vain yksittäisillä kääntäjäversioilla, jot
 mittaukset eivät välttämättä päde muilla saman ohjelmointikielen kääntäjillä.
 
 Suorituskykymittaukset on suoritettu Ubuntu 19.10 -käyttöjärjestelmällä Linux
-5.3.0 -kernelillä. Mittaustietokoneessa oli neliytiminen Intel i7-8550U
+5.3.0 -kernelillä. Mittaustietokoneessa on neliytiminen Intel i7-8550U
 -prosessori Hy\-per\-Thread\-ing-tuella (4.0 GHz) ja 32 gigatavua DDR3-muistia.
 C- ja C++-ohjelmat on käännetty GCC-kääntäjän versiolla 9.2.1, Ada-ohjelmat
-GNAT-kääntäjän versiolla 8.3.0, Go-ohjelmat Go-kääntäjän versiolla 1.12.10 ja Rust-ohjelmat
-Rust-kääntäjän versiolla 1.41.0.
+GNAT-kääntäjän versiolla 8.3.0, Go-ohjelmat Go-kääntäjän versiolla 1.12.10 ja
+Rust-ohjelmat Rust-kääntäjän versiolla 1.41.0.
 
 Mittaukset on toteutettu suorittamalla ohjelma suurimmalla syötteellä viisi
 kertaa ja mittaamalla kunkin suorituksen viemä aika ja muistinkäyttö.
@@ -60,13 +60,13 @@ C-määrittelyt.
             Purkka-määrittely ja C-määrittely & Selite \\ \midrule
 
             \texttt{let a: u32; \newline unsigned int a;} & Epänegatiivinen 32-bittinen kokonaisluku \\
-            \noalign{\vspace{0.3cm}}
+            \noalign{\vspace{0.2cm}}
 
             \texttt{let a, b: [\&i8;5]; \newline signed char *a[5], *b[5];} & Taulukko viidestä osoitinmuuttujasta \newline 8-bittiseen kokonaislukuun \\
-            \noalign{\vspace{0.3cm}}
+            \noalign{\vspace{0.2cm}}
 
             \texttt{const a = ["1", "2", "3"]; \newline const char * const a[] = \{"1", "2", "3"\};} & Kolmen merkkijonon taulukon vakiomuuttuja \\
-            \noalign{\vspace{0.3cm}}
+            \noalign{\vspace{0.2cm}}
 
             \texttt{let a = fun (a, b) => a + b; \newline int a(int a, int b) \{ return a + b; \}} & Funktio, joka laskee argumenttiensa summan \\ \bottomrule
         \end{tabular}

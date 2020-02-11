@@ -168,7 +168,7 @@ for benchmark in benchmarks:
         print("\\hfill")
         newline = True
 
-print("\\\\[1cm] {\large \\textbf{Lähdekoodin koko (B)}} \\\\")
+print("\\\\[1cm] {\large \\textbf{Lähdekoodin koko (B)}} \\\\[0.3cm]")
 print("{\\normalsize Lähdekoodin koko on mitattu poistamalla lähdekoodista kaikki kommentit sekä tyhjämerkit, jotta lähdekoodin asettelu ei vaikuta mittauksiin. Tämän jälkeen ohjelma ajetaan \\texttt{gzip}-pakkausohjelman läpi ja mitataan pakatun lähdekoodin koko.}")
 print("\\footnotesize")
 print()

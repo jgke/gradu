@@ -1,11 +1,11 @@
 \section{C-ohjelmointikielen taustaa}
 
 C on matalan tason ohjelmointikieli, jossa yhdistyy yksinkertaisuus, tehokkuus
-ja alustariippumattomuus. C on yksi maailman käytetyimmistä
-ohjelmointikielistä~\citep{tiobe} johtuen kielen ominaisuuksista sekä
-historiallisista syistä. Tässä luvussa kerrotaan C-ohjelmointikielestä, sen
-historiasta ja nykypäivästä sekä käsitellään mahdollisia muutoksia, joilla C:tä
-voisi parantaa.
+ja alustariippumattomuus. C on nykypäivänä yksi maailman käytetyimmistä
+ohjelmointikielistä~\citep{tiobe, octoverse} johtuen kielen ominaisuuksista
+sekä historiallisista syistä. Tässä luvussa kerrotaan C-ohjelmointikielestä,
+sen historiasta ja nykypäivästä sekä käsitellään mahdollisia muutoksia, joilla
+C:tä voisi parantaa.
 
 \subsection{C-ohjelmointikieli lyhyesti}
 \label{sec:clyhyesti}
@@ -68,8 +68,8 @@ infix) lausekkeiden muodostamiseen, muuttujien näkyvyysalueiden rajoittaminen
 kaarisuluilla sekä staattinen tyypitys. Näitä piirteitä näkyy
 ohjelmassa~\ref{fig:helloc}: kaarisuluilla rajoitettu \texttt{main}-funktio
 kutsuu \texttt{printf}-funktiota, joka tulostaa käyttäjälle merkkijonon
-\emph{Hello,~World}. Funktio ottaa parametriksi kokonaisluvun \texttt{argc} ja
-osoittimen merkkijonolistaan \texttt{argv}.
+\mbox{\emph{Hello,~World}}. Funktio ottaa parametriksi kokonaisluvun
+\texttt{argc} ja osoittimen merkkijonolistaan \texttt{argv}.
 
 Suurin osa nykypäivänä käytetyimmistä ohjelmointikielistä on osa
 C-kieliperhettä, kuten TIOBEn indeksissä~(\citeyear{tiobe}) kärkiviisikosta
@@ -192,15 +192,15 @@ tehneet pieniä parannuksia kielen tehokkuuteen esimerkiksi lisäämällä
 omia laajennoksiaan kieleen mahdollistaen tehokkaampien mutta
 kääntäjäriippuvaisten C-ohjelmien kirjoituksen. Moderni esimerkki
 kääntäjäriippuvaisesta syntaksia muokkaavasta laajennoksista on vektorityypit,
-joita esimerkiksi GCC-kääntäjä tukee omalla \texttt{\_\_attribute\_\_(())}
--syntaksillaan. C:stä löytyy myös standardien mukainen tapa käyttää
-kääntäjäriippuvaisia ominaisuuksia, \texttt{\#pragma}. Pragmoja käytetään
-erityisesti OpenMP-kirjaston~\citep{openmp} yhteydessä.
+joita esimerkiksi GCC-kääntäjän ymmärtää laajennetun C-standardinsa
+\texttt{\_\_attribute\_\_(())} -syntaksilla. C:stä löytyy myös standardien
+mukainen tapa käyttää kääntäjäriippuvaisia ominaisuuksia, \texttt{\#pragma}.
+Pragmoja käytetään erityisesti OpenMP-kirjaston~\citep{openmp} yhteydessä.
 
 Nykypäivänä käytännössä jokainen alusta tukee C:tä. C:tä käytetään alustoilla
 muun muassa ohjelmointikielten väliseen kommunikaatioon -- jos C\#-ohjelma
 haluaa käyttää Java-ohjelman kirjastorutiineja, C\#-ohjelman on helpointa
-käyttää Java-ohjelman C-rajapintaa.
+käyttää Java\hyp{}ohjelman C-rajapintaa.
 
 C on nykyään käytössä erityisesti matalan tason ohjelmoinnissa, kuten
 käyttöjärjestelmien ytimissä, sulautetuissa järjestelmissä, Unix-työkaluissa,
@@ -303,19 +303,21 @@ numeron 1.
 
 C:n tyypitys sallii monia ilmaisuja, jotka voivat johtaa salakavaliin ongelmiin
 suoritusaikaisesti. Koska C sallii suurempien kokonaislukutyyppien asettamisen
-pienempiin kokonaislukutyyppeihin, nämä arvot voivat suoritusaikaisesti muuttua
-ilman käännösaikaisia varoituksia. Mainittavasti lauseet \texttt{int a = 256;
-unsigned char b = a;} eivät aiheuta käännösaikaisesti edes varoituksia
-GCC-kääntäjällä, vaikka ''kaikki'' kääntäjän varoitukset olisivat päällä
-\texttt{-Wall} -komentolipun avulla. Kääntäjälle pitää antaa erillinen
-\texttt{-Wconversion} -komentolippu, jotta kääntäjä edes varoittaisi
-mahdollisesti yllättävästä käytöksestä. Tämän ominaisuuden muuttaminen
-virheeksi tai edes varoitukseksi ei ole ongelmatonta, sillä esimerkiksi
-C-makrojen tuottama koodi voi olettaa tällaisten lausekkeiden toimivan.
+pienempiin kokonaislukutyyppeihin ilman ohjelmoijan tekemää muunnosta, nämä
+arvot voivat suoritusaikaisesti muuttua ilman käännösaikaisia varoituksia.
+Mainittavasti lauseet \texttt{int~a~=~256;~unsigned~char~b~=~a;} eivät aiheuta
+käännösaikaisesti edes varoituksia GCC-kääntäjällä, vaikka ''kaikki'' kääntäjän
+varoitukset olisivat päällä \texttt{-Wall} -komentolipun avulla. Kääntäjälle
+pitää antaa erillinen \texttt{-Wconversion} -komentolippu, jotta kääntäjä edes
+varoittaisi mahdollisesti yllättävästä käytöksestä. Tämän ominaisuuden
+muuttaminen virheeksi tai edes varoitukseksi ei ole ongelmatonta, sillä
+esimerkiksi C-makrojen tuottama koodi voi olettaa tällaisten lausekkeiden
+toimivan.
 
-C:hen voisi myös lisätä useita uusia tyyppejä, erityisesti tyypin ei-tyhjälle
-osoittimelle. Tätä tyyppiä voisi käyttää turvallisempien ja nopeampien
-ohjelmien kirjoittamiseen. GCC- ja Clang-kääntäjät tukevat ei-tyhjiä osoittimia
+C:hen voisi myös lisätä useita uusia tyyppejä, kuten tyypin ei-tyhjälle
+osoittimelle. Käännösaikaisesti tarkistettuja ei-tyhjiä osoittimia voi käyttää
+turvallisempien ja nopeampien ohjelmien kirjoittamiseen. GCC- ja
+Clang-kääntäjät tukevat ei-tyhjiä osoittimia
 \texttt{\_\_attribute\_\_((nonnull))} -määreellä. Kääntäjä voi käyttää määrettä
 optimoidessa funktioita -- erityisesti turhat tarkistukset tyhjien muuttujien
 varalta optimoidaan pois.

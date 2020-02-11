@@ -1,4 +1,4 @@
-set term tikz size 8,6 createstyle
+set term tikz size 8,5 createstyle
 set output "benchmarkscpu3.tex"
 
 set style fill solid 0.25 border -1

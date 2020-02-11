@@ -1,4 +1,4 @@
-set term tikz size 8,6
+set term tikz size 8,5
 set output "benchmarksmem3.tex"
 
 set style fill solid 0.25 border -1

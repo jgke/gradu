@@ -51,7 +51,7 @@ käsittely on estetty~\citep{kotlinnullability}
 
 Uusi kieli tulisi kääntää C:ksi, jotta sen käyttäminen on mahdollista kaikissa
 järjestelmissä, joissa C:tä käytetään. C:ksi kääntäminen myös mahdollistaa
-C-yhteensopivien kirjastojen käyttämisen ilman erillistä
+C\hyp{}yhteensopivien kirjastojen käyttämisen ilman erillistä
 yhteensopivuuskerrosta. Kielen tulee myös ymmärtää C:llä kirjoitettuja ohjelmia
 sisältäen myös C:llä kirjoitetut makrot ja otsikkotiedostot. Esimerkiksi
 POSIX-C:n \texttt{errno}-muuttuja voi olla määritelty makrona ja
@@ -97,15 +97,14 @@ määritellään ohjelmoinnin tehostamiseksi sekä käännösaikaisen optimoinni
 oikeellisuuden parantamiseksi yksittäisiä lisätyyppejä. Nämä tyypit ovat
 epätyhjät osoittimet sekä summatyypit.
 
-Ensimmäiseksi määritellään epätyhjä osoitin, joka on osoitin, joka ei salli
-arvokseen C:n \texttt{NULL}-arvoa. Tyyppi kääntyy Purkasta standardien
-mukaiseksi C:ksi yksinkertaisesti vastaavaan C:n mahdollisesti tyhjään
-osoitintyyppiin. Epätyhjien osoittimien käyttö parantaa käännösaikaista
-varmennusta. Epätyhjä osoitin myös mahdollistaa kääntäjäoptimointeja, jotka
-eivät muuten olisi turvallisesti mahdollisia, kuten turhien tarkistusten
-poistamisen. GCC-kääntäjä mahdollistaa epätyhjät osoittimet
-\texttt{\_\_attribute\_\_((nonnull))}-määreellä, jota Purkka-kääntäjä voi
-käyttää ohjelmoijan niin pyytäessä.
+Epätyhjä osoitin on osoitin, joka ei salli arvokseen C:n \texttt{NULL}-arvoa.
+Tyyppi kääntyy Purkasta standardien mukaiseksi C:ksi yksinkertaisesti
+vastaavaan C:n mahdollisesti tyhjään osoitintyyppiin. Epätyhjien osoittimien
+käyttö parantaa käännösaikaista varmennusta. Epätyhjä osoitin myös mahdollistaa
+kääntäjäoptimointeja, jotka eivät muuten olisi turvallisesti mahdollisia, kuten
+turhien tarkistusten poistamisen. GCC-kääntäjä mahdollistaa epätyhjät
+osoittimet \texttt{\_\_attribute\_\_((nonnull))}-määreellä, jota
+Purkka-kääntäjä voi käyttää ohjelmoijan niin pyytäessä.
 
 \begin{listing}[ht!]
     \inputminted{Rust}{koodi/sumtype.prk}
@@ -126,12 +125,12 @@ käyttää ohjelmoijan niin pyytäessä.
     \label{fig:purkkatreecompile2}
 \end{listing}
 
-Toiseksi määritellään summatyyppi. Summatyyppi on yhdistelmä C:n
-\texttt{struct}, \texttt{union} ja \texttt{enum} -tyypeistä. Summatyypit
-mahdollistavat käännösaikaisesti varmennetun \texttt{union}-tyyppien käytön.
-Summatyyppi kääntyy \texttt{struct}-tyypiksi, jossa on \texttt{union}-tyyppi,
-joka sisältää kaikki summatyypin variantit sekä \texttt{enum}-tyyppinen
-muuttuja summatyypin varianttien erottimena eli diskriminanttina.
+Summatyyppi on yhdistelmä C:n \texttt{struct}-, \texttt{union}- ja
+\texttt{enum}-tyypeistä. Summatyypit mahdollistavat \texttt{union}-tyyppien
+käytön käännösaikaisella varmennuksella. Summatyyppi kääntyy
+\texttt{struct}-tyypiksi, jossa on \texttt{union}-tyyppi, joka sisältää kaikki
+summatyypin variantit sekä \texttt{enum}-tyyppinen muuttuja summatyypin
+varianttien erottimena eli diskriminanttina.
 
 Ohjelmassa~\ref{fig:purkkatree} on Purkka-kielellä kirjoitettu summatyyppi
 \texttt{Puu}, jossa on \texttt{Lehti}- ja \texttt{Haara}-variantit.
@@ -183,20 +182,23 @@ käytetty, koodi käyttäytyy kuin siihen olisi lisätty C:n
 \texttt{static} käytettynä funktioiden sisällä.
 
 C käsittelee tietueiden ja taulukoiden alustamista identtisellä syntaksilla.
-Purkka erottaa nämä kaksi syntaksia erikseen ohjelman~\ref{fig:structinit}
-tavalla. Ohjelmassa alustetaan \texttt{Esimerkki}-tietue sekä kolmen
-kokonaisluvun taulukko. Tietueen tyypin nimen pitäminen mukana
+Purkka erottaa nämä kaksi syntaksia erikseen Rust-ohjelmointikielen
+syntaksin mukaisesti.
+%ohjelman~\ref{fig:structinit}
+%tavalla. Ohjelmassa alustetaan \texttt{Esimerkki}-tietue sekä kolmen
+%kokonaisluvun taulukko.
+Tietueen tyypin nimen pitäminen mukana
 tietueliteraaleissa pitää tyypin selkeästi näkyvissä myös tyyppipäättelyä
 käytettäessä. Yksinkertaisemmissa tapauksissa tämä ei vaikuta lähdekoodin
 pituuteen, mutta monimutkaisten tietueiden alustuksessa Purkka-koodi on hieman
 pidempää kuin vastaava C-koodi.
 
-\begin{listing}[ht!]
-    \inputminted{Rust}{koodi/structinit.prk}
-    \inputminted{C}{koodi/structinit.c}
-    \caption{Tietueen ja taulukon alustaminen Purkassa ja C:ssä.}
-    \label{fig:structinit}
-\end{listing}
+%\begin{listing}[ht!]
+%    \inputminted{Rust}{koodi/structinit.prk}
+%    \inputminted{C}{koodi/structinit.c}
+%    \caption{Tietueen ja taulukon alustaminen Purkassa ja C:ssä.}
+%    \label{fig:structinit}
+%\end{listing}
 
 Suurin osa C:n lauseista on Purkassa lausekkeita. Esimerkiksi \texttt{if-else}
 lausepari on Purkassa lauseke, joka mahdollistaa selkeämmän koodin
