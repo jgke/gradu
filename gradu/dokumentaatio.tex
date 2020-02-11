@@ -1,21 +1,13 @@
-\appendixsection{Purkka-kielen yksityiskohtia}
+\appendixsection{Purkka-kielen tyypit}
 \appendixlabel{app:purkka}
 
 \counterwithout{listing}{section}
 
-\renewcommand{\subsection}[1]{\vspace{1.7ex}{\large\textbf{#1}\vspace{1.3ex}}}
-
-%\makeatletter
-%\show\@startsection
-%\makeatother
-%{subsection}{2}{\z@ }{-3.25ex\@plus -1ex \@minus -.2ex}{1.5ex \@plus .2ex}{\normalfont \large \bfseries }.
-
-\subsection{Alkeistyypit}
-
-Taulukko ei sisällä keskenään identtisiä C-tyyppejä, kuten \texttt{int} ja
-\texttt{signed int}. \\[0.3cm]
-\begin{tabular}{@{}p{5.8cm}p{8.7cm}@{}} \toprule
-    Purkka-tyyppi & Purkka-tyyppiä vastaava C-tyyppi \\ \midrule
+Tässä liitteessä on taulukko Purkka-kielen tyypeistä sekä Purkka-tyyppejä
+vastaavista C-tyypeistä. Taulukko ei sisällä keskenään identtisiä C-tyyppejä,
+kuten \texttt{int} ja \texttt{signed int}. \\[0.3cm]
+\begin{tabular}{@{}p{5.2cm}p{9.7cm}@{}} \toprule
+    Purkka-tyyppi & Purkka-tyyppiä vastaava C-tyyppi tai sen hahmotelma \\ \midrule
     \texttt{void} & \texttt{void} \\
     \texttt{char} & \texttt{char} \\
     \texttt{i8}, \texttt{i16}, \texttt{i32}, \texttt{i64} &
@@ -33,13 +25,8 @@ Taulukko ei sisällä keskenään identtisiä C-tyyppejä, kuten \texttt{int} ja
     \texttt{cubyte}, \texttt{cushort}, \texttt{cuint}, \texttt{culong}, \texttt{culonglong}
     & \texttt{unsigned char}, \texttt{unsigned short}, \texttt{unsigned int},
       \texttt{unsigned long}, \texttt{unsigned long long} \\
-    \bottomrule
-\end{tabular} \\
+    \noalign{\vspace{0.5cm}}
 
-\subsection{Osoitintyypit, taulukkotyypit sekä yhdistetyypit}
-
-\begin{tabular}{@{}ll@{}} \toprule
-    Purkka-tyyppi & Purkka-tyyppiä vastaava C-tyyppi tai sen hahmotelma \\ \midrule
     \texttt{\&T, \&?T} & \texttt{T *} \\
     [0.2cm]
 
@@ -64,18 +51,4 @@ Taulukko ei sisällä keskenään identtisiä C-tyyppejä, kuten \texttt{int} ja
     \texttt{attribute(T, ...))} & \texttt{T \_\_attribute\_\_((...))} \\
 
     \bottomrule
-\end{tabular} \\
-
-\begin{listing}[ht!]
-    \inputminted{Rust}{koodi/sumtype.prk}
-    \inputminted{Rust}{koodi/sumtype.c}
-    \caption{Summatyyppi Purkka-kielessä (yllä) ja sama summatyyppi
-    suoraviivaisesti käännettynä C-kielelle (alla).}
-    \label{fig:purkkatreecompile}
-\end{listing}
-
-\begin{listing}[ht!]
-    \inputminted{Rust}{koodi/sumtype2.c}
-    \caption{Ohjelman~\ref{fig:purkkatreecompile} optimoitu C-versio.}
-    \label{fig:purkkatreecompile2}
-\end{listing}
+\end{tabular}

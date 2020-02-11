@@ -32,13 +32,22 @@ ominaisuuksia päättäessä ei muodostu esimerkiksi yhteensopivuusongelmia C:n
 kanssa. Tämä rajoittaakin suurta osaa luvussa~\ref{sec:muut} esiteltyjä
 ominaisuuksia, kuten automaattista muistinhallintaa ja poikkeuksia. Monet
 ominaisuudet myös monimutkaistaisivat kieltä tarjoamatta kuitenkaan
-tehokkuusparannuksia. Yksittäisiä ominaisuuksia kuitenkin pystyy lisäämään,
+tehokkuusparannuksia.
+
+Yksittäisiä ominaisuuksia kuitenkin pystyy lisäämään,
 kuten luvuissa~\ref{sec:go}~ja~\ref{sec:rust} esiintyvät useat paluuarvot sekä
 luvussa~\ref{sec:rust} esitellyt summatyypit, sillä näiden sisällyttäminen
 kieleen mahdollistaa paremman käännösaikaisen todentamisen ilman
 suoritusaikaisia haittoja. Summatyypit voivat myös parantaa
 kääntäjäoptimointia, jos kääntäjä pystyy poistamaan ohjelmakoodia päättelemällä
 tietyt summatyypin arvot mahdottomiksi.
+
+Myös epätyhjiä osoittimia varten voi lisätä tyypin, jonka voi käännösaikaisesti
+muuntaa mahdollisesti tyhjäksi osoittimeksi. Tyhjiä osoittimia on syytetty
+miljardin dollarin virheeksi~\citep{billiondollars}. Epätyhjien osoittimien
+käyttö parantaa käännösaikaista varmennusta. Esimerkiksi
+Kotlin-ohjelmointikielessä~\citep{kotlin} tyhjien osoittimien turvaton
+käsittely on estetty~\citep{kotlinnullability}
 
 Uusi kieli tulisi kääntää C:ksi, jotta sen käyttäminen on mahdollista kaikissa
 järjestelmissä, joissa C:tä käytetään. C:ksi kääntäminen myös mahdollistaa
@@ -61,11 +70,11 @@ useita erilaisia tapoja ilmaista samaa pohjatyyppiä -- esimerkiksi
 sisältämään ainakin luvut $[-(2^{31} - 1), 2^{31}-1]$\footnote{Käytännössä
 modernit toteutukset käyttävät kahden komplementtia kokonaislukujen
 ilmaisemiseen, jolloin 32-bittinen kokonaislukumuuttuja voi sisältää luvut
-$[-2^{31}, 2^{31} - 1]$.}~\citep{C18}. Tyypit kuten \texttt{long} ja
-\texttt{signed long} ovat kuitenkin standardien mukaisessa C:ssä keskenään
-täysin vaihdettavissa, eli Purkan ei tarvitse pystyä kääntymään jokaiseen
-mahdolliseen vaihtoehtoon, vaan tyyppijärjestelmässä voi olla yksi tyyppi joka
-vastaa kaikkia \texttt{long}-tyypin vaihtoehtoisia kirjoitusasuja.
+$[-2^{31}, 2^{31} - 1]$.}~\citep[luku~5.2.4.2.1]{C18}. Tyypit kuten
+\texttt{long} ja \texttt{signed long} ovat kuitenkin standardien mukaisessa
+C:ssä keskenään täysin vaihdettavissa, eli Purkan ei tarvitse pystyä kääntymään
+jokaiseen mahdolliseen vaihtoehtoon, vaan tyyppijärjestelmässä voi olla yksi
+tyyppi joka vastaa kaikkia \texttt{long}-tyypin vaihtoehtoisia kirjoitusasuja.
 
 C:n kokonaislukutyypeistä (\texttt{char}, \texttt{short}, \texttt{int},
 \texttt{long}) \texttt{char}-tyyppi on ainoa, jolla \texttt{char},
@@ -90,34 +99,48 @@ epätyhjät osoittimet sekä summatyypit.
 
 Ensimmäiseksi määritellään epätyhjä osoitin, joka on osoitin, joka ei salli
 arvokseen C:n \texttt{NULL}-arvoa. Tyyppi kääntyy Purkasta standardien
-mukaiseksi C:ksi yksinkertaisesti vastaavaan C:n osoitintyyppiin. Epätyhjä
-osoitin mahdollistaa kääntäjäoptimointeja, jotka eivät muuten olisi
-mahdollisia. GCC-kääntäjä mahdollistaa epätyhjät osoittimet
+mukaiseksi C:ksi yksinkertaisesti vastaavaan C:n mahdollisesti tyhjään
+osoitintyyppiin. Epätyhjien osoittimien käyttö parantaa käännösaikaista
+varmennusta. Epätyhjä osoitin myös mahdollistaa kääntäjäoptimointeja, jotka
+eivät muuten olisi turvallisesti mahdollisia, kuten turhien tarkistusten
+poistamisen. GCC-kääntäjä mahdollistaa epätyhjät osoittimet
 \texttt{\_\_attribute\_\_((nonnull))}-määreellä, jota Purkka-kääntäjä voi
 käyttää ohjelmoijan niin pyytäessä.
 
 \begin{listing}[ht!]
     \inputminted{Rust}{koodi/sumtype.prk}
-    \caption{Summatyyppi Purkka-kielessä ja sama summatyyppi käännettynä C-kielelle.}
+    \caption{Summatyyppi Purkka-kielessä.}
     \label{fig:purkkatree}
 \end{listing}
 
+\begin{listing}[ht!]
+    \inputminted{Rust}{koodi/sumtype.c}
+    \caption{Ohjelman~\ref{fig:purkkatree} summatyyppi suoraviivaisesti
+    käännettynä C-kielelle.}
+    \label{fig:purkkatreecompile}
+\end{listing}
+
+\begin{listing}[ht!]
+    \inputminted{Rust}{koodi/sumtype2.c}
+    \caption{Ohjelman~\ref{fig:purkkatreecompile} optimoitu C-versio.}
+    \label{fig:purkkatreecompile2}
+\end{listing}
+
 Toiseksi määritellään summatyyppi. Summatyyppi on yhdistelmä C:n
-\texttt{struct}, \texttt{union} ja \texttt{enum} -tyypeistä, ja se mahdollistaa
-käännösaikaisesti varmennetun \texttt{union}-tyyppien käytön. Summatyyppi kääntyy
-\texttt{struct}-tyypiksi, jossa on \texttt{enum}-tyyppinen muuttuja summatyypin
-diskriminanttina ja \texttt{union}-tyyppi, joka sisältää kaikki summatyypin
-variantit.
+\texttt{struct}, \texttt{union} ja \texttt{enum} -tyypeistä. Summatyypit
+mahdollistavat käännösaikaisesti varmennetun \texttt{union}-tyyppien käytön.
+Summatyyppi kääntyy \texttt{struct}-tyypiksi, jossa on \texttt{union}-tyyppi,
+joka sisältää kaikki summatyypin variantit sekä \texttt{enum}-tyyppinen
+muuttuja summatyypin varianttien erottimena eli diskriminanttina.
 
 Ohjelmassa~\ref{fig:purkkatree} on Purkka-kielellä kirjoitettu summatyyppi
 \texttt{Puu}, jossa on \texttt{Lehti}- ja \texttt{Haara}-variantit.
 \texttt{Lehti}-variantti sisältää 32-bittisen kokonaisluvun, kun taas
 \texttt{Haara}-variantti sisältää osoittimet kahteen alipuuhun. Kääntäessä
-tietorakenne muutetaan liitteen~\ref{app:purkka}
-ohjelman~\ref{fig:purkkatreecompile} kaltaiseksi lähdekoodiksi. Tässä
-erikoistapauksessa kääntäjä voisi optimoida tietorakennetta
-liitteen~\ref{app:purkka} ohjelman~\ref{fig:purkkatreecompile2} mukaisesti
-säilömällä \texttt{\_Puu\_d} -tyypin tiedon \texttt{\_Puu\_Lehti}- ja
+tietorakenne muutetaan ohjelman~\ref{fig:purkkatreecompile} kaltaiseksi
+lähdekoodiksi. Tässä erikoistapauksessa kääntäjä voisi optimoida
+tietorakennetta ohjelman~\ref{fig:purkkatreecompile2} mukaisesti säilömällä
+\texttt{\_Puu\_d} -tyypin tiedon \texttt{\_Puu\_Lehti}- ja
 \texttt{\_Puu\_Haara}-tyyppien ensimmäiseen alkioon: jos osoitin on tyhjä, on
 kyseessä \texttt{Lehti}-variantti, muulloin \texttt{Haara}-variantti.
 
@@ -216,7 +239,7 @@ joille on olemassa standardien mukainen C-kääntäjä. Esimerkiksi
 \texttt{make}-työkalua käyttäville projekteille riittää yksi Makefile-sääntö
 Purkka-ohjelmien kääntäminen C-ohjelmiksi. Tämä sääntö on esitetty
 ohjelmassa~\ref{fig:makefile}. Muissa käännösautomaatiosovelluksissa Purkan
-integrointi osa kääntämistä on luultavasti yhtä helppoa.
+integrointi osa kääntämistä on todennäköisesti yhtä helppoa.
 
 \begin{listing}[ht!]
     \inputminted{Makefile}{koodi/Makefile.kieli}

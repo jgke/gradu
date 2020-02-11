@@ -61,7 +61,7 @@ funktioiden määrittelyt eli funktioprototyypit. Yleensä nämä löytyvät
 erityisistä otsikkotiedostoista, joiden sisältö kopioidaan ohjelmaan käyttäen
 C:n makrojärjestelmää.
 
-C on vaikuttanut lukuisien kielten kehitykseen, ja useiden kielien sanotaankin
+C on vaikuttanut lukuisien kielten kehitykseen ja useiden kielien sanotaankin
 olevan osa C-kieliperhettä. C-kieliperheeseen kuuluviin kieliin liittyy usein
 muun muassa imperatiivinen ohjelmointityyli, perinteinen merkintätapa (eli
 infix) lausekkeiden muodostamiseen, muuttujien näkyvyysalueiden rajoittaminen
@@ -227,7 +227,7 @@ Artikkelissa kuitenkin todetaan, että useat ohjelmointikielet ovat vähentänee
 C:n suosiota tarjoten yksittäisillä osa-alueilla parannuksia. Yksi mainituista
 ohjelmointikielistä on Rust, joka mahdollistaa paremman ohjelmien
 käännösaikaisen oikeellisuustarkistamisen heikentämättä tehokkuutta C:hen
-verrattuna. Toiseksi vaihtoehdoksi tarjotaan ajoaikaisia tarkistuksia
+verrattuna. Toiseksi vaihtoehdoksi tarjotaan suoritusaikaisia tarkistuksia
 turvallisuuden parantamiseksi.
 
 Artikkelissa puhutaan myös mahdollisuudesta oikeellisuuden tasaiseen
@@ -264,21 +264,21 @@ mahdollisimman tehokkaiden ohjelmien toteutuksessa.
 \label{sec:ckehitettavat}
 
 \citeauthor{chistory} (\citeyear{chistory}) nostaa esiin kaksi usein
-keskustelua herättänyttä C:n ominaisuutta. Toinen näistä on C:n tyyppisyntaksi,
+keskustelua herättänyttä C:n ominaisuutta. Toinen näistä on C:n tyyppisyntaksi
 ja toinen on C:n tapa käsitellä taulukoita ja osoittimia keskenään.
 Ensimmäiselle näistä voi tehdä verrattain helposti jotain, sillä syntaksin
 muuntaminen käännösaikaisesti on triviaalia. Taulukoiden ja osoittimien välistä
 käytöstä on paljon hankalampi muuntaa, sillä nykyiset C-ohjelmat käyttävät
-osoittimia ja taulukoita sekaisin. Yksi C:stä puuttuva ominaisuus on
-taulukon antaminen funktion parametrina, jonka voi kuitenkin tehdä käärimällä
-taulukko tietueen sisään.
+osoittimia ja taulukoita sekaisin. Yksi C:stä puuttuva ominaisuus on taulukon
+antaminen funktion parametrina, jonka voi kuitenkin tehdä käärimällä taulukko
+tietueen sisään.
 
 Muita syntaktisia parannuksia lausekkeisiin voi tehdä tietueiden kohdalla. Jos
 lausekkeessa käyttää tietuetta, niin tietueen \texttt{foo} jäsenen \texttt{bar}
 saa lausekkeella \texttt{foo.bar}, mutta jos \texttt{foo} onkin osoitin,
 lausekkeen tulee olla \texttt{foo->bar}. Jos \texttt{foo} olisi osoitin
 osoittimeen, lauseke olisi \texttt{(*foo)->bar}. Yksinkertaisempi syntaksi
-olisi käyttää jokaisessa tapauksessa lauseketta \texttt{foo.bar}, ja jättää
+olisi käyttää jokaisessa tapauksessa lauseketta \texttt{foo.bar} ja jättää
 tarvittava muoto kääntäjän pääteltäväksi. Esimerkiksi Rust-ohjelmointikielen
 syntaksi tietueiden käsittelyyn on tällainen.
 
@@ -323,7 +323,7 @@ varalta optimoidaan pois.
 Muita hyödyllisiä tyyppejä ohjelmoinnin helpottamiseen olisivat
 monikot\defword{tuple} ja summatyypit\defword{tagged union, sum type}. Nämä
 molemmat tyypit löytyvät esimerkiksi Rustista. Ensimmäisen saa käännettyä
-triviaalisti tietueeksi, ja toisen saa käännettyä tietueeksi, jossa on sisällä
+triviaalisti tietueeksi ja toisen saa käännettyä tietueeksi, jossa on sisällä
 vaihtoehdoista luetelman\defword{enumeration} ja yhdisteen\defword{union}
 yhdistelmä. Ohjelmassa~\ref{fig:csumtype} on Rustin ja C:n syntaksien mukaiset
 summatyypit tyypille, jossa on joko operaation onnistuessa jokin kokonaisluku

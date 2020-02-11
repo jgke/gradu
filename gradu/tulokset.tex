@@ -9,13 +9,16 @@ tutkielman oikeellisuutta ja pohditaan jatkotutkimuskohteita.
 \subsection{Vertailun tulokset}
 \label{sec:results}
 
-Tätä tutkielmaa varten on toteutettu kääntäjä, joka kääntää ohjelmat
-Purkka-kielestä C-kieleen \citep{purkka}. Nopeimmat Benchmarks Gamen
-C-toteutukset on käännetty Purkka-kielelle. Nämä ohjelmat on sitten käännetty
-Purkka-kääntäjällä takaisin C:ksi, ja käännetty sitten GCC-kääntäjällä
-vastaavilla asetuksilla kuin verrattavat C-ohjelmat.
+Tätä tutkielmaa varten on toteutettu kääntäjä, joka kääntää yksinkertaiset
+ohjelmat Purkka-kielestä C-kieleen \citep{purkka}. Kääntäjään ei ole toteutettu
+kaikkia luvussa~\ref{sec:purkka} esitellyistä ominaisuuksia, mutta kääntäjä
+tukee esimerkiksi C:n esikäsittelijää.
+
+Nopeimmat Benchmarks Gamen C-toteutukset on käännetty Purkka-kielelle. Nämä
+ohjelmat on sitten käännetty Purkka-kääntäjällä takaisin C:ksi ja käännetty
+sitten GCC-kääntäjällä vastaavilla asetuksilla kuin verrattavat C-ohjelmat.
 Kuvassa~\ref{fig:purkkabenchmarksgame} verrataan Purkka-toteutuksia muihin
-verrattaviin kieliin, ja kuvassa~\ref{fig:purkkabenchmarksgame2} verrataan
+verrattaviin kieliin ja kuvassa~\ref{fig:purkkabenchmarksgame2} verrataan
 Purkka-toteutuksia nopeimpaan C-ohjelmaan. Koska Purkka-toteutukset on
 muunnettu nopeimmasta C-toteutuksesta ja käännetty takaisin lähes identtiseen
 muotoon, suoritusajan ja muistinkäytön tulisi olla täsmälleen samat kuin
@@ -42,7 +45,7 @@ Kuvaajista nähdään, että Benchmarks Gamen tarjoamissa esimerkeissä Purkka o
 täsmälleen yhtä tehokas kieli kuin C, eikä se vie enempää muistia. Pienet
 eroavaisuudet suuntaan ja toiseen on selitettävissä testauksen aiheuttamalla
 luonnollisella vaihtelulla. Purkalla toteutettu \texttt{fannkuchredux}-ohjelma
-on kuitenkin noin 50\% nopeampi kuin C:llä toteutettu lähes identtinen versio,
+on kuitenkin noin 50\% nopeampi kuin C:llä toteutettu lähes identtinen versio
 ja \texttt{nbody}-ohjelma vie vain 80\% muistia verrattuna C-toteutukseen.
 
 Purkka-tiedostot ovat keskimäärin 6\% pienempiä kuin vastaavat C-tiedostot.
